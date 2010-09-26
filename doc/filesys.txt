@@ -1,0 +1,220 @@
+filesys.c -- file system support functions
+Version 11 -- 1987-06-03 -- D.N. Lynx Crowe
+
+These functions support a {MS,GEM}DOS-like file system.
+Subdirectories are not supported in this version.
+
+Variables:
+----------
+
+	struct	bpb	*_thebpb;
+	struct	dirent	_thedir[MAXDIRNT];
+	struct	dirent	*_dptr;
+
+	short	_thefat[MAXFAT * WDPSEC];
+
+	int	_fatin, _dirin, _bpbin;
+	long	_berrno;
+
+Functions:
+----------
+
+	ClusMap(fcp)
+	SnapFCB(fcp)
+
+	_cl2lsn(bpp, clnum)
+	_deadio(fcp)
+	_dsrch(de)
+	_fmake(fcp)
+	_fsize(fcp)
+	_ftrnc(dp)
+	_getfat(bufad, bpp, nfat)
+	_gtcl12(fat, cl)
+	_inifcb(fcp, name,ext, mode)
+	_nsic(fcp, bpp, fp)
+	_opfcb(fcp)
+	_ptcl12(fat, cl, val)
+	_rdfat(bufad, bpp)
+	_rdroot(buf, bpp)
+	_rdsec(fcp, buf, ns)
+	_seek(fcp)
+	_sksec(fcp, sec)
+
+_cl2lsn(bpp, clnum)
+
+	Returns the logical sector number for cluster 'clnum' using the BPB
+	pointed to by 'bpp'.
+
+	int
+	_cl2lsn(bpp, clnum)
+	struct bpb *bpp;
+	int clnum;
+
+
+_ptcl12(fat, cl, val)
+
+	Puts 'val' into cluster 'cl' in the FAT at 'fat'.
+
+	putlc12(fat, cl, val)
+	register char *fat;
+	int cl, val;
+
+_gtcl12(fat, cl)
+
+	Returns the 12 bit cluster entry 'cl' from the FAT pointed to by 'fat'.
+
+	int
+	_gtcl12(fat, cl)
+	register char *fat;
+	int cl;
+
+_getfat(bufad, bpp, nfat)
+
+	Gets the FAT 'nfat' into the buffer pointed to by 'bufad' using
+	the BPB pointed to by 'bpp'.
+
+	int
+	_getfat(bufad, bpp, nfat)
+	int *bufad, nfat;
+	register struct bpb *bpp;
+
+_rdfat(bufad, bpp)
+
+	Reads the FAT into the buffer pointed to by 'bufad'using the BPB
+	pointed to by 'bpp'.
+
+	int
+	_rdfat(bufad, bpp)
+	int *bufad;
+	struct bpb *bpp;
+
+_rdroot(buf, bpp)
+
+	Reads the root directory into the buffer pointed to by 'buf'
+	using the BPB pointed to by 'bpp'.
+
+	int
+	_rdroot(buf, bpp)
+	int *buf;
+	register struct bpb *bpp;
+
+_nsic(fcp, bpp, fp)
+
+	Gets the next sector in the file controlled by the FCB at 'fcp',
+	using the BPB pointed to by 'bpp' and the FAT pointed to by 'fp'.
+	Returns:  0 if successful, -1 on error, or 1 on EOF;
+
+	int
+	_nsic(fcp, bpp, fp)
+	register struct fcb *fcp;
+	struct bpb *bpp;
+	char *fp;
+
+_dsrch(de)
+
+	Searches for the directory entry pointed to by 'de' in
+	the current directory.
+
+	struct dirent *
+	_dsrch(de)
+	register struct dirent *de;
+
+_deadio(fcp)
+
+	Marks the FCB pointed to by 'fcp' as 'in error'.
+
+	_deadio(fcp)
+	register struct fcb *fcp;
+
+_seek(fcp)
+
+	Seeks to to logical sector number in FCB pointed to by 'fcp'
+	Returns:  -1 = error, 0 = OK, 1 = EOF.
+
+	int
+	_seek(fcp)
+	register struct fcb *fcp;
+
+_ftrnc(dp)
+
+	Truncates the file pointed to by directory entry 'dp'.
+
+	int
+	_ftrnc(dp)
+	struct dirent *dp;
+
+_fmake(fcp)
+
+	Makes a new file from the FCB pointed to by 'fcp'.
+
+	int
+	_fmake(fcp)
+	struct fcb *fcp;
+
+_opfcb(fcp)
+
+	Opens the FCB pointed to by 'fcp'.  Returns 0 if opened successfully,
+	-1 if an error occurred, with the error code in errno.
+
+	int
+	_opfcb(fcp)
+	register struct fcb *fcp;
+
+_inifcb(fcp, name,ext, mode)
+
+	Initializes the FCB pointed to by 'fcp' for the file named 'name'.'ext'
+	in mode 'mode'.  Returns 0 if ok, -1 if not.
+
+	int
+	_inifcb(fcp, name, ext, mode)
+	register struct fcb *fcp;
+	char *name, *ext;
+	int mode;
+
+_sksec(fcp, sec)
+
+	Seeks the FCB pointed to by 'fcp' to sector 'sec'.
+	Returns: -1 = error, 0 = OK, 1 = EOF
+
+	int
+	_sksec(fcp, sec)
+	struct fcb *fcp;
+	long sec;
+
+_fsize(fcp)
+
+	Returns the size, in sectors, of the file associated with
+	the FCB pointed to by 'fcp', or -1 if the FCB isn't open.
+
+	int
+	_fsize(fcp)
+	struct fcb *fcp;
+
+_rdsec(fcp, buf, ns)
+
+	Reads 'ns' sectors into the buffer at 'buf' from the file associated
+	with the FCB pointed to b 'fcp'.  Returns 0 if OK, -1 if not.
+
+	int
+	_rdsec(fcp, buf, ns)
+	struct fcb *fcp;
+	char *buf;
+	long ns;
+
+ClusMap(fcp)
+
+	Prints a map of the clusters for the file associated with
+	the FCB pointed to by 'fcp'.  Ignored if file isn't open.
+	Returns 0 if map was printed, -1 otherwise.
+
+	int
+	ClusMap(fcp)
+	struct fcb *fcp;
+
+SnapFCB(fcp)
+
+	Prints the contents of an FCB pointed to by 'fcp'.  Only included
+	in test versions of 'filesys.c' where TESTER is defined non-zero.
+
+	SnapFCB(fcp)
+	struct fcb *fcp;

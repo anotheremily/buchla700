@@ -1,0 +1,46 @@
+Main menu
+---------
+---- Features to be completed or added ----
+	[__] Diagnostics
+	[__] Initialize system
+
+Score editor
+------------
+---- Features to be completed or added ----
+	[__] Punch In/Out
+	[__] Click track output
+	[__] Re-group a single note
+	[__] SMPTE support
+
+---- Bugs to be fixed ----
+	[__] Frame clock output  (kills MIDI UART)
+
+Instrument designer
+-------------------
+---- Features to be added ----
+	[__] Key release point ('come here') in fns  (line 1/4 ht. of fn)
+	[__] Randomize repeat count field
+
+Waveshape editor
+----------------
+---- Bugs to be fixed ----
+	[__] Harmonic coefficients are a little off
+
+Front panel / LCD display
+-------------------------
+---- Bugs to be fixed ----
+	[__] Check initial value / initial output of sliders
+	[__] Clean up disk error message interaction with LCD display
+
+Miscellaneous / General / Execution code
+----------------------------------------
+---- Features to be completed or added ----
+	[__] MIDI volume pedal
+
+---- Bugs to be fixed ----
+	[__] Pitch wheel doesn't get seen in edit mode
+	[__] Tempo multiplier changes cripple msl() while the pot changes
+	[__] Speed up instrument changes
+	[__] Improve disk change recognition
+	[__] Check for small tuning error
+	[__] Noisy waveshapes  (requires sending twice to fix)

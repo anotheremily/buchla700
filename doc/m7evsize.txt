@@ -1,0 +1,37 @@
+MIDAS-VII Score Event Sizes  (in bytes)
+---------------------------------------
+
+. Standard event sizes in RAM:
+
+	E_SIZE1		20 bytes
+	E_SIZE2		24 bytes
+	E_SIZE3		32 bytes
+
+. Event sizes in RAM and on disk:
+
+	size		score	disk	type
+	-------		-----	----	--------------
+	E_SIZE1		20	0	 0 - EV_NULL
+	E_SIZE1		20	6	 1 - EV_SCORE
+	E_SIZE2		24	6	 2 - EV_SBGN
+	E_SIZE2		24	6	 3 - EV_SEND
+	E_SIZE2		24	7	 4 - EV_INST
+	E_SIZE1		20	9	 5 - EV_NBEG
+	E_SIZE1		20	9	 6 - EV_NEND
+	E_SIZE1		20	5	 7 - EV_STOP
+	E_SIZE1		20	7	 8 - EV_INTP
+	E_SIZE2		24	6	 9 - EV_TMPO
+	E_SIZE2		24	6	10 - EV_TUNE
+	E_SIZE2		24	7	11 - EV_GRP
+	E_SIZE2		24	7	12 - EV_LOCN
+	E_SIZE2		24	7	13 - EV_DYN
+	E_SIZE2		24	8	14 - EV_ANVL
+	E_SIZE2		24	7	15 - EV_ANRS
+	E_SIZE2		24	6	16 - EV_ASGN
+	E_SIZE3		32	8	17 - EV_TRNS
+	E_SIZE1		20	6	18 - EV_REPT
+	E_SIZE1		20	6	19 - EV_PNCH
+	E_SIZE1		20	7	20 - EV_PRES
+	E_SIZE1		20	6	21 - EV_FINI
+	E_SIZE1		20	7	22 - EV_CPRS
+	E_SIZE1		20	5	23 - EV_BAR

@@ -1,0 +1,37 @@
+System Level I/O Functions in the C Library
+-------------------------------------------
+
+	access		access(path, amode)
+
+*	close		close(fildes)
+
+*	creat		creat(path, mode)
+
+	dup		dup(fildes)
+
+	fcntl		fcntl(fildes, cmd, arg)
+
+	fstat		fstat(fildes, buf)
+
+	ioctl		ioctl(fildes, request, arg)
+
+*	lseek		lseek(fildes, offset, where)
+
+*	open		open(path, oflag, mode)
+
+*	read		read(fildes, buf, nbytes)
+
+	stat		stat(path, buf)
+
+*	unlink		unlink(path)
+
+*	write		write(fildes, buf, nbytes)
+
+
+	* indicates a minimal set of I/O functions required for all systems.
+
+
+
+Additional I/O functions defined in Unix(tm) include:
+
+	dup2, link, lock, mknod, mount, seek, sync, tell, umask, umount.

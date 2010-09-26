@@ -1,0 +1,38 @@
+
+OD(1)                     USER COMMANDS                     OD(1)
+
+
+
+NAME
+     od - octal, decimal, hex, ascii dump
+
+SYNOPSIS
+     od [ -format ] [ file ] [+]offset
+
+DESCRIPTION
+     Od displays file, or it's standard input,  in  one  or  more
+     dump  formats  as  selected  by  the first argument.  If the
+     first argument is missing, -o (octal) is the default.  Dump-
+     ing continues until end-of-file.
+
+     The meanings of the format argument characters are:
+
+     b    Interpret bytes as unsigned octal.
+
+     c    Interpret bytes  as  ASCII  characters.   Certain  non-
+          graphic   characters  appear  as  C  escapes:  null=\0,
+          backspace=\b,   formfeed=\f,   newline=\n,   return=\r,
+          tab=\t;  others appear as 3-digit octal numbers.
+
+     d    Interpret (short) words as unsigned decimal.
+
+     o    Interpret (short) words as unsigned octal.
+
+     x    Interpret (short) words as hexadecimal.
+
+     The offset argument specifies the byte offset into the  file
+     where  dumping  is to commence.  By default this argument is
+     interpreted in octal.  A different radix can  be  specified;
+     If  ``.'' is appended to the argument, then offset is inter-
+     preted in decimal.  If offset begins with ``x''  or  ``0x'',
+     it  is  interpreted  in  hexadecimal.

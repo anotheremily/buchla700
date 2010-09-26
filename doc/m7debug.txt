@@ -1,0 +1,41 @@
+MIDAS-VII Debugging Functions				Rev 0	1988-07-08
+-----------------------------				------------------
+
+Executable from ROMP with the 'go' command:
+-------------------------------------------
+
+DOA()		stack traceback	(Set A6PTR and A7PTR first)
+			ends with xtrap15()
+
+SCPanic()	print the score control variables
+			SEsnap() followed by xtrap15()
+
+SCcrash()	print all of the score related data and the current score
+			SLdump() and SCdump() followed by xtrap15()
+
+SCdump()	print the score control variables and the current score
+			SEsnap(), SECdump(), and SEchase() followed by xtrap15()
+
+SCtimes()	print the score times and pointers
+			SEctrl() followed by xtrap15()
+
+SLdump()	print slice control data  (Set SL_Flag = FALSE to execute)
+			executes xtrap15() if SL_FLag = FALSE
+
+Called from functions:
+----------------------
+
+SECdump()	dump section variables and hplist
+
+SEchase(ep, n)	print up to 'n' events or to the end of the score
+
+SEctrl()	print current score pointers and times
+
+SEdump(sep)	dumps the event at 'sep' in readable format.
+
+SEsnap()	snap dump critical score storage variables
+
+SLdump()	print slice control data  (Set SL_Flag = TRUE to call)
+			executes xtrap15() if SL_FLag = FALSE
+
+ev_kind(sep)	return event type string

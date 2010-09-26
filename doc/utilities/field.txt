@@ -1,0 +1,49 @@
+NAME
+	field - select fields or columns from a file
+
+SYNOPSIS
+
+	field [-tc] [-nc] [-pc] n ...
+
+DESCRIPTION
+
+	The field command copies selected, delimiter-separated fields from 
+	the standard input to the standard output.
+
+	Fields are numbered from 1 and a field may be requested more than once.
+
+	The default delimiter is a tab.
+
+	This can be changed to character c with the option -tc .
+	If the form -nc is used, the delimiter c is used on input,
+	but the output is still separated by tabs.  If the form -pc
+	is use, the delimiter c is used on output, but the input is
+	still delimited by tabs.
+
+EXAMPLE
+
+	The following command extracts the login names, user and group numbers
+	from the password file:
+
+
+	field -t: 1 3 4 </etc/passwd
+
+SEE ALSO
+
+	Cut, which is available on System V.
+	There is a version of cut on this system, but no manual entry yet.
+
+BUGS/LIMITATIONS
+
+	The number of input or output fields may not exceed 256 and
+	the maximum line length is 4096 characters.
+
+AUTHORS
+
+	Adapted from:
+
+		Bourne, S. R.
+		"The Unix Programming Environment"
+			p 228-9.
+
+	Modifications by William Silvert and D.N. Lynx Crowe.

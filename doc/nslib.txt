@@ -1,0 +1,144 @@
+VSDD Driver Functions in NSLIB
+------------------------------
+
+b7subs.c
+--------
+
+	line(x1,y1,x2,y2,ic,bc)
+	int x1,y1,x2,y2,ic,bc;
+
+	     line(x1,y1,x2,y2,ic,bc) -- draw a line from (x1,y1) to (x2,y2) if bc==0,
+		or a rectangle with corners at (x1,y1) and (x2,y2) in mode ic 
+
+	point(x,y,ic)
+	int x,y,ic;
+
+		point(x,y,ic) -- plot a point according to ic
+
+	SetCLT(n,r,g,b)
+	int n,r,g,b;
+
+		SetCLT(n,r,g,b) -- Set color lookup table values
+
+nsclip.c
+--------
+
+	int
+	Clip(x1,y1,x2,y2)
+	double x1, y1, x2, y2;
+
+		Clip(x1,y1,x2,y2) -- clip a line and draw its visible portion
+
+		returns 0 if line not visible,  1 if some portion was visible
+
+nsgraf.c
+--------
+
+	double	Clipxl,		/* left clipping limit -- world units */
+		Clipxr,		/* right clipping limit -- world units */
+		Clipyb,		/* bottom clipping limit -- world units */
+		Clipyt,		/* top clipping limit -- world units */
+		Wxl,		/* window left edge -- world units */
+		Wxr,		/* window right edge -- world units */
+		Wyb,		/* window bottom edge -- world units */
+		Wyt,		/* window top edge -- world units */
+		Vxl,		/* viewport left edge -- screen units */
+		Vxr,		/* viewport right edge -- screen units */
+		Vyb,		/* viewport bottom edge -- screen units */
+		Vyt,		/* viewport top edge -- screen units */
+		WVxm,		/* windowed view x scale factor */
+		WVxa,		/* windowed view x offset */
+		WVym,		/* windowed view y scale factor */
+		WVya,		/* windowed view y offset */
+		Cwx,		/* current x -- world units */
+		Cwy;		/* current y -- world units */
+
+	int	PenBgnd,	/* current pen background color for lines */
+		PenFgnd,	/* current pen foreground color for lines */
+		ChrBgnd,	/* current background color for characters */
+		ChrFgnd;	/* current foreground color for characters */
+
+	LineTo(x,y)
+	double x, y;
+
+		LineTo(x,y) -- Draw a line from current position to (x,y)
+
+	MoveTo(x,y)
+	double x, y;
+
+		MoveTo(x,y) -- Move current position to (x,y)
+
+	NSinit()
+
+		NSinit() -- Initialize NSPAK variables
+
+	int
+	SetBgnd(color)
+	int color;
+
+		SetBgnd(color) -- set character background color
+		Returns old background color.
+
+	int
+	SetFgnd(color)
+	int color;
+
+		SetFgnd(color) -- set character foreground color
+		Returns old foreground color.
+
+	SetPen(bcolor,fcolor)
+	int bcolor, fcolor;
+
+		SetPen(bcolor,fcolor) -- set pen colors for lines
+
+	SetView(x1,y1,x2,y2)
+	int x1, y1, x2, y2;
+
+		SetView(x1,y1,x2,y2) -- Set viewport edges
+
+	SetWind(x1,y1,x2,y2)
+	double x1, y1, x2, y2;
+
+		SetWind(x1,y1,x2,y2) -- Set window edges
+
+	static
+	Setwv()
+
+		Setwv() -- Setup window to viewport transformation
+
+	ShowLine(x1,y1,x2,y2)
+	double x1, y1, x2, y2;
+
+		ShowLine(x1,y1,x2,y2) -- Draw a line between (x1,y1)-(x2,y2)
+
+	VPbord()
+
+		VPbord() -- outline viewport
+
+	WctoSc(x,y,sx,sy)
+	double x, y;
+	int *sx, *sy;
+
+		WctoSc(x,y,sx,sy) -- Convert world coordinates to screen coordinates
+
+nslseg.c
+--------
+
+	static int
+	abs(a)
+	int a;
+
+        	i = abs(a) -- return absolute value of a
+
+	int
+	lseg(x1,y1,x2,y2,t)
+	int x1,y1,x2,y2,t;
+
+		lseg(x1,y1,x2,y2,t) -- draw a line from (x1,y1) to (x2,y2) in mode t
+
+	static int
+	sign(a)
+	int a;
+
+		i = sign(a) -- return sign of a as -1, 0 , or 1
+

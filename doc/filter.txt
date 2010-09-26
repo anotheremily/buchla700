@@ -1,0 +1,48 @@
+
+
+
+	Function:    filter "Filter Command Line Files In Classic UNIX Style"
+
+	Created:     Sat Aug 10 21:57:12 EDT 1985
+	By:          Gary Perlman (Wang Institute, Tyngsboro, MA 01879 USA)
+
+	Compilation: nothing unusual
+
+	Tester:      $Compile: cc -DSTANDALONE -o filter %f
+
+	Preconditions:
+		The index of the first file operand has been determined.
+
+	Postconditions:
+		All files have been opened, processed, and closed.
+
+	Returns:
+		The return status (non-zero is bad) depends on the accessibility
+		of files, the ability to open them, and the return statuses of
+		the called function.
+
+	Exceptions:
+		If any file cannot be accessed, then none will be processed.
+		During processing, if something goes wrong (a file that could
+		be accessed cannot be opened, or the file processor returns a
+		non-zero status), processing continues.
+
+	Notes:
+		"-" is the conventional name for the standard input.
+			It can only be read once.
+		Fputs and putc are used to print error messages to avoid
+			loading fat fprintf just because filter used it.
+
+	Some modifications might be useful but unpopular:
+		If there is piped input (!isatty (fileno (stdin))),
+		and the standard input is not read,
+		then some information may be ignored,
+		so a warning should be printed.
+		Unfortunately, this would break things like vi filters.
+
+		If there is not piped input,
+		and the standard input is being read from the keyboard,
+		then prompt the user for input with something like:
+			pgm: reading input from terminal
+		This would avoid the problem of people forgetting to supply
+		an input redirection.

@@ -1,0 +1,20 @@
+			DEBUG Variables and Functions
+
+================================================================================
+
+____________	char	*A6PTR = 0L;		/* traceback a6 starting address */
+____________	char	*A7PTR = 0L;		/* traceback a7 starting address */
+
+____________	char	*A7TOP = 0x000FFFFFL;	/* traceback stack top */
+
+____________	short	debugsw;		/* debug enable switch */
+
+================================================================================
+
+____________	SCPanic()	print the control variables
+____________	SCdump()	print the control variables and the current score
+____________	SCcrash()	print all of the score related data and the current score
+____________	DOA()		do a simple stack traceback
+____________	DB_Dump()	dump and reset debug trace area
+
+================================================================================

@@ -1,0 +1,24 @@
+micons.c -- motorola / intel format conversion functions
+
+Version 1 -- 1987-04-06
+
+
+	short
+	micons(wi)
+	short wi;
+
+		Convert between motorola and intel format for a short.
+
+
+	int
+	miconi(wi)
+	int wi;
+
+		Convert between motorola and intel format for an int.
+
+
+	long
+	miconl(wi)
+	long wi;
+
+		Convert between motorola and intel format for a long.

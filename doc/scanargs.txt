@@ -1,0 +1,397 @@
+
+
+
+SCANARGS(3)         UNIX Programmer's Manual          SCANARGS(3)
+
+
+
+NAME
+     scanargs, qscanargs - formatted conversion from command
+     argument list
+
+SYNOPSIS
+     #include <stdio.h>
+
+     scanargs(argc, argv, format [, pointer]...  )
+     int argc;
+     char *argv[];
+     char *format;
+
+DESCRIPTION
+     Scanargs reads argc arguments from an argument list pointed
+     to by argv. It converts the argument list according to the
+     format string, and stores the results of the conversions in
+     its parameters.  Qscanargs is a smaller and less powerful
+     version which does not understand floating point.
+
+     Scanargs expects as its parameters an argument count argc, a
+     pointer to an argument list argv (see exec(2)), a control
+     string format, described below, and a set of pointer argu-
+     ments indicating where the converted output should be
+     stored.
+
+     The control string contains specifications, which are used
+     to direct interpretation of argument sequences.  It contains
+     the necessary information to describe an acceptable syntax
+     for the argument list, and the expected meaning of each
+     argument.
+
+     If the scanning fails it will print a cryptic message tel-
+     ling why it failed, and generate a usage message from the
+     control string.
+
+     The control string is composed of two parts:
+
+     Name:   The first characters in the string are assumed to be
+     the calling name of the program being executed. This is used
+     for generation of usage messages, but is otherwise ignored.
+     If this field is a % sign, it is replaced with the contents
+     of argv[0] in the message.
+
+     Conversions:   Following the name, an optional list of
+     conversion specifications is given, with separating spaces.
+     The structure of a conversion specification:
+
+          label_key_conversion
+
+     consists of a label which is a string of non-space charac-
+     ters describing the acceptable argument, a key which may be
+     either of
+
+
+
+Printed 10/6/84            AMPEX CORP.                          1
+
+
+
+
+
+
+SCANARGS(3)         UNIX Programmer's Manual          SCANARGS(3)
+
+
+
+     %   The argument is optional. Its absence is ignored.
+
+     !   A required argument. If absent, an error return ensues.
+
+     and a conversion character which indicates the interpreta-
+     tion of the argument; the corresponding pointer parameter
+     must be of a restricted type.
+
+     The following conversion characters are supported:
+
+     d D a decimal integer is expected; the corresponding parame-
+         ter should be an int or a long (if D is specified)
+         pointer.
+
+     o O an octal integer is expected; the corresponding parame-
+         ter should be an int or a long pointer.
+
+     x X a hexadecimal integer is expected; the corresponding
+         parameter should be an int or a long pointer.
+
+     n N an integer numeric conversion using C language syntax.
+         Numbers beginning 0x are hexadecimal, numbers beginning
+         0 are octal, and other numbers are decimal.  Negative
+         hex numbers must have the minus sign following the 0x,
+         i.e. negative 0xa would be given as 0x-a.  The
+         corresponding pointer should point to an int or a long.
+
+     f F a floating point number is expected; the corresponding
+         parameter should be a pointer to a float or a double.
+         Not available in qscanargs.
+
+     x X d D o O f F
+         all numeric types supported by scanf(3S) are legal in
+         scanargs; qscanargs supports all but f and F formats,
+         and avoids including the large size of the scanf rou-
+         tine.
+
+     s   a character string is expected; the corresponding param-
+         eter should be the address of a pointer to char.
+
+     -   a single character flag is expected; the corresponding
+         parameter should be an int pointer.  The occurrence of a
+         - followed by the character specified in the label will
+         cause the setting of the least significant bit of the
+         integer pointed to by the corresponding parameter.  The
+         label may consist of up to sixteen (32 on a VAX) option
+         characters, in which case one of the bits of the integer
+         is independantly set to reflect which one of the flags
+         was present. (The right most character corresponds to
+         the LSB of the integer)  Only one option may be chosen
+         from each conversion specification.  The bits which are
+         not set will remain in their previous state.  For
+
+
+
+Printed 10/6/84            AMPEX CORP.                          2
+
+
+
+
+
+
+SCANARGS(3)         UNIX Programmer's Manual          SCANARGS(3)
+
+
+
+         example, a specification of abc%- would match one of -a
+         -b or -c in the argument list. -c would cause the
+         corresponding variable to be set to 1, -b to 2, and -a
+         to 4.  (Actually, these bits would be ored in, but
+         assuming an intial value of 0, this is true).
+
+         The - may be followed immediately by more
+         label_key_conversion specifications.  These should not
+         be separated by blanks and should not contain any -
+         specifications.  They will be processed only if the flag
+         argument is scanned.  This allows optional specification
+         of parameters corresponding to a flag (e.g.  -f file ).
+         Corresponding arguments on the command line must appear
+         between the flag which introduces them and the next flag
+         in the command line.
+
+     $   This may appear only as the last specifier in the format
+         string, and is used to "eat up" the rest of the command
+         arguments.  The corresponding function argument is an
+         int pointer.  An index into argv to the dividing point
+         between the arguments which have been used, and those
+         which have not is returned.  This index points to the
+         first unused command argument.  If there is no such
+         dividing point, an error will be generated.
+
+     A string or numeric conversion character may be preceded by
+     a * or a , to indicate that a list of such arguments is
+     expected.  If , is used, then the AT&T proposed argument
+     standard is followed, and a single string is expected, with
+     the individual list elements separated by commas or spaces.
+     Two commas in a row will produce a null entry (0 if numeric,
+     zero-length string if string conversion), but multiple
+     spaces, and spaces following a comma, are taken as a single
+     separator.  If * is specified, then multiple arguments are
+     parsed to produce the list.  A format specifier with a * or
+     a , takes two arguments.  The first is an int pointer, the
+     number of items in the list is returned here.  The second is
+     a pointer to pointer to the correct data type for the format
+     specifier.  A pointer to the list of arguments is returned
+     here.
+
+     The scanner will process the control string from left to
+     right, and where there are multiple conversions of the same
+     type, they will be assigned one to one with their order of
+     occurrence in the argument list.  Where the order of the
+     arguments is not ambiguous in the control string, they may
+     occur in any order in the argument list. (ie. A decimal
+     number will not be confused with a flag, but may be confused
+     with an octal number or another decimal number. So if an
+     octal and a decimal number are to be arguments, their order
+     will determine their conversion, while a decimal number and
+     a flag as arguments may occur in any order and still be
+
+
+
+Printed 10/6/84            AMPEX CORP.                          3
+
+
+
+
+
+
+SCANARGS(3)         UNIX Programmer's Manual          SCANARGS(3)
+
+
+
+     converted correctly.)
+
+     An argument list that does not match the requirements of the
+     control string will cause the printing of a short message
+     telling why, and a message telling what the correct usage
+     is.  This usage is gleaned from the control string, and the
+     labels are used directly.  The labels should be both terse
+     and descriptive!  Spaces, tabs, and newlines in the format
+     string will be reproduced in the usage message, and can be
+     used for effective prettyprinting.  A single tab (following
+     a newline) will indent the line directly under the command
+     name in the usage message.
+
+     The scanargs function returns 1 when the argument list
+     matched the requirements of the control string, and returns
+     0 if there was a failure.  Parameters for any conversions
+     not matched are left untouched.
+     For example, the call
+
+          int i; double x; char *name;
+          scanargs(argc, argv, "program decimal%d floating%F
+          file%s"
+               , &i, &x, &name );
+
+     in a C program executed by the shell command
+
+          % program 10 3.5397 inputfile
+
+     will assign to i the value 10, x the value 3.5397, and name
+     will point to the string "inputfile".
+
+     If the program was executed by the shell command
+
+          % program  3.4 .7 inputfile
+
+     the following would be printed on the standard error:
+
+          extra arguments not processed
+          usage : program [decimal] [floating] [file]
+
+     because 3.4 matches the type of 'floating' and inputfile
+     matches the type of 'file', leaving .7 unmatched (it is con-
+     sidered a string by scanargs, to be considered a number, it
+     must begin with a digit).
+
+     Finally, executing the command
+          % program 10
+     would assign 10 to i, leaving x and name unaffected.
+
+     This call could be used for the diff(1) command
+
+
+
+
+
+Printed 10/6/84            AMPEX CORP.                          4
+
+
+
+
+
+
+SCANARGS(3)         UNIX Programmer's Manual          SCANARGS(3)
+
+
+
+          int blanks; int flags; char *file1; char *file2;
+          scanargs(argc, argv, "diff b%- efh%- file1!s file2!s"
+               , &blanks, &flags, &file1, &file2 );
+
+     and would only allow one of either -e -f or -h to be chosen
+     optionally, with -b as an independent option.  File1 and
+     file2 are both required.  The usage message for this version
+     of diff would be
+
+          usage : diff [-b] -{efh} file1 file2
+
+     This call could be used for a simplified version of the
+     sed(1) command
+
+          int efile; int noprint; char *script; char *file1; char
+          *file2;
+          scanargs(argc, argv, "sed n%- script%s f%-editfile!s
+          file%s"
+               , &noprint, &script, &efile, &file1, &file2 );
+
+     If the -f option is specified, then a file name must be
+     given as the next string argument.  The usage message for
+     this version of sed would be
+
+          usage : sed [-n] [script] [-f editfile] file
+
+
+     Further notes on putting together a format string:
+
+     It is still possible for conditional arguments to be con-
+     fused with arguments which stand alone.  For this reason, it
+     is recommended that all flags (and associated conditional
+     arguments) be specified first in the scanargs format string.
+     This ordering is not necessary for the command line argu-
+     ments, however.  The only case which could still cause con-
+     fusion if these rules are followed is illustrated below:
+          format string: "prog d%-num%d othernum%d"
+          command line:  prog -d 9
+     It is unclear whether the number 9 should be associated with
+     the num parameter or the othernum parameter. Scanargs
+     assigns it to the num parameter.  To force it to be associ-
+     ated with othernum the command could be invoked as either
+                    prog 9 -d
+          or        prog -d -- 9
+     The -- in the second example is interpreted as a flag,
+     thereby terminating the scan for arguments introduced by the
+     -d.  According to the proposed standard, an argument of --
+     is to be interpreted as terminating the optional arguments
+     on a flag.
+
+     Note that if the format string in the above example were
+                    "prog othernum%d d%-num%d"
+
+
+
+Printed 10/6/84            AMPEX CORP.                          5
+
+
+
+
+
+
+SCANARGS(3)         UNIX Programmer's Manual          SCANARGS(3)
+
+
+
+     it would be impossible to assign a value to num without also
+     assigning a value to othernum.
+
+
+SEE ALSO
+     exec(2), scanf(3S)
+
+DIAGNOSTICS
+     Returns 0 on error, 1 on success.
+
+AUTHOR
+     Gary Newman - Ampex Corporation
+     Spencer W. Thomas - University of Utah
+
+BUGS
+     By its nature a call to scanargs defines a syntax which may
+     be ambiguous, and although the results may be surprising,
+     they are quite predictable.  The heuristic used to tell
+     string arguments from numeric arguments is just that.  In
+     fact, that you can't give a number as a string argument is
+     sort of bogus.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Printed 10/6/84            AMPEX CORP.                          6
+
+
+
+

@@ -1,0 +1,51 @@
+Analog Variables
+----------------
+
+Display:
+--------
+Entering a number 01..12 in the "Group" field will cause the current values and
+record enable status for the analog variables for that group to be displayed.
+This also selects that group's analog variables for subsequent editing
+operations.
+
+The most recent (current) value of each of the analog variables for the
+group selected by the "Group" field is displayed in real-time if the
+"Resolution/Value" label is highlighted. 
+
+Playback:
+---------
+Analog variables are always played back if their group is enabled.  The
+resolution field does not effect playback, only recording.
+
+Recording:
+----------
+Analog variables are recorded at the current resolution if:
+
+	1.  The system is in "Record" status, AND
+	2.  The group is enabled, AND
+	3.  EITHER:
+		3.a.1 The "Analog Source" label IS NOT highlighted, AND
+		3.a.2 The group is in "Record" status
+	   OR:
+		3.b.1 The "Analog Source" label IS highlighted, AND
+		3.b.2 The analog variable is in "Record" status
+
+The variables which are being recorded will be erased at "current time" before
+new values are recorded.  No "Overdub" mode exists for analog variables.
+"Overdub" mode only effects the recording of notes into record enabled groups.
+
+Recording of analog variables is independent of recording of notes for the
+group.  This allows editing or recording of a specific "track" of analog
+variable data, or notes.
+
+Editing:
+--------
+The "Copy Section", "Merge Section", and "Delete Ev" operations respect the
+group enable status and record status of the analog variables, allowing
+specific variables from a group to be copied, merged, or deleted.
+
+If the group is not in "Record" status, but the analog variables are, and
+the "Analog Source" label is highlighted, the analog variables may be edited
+without effecting the notes or other types of events in the section.  Note that
+the group must be enabled for editing to occur, and the system must be in
+"Record" status.

@@ -1,0 +1,43 @@
+VT-52 Control Codes with Atari Extensions
+-----------------------------------------
+
+#define	ESC	'\033'		/* or 0x1B if you prefer */
+
+ESC A		Cursor Up  (stops at top)
+ESC B		Cursor Down  (stops at bottom)
+
+ESC C		Cursor Forward  (stops at EOL)
+ESC D		Cursor Backward  (stops at BOL)
+
+ESC E		Clear Screen and Home Cursor
+ESC H		Home Cursor  (home = 1,1 = top,left)
+
+ESC I		Reverse Index  (cursor up with scroll at top)
+
+ESC J		Erase to end of page  (including cursor position)
+ESC K		Clear to end of line  (including cursor position)
+
+ESC L		Insert Line  (moves cursor line and lines below down)
+ESC M		Delete Line  (deletes cursor line and moves lines below up)
+
+ESC Y		Position Cursor  (followed by row, col, 1-origin binary)
+
+ESC b		Set Foreground Color  (4 lsbs of next byte are color index)
+ESC c		Set Background Color  (4 lsbs of next byte are color index)
+
+ESC d		Erase beginning of display  (up to and including cursor)
+
+ESC e		Enable cursor
+ESC f		Disable cursor
+
+ESC j		Save cursor position
+ESC k		Restore cursor position
+
+ESC l		Erase entire line  (moves cursor to column 1)
+ESC o		Erase beginning of line  (including cursor position)
+
+ESC p		Enter Reverse Video Mode
+ESC q		Exit Reverse Video Mode
+
+ESC v		Wrap at End of Line
+ESC w		Discard at End of Line

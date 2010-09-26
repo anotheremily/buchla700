@@ -1,0 +1,2 @@
+mtbios.abs=mtbios,mtdefs,prolog,mtromp,booter,
+libmt,libcio,vlib,iolib,libsm,lib700

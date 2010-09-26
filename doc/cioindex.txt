@@ -1,0 +1,117 @@
+ClusMap(fcp)				FILESYS.C
+Croot(cp)				CROOT.C
+
+FCBmode(fcp)				FILESYS.C
+FilExt(s)				FILNAME.C
+FilName(s)				FILNAME.C
+
+ReadRN(fcp, buf)			READRN.C
+
+SnapFCB(fcp)				FILESYS.C
+
+_badfd()				FILESYS.C
+
+_cl2lsn(bpp, clnum)			FILESYS.C
+_conin(x, buff, len)			CONIN.C
+_conwr(kind, buff, len)			CONWR.C
+
+_deadio(fcp)				FILESYS.C
+_dsrch(de)				FILESYS.C
+
+_eredir(name)				CROOT.C
+
+_fd_cls()				CLOSE.C
+_filecl(fp)				CLOSE.C
+_fileop(name, flag, mode, chp, dp)	OPEN.C
+_filerd(fp, buffer, len)		READ.C
+_filewr(fp, buffer, len)		WRITE.C
+_fmake(fcp)				FILESYS.C
+_fsize(fcp)				FILESYS.C
+_ftrnc(dp)				FILESYS.C
+
+_getfat(bufad, bpp, nfat)		FILESYS.C
+_getsec(fp, buf, len)			READ.C
+_gtcl12(fat, cl)			FILESYS.C
+
+_inifcb(fcp, name, ext, mode)		FILESYS.C
+
+_noper()				FILESYS.C
+_nsic(fcp, bpp, fp)			FILESYS.C
+
+_opfcb(fcp)				FILESYS.C
+
+_putsec(fp, buf, len)			WRITE.C
+
+_rdfat(bufad, bpp)			FILESYS.C
+_rdroot(buf, bpp)			FILESYS.C
+_rdsec(fcp, buf, ns)			FILESYS.C
+
+_seek(fcp)				FILESYS.C
+
+agetc(ptr)				FGETS.C
+aputc(c,ptr)				FPUTS.C
+atoi(cp)				ATOI.C
+atol(cp)				ATOL.C
+atrstr(atr, s)				DIRFNS.C
+
+blkrd(fcp, buf, ns)			BLKRD.C
+
+closall()				PUTC.C
+close(fd)				CLOSE.C
+creat(name, mode)			OPEN.C
+
+dtunpk(din, tin, s, fmt)		DIRFNS.C
+
+exit(code)				CROOT.C
+
+fclose(ptr)				PUTC.C
+fflush(ptr)				PUTC.C
+fgets(s, n, fp)				FGETS.C
+flread(buff, len, fp)			FLREAD.C
+flush_(ptr, data)			PUTC.C
+fopen(name,mode)			FOPEN.C
+fprintf(stream,fmt,args)		FPRINTF.C
+fpsub(c)				FPRINTF.C
+fputs(s,fp)				FPUTS.C
+fread(buffer, size, number, stream)	FREAD.C
+fscanf(fp, fmt, args)			FSCANF.C
+fseek(fp, pos, mode)			FSEEK.C
+ftell(fp)				FTELL.C
+fwrite(buffer, size, number, stream)	FWRITE.C
+
+gchar(what)				FSCANF.C
+getbuff(ptr)				GETBUFF.C
+getc(ptr)				GETC.C
+getflt(buffer)				SCAN.C
+getnum(list, values, base)		SCAN.C
+gets(line)				FGETS.C
+getw(stream)				GETC.C
+
+lseek(fd, pos, how)			LSEEK.C
+
+mname(n)				DIRFNS.C
+
+open(name, flag, mode)			OPEN.C
+
+posit(fd, pos)				POSIT.C
+printf(fmt,args)			FPRINTF.C
+putc(c, ptr)				PUTC.C
+puterr(c)				PUTC.C
+putlc12(fat, cl, val)			FILESYS.C
+puts(str)				FPUTS.C
+putw(w, stream)				PUTC.C
+
+read(fd, buff, len)			READ.C
+rename(old, new)			RENAME.C
+
+scanf(fmt, args)			FSCANF.C
+scanfmt(getsub, fmt, args)		SCAN.C
+setbuf(stream, buffer)			SETBUF.C
+sgetc(what)				SCAN.C
+skipblank()				SCAN.C
+sscanf(string, fmt, arg)		SCAN.C
+
+ungetc(c,ptr)				UNGETC.C
+unlink(name)				UNLINK.C
+
+write(fd, buff, len)			WRITE.C

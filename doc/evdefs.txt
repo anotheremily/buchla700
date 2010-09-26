@@ -1,0 +1,47 @@
+Event types  (number in comment field is event size)
+-----------
+
+EV_NULL		0	/* 1 - null event */
+EV_SCORE	1	/* 1 - score begin */
+EV_SBGN		2	/* 2 - section begin */
+EV_SEND		3	/* 2 - section end */
+EV_INST		4	/* 2 - instrument change */
+EV_NBEG		5	/* 1 - note begin */
+EV_NEND		6	/* 1 - note end */
+EV_STOP		7	/* 1 - stop */
+EV_INTP		8	/* 2 - interpolate */
+EV_TMPO		9	/* 2 - tempo */
+EV_TUNE		10	/* 2 - tuning */
+EV_GRP		11	/* 2 - group status */
+EV_LOCN		12	/* 2 - location */
+EV_DYN		13	/* 2 - dynamics */
+EV_ANVL		14	/* 2 - analog value */
+EV_ANRS		15	/* 2 - analog resolution */
+EV_ASGN		16	/* 2 - I/O assign */
+EV_TRNS		17	/* 3 - transposition */
+EV_REPT		18	/* 1 - repeat */
+EV_PNCH		19	/* 1 - punch in/out */
+EV_PRES		20	/* 1 - polyphonic pressure */
+EV_FINI		21	/* 1 - score end */
+EV_CPRS		22	/* 1 - channel pressure */
+EV_BAR		23	/* 1 - bar marker */
+
+N_ETYPES	24	/* number of event types (1 + last type code) */
+
+Event header types
+------------------
+
+EH_INST		0	/* instrument change */
+EH_GRP		1	/* group status */
+EH_LOCN		2	/* location */
+EH_DYN		3	/* dynamics */
+EH_ANRS		4	/* analog resolution */
+EH_TRNS		5	/* transposition */
+EH_INTP		6	/* interpolate */
+EH_TMPO		7	/* tempo */
+EH_TUNE		8	/* tuning */
+EH_ASGN		9	/* I/O assign */
+EH_SBGN		10	/* section begin */
+EH_SEND		11	/* section end */
+
+N_TYPES		12	/* number of event header types */

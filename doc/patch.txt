@@ -1,0 +1,241 @@
+. General
+
+	. Resolve open questions
+
+		. Sequencer displays
+
+		. Sequencer actions
+
+		. Initialization and default values
+
+		. Effect of "Edit" key
+
+		. Effect of "Quiet" key
+
+		. Execution priorities
+
+	. Complete written specification of the language
+
+		. Display formats
+
+		. Data entry details
+
+		. Execution details
+
+	. Finalize design of code
+
+	. Write code
+
+	. Enter and compile code
+
+	. Integrate code into current version of MIDAS
+
+	. Test and debug
+
+. Patch table details
+
+	. Organization / layout in memory
+
+	. Initialization
+
+		. Default values
+
+	. Memory management functions
+
+		. Allocate patch entry
+
+		. Free patch entry
+
+	. Patch entry function
+
+	. Patch update function
+
+	. Patch deletion fuction
+
+. Sequence table details
+
+	. Organization / layout in memory
+
+	. Initialization
+
+		. Default values
+
+. Display details
+
+	. VSDD memory allocation
+
+	. Patch display
+
+		. Layout
+
+		. Initialization
+
+		. Field display functions
+
+	. Smooth scrolling
+
+		. Screen update functions
+
+			. Write to a line
+
+			. Scroll up / down
+
+		. Main scan loop integration
+
+	. Menu highlighting
+
+	. Sequencer display
+
+		. Layout
+
+		. Field display functions
+
+. Cursor control functions
+
+	. Cursor action setup
+
+	. Cursor left / right  (in a patch or sequence table entry)
+
+	. Scroll up / down
+
+	. Menu highlighting control
+
+	. Menu pointing  (cursor up / down / left / right in the menu)
+
+. Patch data entry functions
+
+	. Edit buffer updates
+
+	. Enter key processing
+
+		. Menu selection
+
+		. Search
+
+		. Enter
+
+	. Delete key processing
+
+		. Clear field
+
+		. Clear patch entry line
+
+		. Delete patch
+
+	. Data key processing
+
+	. Error handling
+
+. Sequence data entry functions
+
+	. Edit buffer updates
+
+	. Enter key processing
+
+		. Menu selection
+
+		. Enter
+
+	. Delete key processing
+
+	. Data key processing
+
+	. Error handling
+
+. Execution functions
+
+	. Initialization functions
+
+		. Patches
+
+			. Patch table
+
+			. Definition list and table
+
+			. Stimulus list and table
+
+			. Trigger and stimulus status
+
+		. Sequences
+
+			. Sequence table
+
+			. Control table
+
+	. "Quiet" key effects
+
+		. Patch status
+
+		. Sequence status
+
+	. Patch definition / stimlus processing
+
+		. Definition processing phase
+
+		. Stimulus processing phase
+
+	. Patch execution
+
+		. FPU outputs
+
+			. Value
+
+			. Time
+
+			. Source / Multiplier
+
+		. Oscillator outputs
+
+			. Pitch
+
+			. Control
+
+			. Waveshape
+
+		. Function start / stop
+
+		. Virtual keys
+
+		. Triggers
+
+		. Pulses
+
+		. Sequence start / stop / goto / step
+
+	. Sequence execution
+
+		. Sequence control
+
+		. Main scan loop / timers
+
+		. Conditional jumps / stops
+
+		. Virtual keys
+
+		. Triggers
+
+		. Pulses
+
+		. Function start / stop
+
+		. Sequence start / stop / goto / step
+
+		. Register operations
+
+		. Control voltage inputs and outputs
+
+		. Random value sources
+
+. Librarian modifications
+
+	. File formats
+
+	. Display changes
+
+	. Store patch table function
+
+	. Load patch table function
+
+	. Store sequence table function
+
+	. Load sequence table function

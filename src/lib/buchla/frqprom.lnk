@@ -1,0 +1,4 @@
+INPUT startup.bin
+INPUT *
+INPUT msrec.bin
+LIBRARY clib.bin

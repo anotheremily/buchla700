@@ -1,0 +1,1239 @@
+MIDAS-VII Score structure Documentation
+---------------------------------------
+
+Document: events.doc	Version  8 -- 1988-07-18
+
+Based on: score.h	Version 28 -- 1988-03-22
+
+
+CONSTANT DEFINITIONS
+--------------------
+
+#define	MAX_SE		49152	/* number of longs for score storage */
+
+#define	N_SCORES	20	/* number of scores */
+#define	N_SECTS		20	/* number of sections per score */
+
+
+#define	E_NULL	(struct s_entry *)0L	/* null event pointer */
+
+
+#define	E_SIZE1		5	/* event size 1 -- 5 longs -- 20 bytes */
+#define	E_SIZE2		6	/* event size 2 -- 6 longs -- 24 bytes */
+#define	E_SIZE3		8	/* event size 3 -- 8 longs -- 32 bytes */
+
+
+#define	TO_BAK		240	/* offset from current time to left edge */
+#define	TO_FWD		258	/* offset from current time to right edge */
+
+
+#define	D_BAK		1	/* display backward */
+#define	D_FWD		0	/* display forward */
+
+
+#define	GS_DSBL		0	/* group status:  off */
+#define	GS_ENBL		1	/* group status:  on */
+Event Types			(number in comment field is event size)
+-----------
+
+#define	EV_NULL		0	/* 1 - null event */
+#define	EV_SCORE	1	/* 1 - score begin */
+#define	EV_SBGN		2	/* 2 - section begin */
+#define	EV_SEND		3	/* 2 - section end */
+#define	EV_INST		4	/* 2 - instrument change */
+#define	EV_NBEG		5	/* 1 - note begin */
+#define	EV_NEND		6	/* 1 - note end */
+#define	EV_STOP		7	/* 1 - stop */
+#define	EV_INTP		8	/* 2 - interpolate */
+#define	EV_TMPO		9	/* 2 - tempo */
+#define	EV_TUNE		10	/* 2 - tuning */
+#define	EV_GRP		11	/* 2 - -unused- (was group status) */
+#define	EV_LOCN		12	/* 2 - location */
+#define	EV_DYN		13	/* 2 - dynamics */
+#define	EV_ANVL		14	/* 2 - analog value */
+#define	EV_ANRS		15	/* 2 - analog resolution */
+#define	EV_ASGN		16	/* 2 - I/O assign */
+#define	EV_TRNS		17	/* 3 - transposition */
+#define	EV_REPT		18	/* 1 - -unused- (was repeat) */
+#define	EV_PNCH		19	/* 1 - punch in/out */
+#define	EV_PRES		20	/* 1 - -unused- (was polyphonic pressure) */
+#define	EV_FINI		21	/* 1 - score end */
+#define	EV_CPRS		22	/* 1 - -unused- (was channel pressure) */
+#define	EV_BAR		23	/* 1 - bar marker */
+#define	EV_NEXT		24	/* 1 - next score */
+
+#define	N_ETYPES	25	/* number of event types (1 + last type code) */
+
+
+Event Header Types
+------------------
+
+#define	EH_INST		0	/* instrument change */
+#define	EH_GRP		1	/* -unused- (was group status) */
+#define	EH_LOCN		2	/* location */
+#define	EH_DYN		3	/* dynamics */
+#define	EH_ANRS		4	/* analog resolution */
+#define	EH_TRNS		5	/* transposition */
+#define	EH_INTP		6	/* interpolate */
+#define	EH_TMPO		7	/* tempo */
+#define	EH_TUNE		8	/* tuning */
+#define	EH_ASGN		9	/* I/O assign */
+#define	EH_SBGN		10	/* section begin */
+#define	EH_SEND		11	/* section end */
+
+#define	N_TYPES		12	/* number of event header types */
+MIDAS-VII SCORE EVENT SIZES  (in bytes)
+---------------------------------------
+
+. Standard event sizes in RAM:
+
+	E_SIZE1		20 bytes
+	E_SIZE2		24 bytes
+	E_SIZE3		32 bytes
+
+. Event sizes in RAM and on disk:
+
+	size		score	disk	type
+	-------		-----	----	--------------
+	E_SIZE1		20	0	 0 - EV_NULL
+	E_SIZE1		20	6	 1 - EV_SCORE
+	E_SIZE2		24	6	 2 - EV_SBGN
+	E_SIZE2		24	6	 3 - EV_SEND
+	E_SIZE2		24	7	 4 - EV_INST
+	E_SIZE1		20	9	 5 - EV_NBEG
+	E_SIZE1		20	9	 6 - EV_NEND
+	E_SIZE1		20	5	 7 - EV_STOP
+	E_SIZE1		20	7	 8 - EV_INTP
+	E_SIZE2		24	6	 9 - EV_TMPO
+	E_SIZE2		24	6	10 - EV_TUNE
+	E_SIZE2		24	7	11 - EV_GRP
+	E_SIZE2		24	7	12 - EV_LOCN
+	E_SIZE2		24	7	13 - EV_DYN
+	E_SIZE2		24	8	14 - EV_ANVL
+	E_SIZE2		24	7	15 - EV_ANRS
+	E_SIZE2		24	6	16 - EV_ASGN
+	E_SIZE3		32	8	17 - EV_TRNS
+	E_SIZE1		20	6	18 - EV_REPT
+	E_SIZE1		20	6	19 - EV_PNCH
+	E_SIZE1		20	7	20 - EV_PRES
+	E_SIZE1		20	6	21 - EV_FINI
+	E_SIZE1		20	7	22 - EV_CPRS
+	E_SIZE1		20	5	23 - EV_BAR
+	E_SIZE1		20	5	24 - EV_NEXT
+SCORE LIST STRUCTURES
+---------------------
+
+Note Entry Structure	E_SIZE1 (20 bytes)
+--------------------
+
+struct	n_entry {
+
++0	long		e_time;		time, in frames
+
++4	char		e_size;		size of entry, in longs
++5	char		e_type;		type of entry
++6	char		e_note;		note number
++7	char		e_group;	group number
+
++8	struct s_entry	*e_bak,		backward pointer
++12			*e_fwd;		forward pointer
+
++16	short		e_vel;		velocity
++18	short		e_data4;	optional data or padding
+
+};
+
+
+Event Entry Structure	E_SIZE2 (24 bytes) or E_SIZE3 (32 bytes)
+---------------------
+
+struct	s_entry {
+
+	--- E_SIZE2 and E_SIZE3 ---
+
++0	long		e_time;		time, in frames
+
++4	char		e_size;		size of entry, in longs
++5	char		e_type;		type of entry
++6	char		e_data1;	1st 8 bits of data
++7	char		e_data2;	2nd 8 bits of data
+
++8	struct s_entry	*e_bak,		backward pointer
++12			*e_fwd,		forward pointer
+
++16			*e_dn,		down pointer or 4 bytes of data
++20			*e_up,		up pointer or 4 bytes of data
+
+	--- E_SIZE3 only ---
+
++24			*e_lft,		left pointer or 4 bytes of data
++28			*e_rgt;		right pointer or 4 bytes of data
+
+};
+
+Event type:  Null event			EV_NULL		0	00
+-----------  ----------			-------		-	--
+
+struct	n_entry {
+
+	long		e_time;		time, in frames
+
+	char		e_size;		size of entry, in longs:	5  05
+	char		e_type;		type of entry			0  00
+	char		e_note;		-unused-
+	char		e_group;	-unused-
+
+	struct s_entry	*e_bak,		backward pointer
+			*e_fwd;		forward pointer
+
+	short		e_vel;		-unused-
+	short		e_data4;	-unused-
+};
+
+
+Score format:	E_SIZE1		20 bytes
+-------------
+
+	time			nn nn nn nn
+	size			05
+	type			00
+	-unused-		00 00
+	bak			nn nn nn nn
+	fwd			nn nn nn nn
+	-unused-		00 00 00 00
+
+
+Disk format:	0 bytes
+------------
+
+	Not stored on disk.
+
+Event type:  Score begin		EV_SCORE	1	01
+-----------  -----------		--------	-	--
+
+struct	n_entry {
+
+	long		e_time;		time, in frames
+
+	char		e_size;		size of entry, in longs:	5  05
+	char		e_type;		type of entry:			1  01
+	char		e_note;		score number
+	char		e_group;	-unused-
+
+	struct s_entry	*e_bak,		backward pointer
+			*e_fwd;		forward pointer
+
+	short		e_vel;		-unused-
+	short		e_data4;	-unused-
+};
+
+
+Score format:	E_SIZE1		20 bytes
+-------------
+
+	time			nn nn nn nn
+	size			05
+	type			01
+	score number		nn
+	-unused-		00
+	bak			nn nn nn nn
+	fwd			nn nn nn nn
+	-unused-		00 00 00 00
+
+
+Disk format:	6 bytes
+------------
+
+	type			01
+	time			nn nn nn nn
+	score number		nn
+
+Event type:  Section begin		EV_SBGN		2	02
+-----------  -------------		-------		-	--
+
+struct	s_entry {
+
+	long		e_time;		time, in frames
+
+	char		e_size;		size of entry, in longs:	6  06
+	char		e_type;		type of entry:			2  02
+	char		e_data1;	section number
+	char		e_data2;	-unused-
+
+	struct s_entry	*e_bak,		backward pointer
+			*e_fwd,		forward pointer
+
+			*e_dn,		down pointer
+			*e_up;		up pointer
+};
+
+
+Score format:	E_SIZE2		24 bytes
+-------------
+
+	time			nn nn nn nn
+	size			06
+	type			02
+	section number		nn
+	-unused-		00
+	bak			nn nn nn nn
+	fwd			nn nn nn nn
+	dn			nn nn nn nn
+	up			nn nn nn nn
+
+
+Disk format:	6 bytes
+------------
+
+	type			02
+	time			nn nn nn nn
+	section number		nn
+Event type:  Section end		EV_SEND		3	03
+-----------  -----------		-------		-	--
+
+struct	s_entry {
+
+	long		e_time;		time, in frames
+
+	char		e_size;		size of entry, in longs:	6  06
+	char		e_type;		type of entry:			3  03
+	char		e_data1;	section number
+	char		e_data2;	-unused-
+
+	struct s_entry	*e_bak,		backward pointer
+			*e_fwd,		forward pointer
+
+			*e_dn,		down pointer
+			*e_up;		up pointer
+};
+
+
+Score format:	E_SIZE2		24 bytes
+-------------
+
+	time			nn nn nn nn
+	size			06
+	type			03
+	section number		nn
+	-unused-		00
+	bak			nn nn nn nn
+	fwd			nn nn nn nn
+	dn			nn nn nn nn
+	up			nn nn nn nn
+
+
+Disk format:	6 bytes
+------------
+
+	type			03
+	time			nn nn nn nn
+	section number		nn
+Event type:  Instrument change		EV_INST		4	04
+-----------  -----------------		-------		-	--
+
+struct	s_entry {
+
+	long		e_time;		time, in frames
+
+	char		e_size;		size of entry, in longs:	6  06
+	char		e_type;		type of entry:			4  04
+	char		e_data1;	group number
+	char		e_data2;	instrument number
+
+	struct s_entry	*e_bak,		backward pointer
+			*e_fwd,		forward pointer
+
+			*e_dn,		down pointer
+			*e_up;		up pointer
+};
+
+
+Score format:	E_SIZE2		24 bytes
+-------------
+
+	time			nn nn nn nn
+	size			06
+	type			04
+	group number		nn
+	instrument number	nn
+	bak			nn nn nn nn
+	fwd			nn nn nn nn
+	dn			nn nn nn nn
+	up			nn nn nn nn
+
+
+Disk format:	7 bytes
+------------
+
+	type			04
+	time			nn nn nn nn
+	group number		nn
+	instrument number	nn
+Event type:  Note begin			EV_NBEG		5	05
+-----------  ----------			-------		-	--
+
+struct	n_entry {
+
+	long		e_time;		time, in frames
+
+	char		e_size;		size of entry, in longs:	5  05
+	char		e_type;		type of entry:			5  05
+	char		e_note;		note number
+	char		e_group;	group number
+
+	struct s_entry	*e_bak,		backward pointer
+			*e_fwd;		forward pointer
+
+	short		e_vel;		velocity
+	short		e_data4;	-unused-
+};
+
+
+Score format:	E_SIZE1		20 bytes
+-------------
+
+	time			nn nn nn nn
+	size			05
+	type			05
+	note number		nn
+	group number		nn
+	bak			nn nn nn nn
+	fwd			nn nn nn nn
+	velocity		nn nn
+	-unused-		00 00
+
+
+Disk format:	9 bytes
+------------
+
+	type			05
+	time			nn nn nn nn
+	note number		nn
+	group number		nn
+	velocity		nn nn
+Event type:  Note end			EV_NEND		6	06
+-----------  --------			-------		-	--
+
+struct	n_entry {
+
+	long		e_time;		time, in frames
+
+	char		e_size;		size of entry, in longs:	5  05
+	char		e_type;		type of entry:			6  06
+	char		e_note;		note number
+	char		e_group;	group number
+
+	struct s_entry	*e_bak,		backward pointer
+			*e_fwd;		forward pointer
+
+	short		e_vel;		velocity
+	short		e_data4;	-unused-
+};
+
+Score format:	E_SIZE1		20 bytes
+-------------
+
+	time			nn nn nn nn
+	size			05
+	type			06
+	note number		nn
+	group number		nn
+	bak			nn nn nn nn
+	fwd			nn nn nn nn
+	velocity		nn nn
+	-unused-		00 00
+
+
+Disk format:	9 bytes
+------------
+
+	type			06
+	time			nn nn nn nn
+	note number		nn
+	group number		nn
+	velocity		nn nn
+Event type:  Stop			EV_STOP		7	07
+-----------  ----			-------		-	--
+
+struct	n_entry {
+
+	long		e_time;		time, in frames
+
+	char		e_size;		size of entry, in longs:	5  05
+	char		e_type;		type of entry:			7  07
+	char		e_note;		-unused-
+	char		e_group;	-unused-
+
+	struct s_entry	*e_bak,		backward pointer
+			*e_fwd;		forward pointer
+
+	short		e_vel;		-unused-
+	short		e_data4;	-unused-
+};
+
+
+Score format:	E_SIZE1		20 bytes
+-------------
+
+	time			nn nn nn nn
+	size			05
+	type			07
+	-unused-		00
+	-unused-		00
+	bak			nn nn nn nn
+	fwd			nn nn nn nn
+	-unused-		00 00 00 00
+
+
+Disk format:	5 bytes
+------------
+
+	type			07
+	time			nn nn nn nn
+Event type:  Interpolate		EV_INTP		8	08
+-----------  -----------		-------		-	--
+
+struct	s_entry {
+
+	long		e_time;		time, in frames
+
+	char		e_size;		size of entry, in longs:	6  06
+	char		e_type;		type of entry:			8  08
+	char		e_data1;	MS byte of interpolation time
+	char		e_data2;	LS byte of interpolation time
+
+	struct s_entry	*e_bak,		backward pointer
+			*e_fwd,		forward pointer
+
+			*e_dn,		down pointer
+			*e_up;		up pointer
+};
+
+
+Score format:	E_SIZE2		24 bytes
+-------------
+
+	time			nn nn nn nn
+	size			06
+	type			08
+	interpolation time	nn nn
+	bak			nn nn nn nn
+	fwd			nn nn nn nn
+	dn			nn nn nn nn
+	up			nn nn nn nn
+
+
+Disk format:	7 bytes
+------------
+
+	type			08
+	time			nn nn nn nn
+	interpolation time	nn nn
+Event type:  Tempo			EV_TMPO		9	09
+-----------  -----			-------		-	--
+
+struct	s_entry {
+
+	long		e_time;		time, in frames
+
+	char		e_size;		size of entry, in longs:	6  06
+	char		e_type;		type of entry:			9  09
+	char		e_data1;	tempo
+	char		e_data2;	-unused-
+
+	struct s_entry	*e_bak,		backward pointer
+			*e_fwd,		forward pointer
+
+			*e_dn,		down pointer
+			*e_up;		up pointer
+};
+
+
+Score format:	E_SIZE2		24 bytes
+-------------
+
+	time			nn nn nn nn
+	size			06
+	type			09
+	tempo			nn
+	-unused-		00
+	bak			nn nn nn nn
+	fwd			nn nn nn nn
+	dn			nn nn nn nn
+	up			nn nn nn nn
+
+
+Disk format:	6 bytes
+------------
+
+	type			09
+	time			nn nn nn nn
+	tempo			nn
+Event type:  Tuning			EV_TUNE		10	0A
+-----------  ------			-------		--	--
+
+struct	s_entry {
+
+	long		e_time;		time, in frames
+
+	char		e_size;		size of entry, in longs:	6  06
+	char		e_type;		type of entry:			10 0A
+	char		e_data1;	tuning table number
+	char		e_data2;	-unused-
+
+	struct s_entry	*e_bak,		backward pointer
+			*e_fwd,		forward pointer
+
+			*e_dn,		down pointer
+			*e_up;		up pointer
+};
+
+
+Score format:	E_SIZE2		24 bytes
+-------------
+
+	time			nn nn nn nn
+	size			06
+	type			0A
+	tuning table number	nn
+	-unused-		00
+	bak			nn nn nn nn
+	fwd			nn nn nn nn
+	dn			nn nn nn nn
+	up			nn nn nn nn
+
+
+Disk format:	6 bytes
+------------
+
+	type			0A
+	time			nn nn nn nn
+	tuning table number	nn
+Event type:  Group status		EV_GRP		11	0B
+-----------  ------------		------		--	--
+
+OBSOLETE - currently unused
+
+struct	s_entry {
+
+	long		e_time;		time, in frames
+
+	char		e_size;		size of entry, in longs:	6  06
+	char		e_type;		type of entry:			11 0B
+	char		e_data1;	group number
+	char		e_data2;	group status
+
+	struct s_entry	*e_bak,		backward pointer
+			*e_fwd,		forward pointer
+
+			*e_dn,		down pointer
+			*e_up;		up pointer
+};
+
+
+Score format:	E_SIZE2		24 bytes
+-------------
+
+	time			nn nn nn nn
+	size			06
+	type			0B
+	group number		nn
+	group status		nn
+	bak			nn nn nn nn
+	fwd			nn nn nn nn
+	dn			nn nn nn nn
+	up			nn nn nn nn
+
+
+Disk format:	7 bytes
+------------
+
+	type			0B
+	time			nn nn nn nn
+	group number		nn
+	group status		nn
+Event type:  Location			EV_LOCN		12	0C
+-----------  --------			-------		--	--
+
+struct	s_entry {
+
+	long		e_time;		time, in frames
+
+	char		e_size;		size of entry, in longs:	6  06
+	char		e_type;		type of entry:			12 0C
+	char		e_data1;	group number
+	char		e_data2;	location
+
+	struct s_entry	*e_bak,		backward pointer
+			*e_fwd,		forward pointer
+
+			*e_dn,		down pointer
+			*e_up;		up pointer
+};
+
+
+Score format:	E_SIZE2		24 bytes
+-------------
+
+	time			nn nn nn nn
+	size			06
+	type			0C
+	group number		nn
+	location		nn
+	bak			nn nn nn nn
+	fwd			nn nn nn nn
+	dn			nn nn nn nn
+	up			nn nn nn nn
+
+
+Disk format:	7 bytes
+------------
+
+	type			0C
+	time			nn nn nn nn
+	group number		nn
+	location		nn
+Event type:  Dynamics			EV_DYN		13	0D
+-----------  --------			------		--	--
+
+struct	s_entry {
+
+	long		e_time;		time, in frames
+
+	char		e_size;		size of entry, in longs:	6  06
+	char		e_type;		type of entry:			13 0D
+	char		e_data1;	group number
+	char		e_data2;	dynamics
+
+	struct s_entry	*e_bak,		backward pointer
+			*e_fwd,		forward pointer
+
+			*e_dn,		down pointer
+			*e_up;		up pointer
+};
+
+
+Score format:	E_SIZE2		24 bytes
+-------------
+
+	time			nn nn nn nn
+	size			06
+	type			0D
+	group number		nn
+	dynamics		nn
+	bak			nn nn nn nn
+	fwd			nn nn nn nn
+	dn			nn nn nn nn
+	up			nn nn nn nn
+
+
+Disk format:	7 bytes
+------------
+
+	type			0D
+	time			nn nn nn nn
+	group number		nn
+	dynamics 		nn
+Event type:  Analog value		EV_ANVL		14	0E
+-----------  ------------		-------		--	--
+
+struct	s_entry {
+
+	long		e_time;		time, in frames
+
+	char		e_size;		size of entry, in longs:	6  06
+	char		e_type;		type of entry:			14 0E
+	char		e_data1;	variable and group numbers:
+
+			7  43  0
+			vvvvgggg  vvvv = variable
+
+				    0 SM_HTPW	Hor Tab / Pitch Wheel
+				    1 SM_VTMW	Vrt Tab / Mod Wheel
+				    2 SM_LPBR	Long Pot / Breath
+				    3 SM_CTL1	GPC / CV1
+				    4 SM_PED1	Pedal 1
+				    5 SM_KPRS	Key Pressure
+
+				  gggg = group
+
+	char		e_data2;	-unused-
+
+	struct s_entry	*e_bak,		backward pointer
+			*e_fwd,		forward pointer
+
+			*e_dn,		value  (in 1st 2 bytes)
+			*e_up;		-unused-
+};
+
+
+Score format:	E_SIZE2		24 bytes
+-------------
+
+	time			nn nn nn nn
+	size			06
+	type			0E
+	variable number		nn
+	-unused-		00
+	bak			nn nn nn nn
+	fwd			nn nn nn nn
+	value			nn nn
+	-unused-		00 00 00 00 00 00
+
+
+Disk format:	8 bytes
+------------
+
+	type			0E
+	time			nn nn nn nn
+	variable number		nn
+	value			nn nn
+Event type:  Analog resolution		EV_ANRS		15	0F
+-----------  -----------------		-------		--	--
+
+struct	s_entry {
+
+	long		e_time;		time, in frames
+
+	char		e_size;		size of entry, in longs:	6  06
+	char		e_type;		type of entry:			15 0F
+	char		e_data1;	variable and group numbers:
+
+					7  43  0	bit usage
+					--------	---------------
+					vvvvgggg	vvvv = variable
+							gggg = group
+
+	char		e_data2;	resolution
+
+	struct s_entry	*e_bak,		backward pointer
+			*e_fwd,		forward pointer
+
+			*e_dn,		down pointer
+			*e_up;		up pointer
+};
+
+
+Score format:	E_SIZE2		24 bytes
+-------------
+
+	time			nn nn nn nn
+	size			06
+	type			0F
+	variable number		nn
+	resolution code		nn
+	bak			nn nn nn nn
+	fwd			nn nn nn nn
+	dn			nn nn nn nn
+	up			nn nn nn nn
+
+
+Disk format:	7 bytes
+------------
+
+	type			0F
+	time			nn nn nn nn
+	variable number		nn
+	resolution code		nn
+Event type:  I/O assign			EV_ASGN		16	10
+-----------  ----------			-------		--	--
+
+struct	s_entry {
+
+	long		e_time;		time, in frames
+
+	char		e_size;		size of entry, in longs:	6  06
+	char		e_type;		type of entry:			16 10
+	char		e_data1;	assignment table number
+	char		e_data2;	-unused-
+
+	struct s_entry	*e_bak,		backward pointer
+			*e_fwd,		forward pointer
+
+			*e_dn,		down pointer
+			*e_up;		up pointer
+};
+
+
+Score format:	E_SIZE2		24 bytes
+-------------
+
+	time			nn nn nn nn
+	size			06
+	type			10
+	assignment table number	nn
+	-unused-		00
+	bak			nn nn nn nn
+	fwd			nn nn nn nn
+	dn			nn nn nn nn
+	up			nn nn nn nn
+
+
+Disk format:	6 bytes
+------------
+
+	type			10
+	time			nn nn nn nn
+	assignment table number	nn
+Event type:  Transposition		EV_TRNS		17	11
+-----------  -------------		-------		--	--
+
+struct	s_entry {
+
+	long		e_time;		time, in frames
+
+	char		e_size;		size of entry, in longs:	8  08
+	char		e_type;		type of entry:			17 11
+	char		e_data1;	group number
+	char		e_data2;	-unused-
+
+	struct s_entry	*e_bak,		backward pointer
+			*e_fwd,		forward pointer
+
+			*e_dn,		down pointer
+			*e_up,		up pointer
+
+			*e_lft,		transposition  (in 1st 2 bytes)
+			*e_rgt;		-unused-
+};
+
+
+Score format:	E_SIZE3		32 bytes
+-------------
+
+	time			nn nn nn nn
+	size			08
+	type			11
+	group number		nn
+	-unused-		00
+	bak			nn nn nn nn
+	fwd			nn nn nn nn
+	dn			nn nn nn nn
+	up			nn nn nn nn
+	transposition		nn nn
+	-unused-		00 00 00 00 00 00
+
+
+Disk format:	8 bytes
+------------
+
+	type			11
+	time			nn nn nn nn
+	group number		nn
+	transposition		nn nn
+Event type:  Repeat			EV_REPT		18	12
+-----------  ------			-------		--	--
+
+OBSOLETE - currently unused
+
+struct	n_entry {
+
+	long		e_time;		time, in frames
+
+	char		e_size;		size of entry, in longs:	5  05
+	char		e_type;		type of entry:			18 12
+	char		e_note;		repeat count
+	char		e_group;	-unused-
+
+	struct s_entry	*e_bak,		backward pointer
+			*e_fwd;		forward pointer
+
+	short		e_vel;		-unused-
+	short		e_data4;	-unused-
+};
+
+
+Score format:	E_SIZE1		20 bytes
+-------------
+
+	time			nn nn nn nn
+	size			05
+	type			12
+	repeat count		nn
+	-unused-		00
+	bak			nn nn nn nn
+	fwd			nn nn nn nn
+	-unused-		00 00 00 00
+
+
+Disk format:	6 bytes
+------------
+
+	type			12
+	time			nn nn nn nn
+	repeat count		nn
+Event type:  Punch in/out		EV_PNCH		19	13
+-----------  ------------		-------		--	--
+
+struct	n_entry {
+
+	long		e_time;		time, in frames
+
+	char		e_size;		size of entry, in longs:	5  05
+	char		e_type;		type of entry:			19 13
+	char		e_note;		punch in/out code  (0 = out, 1 = in)
+	char		e_group;	-unused-
+
+	struct s_entry	*e_bak,		backward pointer
+			*e_fwd;		forward pointer
+
+	short		e_vel;		-unused-
+	short		e_data4;	-unused-
+};
+
+
+Score format:	E_SIZE1		20 bytes
+-------------
+
+	time			nn nn nn nn
+	size			05
+	type			13
+	punch in/out code	nn
+	-unused-		00
+	bak			nn nn nn nn
+	fwd			nn nn nn nn
+	-unused-		00 00 00 00
+
+
+Disk format:	6 bytes
+------------
+
+	type			13
+	time			nn nn nn nn
+	punch in/out code	nn
+Event type:  Polyphonic pressure	EV_PRES		20	14
+-----------  -------------------	-------		--	--
+
+OBSOLETE - currently unused
+
+struct	n_entry {
+
+	long		e_time;		time, in frames
+
+	char		e_size;		size of entry, in longs:	5  05
+	char		e_type;		type of entry:			20 14
+	char		e_note;		key
+	char		e_group;	polyphonic pressure
+
+	struct s_entry	*e_bak,		backward pointer
+			*e_fwd;		forward pointer
+
+	short		e_vel;		-unused-
+	short		e_data4;	-unused-
+};
+
+
+Score format:	E_SIZE1		20 bytes
+-------------
+
+	time			nn nn nn nn
+	size			05
+	type			14
+	key number		nn
+	polyphonic pressure	nn
+	bak			nn nn nn nn
+	fwd			nn nn nn nn
+	-unused-		00 00 00 00
+
+
+Disk format:	7 bytes
+------------
+
+	type			14
+	time			nn nn nn nn
+	key number		nn
+	polyphonic pressure	nn
+Event type:  Score end			EV_FINI		21	15
+-----------  ---------			-------		--	--
+
+struct	n_entry {
+
+	long		e_time;		time, in frames
+
+	char		e_size;		size of entry, in longs:	5  05
+	char		e_type;		type of entry:			21 15
+	char		e_note;		score number
+	char		e_group;	-unused-
+
+	struct s_entry	*e_bak,		backward pointer
+			*e_fwd;		forward pointer
+
+	short		e_vel;		-unused-
+	short		e_data4;	-unused-
+};
+
+
+Score format:	E_SIZE1		20 bytes
+-------------
+
+	time			nn nn nn nn
+	size			05
+	type			15
+	score number		nn
+	-unused-		00
+	bak			nn nn nn nn
+	fwd			nn nn nn nn
+	-unused-		00 00 00 00
+
+
+Disk format:	6 bytes
+------------
+
+	type			15
+	time			nn nn nn nn
+	score number		nn
+Event type:  Channel pressure		EV_CPRS		22	16
+-----------  ----------------		-------		--	--
+
+OBSOLETE -- currently unused
+
+struct	n_entry {
+
+	long		e_time;		time, in frames
+
+	char		e_size;		size of entry, in longs:	5  05
+	char		e_type;		type of entry:			22 16
+	char		e_note;		channel pressure
+	char		e_group;	group number
+
+	struct s_entry	*e_bak,		backward pointer
+			*e_fwd;		forward pointer
+
+	short		e_vel;		-unused-
+	short		e_data4;	-unused-
+};
+
+
+Score format:	E_SIZE1		20 bytes
+-------------
+
+	time			nn nn nn nn
+	size			05
+	type			16
+	channel pressure	nn
+	group number		nn
+	bak			nn nn nn nn
+	fwd			nn nn nn nn
+	-unused-		00 00 00 00
+
+
+Disk format:	7 bytes
+------------
+
+	type			16
+	time			nn nn nn nn
+	group number		nn
+	channel pressure	nn
+Event type:  Bar marker			EV_BAR		23	17
+-----------  ---------			------		--	--
+struct	n_entry {
+
+	long		e_time;		time, in frames
+
+	char		e_size;		size of entry, in longs:	5  05
+	char		e_type;		type of entry:			23 17
+	char		e_note;		-unused-
+	char		e_group;	-unused-
+
+	struct s_entry	*e_bak,		backward pointer
+			*e_fwd;		forward pointer
+
+	short		e_vel;		-unused-
+	short		e_data4;	-unused-
+};
+
+
+Score format:	E_SIZE1		20 bytes
+-------------
+
+	time			nn nn nn nn
+	size			05
+	type			17
+	-unused-		00 00
+	bak			nn nn nn nn
+	fwd			nn nn nn nn
+	-unused-		00 00 00 00
+
+
+Disk format:	5 bytes
+------------
+
+	type			17
+	time			nn nn nn nn
+Event type:  Next			EV_NEXT		24	18
+-----------  ----			-------		--	--
+
+struct	n_entry {
+
+	long		e_time;		time, in frames
+
+	char		e_size;		size of entry, in longs:	5  05
+	char		e_type;		type of entry:		       24  18
+	char		e_note;		-unused-
+	char		e_group;	-unused-
+
+	struct s_entry	*e_bak,		backward pointer
+			*e_fwd;		forward pointer
+
+	short		e_vel;		-unused-
+	short		e_data4;	-unused-
+};
+
+
+Score format:	E_SIZE1		20 bytes
+-------------
+
+	time			nn nn nn nn
+	size			05
+	type			18
+	-unused-		00
+	-unused-		00
+	bak			nn nn nn nn
+	fwd			nn nn nn nn
+	-unused-		00 00 00 00
+
+
+Disk format:	5 bytes
+------------
+
+	type			18
+	time			nn nn nn nn
+Event Formats on Disk
+---------------------
+
+	All events are stored on disk in compressed form as:
+
+		+0	1 byte		type code,
+
+		+1	4 bytes		time  (in absolute frames),
+
+		+5	0 to 4 bytes	parameter data.
+
+
+	Type		Format on disk
+	--------	------------------------------
+	EV_NULL		-- not stored on disk --
+	EV_SCORE	01  tt tt tt tt  nn
+	EV_SBGN		02  tt tt tt tt  ss
+	EV_SEND		03  tt tt tt tt  ss
+	EV_INST		04  tt tt tt tt  gg  ii
+	EV_NBEG		05  tt tt tt tt  nn  gg  vv vv
+	EV_NEND		06  tt tt tt tt  nn  gg  vv vv
+	EV_STOP		07  tt tt tt tt
+	EV_INTP		08  tt tt tt tt  ii ii
+	EV_TMPO		09  tt tt tt tt  vv
+	EV_TUNE		0A  tt tt tt tt  nn
+	EV_GRP		0B  tt tt tt tt  gg  ss			(OBSOLETE)
+	EV_LOCN		0C  tt tt tt tt  gg  ll
+	EV_DYN		0D  tt tt tt tt  gg  dd
+	EV_ANVL		0E  tt tt tt tt  vg  vv vv
+	EV_ANRS		0F  tt tt tt tt  vg  rr
+	EV_ASGN		10  tt tt tt tt  nn
+	EV_TRNS		11  tt tt tt tt  gg  cc cc
+	EV_REPT		12  tt tt tt tt  cc			(OBSOLETE)
+	EV_PNCH		13  tt tt tt tt  cc
+	EV_PRES		14  tt tt tt tt  kk  pp			(OBSOLETE)
+	EV_FINI		15  tt tt tt tt  ss
+	EV_CPRS		16  tt tt tt tt  gg  pp			(OBSOLETE)
+	EV_BAR		17  tt tt tt tt
+	EV_NEXT		18  tt tt tt tt

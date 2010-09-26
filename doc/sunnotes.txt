@@ -1,0 +1,59 @@
+From: ihnp4!tektronix!reed!nsc-pdc!rgb
+Date: Tue, 28 May 85 09:08:58 pdt
+Subject: Re:  sun(1)
+
+The best book I have seen to date is a small book called "Practical
+Astronomy With Your Calculator" by Peter(?) Duffet-Smith.  I was able
+to order a copy from a local bookstore.  The B. Dalton here said they
+stock it, but they happened to have sold them all.
+
+As far as the definition of sunset, there are lots of them. The program
+uses the time when the upper limb of the sun descends below the horizon.
+Note that it is calculated for the observer; a more accurate calculation
+would include your mountains. Refraction causes a sun which is already
+below the horizon to appear to be above.  
+
+The program calculates some corrections for sunset and sunrise positions
+based on the refraction of the air, parallax, and one other thing I
+forget now.  The postion figures don't do the correction: I wimped out
+because the refraction correction is a function of the height of the
+sun above the horizon.  The sunrise and sunset are apparent times, 
+you should remove the dt correction to find the "astronomical" times.
+Try the first day of spring at dawn to see what I mean.  The sun should
+come up almost exactly in the east, but it's apparent position is
+different because of the corrections.
+
+I hope this is understandable...
+
+						Bob Bond
+* Each option yields one type of output line, more or less.
+* Set time in a variety of ways, including just hour or hour:min.
+* Ditto for date.
+* Option to get current or specified time included.
+* Option to get just current position.
+* Option to get time since/until previous/next sunrise/set, and percent of
+  interval elapsed/remaining.
+* Option to get length of day/night and percents.
+* Work with standard TZ information.
+
+Input options:
+
+-a	latitude
+-o	longitude
+-z	timezone
+[date and time] only argument allowed, various formats
+
+Output options, sample:
+
+-P	Latitude, longitude:	 40.02N 105.43W
+-d	Date, time:		850419	 10:33	(MDT)
+-t(def)	Rise, set times:	  5:33	 20:19  (MDT)
+-a	Rise, set azimuth:	 61 19'	298 51'
+-p	Current elev, azimuth:	 38 14'	180 00'
+-s	Since-/till+ rise, set:	 -4:44	+10:02
+-S	Since-/till+ rise, set:	-31.3%	+68.7%
+-l	Length of night, day:	 14:10    9:50
+-L	Length of night, day:	 60.2%   39.8%
+
+-f	full, all of above
+

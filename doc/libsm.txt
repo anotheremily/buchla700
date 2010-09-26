@@ -1,0 +1,305 @@
+LIBSM.DOC	Last updated 1987-04-29
+
+Memory Functions
+----------------
+
+memccpy.c
+---------
+
+	char *
+	memccpy(s1, s2, c, n)
+	char *s1, *s2;
+	int c, n;
+
+		Copy s2 to s1, stopping if character c is copied.
+		Copy no more than n bytes.
+
+		Return a pointer to the byte after character c in the copy,
+		or NULL if c is not found in the first n bytes.
+
+memchr.c
+--------
+
+	char *
+	memchr(sp, c, n)
+	char *sp, c;
+	int n;
+
+		Return the ptr in sp at which the character c appears;
+		NULL if not found in n chars; don't stop at \0.
+
+memcmp.c
+--------
+
+	int
+	memcmp(s1, s2, n)
+	char *s1, *s2;
+	int n;
+
+		Compare n bytes:  s1>s2: >0  s1==s2: 0  s1<s2: <0
+
+memcmpu.c
+---------
+
+	int
+	memcmpu(s1, s2, n)
+	char *s1, *s2;
+	int n;
+
+		Compare n bytes, ignoring case:
+			s1>s2: >0  s1==s2: 0  s1<s2: <0
+
+memcpy.c
+--------
+
+	char *
+	memcpy(s1, s2, n)
+	char *s1, *s2;
+	int n;
+
+		Copy s2 to s1, always copy n bytes.
+
+		Return s1
+
+memcpyw.c
+---------
+
+	int *
+	memcpyw(s1, s2, n)
+	int *s1, *s2, n;
+
+		Copy s2 to s1, always copy n words.
+		Return pointer to s1.
+
+memset.c
+--------
+
+	char *
+	memset(sp, c, n)
+	char *sp, c;
+	int n;
+
+		Set an array of n chars starting at sp to the character c.
+
+		Return sp.
+
+memsetw.c
+---------
+
+	int *
+	memsetw(sp, w, n)
+	int *sp, w, n;
+
+		Set an array of n ints starting at sp to the int w.
+		Return pointer to sp.
+
+String Functions
+----------------
+
+index.c
+-------
+	Returns a pointer to the first occurrence of character c in
+	string s, or 0 if c does not occur in the string.
+
+		char *
+		index(s, c)
+		char *s, c;
+
+rindex.c
+--------
+	Returns a pointer to the last occurrence of character c in
+	string s, or 0 if c does not occur in the string.
+
+		char *
+		rindex(s, c)
+		char *s, c;
+
+str2lc.c
+--------
+	Converts all of the upper case ASCII characters in string s
+	to lower case ASCII characters.  Returns s.
+
+		char *
+		str2lc(s)
+		char *s;
+
+str2uc.c
+--------
+	Converts all of the lower case ASCII characters in string s
+	to upper case ASCII characters.  Returns s.
+
+		char *
+		str2uc(s)
+		char *s;
+
+strcat.c
+--------
+	Concatenates s2 onto the end of s1.  S1's space must be large enough.
+
+	Returns s1.
+
+		char *
+		strcat(s1, s2)
+		char *s1, *s2;
+
+strccpy.c
+---------
+	Copies s2 to s1 up to the first occurrence of c.  s1's space must be
+	large enough to contain the characters copied from s2.  The character
+	c is not copied.  Returns s1.
+
+		char *
+		strccpy(s1, s2, c)
+		char *s1, *s2, c;
+
+strchr.c
+--------
+	Returns a ptr into sp where the character c appears;
+	Returns NULL if c is not found.
+
+		char *
+		strchr(sp, c)
+		char *sp, c;
+
+strcmp.c
+--------
+	Compares string s1 to s2.
+
+	Returns:
+		s1>s2: >0
+		s1==s2: 0
+		s1<s2: <0
+
+		int
+		strcmp(s1, s2)
+		char *s1, *s2;
+
+strcpy.c
+--------
+	Copies string s2 to s1.  s1 must be large enough.
+
+	Returns s1.
+
+		char *
+		strcpy(s1, s2)
+		char *s1, *s2;
+strcspn.c
+---------
+	Returns the number of characters in the maximum leading segment
+	of string which consists solely of characters NOT from charset.
+
+		int
+		strcspn(string, charset)
+		char    *string;
+		char   *charset;
+
+strlcmp.c
+---------
+	Compares a string to each entry in a list.  Returns 0 if
+	no match, or the 1-origin index of the string in the list.
+
+		int
+		strlcmp(s, l)
+		char *s, *l[];
+
+strlen.c
+--------
+	Returns the number of non-NULL bytes in string argument.
+
+		int
+		strlen(s)
+		char *s;
+
+strncat.c
+---------
+	Concatenates s2 onto the end of s1.  S1's space must be large enough.
+	At most n characters are moved.
+
+	Returns s1.
+
+		char *
+		strncat(s1, s2, n)
+		char *s1, *s2;
+		int n;
+
+strncmp.c
+---------
+	Compares string s1 to s2, comparing at most n bytes.
+
+	Returns:
+		s1>s2; >0
+		s1==s2; 0
+		s1<s2; <0
+
+		int
+		strncmp(s1, s2, n)
+		char *s1, *s2;
+		int n;
+
+strncpy.c
+---------
+	Copies s2 to s1, truncating or null-padding to always copy n bytes.
+
+	Returns s1.
+
+		char *
+		strncpy(s1, s2, n)
+		char *s1, *s2;
+		int n;
+
+strpbrk.c
+---------
+	Returns a ptr to the first occurance of any character from `brkset'
+	in the character string `string'.  Returns NULL if none exists.
+
+		char *
+		strpbrk(string, brkset)
+		char *string, *brkset;
+
+strrchr.c
+---------
+	Return the ptr in sp at which the character c last appears.
+	Returns NULL if not found.
+
+		char *
+		strrchr(sp, c)
+		char *sp, c;
+
+strspn.c
+--------
+	Return the number of characters in the maximum leading segment
+	of string which consists solely of characters from charset.
+
+		int
+		strspn(string, charset)
+		char    *string;
+		char   *charset;
+
+strtok.c
+--------
+	Uses strpbrk and strspn to break string into tokens on
+	sequentially subsequent calls.
+
+	Returns NULL when no non-separator characters remain.
+
+	'Subsequent' calls are calls in which the first argument is NULL.
+
+		char *
+		strtok(string, sepset)
+		char    *string, *sepset;
+
+strtol.c
+--------
+	Converts string str as a long integer in the base determined
+	by base, if base is non-zero.  Otherwise, the string determines
+	the base  (decimal, octal, or hex).
+
+	If ptr in non-null, the location at ptr will be set to point
+	at the character that stopped the scan.
+
+		long
+		strtol(str, ptr, base)
+		char *str;
+		char **ptr;
+		int base;
+

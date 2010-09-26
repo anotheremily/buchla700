@@ -1,0 +1,28 @@
+The default color palette is defined in "\iolib\vsetpal.c".
+
+The symbolic contants for the colors are defined in "\lib\include\graphdef.h".
+
+--------------------------------------------------------------------------------
+
+short	dfltpal[16][3] = {		/* default color palette */
+
+/*	 R  G  B	  color */
+
+	{0, 0, 0},	/*  0: P_BLK	Black */
+	{0, 1, 0},	/*  1: P_DKGRY	Dark Gray */
+	{0, 0, 2},	/*  2: P_DKBLU	Dark Blue */
+	{0, 0, 3},	/*  3: P_LTBLU	Light Blue */
+	{0, 2, 0},	/*  4: P_DKGRN	Dark Green */
+	{0, 3, 0},	/*  5: P_LTGRN	Light Green */
+	{0, 2, 2},	/*  6: P_DKCYN	Dark Cyan */
+	{0, 3, 3},	/*  7: P_LTCYN	Light Cyan */
+	{3, 0, 0},	/*  8: P_RED	Red */
+	{3, 1, 0},	/*  9: P_ORG	Orange */
+	{3, 0, 3},	/* 10: P_PUR	Purple */
+	{3, 1, 2},	/* 11: P_MGN	Magenta */
+	{3, 2, 0},	/* 12: P_BRN	Brown */
+	{2, 3, 0},	/* 13: P_YEL	Yellow */
+	{2, 2, 2},	/* 14: P_LTGRY	Light Gray */
+	{3, 3, 3},	/* 15: P_WHT	White */
+};
+

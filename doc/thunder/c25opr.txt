@@ -1,0 +1,36 @@
+00	<null>
+
+01	<ARP>
+02	<CM>
+03	<FO>
+04	<PM>
+
+05	<ar>,<constant-08>
+06	<ar>,<constant-16>
+07	<ar>,<dma>
+08	<ar>,{*|*+|*-|*0+|*0-|*BR0+|*BR0-}[,<next ARP>]
+
+09	<constant-08>
+10	<constant-09>
+11	<constant-13>
+12	<constant-16>
+13	<constant-16>[,<shift>]
+
+14	<dma>
+15	<dma>,<bit code>
+16	<dma>,<pa>
+17	<dma-1>,<dma-2>
+18	<dma>,{*|*+|*-|*0+|*0-|*BR0+|*BR0-}[,<next ARP>]
+19	<dma>[,<shift>]
+
+20	<pma>,<dma>
+21	<pma>[,{*|*+|*-|*0+|*0-|*BR0+|*BR0-}[,<next ARP>]]
+
+22	{*|*+|*-|*0+|*0-|*BR0+|*BR0-}
+23	{*|*+|*-|*0+|*0-|*BR0+|*BR0-}[,<next ARP>]
+
+24	{*|*+|*-|*0+|*0-|*BR0+|*BR0-}[,<shift>[,<next ARP>]]
+
+25	{*|*+|*-|*0+|*0-|*BR0+|*BR0-},<pa>[,<next ARP>]
+
+26	{*|*+|*-|*0+|*0-|*BR0+|*BR0-},<bit code>[,<next ARP>]

@@ -1,0 +1,596 @@
+VSDD Functions in vlib
+----------------------
+
+	CpyObj(from, to, w, h, sw)
+
+	SelObj(obj)
+	SetObj(obj, type, bank, base, xpix, ypix, x0, y0, flags, pri)
+	SetPri(obj, pri)
+
+	VHinit()
+	VIint()
+	VSinit()
+
+	lseg(x1, y1, x2, y2, t)
+
+	objclr(obj)
+	objoff(obj, line, num)
+	objon(obj, line, num)
+
+	tsplot4(obase, nw, fg, row, col, str, pitch)
+
+	vbank(b)
+	vbfill4(obj, obwidth, xmin, ymin, xmax, ymax, color)
+	vclrav(adr, row, col, atr, len)
+	vclrs(obase, row, col, nc, ch, atr)
+	vcputs(obase, nw, fg, bg, row, col, str)
+	vcputsv(obase, nw, fg, bg, row, col, str, pitch)
+	vfwait()
+	vmput(sbase, row, col, ms, ma)
+	vmputa(sbase, row, col, ms, ma)
+	vputa(sbase, row, col, attrib)
+	vputc(sbase, row, col, c, attrib)
+	vputcv(adr, row, col, chr, atr, cols)
+	vputp(octad, xloc, yloc, val)
+	vputs(sbase, row, col, str, attrib)
+	vputsa(sbase, row, col, str, attrib)
+	vputsav(sbase, row, col, str, attrib, len)
+	vputsv(sbase, row, col, str, attrib, len)
+	vsetav(adr, row, col, atr, len)
+	vsetcv(adr, row, col, cfb, len)
+	vsetpal(slot, red, grn, blu)
+	vsndpal(pp)
+	vsplot4(obase, nw, fg, row, col, str, pitch, ht, cgtab)
+	vspray4(vobj, vwid, fg, ml, vb, pitch)
+	vtext(obj, nc, row, col, ip)
+	vvputsv(obase, nw, fg, bg, row, col, str, pitch, ht, cgtab)
+	vwputm(obase, nw, fg, bg, row, col, ml)
+	vwputp(octad, xloc, yloc, val)
+	vwputs(obase, nw, fg, bg, row, col, str)
+
+Text string display functions
+-----------------------------
+
+1 byte per character,  no attributes
+
+	vtext(obj, nc, row, col, ip)
+
+3 byte per character,  full attributes
+
+	vclrs(obase, row, col, nc, ch, atr)
+	vputc(sbase, row, col, c, attrib)
+	vputcv(adr, row, col, chr, atr, cols)
+	vputs(sbase, row, col, str, attrib)
+	vputsa(sbase, row, col, str, attrib)
+	vputsav(sbase, row, col, str, attrib, len)
+
+2 bit per pixel graphics
+
+	vwputm(obase, nw, fg, bg, row, col, ml)
+	vwputs(obase, nw, fg, bg, row, col, str)
+
+4 bit per pixel graphics
+
+	vcputs(obase, nw, fg, bg, row, col, str)
+	vcputsv(obase, nw, fg, bg, row, col, str, pitch)
+	vputsv(sbase, row, col, str, attrib, len)
+	vmput(sbase, row, col, ms, ma)
+	vmputa(sbase, row, col, ms, ma)
+	vsplot4(obase, nw, fg, row, col, str, pitch, ht, cgtab)
+	vspray4(vobj, vwid, fg, ml, vb, pitch)
+	vvputsv(obase, nw, fg, bg, row, col, str, pitch, ht, cgtab)
+
+Graphics display functions
+--------------------------
+
+General
+
+	lseg(x1, y1, x2, y2, t)
+
+2 bit per pixel
+
+	vwputp(octad, xloc, yloc, val)
+
+4 bit per pixel
+
+	vbfill4(obj, obwidth, xmin, ymin, xmax, ymax, color)
+	vputp(octad, xloc, yloc, val)
+
+Control functions
+-----------------
+
+General
+
+	CpyObj(from, to, w, h, sw)
+
+	VHinit()
+	VIint()
+	VSinit()
+
+	vbank(b)
+	vfwait()
+
+Object control
+
+	SelObj(obj)
+	SetObj(obj, type, bank, base, xpix, ypix, x0, y0, flags, pri)
+	SetPri(obj, pri)
+
+	objclr(obj)
+	objoff(obj, line, num)
+	objon(obj, line, num)
+
+Character attributes
+
+	vclrav(adr, row, col, atr, len)
+	vputa(sbase, row, col, attrib)
+	vsetav(adr, row, col, atr, len)
+	vsetcv(adr, row, col, cfb, len)
+
+Palette
+
+	vsetpal(slot, red, grn, blu)
+	vsndpal(pp)
+
+VSDD Software Object Control Table Entry Structure
+--------------------------------------------------
+
+	struct octent {
+
+		uint	ysize,
+			xsize;
+
+		int	objx,
+			objy;
+
+		uint	*obase;
+
+		char	opri,
+			obank;
+
+		uint	odtw0,
+			odtw1;
+	};
+
+
+VSDD Functions by module
+------------------------
+
+acctrl.s	objclr(obj)
+		objoff(obj, line, num)
+		objon(obj, line, num)
+
+lseg.c		lseg(x1, y1, x2, y2, t)
+
+tsplot4.s	tsplot4(obase, nw, fg, row, col, str, pitch)
+
+vbfill4.c	vbfill4(obj, obwidth, xmin, ymin, xmax, ymax, color)
+
+vclrav.s	vclrav(adr, row, col, atr, len)
+
+vclrs.c		vclrs(obase, row, col, nc, ch, atr)
+
+vcputs.s	vcputs(obase, nw, fg, bg, row, col, str)
+
+vcputsv.s	vcputsv(obase, nw, fg, bg, row, col, str. pitch)
+
+vctrl.c		vbank(b)
+		vfwait()
+
+vhinit.c	VHinit()
+
+vmput.c		vmput(sbase, row, col, ms, ma)
+		vmputa(sbase, row, col, ms, ma)
+
+vobjfns.c	SelObj(obj)
+		SetPri(obj, pri)
+		SetObj(obj, type, bank, base, xpix, ypix, x0, y0, flags, pri)
+		CpyObj(from, to, w, h, sw)
+
+vputa.s		vputa(sbase, row, col, attrib)
+
+vputc.s		vputc(sbase, row, col, c, attrib)
+
+vputcv.s	vputcv(adr, row, col, chr, atr, cols)
+
+vputp.s		vputp(octad, xloc, yloc, val)
+
+vputs.c		vputs(sbase, row, col, str, attrib)
+		vputsa(sbase, row, col, str, attrib)
+
+vputsv.c	vputsv(sbase, row, col, str, attrib, len)
+		vputsav(sbase, row, col, str, attrib, len)
+
+
+VSDD Functions by module -- continued
+------------------------
+
+vsetav.s	vsetav(adr, row, col, atr, len)
+
+vsetcv.s	vsetcv(adr, row, col, cfb, len)
+
+vsetpal.c	vsetpal(slot, red, grn, blu)
+		vsndpal(pp)
+
+vsinit.c	VSinit()
+
+vsplot4.s	vsplot4(obase, nw, fg, row, col, str, pitch, ht, cgtab)
+
+vspray4.c	vspray4(vobj, vwid, fg, ml, vb, pitch)
+
+vtext.c		vtext(obj, nc, row, col, ip)
+
+vvputsv.s	vvputsv(obase, nw, fg, bg, row, col, str, pitch, ht, cgtab)
+
+vwputm.c	vwputm(obase, nw, fg, bg, row, col, ml)
+
+vwputp.s	vwputp(octad, xloc, yloc, val)
+
+vwputs.s	vwputs(obase, nw, fg, bg, row, col, str)
+
+	CpyObj(from, to, w, h, sw)
+	unsigned int *from, *to;
+	int w, h, sw;
+
+		Copy a 'w'-word by 'h'-line object from 'from' to 'to' with
+		a destination width of 'sw' words.
+
+	SelObj(obj)
+	int obj;
+
+		Select 'obj' as the current working object.
+
+	SetObj(obj, type, bank, base, xpix, ypix, x0, y0, flags, pri)
+	int obj, type, bank, xpix, ypix, x0, y0, flags, pri;
+	unsigned int *base;
+
+		Setup object 'obj' of type 'type' at 'base' in bank 'bank'
+		with height 'ypix' and width 'xpix' at initial location
+		'x0','y0', with flags 'flags'.  Assumes HRS EQ 1.
+		If 'pri' >= 0, display the object at priority level 'pri'.
+		Define a bitmap object if 'type' EQ 0, or a character object
+		if 'type' NE 0.
+
+	SetPri(obj, pri)
+	int obj, pri;
+
+		Display object 'obj' with priority 'pri'.
+
+
+	VHinit()
+
+		Setup VSDD registers, clear access table, clear object table,
+		load character generator, set color lookup table defaults.
+		Defines major video system variables, since the linker isn't
+		smart enough to let me put them in a separate file.
+
+	VIint()
+
+		VSDD Vertical Interval interrupt handler.  Enables display of
+		any object whose bit is set in vi_ctl.  Bit 0 = object 0, etc.
+
+		SetPri() uses BIOS(B_SETV, 25, VIint) to set the interrupt
+		vector and lets VIint() enable the object.  If vi_dis
+		is set, SetPri() won't enable the interrupt or set the vector
+		so that several objects can be started up at once.
+
+		This routine also sets the base address and scroll offset
+		for the score display object if vi_sadr is non-zero,
+		after a delay for VSDD FRAMESTOP synchronization.
+
+	VSinit()
+
+		Initialize VSDD software support variables.
+
+	lseg(x1, y1, x2, y2, t)
+	short x1, y1, x2, y2, t;
+
+		Draws a line from ('x1', 'y1') to ('x2', 'y2')
+		in drawing mode 't'.
+
+		All coordinates are short integers in whatever plotting units the
+		'point' function expects.  No clipping or scaling is done, as this is
+		the lowest level 'line' primitive in the drawing code, and coordinates
+		are expected to have already been checked and found to be on screen. 
+
+		The 'point' variable must be initialized to point at the
+		pixel plotting function before this function is called.  The pixel
+		plotting function is passed 3 arguments:  the x coordinate, the y
+		coordinate, and the plotting mode.  It is declared here as type 'short',
+		but any value it returns will be ignored.
+
+		The register variable assignments were chosen based on the Alcyon C
+		compiler for the Atari 1040ST and reflect the capabilities of that
+		compiler.  Other compilers may require different optimizations based
+		on their use of register variables.
+
+	objclr(obj)
+	unsigned int obj;
+
+		Clear bits in access table for object 'obj'.
+		Disables object 'obj'.
+
+	objoff(obj, line, num)
+	unsigned int obj, line, num;
+
+		Disable object obj at line thru line+num.
+
+	objon(obj, line, num)
+	unsigned int obj, line, num;
+
+		Enable object obj at line thru line+num.
+
+		Assumes VSDD is looking at bank 0.
+		Assumes a screen height of 350 lines.
+		No error checks are done, so beware.
+
+	tsplot4(obase, nw, fg, row, col, str, pitch)
+	int *obase, nw, fg, row, col, pitch;
+	char *str;
+
+		Outputs characters from the string at 'str' to an 'nw'
+		character wide 4-bit per pixel graphics window at 'obase'
+		at ('row','col'), using 'fg' as the foreground color.
+		Uses cgtable[][256] as the VSDD formatted character
+		generator table.  Assumes 12 bit high characters in the
+		cgtable.  Uses 'pitch' as the vertical spacing between
+		character rows.  No error checks are done.
+		The string must fit the output area (no overlaps, single line).
+
+	unsigned
+	vbank(b)
+	unsigned b;
+
+		Set VSDD Data Segment bank to b.
+		Return old bank select value.
+
+	vbfill4(obj, obwidth, xmin, ymin, xmax, ymax, color)
+	unsigned *obj;
+	short obwidth, xmin, ymin, xmax, ymax;
+	register unsigned color;
+
+		Video block fill blitter for 4 bit per pixel objects
+		Fills an area with a color.  Coded for speed, not space.
+
+	vclrav(adr, row, col, atr, len)
+	unsigned int *adr, row, col, atr, len;
+
+		Clears attribute 'atr' at ('row', 'col') in the
+		full attribute text object at 'adr'
+		using a line length of 'len'.
+
+	vclrs(obase, row, col, nc, ch, atr)
+	unsigned int obase[];
+	int row, col, nc, ch, atr;
+
+		Clear 'nc' characters in the text object 'obase' to 'ch',
+		using atrributes 'atr', starting at ('row','col');
+
+		No error checking is done, so beware.
+
+	vcputs(obase, nw, fg, bg, row, col, str)
+	int *obase, nw, fg, bg, row, col;
+	char *str;
+
+		Outputs characters from the string at 'str' to an 'nw'
+		character wide 4-bit per pixel graphics window at 'obase'
+		at ('row','col'), using 'fg' as the foreground color, and
+		'bg' as the background color.  Uses cgtable[][256] as the
+		VSDD formatted character generator table.
+		No error checks are done.
+
+	vcputsv(obase, nw, fg, bg, row, col, str. pitch)
+	int *obase, nw, fg, bg, row, col, pitch;
+	char *str;
+
+		Outputs characters from the string at 'str' to an 'nw'
+		character wide 4-bit per pixel graphics window at 'obase'
+		at ('row','col'), using 'fg' as the foreground color, and
+		'bg' as the background color.  Uses cgtable[][256] as the
+		VSDD formatted character generator table.  Assumes 12 bit
+		high characters in the cgtable.  Uses 'pitch' as the vertical
+		spacing between character rows.  No error checks are done.
+		The string must fit the output area (no overlaps, single line).
+
+	vfwait()
+
+		Wait for a FRAMESTOP update to transpire.
+
+	vmput(sbase, row, col, ms, ma)
+	uint *sbase, rwo, col, ma;
+	char *ms[];
+
+		Copies lines from ms, with attribute ma, to sbase at (row,col).
+
+	vmputa(sbase, row, col, ms, ma)
+	uint *sbase, row, col, *ma;
+	char *ms[];
+
+		Copies lines from ms, with attributes from ma, to sbase at (row,col).
+
+	vputa(sbase, row, col, attrib)
+	unsigned int *sbase, row, col, attrib;
+
+		Stores attribute value 'attrib' for the character
+		located at ('row','col') in VSDD RAM starting at 'sbase'.
+		Assumes a 64 character line and full character attributes.
+
+	vputc(sbase, row, col, c, attrib)
+	unsigned int *sbase, row, col, c, attrib;
+
+		Stores character c at (row,col) in sbase with
+		attribute value attrib.
+
+	vputcv(adr, row, col, chr, atr, cols)
+	unsigned int *adr, row, col, chr, atr, cols;
+
+		Stores character 'chr' at ('row', 'col') in the
+		full attribute text object at 'adr' with
+		attribute value 'atr' using a line length of 'len'.
+
+	int
+	vputp(octad, xloc, yloc, val)
+	struct octent *octad;
+	int xloc, yloc;
+
+		Puts the pixel value 'val' at ('xloc','yloc') in the
+		4-bit per pixel bitmap object described by 'octad'.
+
+	vputs(sbase, row, col, str, attrib)
+	uint *sbase, row, col, attrib;
+	char *str;
+
+		Write string str to video RAM object pointed to by sbase
+		at (row,col) with attrib used for all characters.
+		Full attribute format is assumed.
+
+	vputsa(sbase, row, col, str, attrib)
+	uint *sbase, row, col, *attrib;
+	char *str;
+
+		Write string str in video RAM pointed to by sbase starting
+		at (row, col) using attributes from the words pointed to
+		by attrib.  Full attribute format is assumed.
+
+	vputsav(sbase, row, col, str, attrib, len)
+	uint *sbase, row, col;
+	char *str;
+	uint *attrib, len;
+
+		Write string str in video RAM pointed to by sbase starting
+		at (row, col) using attributes from the words pointed to
+		by attrib.  Line length is len. Full attribute format
+		is assumed.
+
+	vputsv(sbase, row, col, str, attrib, len)
+	uint *sbase, row, col;
+	char *str;
+	uint attrib, len;
+
+		Write string str to video RAM object pointed to by sbase
+		at (row,col) with attrib used for all characters.
+		Line length is len. Full attribute format is assumed.
+
+	vsetav(adr, row, col, atr, len)
+	unsigned int *adr, row, col, atr, len;
+
+		Sets attribute 'atr' at ('row', 'col') in the
+		full attribute text object at 'adr'
+		using a line length of 'len'.
+
+	vsetcv(adr, row, col, cfb, len)
+	unsigned int *adr, row, col, cfb, len;
+
+		Sets colors 'cfb' at ('row', 'col') in the
+		full attribute text object at 'adr'
+		using a line length of 'len'.
+
+	vsetpal(slot, red, grn, blu)
+	register unsigned slot, red, grn, blu;
+
+		Set a palette RAM entry to a specific color
+
+			slot	0..15	color entry number
+			red	0..3	red value
+			grn	0..3	green value
+			blu	0..3	blue value
+
+	vsndpal(pp)
+	short pp[16][3];
+
+		Send a palette table to the video palette RAM
+
+			pp	pointer to a short [16][3] array,
+
+			where:
+				pp[n][0]	= blue value
+				pp[n][1]	= green value
+				pp[n][2]	= red value
+
+					n	= slot number (0..15)
+
+	vsplot4(obase, nw, fg, row, col, str, pitch, ht, cgtab)
+	uint *obase, nw, fg, row, col, pitch, ht, cgtab[][256];
+	char *str;
+
+		Outputs characters from the string at 'str' to an 'nw'
+		character wide 4-bit per pixel graphics window at 'obase'
+		at ('row','col'), using 'fg' as the foreground color.
+		Uses cgtab[][256] as the VSDD formatted character
+		generator table.  Assumes 'ht' bit high characters in the
+		cgtable.  Uses 'pitch' as the vertical spacing between
+		character rows.  No error checks are done.
+		The string must fit the output area (no overlaps, single line).
+		This function leaves the zero pixels alone and just sets the
+		one pixels to the foreground color, allowing overlapping
+		character cells.
+
+	vspray4(vobj, vwid, fg, ml, vb, pitch)
+	unsigned *vobj;
+	short vwid, fg, vb, pitch;
+	char *ml[];
+
+		Spray a pattern on the screen.
+
+		Uses 'vobj' of width 'vwid' as the screen, 'fg' as the color,
+		'vb' as the bank, 'pitch' as the vertical pitch, and 'ml' as
+		the pattern.
+
+		If 'vb' EQ -1,  the bank is not set.  The color in 'fg' will
+		be taken from the lower 4 bits.
+
+		The list 'ml' points at pairs of counts and characters.
+		The last count is -1,  and the list terminates with a
+		null pointer.
+
+	vtext(obj, nc, row, col, ip)
+	register unsigned *obj, nc, row, col;
+	register char *ip;
+
+		Output a text string to the VSDD in 1 byte / character mode.
+		Assumes VSDD is pointing at bank 0.
+
+	vvputsv(obase, nw, fg, bg, row, col, str, pitch, ht, cgtab)
+	uint *obase, nw, fg, bg, row, col, pitch, ht, cgtab[][256];
+	char *str;
+
+		Outputs characters from the string at 'str' to an 'nw'
+		character wide 4-bit per pixel graphics window at 'obase'
+		at ('row','col'), using 'fg' as the foreground color, and
+		'bg' as the background color.  Uses cgtab[][256] as the
+		VSDD formatted character generator table.  Assumes 'ht' line
+		high characters in the cg table.  Uses 'pitch' as the vertical
+		spacing between character rows.  No error checks are done.
+		The string must fit the output area (no overlaps, single line).
+
+	vwputm(obase, nw, fg, bg, row, col, ml)
+	unsigned int *obase;
+	int nw, fg, bg;
+	char *ml[];
+
+		Put a menu in a 2-bit per pixel graphics window.
+
+		Writes the menu described by the list 'ml' in the
+		'nw' character wide bitmap 'obase', using 'fg' for
+		the foreground color and 'bg' for the background.
+		The menu is at ('row','col') in the bitmap.
+
+	int
+	vwputp(octad, xloc, yloc, val)
+	struct octent *octad;
+	int xloc, yloc;
+
+		Writes the pixel value 'val' into the 2-bit per pixel
+		bitmap object described by 'octad' at ('xloc','yloc').
+		Upper left corner of screen is (0,0) origin.
+
+	vwputs(obase, nw, fg, bg, row, col, str)
+	int *obase, nw, fg, bg, row, col;
+	char *str;
+
+		Outputs characters from the string at 'str' to an 'nw'
+		character wide 2-bit per pixel graphics window at 'obase'
+		at ('row','col'), using 'fg' as the foreground color, and
+		'bg' as the background color.  Uses cgtable[][256] as the
+		VSDD formatted character generator table.
+		No error checks are done.

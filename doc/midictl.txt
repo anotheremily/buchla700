@@ -1,0 +1,52 @@
+Decimal		Hexadecimal	Control Function
+-------		-----------	----------------
+  0		00		Undefined
+  1		01		Modulation wheel
+  2		02		Breath controller
+  3		03		-undefined-
+  4		04		Foot controller
+  5		05		Portamento time
+  6		06		Data Entry MSB
+  7		07		Main volume
+  8		08		Balance
+  9		09		-undefined-
+ 10		0A		Pan
+ 11		0B		Expression controller
+ 12 .. 15	0C .. 0F	-undefined-
+ 16 .. 19	10 .. 13	General purpose controllers  (1 ..4)
+ 20 .. 31	14 .. 1F	-undefined-
+
+ 32 .. 37	20 .. 25	LSB for values 0 .. 5
+ 38		26		Data Entry LSB
+ 39 .. 47	27 .. 2F	LSB for values 7 .. 15
+ 48 .. 63	30 .. 3F	LSB for values 16 .. 31
+
+ 64		40		Damper pedal  (sustain)
+ 65		41		Portamento
+ 66		42		Sostenuto
+ 67		43		Soft pedal
+ 68 .. 79	44 .. 4F	-undefined-
+
+ 80 .. 83	50 .. 53	General purpose controllers  (5 .. 8)
+ 84 .. 90	54 .. 5A	-undefined-
+ 91		5B		External effects depth
+ 92		5C		Tremolo depth
+ 93		5D		Chorus depth
+ 94		5E		Celeste (detune) depth
+ 95		5F		Phaser depth
+
+ 96		60		Data increment
+ 97		61		Data decrement
+ 98		62		Non-registered parameter number LSB
+ 99		63		Non-registered parameter number MSB
+100		64		Registered parameter number LSB
+101		65		Registered parameter number MSB
+102 .. 111	66 .. 6F	-undefined-
+
+112 .. 121	70 .. 79	-undefined-
+122		7A		Local control  (v = 0 = off, v = 127 = on)
+123		7B		All notes off  (v = 0)
+124		7C		Omni mode off  (v = 0)
+125		7D		Omni mode on   (v = 0)
+126		7E		Mono mode on   (v = number of channels)
+127		7F		Poly mode on   (v = 0)

@@ -1,0 +1,19 @@
+Buchla 700 Source Code
+
+Courtesy Lynx Crowe, provided for noncommercial personal and educational use. 
+This code is provided as-is with no guarantees of completeness or correctness; 
+it's a compilation of various bits of relevant code that Lynx found going 
+through his archives. If you want to delve into this, you are "on your own." 
+Development was done with an Alcyon C compiler on an Atari 1040ST, although it 
+should be feasible to find a modern compiler that will handle this code. 
+Knowledgeable people with time on their hands could potentially do all sorts 
+of neat things with this, such as (a) create some sort of hardware/software 
+upgrade to the 700 that would allow users to bypass the trouble-prone and 
+difficult-to-find video chip, (b) add features to and fix bugs in the software, 
+and (c) create a softsynth rendition of the 700. It's also a fantastic chance 
+to look at the design of a synth OS by one of the pioneers in the field. Please 
+give Lynx and Don proper acknowledgement on anything you do with this. 
+
+(Source: http://users.ece.gatech.edu/lanterma/buchla700/)
+
+My work: http://zachyoung.net/isc/category/buchla-700/

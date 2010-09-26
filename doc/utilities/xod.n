@@ -1,0 +1,75 @@
+
+.TH XOD 1
+.\" 8/3/86
+.ad
+.fi
+.UC 4
+.SH NAME
+xod \- hex/octal/decimal dump
+.SH SYNOPSIS
+.B xod
+[
+.B \-xod
+] [\fIfile ...\fR]
+.SH DESCRIPTION
+.I Xod
+dumps the specified
+.I file(s)
+in the base selected by the first argument.
+If the first argument is missing,
+.B \-x
+is default.
+.PP
+The
+.I file
+argument specifies which file is to be dumped.
+If no file argument is specified, the standard input is used.
+.PP
+Each output line consists of:
+.sp 1
+.ce
+offset: ... numeric dump ... | ASCII dump |
+.sp 1
+where the offset and numeric dump portions are in the specified base.
+Each output line dumps the same number of bytes as specified by the
+base.
+Non-printable characters are replaced with \`.\' in the ASCII portion
+of the dump.
+.PP
+Where sequential records are duplicates of the preceeding record, all
+such records are replaced by a single asterisk.
+.PP
+Dumping continues until end-of-file.
+.SH OPTIONS
+The meanings of the base argument characters
+are:
+.TP 3
+.B  d
+Interpret bytes (8 bit words) in decimal.
+.TP 3
+.B  o
+Interpret bytes (8 bit words) in octal.
+.TP 3
+.B  x
+Interpret bytes (8 bit words) in hex.
+.PP
+If more than one option is specified, the last one is used.
+.SH BUGS
+There is no provision for beginning at a specified offset into the
+input file.
+.PP
+There is no provision for merging multibyte words into single values
+in the numeric dump portion.
+.SH SEE ALSO
+adb(1), od(1).
+.SH AUTHOR
+Richard Klappal
+.br
+uucp:       !ihnp4!chinet!uklpl!rlk
+.br
+            !ihnp4!ihu1h!rlk    (IH 4H-326 x4770)
+.br
+CompuServe: 74106,1021
+.br
+MCIMail:    rklappal
+

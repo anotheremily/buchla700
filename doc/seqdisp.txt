@@ -1,0 +1,131 @@
+Sequencer Extensions to MIDAS-VII		Rev 3	1988-11-07
+---------------------------------		-----	----------
+
+Sequence Display Format
+-----------------------
+
+   0         1         2         3         4         5         6
+   012345678901234567890123456789012345678901234567890123456789012
+00 (===============================================!=============) 00
+01 | Lin Time_ Action_1___ Action_2___ Action_3___ | No Seq RG T | 01
+02 |                                               | 01 999 99 0 | 02
+03 |                                               | 02 999 99 0 | 03
+04 |                                               | 03 999 99 0 | 04
+05 |                                               | 04 999 99 0 | 05
+06 |                                               | 05 999 99 0 | 06
+07 |                                               | 06 999 99 0 | 07
+08 |                                               | 07 999 99 0 | 08
+09 | 999 12.45 Ks 128 1 01 If R01=?3   Jump to 000 < 08 999 99 0 | 09
+10 |                                               | 09 999 99 0 | 10
+11 |                                               | 10 999 99 0 | 11
+12 |                                               | 11 999 99 0 | 12
+13 |                                               | 12 999 99 0 | 13
+14 |                                               | 13 999 99 0 | 14
+15 |                                               | 14 999 99 0 | 15
+16 |                                               | 15 999 99 0 | 16
+17 |                                               | 16 999 99 0 | 17
+18 [===============================================*=============] 18
+19 | Key transient  Trigger on   Stop         Set reg   Value    | 19
+20 | Key closure    Trigger off  Jump to lin  If reg =  Register | 20
+21 | Key release    Trig toggle               If reg <  Voltage  | 21
+22 | If key active  If trig act  If stim act  If reg >  Random   | 22
+23 |                                                             | 23 
+24 {=============================================================} 24
+   0         1         2         3         4         5         6
+   012345678901234567890123456789012345678901234567890123456789012
+
+Special characters used above:
+------------------------------
+
+	(  \272		!  \267		)  \273		vg \275\276
+	[  \266		*  \265		]  \264		<  \274
+	{  \271		=  \261		}  \270		|  \260
+
+Area	Object	Usage		Top	Left	Bottom	Right	Width
+----    ------	-------		---	----	------	-----	-----
+ 0	obj8	heading		0	0	1	63	 64 *
+ 1	obj9	sequences	2	0	17	47	 48
+ 2	obj10	status		2	48	17	63	 16 *
+ 3	obj11	menu		18	0	24	63	 64 *
+
+	* Note:  The last character position in area 0, 2, or 3 is unused.
+
+Kt nnn n nn	Key transient
+Kc nnn n nn	Key closure
+Kr nnn n nn	Key relase
+If nnn n nn	If key active
+
+Trig on  nn	Trigger on
+Trig off nn	Trigger off
+Trig tgl nn	Trigger toggle
+If Trig  nn	If trigger active
+
+Set Rnn=Rnn	Set register to register contents
+Set Rnn=nn	Set register to constant value
+Set Rnn=Vn	Set register to voltage input
+Set Rnn=?n	Set register to random value
+
+If  Rnn=Rnn	Compare register -- equal to register contents
+If  Rnn=nn	Compare register -- equal to constant value
+If  Rnn=Vn	Compare register -- equal to voltage input
+If  Rnn=?n	Compare register -- equal to random value
+
+If  Rnn<Rnn	Compare register -- less than register contents
+If  Rnn<nn	Compare register -- less than constant value
+If  Rnn<Vn	Compare register -- less than voltage input
+If  Rnn<?n	Compare register -- less than random value
+
+If  Rnn>Rnn	Compare register -- greater than register contents
+If  Rnn>nn	Compare register -- greater than constant value
+If  Rnn>Vn	Compare register -- greater than voltage input
+If  Rnn>?n	Compare register -- greater than random value
+
+If Stim act	Test sequence stimulus active
+
+Jump to nnn	Jump to sequence line
+
+Stop		Stop sequence
+
+Submenu columns and widths
+--------------------------
+
+	Left	Right	Width
+	----	-----	-----
+	2	14	13
+	17	27	11
+	30	40	11
+	43	50	8
+	53	60	8
+
+
+Submenu boxes
+-------------
+
+     1 Key transient  5 Trigger on     9 Stop          13 Set reg    17 Value
+     2 Key closure    6 Trigger off   10 Jump to lin   14 If reg =   18 Register
+     3 Key release    7 Trig toggle   11 --unused--    15 If reg <   19 Voltage
+     4 If key active  8 If trig act   12 If stim act   16 If reg >   20 Random
+
+
+ST_0 -- Initial action submenu
+------------------------------
+
+   0         1         2         3         4         5         6
+   012345678901234567890123456789012345678901234567890123456789012
+19 | Key transient  Trigger on   Stop         Set reg            | 19
+20 | Key closure    Trigger off  Jump to lin  If reg =           | 20
+21 | Key release    Trig toggle               If reg <           | 21
+22 | If key active  If trig act  If stim act  If reg >           | 22
+
+
+
+ST_1 -- Register action submenu
+-------------------------------
+
+   0         1         2         3         4         5         6
+   012345678901234567890123456789012345678901234567890123456789012
+19 |                                                    Value    | 19
+20 |                                                    Register | 20
+21 |                                                    Voltage  | 21
+22 |                                                    Random   | 22
+

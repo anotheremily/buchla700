@@ -1,0 +1,28 @@
+string.c -- some common string routines all rolled into one package
+
+	char *strcpy(dest, src)
+	register char *dest, *src;
+
+	char *strncpy(dest, src, len)
+	register char *dest, *src;
+
+	char *strcat(dest, src)
+	register char *dest, *src;
+
+	char *strncat(dest, src, len)
+	register char *dest, *src;
+
+	strcmp(a, b)
+	register char *a, *b;
+
+	strncmp(a, b, len)
+	register char *a, *b;
+
+	strlen(str)
+	register char *str;
+
+	char *index(str, c)
+	register char *str; register int c;
+
+	char *rindex(str, c)
+	register char *str; int c;

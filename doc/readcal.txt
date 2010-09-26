@@ -1,0 +1,22 @@
+This is a substitute version of CALENDAR(1).  It is upward compatible
+with the standard UNIX version, but has several extensions, and is
+much faster, as it does not envoke EGREP(1).  The executable generated
+by compiling calendar.c (see the makefile) is envoked for each user.
+It should be installed in /usr/lib/calendar, or the shell script
+will need to be changed.  If you have STRCHR(3) instead of V7's INDEX(3),
+or you have some other function for finding a character in a string,
+change/remove the #define in calendar.c.  strchr() is used in the
+C code.  If you run calendar SETUSERID to ROOT, then change the man page
+to reflect that fact that world read access is not needed.
+
+You should be able to just type "make install" and get a proper install.
+
+Send complaints/bugs to:
+
+Gregg Wonderly
+Department of Computing and Information Sciences
+Oklahoma State University
+
+UUCP: {cbosgd, ea, ihnp4, isucs1, mcvax, uokvax}!okstate!gregg
+ARPA:  gregg@A.CS.OKSTATE.EDU
+

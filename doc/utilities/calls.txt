@@ -1,0 +1,33 @@
+NAME
+	calls -- map the calling structure of a set of functions
+
+SYNOPSIS
+
+   calls [-aehitv] [-d level] [-f function] [-F function[/file.c]]
+         [-w width] [-T prefix] [-D define] [-U undefine] [-I include-dir]
+         [filename|-]*
+
+DESCRIPTION
+
+	Produces a map of the calling structure of the functions in the named
+	files, or stdin, on stdout.
+
+OPTIONS
+
+	a	print all calls in every function body
+	d	output debug information
+	e	index external functions too
+	f,F	start calling trace at given function
+	h	print this message
+	i	print an index of defined functions
+	v	list only called functions in index output
+	t	terse, list only trees that are requested
+	T	temp file prefix
+	w	set output width  (default = 96)
+	D,U,I	as in cpp
+
+BUGS
+
+	This hacked up version for GEMDOS will only do 2 files at a time
+	due to bugs in GEMDOS.  More than 2 files will cause it to fail
+	with a "too many files open" error.

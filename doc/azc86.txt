@@ -1,0 +1,82 @@
+Source Modules
+
+	ALLOC.C
+		alloc(size)
+
+	CONIO.C
+		getch()
+		putch(c)
+		ungetch(c)
+		cgets(s)
+		cputs(s)
+
+	FGETS.C
+		gets(line)
+		fgets(s, n, fp)
+		agetc(ptr)
+
+	FOPEN.C
+		fopen(name, mode)
+
+	FPUTS.C
+		puts(str)
+		fputs(s, fp)
+		aputc(c, ptr)
+
+	FREAD.C
+		fread(buffer, size, number, stream)
+		fwrite(buffer, size, number, stream)
+
+	FSEEK.C
+		fseek(fp, pos, mode)
+		ftell(fp)
+
+	GETBUFF.C
+		getbuff(ptr)
+
+	GETC.C
+		getw(stream)
+		getc(ptr)
+
+	LSEEK.C
+		lseek(fd, pos, how)
+
+	OPEN.C
+		creat(name, mode)
+		open(name, flag, mode)
+		fd_clsall()
+		close(fd)
+		fileop(name, flag, mode, chp, dp)
+		filecl(fp)
+
+	POSIT.C
+		posit(fd, pos)
+
+	PUTC.C
+		puterr(c)
+		putw(w, stream)
+		putc(c, ptr)
+		fflush(ptr)
+		closall()
+		fclose(ptr)
+		flush_(ptr, data)
+
+	READ.C
+		read(fd, buff, len)
+		conin(x, buff, len)
+
+	RENAME.C
+		rename(old, new)
+
+	SETBUF.C
+		setbuf(stream, buffer)
+
+	UNGETC.C
+		ungetc(c, ptr)
+
+	UNLINK.C
+		unlink(name)
+
+	WRITE.C
+		write(fd, buff, len)
+		conwr(kind, buff, len)

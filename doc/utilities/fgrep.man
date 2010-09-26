@@ -1,0 +1,29 @@
+
+FGREP(1)           TOOLS Programmer's Manual             FGREP(1)
+
+
+NAME
+     fgrep - search a file for a fixed character string
+
+SYNOPSIS
+     fgrep [ option ] ...  string [ file ] ...
+
+
+DESCRIPTION
+     Fgrep searchs the input files (standard input default) for
+     lines matching a string.  Normally, each line found is
+     copied to the standard output. The following options are
+     recognized.
+
+     -v   All lines but those matching are printed.
+
+     -c   Only a count of matching lines is printed.
+
+     -l   The names of files with matching lines are listed
+          (once) separated by newlines.
+
+     -n   Each line is preceded by its relative line number in
+          the file.
+
+     In all cases the file name is shown if there is more than
+     one input file.

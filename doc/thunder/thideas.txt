@@ -1,0 +1,190 @@
+Notes on "Storm" - the user interface for Thunder	Rev 1	1988-12-15
+-------------------------------------------------	------------------
+
+* Configurations might allow you to:
+
+	* Assign a switch closure / release to:
+
+		* Send a MIDI key message  (On, Off, Transient)
+		* Send a MIDI control change message  (On, Off, Transient)
+
+		* Send a MIDI program change message
+
+		* Send a MIDI song select message
+		* Send a MIDI song position pointer message
+
+		* Send a MIDI clock control message  (Start, Stop, Continue)
+
+		* Send an arbitrary string of bytes to MIDI
+
+		* Produce a secondary (delayed / echo) response
+
+			* Duplicate of the inital response
+			* Separate (modified or unique) response
+
+		* Start a riff
+		* Stop a riff
+		* Continue a riff
+
+		* Select a configuration
+
+	* Assign a pressure to:
+
+		* Output as polyphonic or channel pressure
+		* Output as a MIDI controller
+		* Output as pitch bend
+
+		* Produce an indirect key or switch trigger based on pressure
+
+		* Control rate of riff playback
+
+	* Assign a position to:
+
+		* Output as channel pressure
+		* Output as a MIDI controller
+		* Output as pitch bend
+
+		* Produce an indirect key or switch trigger based on position
+
+		* Select a riff
+		* Control rate of riff playback
+
+* Storage and playback of riffs in internal storage:
+
+	* Display a table of contents  (what's in memory right now)
+	* Indicate the amount of memory remaining
+	* Indicate the amount of memory used
+
+	* Select a riff  (via local control or MIDI song select)
+
+	* Clear a riff
+	* Clear all riffs
+
+	* Display a riff
+
+	* Enter a riff
+
+	* Edit a riff  (probably just simple append/replace/copy editing)
+
+	* Play a riff  (with Start / Stop / Continue capability):
+
+		* Once
+		* Repeated N times
+
+   Note:  Much of the above would also apply to configurations.
+
+	* Adjust the rate of playback
+	* Adjust quantization of timing
+	* Sync to MIDI clocks
+
+* Data card support:
+
+	* Display a table of contents  (what's stored on the card)
+	* Indicate the amount of memory remaining
+	* Indicate the amount of memory used
+
+	* Clear the entire card
+
+	* Load a riff file
+	* Store a riff file
+	* Delete a riff file
+
+	* Load a configuration file
+	* Store a configuration file
+	* Delete a configuration file
+
+	* Load a program  (mostly for diagnostics, but possibly applications)
+
+	* Checksums for the table of contents and all files
+
+* General user interface details:
+
+	* Soft labels for data entry keys
+	* Data entry via the long pot
+	* Pot / switch assignment by touching the pot / switch
+	* User control of LED status
+	* System exclusive control of LED status
+
+* Redefiniton of continuous inputs from the pedals as:
+
+	* Simple on / off switches based on pedal position
+	* Multiposition selector switches based on pedal position
+
+	* Note that if the pedal inputs are defined as "pots or
+	  switches bridging to ground" you could use the inputs
+	  either as continuous controllers or switch inputs
+
+* General MIDI details:
+
+	* Selection / display of:
+
+		* Current program number  (configuration)
+		* Current song selection
+		* Current song position  (beats, clocks)
+
+		* Basic output channel
+		* Basic input channel
+
+	* Enabling / disabling MIDI inputs and outputs
+	* Enabling / disabling unregistered parameters  (if we support any)
+
+	* Merging with a MIDI input stream
+
+		* Pass through of inputs
+		* Filtering of inputs  (selective pass through / replacement)
+
+	* Scaling of 8 bit sensor values into MIDI values:
+
+		* 7 bit controller scaling
+		* 14 bit controller scaling
+
+	* Generation of MIDI clock controls and clocks:
+
+		* Start
+		* Stop
+		* Continue
+
+		* Timing clock
+
+		* Active sensing
+
+	* MIDI system exclusive messages:
+
+		* Download data from a host
+		* Upload data to a host
+
+		* Download programs from a host  (mostly for diagnostics)
+
+		* Execute internal diagnostics  (see below for details)
+
+	* Ability to send (or respond to ?) MIDI data entry messages:
+
+		* Parameter selection
+		* Data entry
+		* Data increment
+		* Data decrement
+
+	* Support of (proposed) MIDI tempo / rhythm maps ?
+
+* General stuff:
+
+	* Power-on diagnostics:
+
+		* PROM checksum
+		* Working RAM test
+
+	* Reset to last performance state after power-on diagnostics
+
+	* Re-zero sensor offsets without having to power down
+
+	* Host or user requested diagnostics:
+
+		* UART loopback  (MIDI in to MIDI out -- tests cables, too)
+		* Display of element offsets
+		* Display of version number / checksum
+		* Complete RAM test
+
+		* Processor test ?
+		* ROMP-style debugging ?
+
+	* Controls for WIMP ?

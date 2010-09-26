@@ -1,0 +1,31 @@
+
+
+STRINGS(1)                USER COMMANDS                STRINGS(1)
+
+
+
+NAME
+     strings - find printable strings  in  an  object,  or  other
+     binary, file
+
+SYNOPSIS
+     strings [ -number ] file ...
+
+DESCRIPTION
+     Strings looks for ascii strings in a binary file.  A  string
+     is any sequence of 4 or more printing characters ending with
+     a newline or a null.
+
+     Strings is useful for identifying random  object  files  and
+     many other things.
+
+OPTIONS
+     -number
+          Use number as the minimum string length rather than 4.
+
+SEE ALSO
+     od(1)
+
+BUGS
+     The algorithm for identifying strings  is  extremely  primi-
+     tive.

@@ -1,0 +1,136 @@
+
+
+
+     GETOPT(3)          UNIX 5.0 (21 January 1986)           GETOPT(3)
+
+
+     NAME
+
+          getopt, optarg, optind - get option letter from argv
+
+     SYNOPSIS
+
+          int getopt(argc, argv, opts)
+          int argc;
+          char **argv;
+          char *opts;
+
+          int
+          getarg(nargc, nargv)
+          int nargc;
+          char *nargv[];
+
+          extern int optind;
+          extern int opterr;
+          extern int optopt;
+          extern char *optarg;
+
+     DESCRIPTION
+
+          This is the public domain getopt from AT&T with enhancements.
+
+          Getopt returns the next option letter in argv that matches a
+          letter in opts. Opts is a string of recognized option
+          letters; if a letter is followed by a colon, the option is
+          expected to have an argument that may or may not be
+          separated from it by white space.  Optarg is set to point to
+          the start of the option argument on return from getopt.
+
+          Getopt places in optind the argv index of the next argument
+          to be processed.  Optind is external and it is normally
+          initialized to one automatically before the first call to
+          getopt. This is so that the program name will not be processed
+          as an argument if getopt is used to process the command line
+          passed to the main function of a program.
+
+          When all options have been processed (i.e., up to the first
+          non-option argument), getopt returns EOF. The special option
+          -- may be used to delimit the end of the options; EOF will
+          be returned, and -- will be skipped.
+
+
+          Getarg returns the index of the next argument, or EOF if the
+          argument string is exhausted.  Getarg is used to get the file
+          arguments after getopt() is finished.  Getarg updates optarg
+          to point at the argument, and increments optind to point
+          at the next argument.
+
+
+
+     GETOPT(3)          UNIX 5.0 (21 January 1986)           GETOPT(3)
+
+
+     DIAGNOSTICS
+
+          Getopt prints an error message on stderr (if opterr is non-
+          zero) and returns a question mark (?) when it encounters an
+          option letter not included in opts. The error message uses
+          argv[0] as the program name.  If this is not desireable, set
+          opterr = 0 and issue your own error message when getopt
+          returns '?'.
+
+     EXAMPLE
+
+          The following code fragment shows how one might process the
+          arguments for a command that can take the mutually exclusive
+          options a and b, and the options f and o, both of which
+          require arguments:
+
+               main(argc, argv)
+               int argc;
+               char **argv;
+               {
+                    int c;
+                    extern int optind;
+                    extern char *optarg;
+
+                    ...
+
+
+
+     GETOPT(3)          UNIX 5.0 (21 January 1986)           GETOPT(3)
+
+
+                    while ((c = getopt(argc, argv, "abf:o:")) != EOF)
+                         switch (c) {
+
+                         case 'a':
+                              if (bflg)
+                                   errflg++;
+                              else
+                                   aflg++;
+                              break;
+
+                         case 'b':
+                              if (aflg)
+                                   errflg++;
+                              else
+                                   bproc();
+                              break;
+
+                         case 'f':
+                              infile = optarg;
+                              break;
+
+                         case 'o':
+                              ofile = optarg;
+                              bufsiza = 512;
+                              break;
+
+                         case '?':
+                              errflg++;
+                         }
+
+                    if (errflg) {
+                         fprintf(stderr, "usage: . . . ");
+                         exit(2);
+                    }
+
+                    for (; optind < argc; optind++) {
+
+                         if (access(argv[optind], 4)) {
+
+                              ...
+                         }
+                   }
+

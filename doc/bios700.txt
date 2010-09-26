@@ -1,0 +1,102 @@
+Buchla 700 BIOS (trap13) Calls
+------------------------------
+
+	int
+	BIOS(B_RDAV, unit)
+	int unit;
+
+	int
+	BIOS(B_GETC, unit)
+	int unit;
+
+	BIOS(B_PUTC, unit, c)
+	int unit, c;
+
+	long
+	BIOS(B_RDWR, rwflag, buf, count, recno, dev)
+	int rwflag;
+	char *buf;
+	int count, recno, dev;
+
+	long
+	BIOS(B_SETV, vecnum, vecadr)
+	int vecnum;
+	long vecadr;
+
+	struct bpb *
+	BIOS(B_GBPB, dev)
+	int dev;
+
+	long
+	BIOS(B_THRE, unit)
+	int unit;
+
+	long
+	BIOS(B_MCHG, dev)
+	int dev;
+
+	long
+	BIOS(B_DMAP)
+
+Logical Units
+-------------
+
+	PRT_DEV		0	Serial-1
+	AUX_DEV		1	Serial-2
+	CON_DEV		2	Serial-2
+	MC1_DEV		3	MIDI-1
+	MC2_DEV		4	MIDI-2
+
+rwflag values for B_RDWR
+
+	0 = read, 1 = write, check media for change
+	2 = read, 3 = write, no media change check
+
+Buchla 700 XBIOS (trap14) Calls
+-------------------------------
+
+	struct iorec *
+	XBIOS(X_PIOREC, unit)
+	int unit;
+
+	XBIOS(X_SETPRT, unit, mode, baud, cfr0, cfr1)
+	int unit, mode, baud, cfr0, cfr1;
+
+	int
+	XBIOS(X_FLOPRD, buf, filler, dev, sector, track, side, count)
+	char *buf;
+	long filler;
+	int dev, sector, track, side, count;
+
+	int
+	XBIOS(X_FLOPWR, buf, filler, dev, sector, track, side, count)
+	char *buf;
+	long filler;
+	int dev, sector, track, side, count;
+
+	int
+	XBIOS(X_FORMAT, buf, filler, dev, spt, track, side, intrlv, magic, virgin)
+	char *buf;
+	long filler;
+	int dev, spt, track, side, intrlv, virgin;
+	long magic;		/* must be 0x87654321 */
+
+	int
+	XBIOS(X_VERIFY, buf, filler, dev, sector, track, side, count)
+	int buf[512];
+	long filler;
+	int dev, sector, track, side, count;
+
+	int
+	XBIOS(X_PRBOOT, buf, serial, type, execflag)
+	char *buf;
+	long serial;
+	int type, execflag;
+
+	long
+	XBIOS(X_RANDOM)
+
+type values for X_PRBOOT
+
+	0 = 40 tracks, single sided		1 = 40 tracks, double sided
+	2 = 80 tracks, single sided		3 = 80 tracks, double sided

@@ -1,0 +1,269 @@
+Patch Extensions to MIDAS-VII		Rev 3	1988-10-18
+-----------------------------		-----	----------
+
+Patch Display Format
+--------------------
+
+   0         1         2         3         4         5         6
+   012345678901234567890123456789012345678901234567890123456789012
+00 (===============================================!=============) 00
+01 | Definer_p_ch Stmulus_p_ch Destnation_vg Datum | No Seq RG T | 01
+02 |                                               | 01 999 99 0 | 02
+03 |                                               | 02 999 99 0 | 03
+04 |                                               | 03 999 99 0 | 04
+05 |                                               | 04 999 99 0 | 05
+06 |                                               | 05 999 99 0 | 06
+07 |                                               | 06 999 99 0 | 07
+08 |                                               | 07 999 99 0 | 08
+09 |                                               | 08 999 99 0 | 09
+10 | Key 127 1 16 Pulse 4      Ind 6 Srce G3 ModWh < 09 999 99 0 | 10
+11 |                                               | 10 999 99 0 | 11
+12 |                                               | 11 999 99 0 | 12
+13 |                                               | 12 999 99 0 | 13
+14 |                                               | 13 999 99 0 | 14
+15 |                                               | 14 999 99 0 | 15
+16 |                                               | 15 999 99 0 | 16
+17 |                                               | 16 999 99 0 | 17
+18 [===============================================*=============] 18
+19 | Key  SeqLin  Instr  Index  Level  V Out  Srce  PchWh  Pitch | 19
+20 | Rel  SeqCtl  Osc    Freq   Loctn  Depth  Mult  ModWh  Freq  | 20
+21 | Trg  Tuning  WaveA  Pitch  Filtr  Rate   Valu  Breth  KeyVl | 21
+22 | Pls  RegSet  WaveB  Intvl  Fil Q  Inten  Time  Pedal  KeyPr | 22
+23 | LED  RegAdd  Confg  Ratio  Dynmc  Aux    Func  GPC/V  Randm | 23 
+24 {=============================================================} 24
+   0         1         2         3         4         5         6
+   012345678901234567890123456789012345678901234567890123456789012
+
+Special characters used above:
+------------------------------
+
+	(  \272		!  \267		)  \273		vg \275\276
+	[  \266		*  \265		]  \264		<  \274
+	{  \271		=  \261		}  \270		|  \260
+
+Area	Object	Usage		Top	Left	Bottom	Right	Width
+----    ------	-------		---	----	------	-----	-----
+ 0	obj8	heading		0	0	1	63	 64 *
+ 1	obj9	patches		2	0	17	47	 48
+ 2	obj10	status		2	48	17	63	 16 *
+ 3	obj11	menu		18	0	24	63	 64 *
+
+	* Note:  The last character position in area 0, 2, or 3 is unused.
+
+Destnation vg Data
+------------- -----
+K 127 1 16    Start		key action # 0..127, port 1..3, channel 1..16
+K 127 1 16    Stop		Trans = 7 (blank), Stop = 8 (-), Start = 9 (+)
+K 127 1 16    Trans
+
+Trigger 16    Start		trigger 01..16
+Trigger 16    Stop		Stop = 8 (-), Start = 9 (+)
+
+Pulse 1       Start		pulse 1..2
+Pulse 1       Stop		Trans = 7 (blank), Stop = 8 (-), Start = 9 (+)
+Pulse 1       Trans
+
+LED A         333		0 = ignore, 1 = on, 2 = off, 3 = toggle
+LED B         3333
+LED C         333
+LED D         3333
+LED E         333
+LED F         3333
+LED G         333
+
+Seq nn Lin    999		seq range 01..16, line 000..999
+
+Seq nn Ctl    Start		Trans = 7 (blank), Stop = 8 (-), Start = 9 (+)
+Seq nn Ctl    Stop
+
+Tune Table    9			range 0..9
+
+Reg nn Set    +99		reg 01..16, values -99..+99
+
+Reg nn Add    -99
+
+Instrument V1 40		range 00..40
+
+Osc 4 Int  V1 +1200		osc 1..4, value -1200..+1200
+Osc 4 Rat  V1 1/1		value 1/1..9/9
+Osc 4 Pch  V1 9C#00		value 0Cb99..9C#99
+Osc 4 Frq  V1 15.9		value 0.00..15.9
+
+WaveshapeA V1 20		range 01..20
+
+WaveshapeB V1 20
+
+Configure  V1 11		range 00..11
+
+Destnation vg Data
+------------- -----
+Level Srce V1 PchWh		see table below for sources
+Level Mult V1 +1.00		range -1.00..+1.00
+Level Valu V1 +0.00		range -10.00..+10.00  (signed first digit)
+Level Time V1 32767		range 00001..32767 (in milliseconds)
+Level Func V1 Start		Stop = 8 (-), Start = 9 (+)
+Level Func V1 Stop
+
+Ind 6 Srce V1 PchWh		ind 1..6, see table below for sources
+Ind 6 Mult V1 +1.00		range -1.00..+1.00
+Ind 6 Valu V1 +0.00		range -10.00..+10.00  (signed first digit)
+Ind 6 Time V1 32767		range 00001..32767 (in milliseconds)
+Ind 6 Func V1 Start		Stop = 8 (-), Start = 9 (+)
+Ind 6 Func V1 Stop
+
+Frq 4 Srce V1 PchWh		frq 1..4, see table below for sources
+Frq 4 Mult V1 +1.00		range -1.00..+1.00
+Frq 4 Valu V1 +0.00		range -10.00..+10.00  (signed first digit)
+Frq 4 Time V1 32767		range 00001..32767 (in milliseconds)
+Frq 4 Func V1 Start		Stop = 8 (-), Start = 9 (+)
+Frq 4 Func V1 Stop
+
+Filtr Srce V1 PchWh		see table below for sources
+Filtr Mult V1 +1.00		range -1.00..+1.00
+Filtr Valu V1 +0.00		range -10.00..+10.00  (signed first digit)
+Filtr Time V1 32767		range 00001..32767 (in milliseconds)
+Filtr Func V1 Start		Stop = 8 (-), Start = 9 (+)
+Filtr Func V1 Stop
+
+Fil Q Srce V1 PchWh		see table below for sources
+Fil Q Mult V1 +1.00		range -1.00..+1.00
+Fil Q Valu V1 +0.00		range -10.00..+10.00  (signed first digit)
+Fil Q Time V1 32767		range 00001..32767 (in milliseconds)
+
+Loctn Srce V1 PchWh		see table below for sources
+Loctn Mult V1 +1.00		range -1.00..+1.00
+Loctn Valu V1 +0.00		range -10.00..+10.00  (signed first digit)
+Loctn Time V1 32767		range 00001..32767 (in milliseconds)
+Loctn Func V1 Start		Stop = 8 (-), Start = 9 (+)
+Loctn Func V1 Stop
+
+Dynmc Srce V1 PchWh		see table below for sources
+Dynmc Mult V1 +1.00		range -1.00..+1.00
+Dynmc Valu V1 +0.00		range -10.00..+10.00  (signed first digit)
+Dynmc Time V1 32767		range 00001..32767 (in milliseconds)
+
+Destnation vg Data
+------------- -----
+Aux   Srce    PchWh		see table below for sources
+Aux   Mult    +1.00		range -1.00..+1.00
+Aux   Valu    +0.00		range -10.00..+10.00  (signed first digit)
+Aux   Time    32767		range 00001..32767 (in milliseconds)
+Aux           On		Off = 8 (-),  On = 9 (+)
+
+Rate  Srce    PchWh		see table below for sources
+Rate  Mult    +1.00		range -1.00..+1.00
+Rate  Valu    +0.00		range -10.00..+10.00  (signed first digit)
+Rate  Time    32767		range 00001..32767 (in milliseconds)
+
+Inten Srce    PchWh		see table below for sources
+Inten Mult    +1.00		range -1.00..+1.00
+Inten Valu    +0.00		range -10.00..+10.00  (signed first digit)
+Inten Time    32767		range 00001..32767 (in milliseconds)
+
+Depth Srce    PchWh		see table below for sources
+Depth Mult    +1.00		range -1.00..+1.00
+Depth Valu    +0.00		range -10.00..+10.00  (signed first digit)
+Depth Time    32767		range 00001..32767 (in milliseconds)
+
+Vlt 5 Srce    PchWh		vlt 1..5, see table below for sources
+Vlt 5 Mult    +1.00		range -1.00..+1.00
+Vlt 5 Valu    +0.00		range -10.00..+10.00  (signed first digit)
+Vlt 5 Time    32767		range 00001..32767 (in milliseconds)
+
+Definers and Stimulli
+---------------------
+
+	Definer					Stmulus
+	-------					-------
+	Key nnn		range 0..127		Key nnn		range 0..127
+	Rel nnn		range 0..127		Rel nnn		range 0..127
+	Trig nn		range 1..16		Trig nn		range 1..16
+	Pulse n		range 1..4		Pulse n		range 1..4
+
+Definer or Stimulus menu
+------------------------
+   0         1         2         3         4         5         6
+   012345678901234567890123456789012345678901234567890123456789012
+19 | Key                                                         |
+20 | Rel                                                         |
+21 | Trg                                                         |
+22 | Pls                                                         |
+23 |                                                             |
+
+
+Sources
+-------
+	Destnation vg  Data
+	-------------  -----
+	????? Srce     PchWh	Pitch Wheel / Horizontal tablet
+	????? Srce     ModWh	Modulation Wheel / Vertical tablet
+	????? Srce     Breth	Breath Controller / Long Pot
+	????? Srce     Pedal	Pedal 1
+	????? Srce     GPC/V	General Purpose Controller / Control voltage 1
+	????? Srce     Pitch	Pitch
+	????? Srce     Freq	Frequency
+	????? Srce     KeyVl	Key Velocity
+	????? Srce     KeyPr	Key Pressure
+	????? Srce     Randm	Random value
+
+	????? is one of:
+
+		Frq n,  Filtr,  Fil Q,  Loctn,  Ind n,  Dynmc,  Level,
+		Aux,  Vlt n,  Rate,  Depth,  Inten
+
+Source menu
+-----------
+   0         1         2         3         4         5         6
+   012345678901234567890123456789012345678901234567890123456789012
+19 |                                                PchWh  Pitch |
+20 |                                                ModWh  Freq  |
+21 |                                                Breth  KeyVl |
+22 |                                                Pedal  KeyPr |
+23 |                                                GPC/V  Randm |
+
+Initial address menu
+--------------------
+   0         1         2         3         4         5         6
+   012345678901234567890123456789012345678901234567890123456789012
+19 | Key  SeqLin  Instr  Index  Level  V Out                     |
+20 |      SeqCtl  Osc    Freq   Loctn  Depth                     |
+21 | Trg  Tuning  WaveA         Filtr  Rate                      |
+22 | Pls  RegSet  WaveB         Fil Q  Inten                     |
+23 | LED  RegAdd  Confg         Dynmc  Aux                       |
+
+
+
+Oscillator sub-address menu
+---------------------------
+   0         1         2         3         4         5         6
+   012345678901234567890123456789012345678901234567890123456789012
+19 |                                                             |
+20 |                     Freq                                    |
+21 |                     Pitch                                   |
+22 |                     Intvl                                   |
+23 |                     Ratio                                   |
+
+
+
+Level,  Index,  Frequency,  Location,  Filter sub-address menu
+--------------------------------------------------------------
+   0         1         2         3         4         5         6
+   012345678901234567890123456789012345678901234567890123456789012
+19 |                                          Srce               |
+20 |                                          Mult               |
+21 |                                          Valu               |
+22 |                                          Time               |
+23 |                                          Func               |
+
+
+
+Filter Q, Dynamics,  Voltage out,  Phase shift depth,  Phase shift rate,
+Phase shift intensity,  Auxiliary control sub-address menu
+------------------------------------------------------------------------
+   0         1         2         3         4         5         6
+   012345678901234567890123456789012345678901234567890123456789012
+19 |                                          Srce               |
+20 |                                          Mult               |
+21 |                                          Valu               |
+22 |                                          Time               |
+23 |                                                             |

@@ -1,0 +1,106 @@
+Function point structure definitions	from instdsp.h Version 34 -- 1988-05-10
+------------------------------------	---------------------------------------
+
+struct	instpnt	{	/* function point definition */
+
+	short	iptim;		/* time (packed) */
+	short	ipval;		/* value */
+	short	ipvmlt;		/* value multiplier */
+
+	char	ipvsrc;		/* value source */
+	char	ipact;		/* action code */
+
+#define	AC_NULL		0	/* null action */
+#define	AC_SUST		1	/* sustain (hold here while key is down) */
+#define	AC_ENBL		2	/* enable  (hold here while key is up) */
+#define	AC_JUMP		3	/* unconditional (continuous) jump */
+#define	AC_LOOP		4	/* jump (loop) n times */
+#define	AC_KYUP		5	/* jump if key up (enable jump) */
+#define	AC_KYDN		6	/* jump if key down (sustain jump) */
+#define	AC_UNDF		7	/* -- undefined - treated as AC_NULL -- */
+
+	char	ippar1;		/* action parameter 1  (point) */
+	char	ippar2;		/* action parameter 2  (count) */
+
+	char	ippar3;		/* action parameter 3  (counter) */
+	char	ippad;		/* padding for even boundary */
+};
+
+
+Function header structure definitions
+-------------------------------------
+
+struct	idfnhdr	{	/* function header */
+
+	short	idfpch;		/* pitch (used for freq1 only) */
+	short	idfmlt;		/* overall value multiplier (-1 .. +1) */
+
+	char	idfsrc;		/* overall value source */
+	char	idfpif;		/* points in the function */
+
+	char	idfpt1;		/* index of first point (0..NIPTS) */
+	char	idftmd;		/* trigger mode and control bits */
+
+#define	I_TM_KEY	0x01	/* trigger on key closure */
+#define	I_ACTIVE	0x02	/* function active */
+#define	I_NRATIO	0x04	/* not ratio mode         (matches hardware) */
+#define	I_NVBITS	0x18	/* new value select bits  (matches hardware) */
+#define	I_VNSUBN	0x08	/* new value sub-n bit    (matches hardware) */
+
+	char	idfcpt;		/* index of current point (0..NIPTS) */
+	char	idfprm;		/* parameter associated with this function */
+
+	short	idftrg;		/* trigger that started the function */
+};
+
+
+Instrument definition structure definitions
+-------------------------------------------
+
+struct	instdef	{	/* instrument definition */
+
+	short	idhflag;		/* flags */
+
+	char	idhname[MAXIDLN+1];	/* instrument name */
+	char	idhcom1[MAXIDLN+1];	/* first line of comments */
+	char	idhcom2[MAXIDLN+1];	/* second line of comments */
+	char	idhcom3[MAXIDLN+1];	/* third line of comments */
+
+	char	idhcfg;			/* configuration byte */
+	char	idhplft;		/* points unused */
+
+	char	idhwsa;			/* waveshape A library number */
+	char	idhwsb;			/* waveshape B library number */
+
+	char	idhos1c;		/* oscillator 1 controls */
+	char	idhos2c;		/* oscillator 2 controls */
+	char	idhos3c;		/* oscillator 3 controls */
+	char	idhos4c;		/* oscillator 4 controls */
+
+#define	OC_MOD		0x0003		/* oscillator mode mask */
+
+#define	OC_INT		0x0000		/* oscillator in interval mode */
+#define	OC_RAT		0x0001		/* oscillator in ratio mode */
+#define	OC_FRQ		0x0002		/* oscillator in frequency mode */
+#define	OC_PCH		0x0003		/* oscillator in pitch mode */
+
+#define	OC_SYN		0x0004		/* oscillator in sync mode */
+
+	short	idhos1v;		/* oscillator 1 value */
+	short	idhos2v;		/* oscillator 2 value */
+	short	idhos3v;		/* oscillator 3 value */
+	short	idhos4v;		/* oscillator 4 value */
+
+	struct	idfnhdr	idhfnc[NFINST];	/* function headers */
+
+	struct	instpnt	idhpnt[NIPNTS];	/* point table */
+
+	short	idhwvaf[NUMWPNT];	/* waveshape A final values */
+	short	idhwvao[NUMWPNT];	/* waveshape A offset values */
+	short	idhwvah[NUMHARM];	/* waveshape A harmonic values */
+
+	short	idhwvbf[NUMWPNT];	/* waveshape B final values */
+	short	idhwvbo[NUMWPNT];	/* waveshape B offset values */
+	short	idhwvbh[NUMHARM];	/* waveshape B harmonic values */
+
+};

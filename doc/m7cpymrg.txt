@@ -1,0 +1,41 @@
+Copy / Merge Notes						1988-05-25
+------------------						----------
+
+The following tables are used to determine whether an event is copied or merged,
+whether or not the copy or merge should check group enable,
+where the group number is stored, if used, and
+whether or not an update of hplist[] will be needed.
+
+cmslens = event size		(number of longs, or 0 if not copied / merged)
+cmgtags = group sensitivity	(TRUE = group needs checked)
+cmgtype = group type		(0 = group in e_data1, 1 = group in e_data2)
+ehdlist = hplist update type	(header type, or -1 if no header)
+
+
+short	char	char	short
+cmslens	cmgtags	cmgtype	ehdlist		Event Type	Notes
+-------	-------	-------	-------		-------------	------------------------
+0	FALSE	0	-1		 0 - EV_NULL	Not copied or merged
+0	FALSE	0	-1		 1 - EV_SCORE	Not copied or merged
+0	FALSE	0	EH_SBGN		 2 - EV_SBGN	Not copied or merged
+0	FALSE	0	EH_SEND		 3 - EV_SEND	Not copied or merged
+6	TRUE	0	EH_INST		 4 - EV_INST
+5	TRUE	1	-1		 5 - EV_NBEG
+5	TRUE	1	-1		 6 - EV_NEND
+5	FALSE	0	-1		 7 - EV_STOP
+5	FALSE	0	EH_INTP		 8 - EV_INTP
+6	FALSE	0	EH_TMPO		 9 - EV_TMPO
+6	FALSE	0	EH_TUNE		10 - EV_TUNE
+6	TRUE	0	EH_GRP		11 - EV_GRP
+6	TRUE	0	EH_LOCN		12 - EV_LOCN
+6	TRUE	0	EH_DYN		13 - EV_DYN
+6	TRUE	0	-1		14 - EV_ANVL	Group is in 4 LS bits
+6	TRUE	0	EH_ANRS		15 - EV_ANRS	Group is in 4 LS bits
+6	FALSE	0	EH_ASGN		16 - EV_ASGN
+6	TRUE	0	EH_TRNS		17 - EV_TRNS
+5	FALSE	0	-1		18 - EV_REPT
+5	FALSE	0	-1		19 - EV_PNCH
+5	FALSE	0	-1		20 - EV_PRES
+0	FALSE	0	-1		21 - EV_FINI	Not copied or merged
+5	TRUE	1	-1		22 - EV_CPRS
+5	FALSE	0	-1		23 - EV_BAR

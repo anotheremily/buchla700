@@ -1,0 +1,21 @@
+t_prmtr		t_voice		t_other		t_eq		t_inst
+-------		-------		-------		----		------
+
+quiet		l_voice		quiet		quiet		l_group
+ROMPFN		l_voice		ROMPFN		ROMPFN		l_group
+								
+setlamp		l_voice		setlamp		setlamp		l_group
+l_clock		l_voice		l_clock		l_clock		l_group
+rpctl		l_voice		rpctl		rpctl		l_group
+								
+l_goto		l_voice		l_goto		l_goto		l_group
+l_inst		l_voice		l_inst		l_inst		l_group
+l_asgn		l_voice		l_asgn		l_asgn		l_group
+nokey		l_voice		nokey		nokey		l_group
+								
+nokey		l_voice		nokey		nokey		l_group
+nokey		l_voice		nokey		nokey		l_group
+l_other		l_voice		l_eq		l_eq		l_group
+								
+l_prmtr		l_prmtr		l_prmtr		l_prmtr		l_inst
+l_init		l_init		l_init		l_init		l_dflt

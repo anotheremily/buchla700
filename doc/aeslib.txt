@@ -1,0 +1,811 @@
+_ad_c    AP_FIND.O    00000000 Glb Ext
+_ad_c    AP_READ.O    00000000 Glb Ext
+_ad_c    AP_TPLAY.O   00000000 Glb Ext
+_ad_c    AP_TRECO.O   00000000 Glb Ext
+_ad_c    AP_WRITE.O   00000000 Glb Ext
+_ad_c    EV_BUTTO.O   00000000 Glb Ext
+_ad_c    EV_DCLIC.O   00000000 Glb Ext
+_ad_c    EV_KEYBD.O   00000000 Glb Ext
+_ad_c    EV_MESAG.O   00000000 Glb Ext
+_ad_c    EV_MOUSE.O   00000000 Glb Ext
+_ad_c    EV_MULTI.O   00000000 Glb Ext
+_ad_c    EV_TIMER.O   00000000 Glb Ext
+_ad_c    FM_ALERT.O   00000000 Glb Ext
+_ad_c    FM_CENTE.O   00000000 Glb Ext
+_ad_c    FM_DIAL.O    00000000 Glb Ext
+_ad_c    FM_DO.O      00000000 Glb Ext
+_ad_c    FM_ERROR.O   00000000 Glb Ext
+_ad_c    FS_INPUT.O   00000000 Glb Ext
+_ad_c    GR_DRAGB.O   00000000 Glb Ext
+_ad_c    GR_GROWB.O   00000000 Glb Ext
+_ad_c    GR_HANDL.O   00000000 Glb Ext
+_ad_c    GR_MBOX.O    00000000 Glb Ext
+_ad_c    GR_MKSTA.O   00000000 Glb Ext
+_ad_c    GR_MOUSE.O   00000000 Glb Ext
+_ad_c    GR_RUBBO.O   00000000 Glb Ext
+_ad_c    GR_SHRIN.O   00000000 Glb Ext
+_ad_c    GR_SLIDE.O   00000000 Glb Ext
+_ad_c    GR_WATCH.O   00000000 Glb Ext
+_ad_c    HEADER.O     00000004 Glb Ext
+_ad_c    MN_BAR.O     00000000 Glb Ext
+_ad_c    MN_ICHEC.O   00000000 Glb Ext
+_ad_c    MN_IENAB.O   00000000 Glb Ext
+_ad_c    MN_REGIS.O   00000000 Glb Ext
+_ad_c    MN_TEXT.O    00000000 Glb Ext
+_ad_c    MN_TNORM.O   00000000 Glb Ext
+_ad_c    OB_ADD.O     00000000 Glb Ext
+_ad_c    OB_CHANG.O   00000000 Glb Ext
+_ad_c    OB_DELET.O   00000000 Glb Ext
+_ad_c    OB_DRAW.O    00000000 Glb Ext
+_ad_c    OB_EDIT.O    00000000 Glb Ext
+_ad_c    OB_FIND.O    00000000 Glb Ext
+_ad_c    OB_OFFSE.O   00000000 Glb Ext
+_ad_c    OB_ORDER.O   00000000 Glb Ext
+_ad_c    RS_FREE.O    00000000 Glb Ext
+_ad_c    RS_GADDR.O   00000000 Glb Ext
+_ad_c    RS_LOAD.O    00000000 Glb Ext
+_ad_c    RS_OBFIX.O   00000000 Glb Ext
+_ad_c    RS_SADDR.O   00000000 Glb Ext
+_ad_c    SC_READ.O    00000000 Glb Ext
+_ad_c    SC_WRITE.O   00000000 Glb Ext
+_ad_c    SH_ENVRN.O   00000000 Glb Ext
+_ad_c    SH_FIND.O    00000000 Glb Ext
+_ad_c    SH_GET.O     00000000 Glb Ext
+_ad_c    SH_PUT.O     00000000 Glb Ext
+_ad_c    SH_READ.O    00000000 Glb Ext
+_ad_c    SH_WRITE.O   00000000 Glb Ext
+_ad_c    WN_CALC.O    00000000 Glb Ext
+_ad_c    WN_CLOSE.O   00000000 Glb Ext
+_ad_c    WN_CREAT.O   00000000 Glb Ext
+_ad_c    WN_DELET.O   00000000 Glb Ext
+_ad_c    WN_FIND.O    00000000 Glb Ext
+_ad_c    WN_GET.O     00000000 Glb Ext
+_ad_c    WN_OPEN.O    00000000 Glb Ext
+_ad_c    WN_SET.O     00000000 Glb Ext
+_ad_c    WN_UPDAT.O   00000000 Glb Ext
+
+_addr_in AP_FIND.O    00000000 Glb Ext
+_addr_in AP_READ.O    00000000 Glb Ext
+_addr_in AP_TPLAY.O   00000000 Glb Ext
+_addr_in AP_TRECO.O   00000000 Glb Ext
+_addr_in AP_WRITE.O   00000000 Glb Ext
+_addr_in EV_BUTTO.O   00000000 Glb Ext
+_addr_in EV_DCLIC.O   00000000 Glb Ext
+_addr_in EV_KEYBD.O   00000000 Glb Ext
+_addr_in EV_MESAG.O   00000000 Glb Ext
+_addr_in EV_MOUSE.O   00000000 Glb Ext
+_addr_in EV_MULTI.O   00000000 Glb Ext
+_addr_in EV_TIMER.O   00000000 Glb Ext
+_addr_in FM_ALERT.O   00000000 Glb Ext
+_addr_in FM_CENTE.O   00000000 Glb Ext
+_addr_in FM_DIAL.O    00000000 Glb Ext
+_addr_in FM_DO.O      00000000 Glb Ext
+_addr_in FM_ERROR.O   00000000 Glb Ext
+_addr_in FS_INPUT.O   00000000 Glb Ext
+_addr_in GR_DRAGB.O   00000000 Glb Ext
+_addr_in GR_GROWB.O   00000000 Glb Ext
+_addr_in GR_HANDL.O   00000000 Glb Ext
+_addr_in GR_MBOX.O    00000000 Glb Ext
+_addr_in GR_MKSTA.O   00000000 Glb Ext
+_addr_in GR_MOUSE.O   00000000 Glb Ext
+_addr_in GR_RUBBO.O   00000000 Glb Ext
+_addr_in GR_SHRIN.O   00000000 Glb Ext
+_addr_in GR_SLIDE.O   00000000 Glb Ext
+_addr_in GR_WATCH.O   00000000 Glb Ext
+_addr_in HEADER.O     00000008 Glb Ext
+_addr_in MN_BAR.O     00000000 Glb Ext
+_addr_in MN_ICHEC.O   00000000 Glb Ext
+_addr_in MN_IENAB.O   00000000 Glb Ext
+_addr_in MN_REGIS.O   00000000 Glb Ext
+_addr_in MN_TEXT.O    00000000 Glb Ext
+_addr_in MN_TNORM.O   00000000 Glb Ext
+_addr_in OB_ADD.O     00000000 Glb Ext
+_addr_in OB_CHANG.O   00000000 Glb Ext
+_addr_in OB_DELET.O   00000000 Glb Ext
+_addr_in OB_DRAW.O    00000000 Glb Ext
+_addr_in OB_EDIT.O    00000000 Glb Ext
+_addr_in OB_FIND.O    00000000 Glb Ext
+_addr_in OB_OFFSE.O   00000000 Glb Ext
+_addr_in OB_ORDER.O   00000000 Glb Ext
+_addr_in RS_FREE.O    00000000 Glb Ext
+_addr_in RS_GADDR.O   00000000 Glb Ext
+_addr_in RS_LOAD.O    00000000 Glb Ext
+_addr_in RS_OBFIX.O   00000000 Glb Ext
+_addr_in RS_SADDR.O   00000000 Glb Ext
+_addr_in SC_READ.O    00000000 Glb Ext
+_addr_in SC_WRITE.O   00000000 Glb Ext
+_addr_in SH_ENVRN.O   00000000 Glb Ext
+_addr_in SH_FIND.O    00000000 Glb Ext
+_addr_in SH_GET.O     00000000 Glb Ext
+_addr_in SH_PUT.O     00000000 Glb Ext
+_addr_in SH_READ.O    00000000 Glb Ext
+_addr_in SH_WRITE.O   00000000 Glb Ext
+_addr_in WN_CALC.O    00000000 Glb Ext
+_addr_in WN_CLOSE.O   00000000 Glb Ext
+_addr_in WN_CREAT.O   00000000 Glb Ext
+_addr_in WN_DELET.O   00000000 Glb Ext
+_addr_in WN_FIND.O    00000000 Glb Ext
+_addr_in WN_GET.O     00000000 Glb Ext
+_addr_in WN_OPEN.O    00000000 Glb Ext
+_addr_in WN_SET.O     00000000 Glb Ext
+_addr_in WN_UPDAT.O   00000000 Glb Ext
+
+_addr_ou AP_FIND.O    00000000 Glb Ext
+_addr_ou AP_READ.O    00000000 Glb Ext
+_addr_ou AP_TPLAY.O   00000000 Glb Ext
+_addr_ou AP_TRECO.O   00000000 Glb Ext
+_addr_ou AP_WRITE.O   00000000 Glb Ext
+_addr_ou EV_BUTTO.O   00000000 Glb Ext
+_addr_ou EV_DCLIC.O   00000000 Glb Ext
+_addr_ou EV_KEYBD.O   00000000 Glb Ext
+_addr_ou EV_MESAG.O   00000000 Glb Ext
+_addr_ou EV_MOUSE.O   00000000 Glb Ext
+_addr_ou EV_MULTI.O   00000000 Glb Ext
+_addr_ou EV_TIMER.O   00000000 Glb Ext
+_addr_ou FM_ALERT.O   00000000 Glb Ext
+_addr_ou FM_CENTE.O   00000000 Glb Ext
+_addr_ou FM_DIAL.O    00000000 Glb Ext
+_addr_ou FM_DO.O      00000000 Glb Ext
+_addr_ou FM_ERROR.O   00000000 Glb Ext
+_addr_ou FS_INPUT.O   00000000 Glb Ext
+_addr_ou GR_DRAGB.O   00000000 Glb Ext
+_addr_ou GR_GROWB.O   00000000 Glb Ext
+_addr_ou GR_HANDL.O   00000000 Glb Ext
+_addr_ou GR_MBOX.O    00000000 Glb Ext
+_addr_ou GR_MKSTA.O   00000000 Glb Ext
+_addr_ou GR_MOUSE.O   00000000 Glb Ext
+_addr_ou GR_RUBBO.O   00000000 Glb Ext
+_addr_ou GR_SHRIN.O   00000000 Glb Ext
+_addr_ou GR_SLIDE.O   00000000 Glb Ext
+_addr_ou GR_WATCH.O   00000000 Glb Ext
+_addr_ou HEADER.O     00000004 Glb Ext
+_addr_ou MN_BAR.O     00000000 Glb Ext
+_addr_ou MN_ICHEC.O   00000000 Glb Ext
+_addr_ou MN_IENAB.O   00000000 Glb Ext
+_addr_ou MN_REGIS.O   00000000 Glb Ext
+_addr_ou MN_TEXT.O    00000000 Glb Ext
+_addr_ou MN_TNORM.O   00000000 Glb Ext
+_addr_ou OB_ADD.O     00000000 Glb Ext
+_addr_ou OB_CHANG.O   00000000 Glb Ext
+_addr_ou OB_DELET.O   00000000 Glb Ext
+_addr_ou OB_DRAW.O    00000000 Glb Ext
+_addr_ou OB_EDIT.O    00000000 Glb Ext
+_addr_ou OB_FIND.O    00000000 Glb Ext
+_addr_ou OB_OFFSE.O   00000000 Glb Ext
+_addr_ou OB_ORDER.O   00000000 Glb Ext
+_addr_ou RS_FREE.O    00000000 Glb Ext
+_addr_ou RS_GADDR.O   00000000 Glb Ext
+_addr_ou RS_LOAD.O    00000000 Glb Ext
+_addr_ou RS_OBFIX.O   00000000 Glb Ext
+_addr_ou RS_SADDR.O   00000000 Glb Ext
+_addr_ou SC_READ.O    00000000 Glb Ext
+_addr_ou SC_WRITE.O   00000000 Glb Ext
+_addr_ou SH_ENVRN.O   00000000 Glb Ext
+_addr_ou SH_FIND.O    00000000 Glb Ext
+_addr_ou SH_GET.O     00000000 Glb Ext
+_addr_ou SH_PUT.O     00000000 Glb Ext
+_addr_ou SH_READ.O    00000000 Glb Ext
+_addr_ou SH_WRITE.O   00000000 Glb Ext
+_addr_ou WN_CALC.O    00000000 Glb Ext
+_addr_ou WN_CLOSE.O   00000000 Glb Ext
+_addr_ou WN_CREAT.O   00000000 Glb Ext
+_addr_ou WN_DELET.O   00000000 Glb Ext
+_addr_ou WN_FIND.O    00000000 Glb Ext
+_addr_ou WN_GET.O     00000000 Glb Ext
+_addr_ou WN_OPEN.O    00000000 Glb Ext
+_addr_ou WN_SET.O     00000000 Glb Ext
+_addr_ou WN_UPDAT.O   00000000 Glb Ext
+
+_appl_ex HEADER.O     000000CC Glb Txt
+
+_appl_fi AP_FIND.O    00000000 Glb Txt
+
+_appl_in HEADER.O     0000006A Glb Txt
+
+_appl_re AP_READ.O    00000000 Glb Txt
+
+_appl_tp AP_TPLAY.O   00000000 Glb Txt
+
+_appl_tr AP_TRECO.O   00000000 Glb Txt
+
+_appl_wr AP_WRITE.O   00000000 Glb Txt
+
+_c       AP_FIND.O    00000000 Glb Ext
+_c       AP_READ.O    00000000 Glb Ext
+_c       AP_TPLAY.O   00000000 Glb Ext
+_c       AP_TRECO.O   00000000 Glb Ext
+_c       AP_WRITE.O   00000000 Glb Ext
+_c       EV_BUTTO.O   00000000 Glb Ext
+_c       EV_DCLIC.O   00000000 Glb Ext
+_c       EV_KEYBD.O   00000000 Glb Ext
+_c       EV_MESAG.O   00000000 Glb Ext
+_c       EV_MOUSE.O   00000000 Glb Ext
+_c       EV_MULTI.O   00000000 Glb Ext
+_c       EV_TIMER.O   00000000 Glb Ext
+_c       FM_ALERT.O   00000000 Glb Ext
+_c       FM_CENTE.O   00000000 Glb Ext
+_c       FM_DIAL.O    00000000 Glb Ext
+_c       FM_DO.O      00000000 Glb Ext
+_c       FM_ERROR.O   00000000 Glb Ext
+_c       FS_INPUT.O   00000000 Glb Ext
+_c       GR_DRAGB.O   00000000 Glb Ext
+_c       GR_GROWB.O   00000000 Glb Ext
+_c       GR_HANDL.O   00000000 Glb Ext
+_c       GR_MBOX.O    00000000 Glb Ext
+_c       GR_MKSTA.O   00000000 Glb Ext
+_c       GR_MOUSE.O   00000000 Glb Ext
+_c       GR_RUBBO.O   00000000 Glb Ext
+_c       GR_SHRIN.O   00000000 Glb Ext
+_c       GR_SLIDE.O   00000000 Glb Ext
+_c       GR_WATCH.O   00000000 Glb Ext
+_c       HEADER.O     00000018 Glb Ext
+_c       MN_BAR.O     00000000 Glb Ext
+_c       MN_ICHEC.O   00000000 Glb Ext
+_c       MN_IENAB.O   00000000 Glb Ext
+_c       MN_REGIS.O   00000000 Glb Ext
+_c       MN_TEXT.O    00000000 Glb Ext
+_c       MN_TNORM.O   00000000 Glb Ext
+_c       OB_ADD.O     00000000 Glb Ext
+_c       OB_CHANG.O   00000000 Glb Ext
+_c       OB_DELET.O   00000000 Glb Ext
+_c       OB_DRAW.O    00000000 Glb Ext
+_c       OB_EDIT.O    00000000 Glb Ext
+_c       OB_FIND.O    00000000 Glb Ext
+_c       OB_OFFSE.O   00000000 Glb Ext
+_c       OB_ORDER.O   00000000 Glb Ext
+_c       RS_FREE.O    00000000 Glb Ext
+_c       RS_GADDR.O   00000000 Glb Ext
+_c       RS_LOAD.O    00000000 Glb Ext
+_c       RS_OBFIX.O   00000000 Glb Ext
+_c       RS_SADDR.O   00000000 Glb Ext
+_c       SC_READ.O    00000000 Glb Ext
+_c       SC_WRITE.O   00000000 Glb Ext
+_c       SH_ENVRN.O   00000000 Glb Ext
+_c       SH_FIND.O    00000000 Glb Ext
+_c       SH_GET.O     00000000 Glb Ext
+_c       SH_PUT.O     00000000 Glb Ext
+_c       SH_READ.O    00000000 Glb Ext
+_c       SH_WRITE.O   00000000 Glb Ext
+_c       WN_CALC.O    00000000 Glb Ext
+_c       WN_CLOSE.O   00000000 Glb Ext
+_c       WN_CREAT.O   00000000 Glb Ext
+_c       WN_DELET.O   00000000 Glb Ext
+_c       WN_FIND.O    00000000 Glb Ext
+_c       WN_GET.O     00000000 Glb Ext
+_c       WN_OPEN.O    00000000 Glb Ext
+_c       WN_SET.O     00000000 Glb Ext
+_c       WN_UPDAT.O   00000000 Glb Ext
+
+_control AP_FIND.O    00000000 Glb Ext
+_control AP_READ.O    00000000 Glb Ext
+_control AP_TPLAY.O   00000000 Glb Ext
+_control AP_TRECO.O   00000000 Glb Ext
+_control AP_WRITE.O   00000000 Glb Ext
+_control EV_BUTTO.O   00000000 Glb Ext
+_control EV_DCLIC.O   00000000 Glb Ext
+_control EV_KEYBD.O   00000000 Glb Ext
+_control EV_MESAG.O   00000000 Glb Ext
+_control EV_MOUSE.O   00000000 Glb Ext
+_control EV_MULTI.O   00000000 Glb Ext
+_control EV_TIMER.O   00000000 Glb Ext
+_control FM_ALERT.O   00000000 Glb Ext
+_control FM_CENTE.O   00000000 Glb Ext
+_control FM_DIAL.O    00000000 Glb Ext
+_control FM_DO.O      00000000 Glb Ext
+_control FM_ERROR.O   00000000 Glb Ext
+_control FS_INPUT.O   00000000 Glb Ext
+_control GR_DRAGB.O   00000000 Glb Ext
+_control GR_GROWB.O   00000000 Glb Ext
+_control GR_HANDL.O   00000000 Glb Ext
+_control GR_MBOX.O    00000000 Glb Ext
+_control GR_MKSTA.O   00000000 Glb Ext
+_control GR_MOUSE.O   00000000 Glb Ext
+_control GR_RUBBO.O   00000000 Glb Ext
+_control GR_SHRIN.O   00000000 Glb Ext
+_control GR_SLIDE.O   00000000 Glb Ext
+_control GR_WATCH.O   00000000 Glb Ext
+_control HEADER.O     00000008 Glb Ext
+_control MN_BAR.O     00000000 Glb Ext
+_control MN_ICHEC.O   00000000 Glb Ext
+_control MN_IENAB.O   00000000 Glb Ext
+_control MN_REGIS.O   00000000 Glb Ext
+_control MN_TEXT.O    00000000 Glb Ext
+_control MN_TNORM.O   00000000 Glb Ext
+_control OB_ADD.O     00000000 Glb Ext
+_control OB_CHANG.O   00000000 Glb Ext
+_control OB_DELET.O   00000000 Glb Ext
+_control OB_DRAW.O    00000000 Glb Ext
+_control OB_EDIT.O    00000000 Glb Ext
+_control OB_FIND.O    00000000 Glb Ext
+_control OB_OFFSE.O   00000000 Glb Ext
+_control OB_ORDER.O   00000000 Glb Ext
+_control RS_FREE.O    00000000 Glb Ext
+_control RS_GADDR.O   00000000 Glb Ext
+_control RS_LOAD.O    00000000 Glb Ext
+_control RS_OBFIX.O   00000000 Glb Ext
+_control RS_SADDR.O   00000000 Glb Ext
+_control SC_READ.O    00000000 Glb Ext
+_control SC_WRITE.O   00000000 Glb Ext
+_control SH_ENVRN.O   00000000 Glb Ext
+_control SH_FIND.O    00000000 Glb Ext
+_control SH_GET.O     00000000 Glb Ext
+_control SH_PUT.O     00000000 Glb Ext
+_control SH_READ.O    00000000 Glb Ext
+_control SH_WRITE.O   00000000 Glb Ext
+_control WN_CALC.O    00000000 Glb Ext
+_control WN_CLOSE.O   00000000 Glb Ext
+_control WN_CREAT.O   00000000 Glb Ext
+_control WN_DELET.O   00000000 Glb Ext
+_control WN_FIND.O    00000000 Glb Ext
+_control WN_GET.O     00000000 Glb Ext
+_control WN_OPEN.O    00000000 Glb Ext
+_control WN_SET.O     00000000 Glb Ext
+_control WN_UPDAT.O   00000000 Glb Ext
+
+_crys_if AP_FIND.O    00000000 Ext
+_crys_if AP_READ.O    00000000 Ext
+_crys_if AP_TPLAY.O   00000000 Ext
+_crys_if AP_TRECO.O   00000000 Ext
+_crys_if AP_WRITE.O   00000000 Ext
+_crys_if EV_BUTTO.O   00000000 Ext
+_crys_if EV_DCLIC.O   00000000 Ext
+_crys_if EV_KEYBD.O   00000000 Ext
+_crys_if EV_MESAG.O   00000000 Ext
+_crys_if EV_MOUSE.O   00000000 Ext
+_crys_if EV_MULTI.O   00000000 Ext
+_crys_if EV_TIMER.O   00000000 Ext
+_crys_if FM_ALERT.O   00000000 Ext
+_crys_if FM_CENTE.O   00000000 Ext
+_crys_if FM_DIAL.O    00000000 Ext
+_crys_if FM_DO.O      00000000 Ext
+_crys_if FM_ERROR.O   00000000 Ext
+_crys_if FS_INPUT.O   00000000 Ext
+_crys_if GR_DRAGB.O   00000000 Ext
+_crys_if GR_GROWB.O   00000000 Ext
+_crys_if GR_HANDL.O   00000000 Ext
+_crys_if GR_MBOX.O    00000000 Ext
+_crys_if GR_MKSTA.O   00000000 Ext
+_crys_if GR_MOUSE.O   00000000 Ext
+_crys_if GR_RUBBO.O   00000000 Ext
+_crys_if GR_SHRIN.O   00000000 Ext
+_crys_if GR_SLIDE.O   00000000 Ext
+_crys_if GR_WATCH.O   00000000 Ext
+_crys_if HEADER.O     00000000 Glb Txt
+_crys_if MN_BAR.O     00000000 Ext
+_crys_if MN_ICHEC.O   00000000 Ext
+_crys_if MN_IENAB.O   00000000 Ext
+_crys_if MN_REGIS.O   00000000 Ext
+_crys_if MN_TEXT.O    00000000 Ext
+_crys_if MN_TNORM.O   00000000 Ext
+_crys_if OB_ADD.O     00000000 Ext
+_crys_if OB_CHANG.O   00000000 Ext
+_crys_if OB_DELET.O   00000000 Ext
+_crys_if OB_DRAW.O    00000000 Ext
+_crys_if OB_EDIT.O    00000000 Ext
+_crys_if OB_FIND.O    00000000 Ext
+_crys_if OB_OFFSE.O   00000000 Ext
+_crys_if OB_ORDER.O   00000000 Ext
+_crys_if RS_FREE.O    00000000 Ext
+_crys_if RS_GADDR.O   00000000 Ext
+_crys_if RS_LOAD.O    00000000 Ext
+_crys_if RS_OBFIX.O   00000000 Ext
+_crys_if RS_SADDR.O   00000000 Ext
+_crys_if SC_READ.O    00000000 Ext
+_crys_if SC_WRITE.O   00000000 Ext
+_crys_if SH_ENVRN.O   00000000 Ext
+_crys_if SH_FIND.O    00000000 Ext
+_crys_if SH_GET.O     00000000 Ext
+_crys_if SH_PUT.O     00000000 Ext
+_crys_if SH_READ.O    00000000 Ext
+_crys_if SH_WRITE.O   00000000 Ext
+_crys_if WN_CALC.O    00000000 Ext
+_crys_if WN_CLOSE.O   00000000 Ext
+_crys_if WN_CREAT.O   00000000 Ext
+_crys_if WN_DELET.O   00000000 Ext
+_crys_if WN_FIND.O    00000000 Ext
+_crys_if WN_GET.O     00000000 Ext
+_crys_if WN_OPEN.O    00000000 Ext
+_crys_if WN_SET.O     00000000 Ext
+_crys_if WN_UPDAT.O   00000000 Ext
+
+_crystal HEADER.O     00000000 Ext
+
+_ctrl_cn HEADER.O     00000000 Glb Ext
+
+_evnt_bu EV_BUTTO.O   00000000 Glb Txt
+
+_evnt_dc EV_DCLIC.O   00000000 Glb Txt
+
+_evnt_ke EV_KEYBD.O   00000000 Glb Txt
+
+_evnt_me EV_MESAG.O   00000000 Glb Txt
+
+_evnt_mo EV_MOUSE.O   00000000 Glb Txt
+
+_evnt_mu EV_MULTI.O   00000000 Glb Txt
+
+_evnt_ti EV_TIMER.O   00000000 Glb Txt
+
+_form_al FM_ALERT.O   00000000 Glb Txt
+
+_form_ce FM_CENTE.O   00000000 Glb Txt
+
+_form_di FM_DIAL.O    00000000 Glb Txt
+
+_form_do FM_DO.O      00000000 Glb Txt
+
+_form_er FM_ERROR.O   00000000 Glb Txt
+
+_fsel_in FS_INPUT.O   00000000 Glb Txt
+
+_gl_apid AP_FIND.O    00000000 Glb Ext
+_gl_apid AP_READ.O    00000000 Glb Ext
+_gl_apid AP_TPLAY.O   00000000 Glb Ext
+_gl_apid AP_TRECO.O   00000000 Glb Ext
+_gl_apid AP_WRITE.O   00000000 Glb Ext
+_gl_apid EV_BUTTO.O   00000000 Glb Ext
+_gl_apid EV_DCLIC.O   00000000 Glb Ext
+_gl_apid EV_KEYBD.O   00000000 Glb Ext
+_gl_apid EV_MESAG.O   00000000 Glb Ext
+_gl_apid EV_MOUSE.O   00000000 Glb Ext
+_gl_apid EV_MULTI.O   00000000 Glb Ext
+_gl_apid EV_TIMER.O   00000000 Glb Ext
+_gl_apid FM_ALERT.O   00000000 Glb Ext
+_gl_apid FM_CENTE.O   00000000 Glb Ext
+_gl_apid FM_DIAL.O    00000000 Glb Ext
+_gl_apid FM_DO.O      00000000 Glb Ext
+_gl_apid FM_ERROR.O   00000000 Glb Ext
+_gl_apid FS_INPUT.O   00000000 Glb Ext
+_gl_apid GR_DRAGB.O   00000000 Glb Ext
+_gl_apid GR_GROWB.O   00000000 Glb Ext
+_gl_apid GR_HANDL.O   00000000 Glb Ext
+_gl_apid GR_MBOX.O    00000000 Glb Ext
+_gl_apid GR_MKSTA.O   00000000 Glb Ext
+_gl_apid GR_MOUSE.O   00000000 Glb Ext
+_gl_apid GR_RUBBO.O   00000000 Glb Ext
+_gl_apid GR_SHRIN.O   00000000 Glb Ext
+_gl_apid GR_SLIDE.O   00000000 Glb Ext
+_gl_apid GR_WATCH.O   00000000 Glb Ext
+_gl_apid HEADER.O     00000002 Glb Ext
+_gl_apid MN_BAR.O     00000000 Glb Ext
+_gl_apid MN_ICHEC.O   00000000 Glb Ext
+_gl_apid MN_IENAB.O   00000000 Glb Ext
+_gl_apid MN_REGIS.O   00000000 Glb Ext
+_gl_apid MN_TEXT.O    00000000 Glb Ext
+_gl_apid MN_TNORM.O   00000000 Glb Ext
+_gl_apid OB_ADD.O     00000000 Glb Ext
+_gl_apid OB_CHANG.O   00000000 Glb Ext
+_gl_apid OB_DELET.O   00000000 Glb Ext
+_gl_apid OB_DRAW.O    00000000 Glb Ext
+_gl_apid OB_EDIT.O    00000000 Glb Ext
+_gl_apid OB_FIND.O    00000000 Glb Ext
+_gl_apid OB_OFFSE.O   00000000 Glb Ext
+_gl_apid OB_ORDER.O   00000000 Glb Ext
+_gl_apid RS_FREE.O    00000000 Glb Ext
+_gl_apid RS_GADDR.O   00000000 Glb Ext
+_gl_apid RS_LOAD.O    00000000 Glb Ext
+_gl_apid RS_OBFIX.O   00000000 Glb Ext
+_gl_apid RS_SADDR.O   00000000 Glb Ext
+_gl_apid SC_READ.O    00000000 Glb Ext
+_gl_apid SC_WRITE.O   00000000 Glb Ext
+_gl_apid SH_ENVRN.O   00000000 Glb Ext
+_gl_apid SH_FIND.O    00000000 Glb Ext
+_gl_apid SH_GET.O     00000000 Glb Ext
+_gl_apid SH_PUT.O     00000000 Glb Ext
+_gl_apid SH_READ.O    00000000 Glb Ext
+_gl_apid SH_WRITE.O   00000000 Glb Ext
+_gl_apid WN_CALC.O    00000000 Glb Ext
+_gl_apid WN_CLOSE.O   00000000 Glb Ext
+_gl_apid WN_CREAT.O   00000000 Glb Ext
+_gl_apid WN_DELET.O   00000000 Glb Ext
+_gl_apid WN_FIND.O    00000000 Glb Ext
+_gl_apid WN_GET.O     00000000 Glb Ext
+_gl_apid WN_OPEN.O    00000000 Glb Ext
+_gl_apid WN_SET.O     00000000 Glb Ext
+_gl_apid WN_UPDAT.O   00000000 Glb Ext
+
+_global  AP_FIND.O    00000000 Glb Ext
+_global  AP_READ.O    00000000 Glb Ext
+_global  AP_TPLAY.O   00000000 Glb Ext
+_global  AP_TRECO.O   00000000 Glb Ext
+_global  AP_WRITE.O   00000000 Glb Ext
+_global  EV_BUTTO.O   00000000 Glb Ext
+_global  EV_DCLIC.O   00000000 Glb Ext
+_global  EV_KEYBD.O   00000000 Glb Ext
+_global  EV_MESAG.O   00000000 Glb Ext
+_global  EV_MOUSE.O   00000000 Glb Ext
+_global  EV_MULTI.O   00000000 Glb Ext
+_global  EV_TIMER.O   00000000 Glb Ext
+_global  FM_ALERT.O   00000000 Glb Ext
+_global  FM_CENTE.O   00000000 Glb Ext
+_global  FM_DIAL.O    00000000 Glb Ext
+_global  FM_DO.O      00000000 Glb Ext
+_global  FM_ERROR.O   00000000 Glb Ext
+_global  FS_INPUT.O   00000000 Glb Ext
+_global  GR_DRAGB.O   00000000 Glb Ext
+_global  GR_GROWB.O   00000000 Glb Ext
+_global  GR_HANDL.O   00000000 Glb Ext
+_global  GR_MBOX.O    00000000 Glb Ext
+_global  GR_MKSTA.O   00000000 Glb Ext
+_global  GR_MOUSE.O   00000000 Glb Ext
+_global  GR_RUBBO.O   00000000 Glb Ext
+_global  GR_SHRIN.O   00000000 Glb Ext
+_global  GR_SLIDE.O   00000000 Glb Ext
+_global  GR_WATCH.O   00000000 Glb Ext
+_global  HEADER.O     0000001E Glb Ext
+_global  MN_BAR.O     00000000 Glb Ext
+_global  MN_ICHEC.O   00000000 Glb Ext
+_global  MN_IENAB.O   00000000 Glb Ext
+_global  MN_REGIS.O   00000000 Glb Ext
+_global  MN_TEXT.O    00000000 Glb Ext
+_global  MN_TNORM.O   00000000 Glb Ext
+_global  OB_ADD.O     00000000 Glb Ext
+_global  OB_CHANG.O   00000000 Glb Ext
+_global  OB_DELET.O   00000000 Glb Ext
+_global  OB_DRAW.O    00000000 Glb Ext
+_global  OB_EDIT.O    00000000 Glb Ext
+_global  OB_FIND.O    00000000 Glb Ext
+_global  OB_OFFSE.O   00000000 Glb Ext
+_global  OB_ORDER.O   00000000 Glb Ext
+_global  RS_FREE.O    00000000 Glb Ext
+_global  RS_GADDR.O   00000000 Glb Ext
+_global  RS_LOAD.O    00000000 Glb Ext
+_global  RS_OBFIX.O   00000000 Glb Ext
+_global  RS_SADDR.O   00000000 Glb Ext
+_global  SC_READ.O    00000000 Glb Ext
+_global  SC_WRITE.O   00000000 Glb Ext
+_global  SH_ENVRN.O   00000000 Glb Ext
+_global  SH_FIND.O    00000000 Glb Ext
+_global  SH_GET.O     00000000 Glb Ext
+_global  SH_PUT.O     00000000 Glb Ext
+_global  SH_READ.O    00000000 Glb Ext
+_global  SH_WRITE.O   00000000 Glb Ext
+_global  WN_CALC.O    00000000 Glb Ext
+_global  WN_CLOSE.O   00000000 Glb Ext
+_global  WN_CREAT.O   00000000 Glb Ext
+_global  WN_DELET.O   00000000 Glb Ext
+_global  WN_FIND.O    00000000 Glb Ext
+_global  WN_GET.O     00000000 Glb Ext
+_global  WN_OPEN.O    00000000 Glb Ext
+_global  WN_SET.O     00000000 Glb Ext
+_global  WN_UPDAT.O   00000000 Glb Ext
+
+_graf_dr GR_DRAGB.O   00000000 Glb Txt
+
+_graf_gr GR_GROWB.O   00000000 Glb Txt
+
+_graf_ha GR_HANDL.O   00000000 Glb Txt
+
+_graf_mb GR_MBOX.O    00000000 Glb Txt
+
+_graf_mk GR_MKSTA.O   00000000 Glb Txt
+
+_graf_mo GR_MOUSE.O   00000000 Glb Txt
+
+_graf_ru GR_RUBBO.O   00000000 Glb Txt
+
+_graf_sh GR_SHRIN.O   00000000 Glb Txt
+
+_graf_sl GR_SLIDE.O   00000000 Glb Txt
+
+_graf_wa GR_WATCH.O   00000000 Glb Txt
+
+_int_in  AP_FIND.O    00000000 Glb Ext
+_int_in  AP_READ.O    00000000 Glb Ext
+_int_in  AP_TPLAY.O   00000000 Glb Ext
+_int_in  AP_TRECO.O   00000000 Glb Ext
+_int_in  AP_WRITE.O   00000000 Glb Ext
+_int_in  EV_BUTTO.O   00000000 Glb Ext
+_int_in  EV_DCLIC.O   00000000 Glb Ext
+_int_in  EV_KEYBD.O   00000000 Glb Ext
+_int_in  EV_MESAG.O   00000000 Glb Ext
+_int_in  EV_MOUSE.O   00000000 Glb Ext
+_int_in  EV_MULTI.O   00000000 Glb Ext
+_int_in  EV_TIMER.O   00000000 Glb Ext
+_int_in  FM_ALERT.O   00000000 Glb Ext
+_int_in  FM_CENTE.O   00000000 Glb Ext
+_int_in  FM_DIAL.O    00000000 Glb Ext
+_int_in  FM_DO.O      00000000 Glb Ext
+_int_in  FM_ERROR.O   00000000 Glb Ext
+_int_in  FS_INPUT.O   00000000 Glb Ext
+_int_in  GR_DRAGB.O   00000000 Glb Ext
+_int_in  GR_GROWB.O   00000000 Glb Ext
+_int_in  GR_HANDL.O   00000000 Glb Ext
+_int_in  GR_MBOX.O    00000000 Glb Ext
+_int_in  GR_MKSTA.O   00000000 Glb Ext
+_int_in  GR_MOUSE.O   00000000 Glb Ext
+_int_in  GR_RUBBO.O   00000000 Glb Ext
+_int_in  GR_SHRIN.O   00000000 Glb Ext
+_int_in  GR_SLIDE.O   00000000 Glb Ext
+_int_in  GR_WATCH.O   00000000 Glb Ext
+_int_in  HEADER.O     00000020 Glb Ext
+_int_in  MN_BAR.O     00000000 Glb Ext
+_int_in  MN_ICHEC.O   00000000 Glb Ext
+_int_in  MN_IENAB.O   00000000 Glb Ext
+_int_in  MN_REGIS.O   00000000 Glb Ext
+_int_in  MN_TEXT.O    00000000 Glb Ext
+_int_in  MN_TNORM.O   00000000 Glb Ext
+_int_in  OB_ADD.O     00000000 Glb Ext
+_int_in  OB_CHANG.O   00000000 Glb Ext
+_int_in  OB_DELET.O   00000000 Glb Ext
+_int_in  OB_DRAW.O    00000000 Glb Ext
+_int_in  OB_EDIT.O    00000000 Glb Ext
+_int_in  OB_FIND.O    00000000 Glb Ext
+_int_in  OB_OFFSE.O   00000000 Glb Ext
+_int_in  OB_ORDER.O   00000000 Glb Ext
+_int_in  RS_FREE.O    00000000 Glb Ext
+_int_in  RS_GADDR.O   00000000 Glb Ext
+_int_in  RS_LOAD.O    00000000 Glb Ext
+_int_in  RS_OBFIX.O   00000000 Glb Ext
+_int_in  RS_SADDR.O   00000000 Glb Ext
+_int_in  SC_READ.O    00000000 Glb Ext
+_int_in  SC_WRITE.O   00000000 Glb Ext
+_int_in  SH_ENVRN.O   00000000 Glb Ext
+_int_in  SH_FIND.O    00000000 Glb Ext
+_int_in  SH_GET.O     00000000 Glb Ext
+_int_in  SH_PUT.O     00000000 Glb Ext
+_int_in  SH_READ.O    00000000 Glb Ext
+_int_in  SH_WRITE.O   00000000 Glb Ext
+_int_in  WN_CALC.O    00000000 Glb Ext
+_int_in  WN_CLOSE.O   00000000 Glb Ext
+_int_in  WN_CREAT.O   00000000 Glb Ext
+_int_in  WN_DELET.O   00000000 Glb Ext
+_int_in  WN_FIND.O    00000000 Glb Ext
+_int_in  WN_GET.O     00000000 Glb Ext
+_int_in  WN_OPEN.O    00000000 Glb Ext
+_int_in  WN_SET.O     00000000 Glb Ext
+_int_in  WN_UPDAT.O   00000000 Glb Ext
+
+_int_out AP_FIND.O    00000000 Glb Ext
+_int_out AP_READ.O    00000000 Glb Ext
+_int_out AP_TPLAY.O   00000000 Glb Ext
+_int_out AP_TRECO.O   00000000 Glb Ext
+_int_out AP_WRITE.O   00000000 Glb Ext
+_int_out EV_BUTTO.O   00000000 Glb Ext
+_int_out EV_DCLIC.O   00000000 Glb Ext
+_int_out EV_KEYBD.O   00000000 Glb Ext
+_int_out EV_MESAG.O   00000000 Glb Ext
+_int_out EV_MOUSE.O   00000000 Glb Ext
+_int_out EV_MULTI.O   00000000 Glb Ext
+_int_out EV_TIMER.O   00000000 Glb Ext
+_int_out FM_ALERT.O   00000000 Glb Ext
+_int_out FM_CENTE.O   00000000 Glb Ext
+_int_out FM_DIAL.O    00000000 Glb Ext
+_int_out FM_DO.O      00000000 Glb Ext
+_int_out FM_ERROR.O   00000000 Glb Ext
+_int_out FS_INPUT.O   00000000 Glb Ext
+_int_out GR_DRAGB.O   00000000 Glb Ext
+_int_out GR_GROWB.O   00000000 Glb Ext
+_int_out GR_HANDL.O   00000000 Glb Ext
+_int_out GR_MBOX.O    00000000 Glb Ext
+_int_out GR_MKSTA.O   00000000 Glb Ext
+_int_out GR_MOUSE.O   00000000 Glb Ext
+_int_out GR_RUBBO.O   00000000 Glb Ext
+_int_out GR_SHRIN.O   00000000 Glb Ext
+_int_out GR_SLIDE.O   00000000 Glb Ext
+_int_out GR_WATCH.O   00000000 Glb Ext
+_int_out HEADER.O     0000000E Glb Ext
+_int_out MN_BAR.O     00000000 Glb Ext
+_int_out MN_ICHEC.O   00000000 Glb Ext
+_int_out MN_IENAB.O   00000000 Glb Ext
+_int_out MN_REGIS.O   00000000 Glb Ext
+_int_out MN_TEXT.O    00000000 Glb Ext
+_int_out MN_TNORM.O   00000000 Glb Ext
+_int_out OB_ADD.O     00000000 Glb Ext
+_int_out OB_CHANG.O   00000000 Glb Ext
+_int_out OB_DELET.O   00000000 Glb Ext
+_int_out OB_DRAW.O    00000000 Glb Ext
+_int_out OB_EDIT.O    00000000 Glb Ext
+_int_out OB_FIND.O    00000000 Glb Ext
+_int_out OB_OFFSE.O   00000000 Glb Ext
+_int_out OB_ORDER.O   00000000 Glb Ext
+_int_out RS_FREE.O    00000000 Glb Ext
+_int_out RS_GADDR.O   00000000 Glb Ext
+_int_out RS_LOAD.O    00000000 Glb Ext
+_int_out RS_OBFIX.O   00000000 Glb Ext
+_int_out RS_SADDR.O   00000000 Glb Ext
+_int_out SC_READ.O    00000000 Glb Ext
+_int_out SC_WRITE.O   00000000 Glb Ext
+_int_out SH_ENVRN.O   00000000 Glb Ext
+_int_out SH_FIND.O    00000000 Glb Ext
+_int_out SH_GET.O     00000000 Glb Ext
+_int_out SH_PUT.O     00000000 Glb Ext
+_int_out SH_READ.O    00000000 Glb Ext
+_int_out SH_WRITE.O   00000000 Glb Ext
+_int_out WN_CALC.O    00000000 Glb Ext
+_int_out WN_CLOSE.O   00000000 Glb Ext
+_int_out WN_CREAT.O   00000000 Glb Ext
+_int_out WN_DELET.O   00000000 Glb Ext
+_int_out WN_FIND.O    00000000 Glb Ext
+_int_out WN_GET.O     00000000 Glb Ext
+_int_out WN_OPEN.O    00000000 Glb Ext
+_int_out WN_SET.O     00000000 Glb Ext
+_int_out WN_UPDAT.O   00000000 Glb Ext
+
+_max     MAX.O        00000000 Glb Txt
+_max     RC_INTER.O   00000000 Ext
+_max     RC_UNION.O   00000000 Ext
+
+_menu_ba MN_BAR.O     00000000 Glb Txt
+
+_menu_ic MN_ICHEC.O   00000000 Glb Txt
+
+_menu_ie MN_IENAB.O   00000000 Glb Txt
+
+_menu_re MN_REGIS.O   00000000 Glb Txt
+
+_menu_te MN_TEXT.O    00000000 Glb Txt
+
+_menu_tn MN_TNORM.O   00000000 Glb Txt
+
+_min     MIN.O        00000000 Glb Txt
+_min     RC_INTER.O   00000000 Ext
+_min     RC_UNION.O   00000000 Ext
+
+_objc_ad OB_ADD.O     00000000 Glb Txt
+
+_objc_ch OB_CHANG.O   00000000 Glb Txt
+
+_objc_de OB_DELET.O   00000000 Glb Txt
+
+_objc_dr OB_DRAW.O    00000000 Glb Txt
+
+_objc_ed OB_EDIT.O    00000000 Glb Txt
+
+_objc_fi OB_FIND.O    00000000 Glb Txt
+
+_objc_of OB_OFFSE.O   00000000 Glb Txt
+
+_objc_or OB_ORDER.O   00000000 Glb Txt
+
+_rc_copy RC_COPY.O    00000000 Glb Txt
+
+_rc_equa RC_EQUAL.O   00000000 Glb Txt
+
+_rc_inte RC_INTER.O   00000000 Glb Txt
+
+_rc_unio RC_UNION.O   00000000 Glb Txt
+
+_rsrc_fr RS_FREE.O    00000000 Glb Txt
+
+_rsrc_ga RS_GADDR.O   00000000 Glb Txt
+
+_rsrc_lo RS_LOAD.O    00000000 Glb Txt
+
+_rsrc_ob RS_OBFIX.O   00000000 Glb Txt
+
+_rsrc_sa RS_SADDR.O   00000000 Glb Txt
+
+_scrp_re SC_READ.O    00000000 Glb Txt
+
+_scrp_wr SC_WRITE.O   00000000 Glb Txt
+
+_shel_en SH_ENVRN.O   00000000 Glb Txt
+
+_shel_fi SH_FIND.O    00000000 Glb Txt
+
+_shel_ge SH_GET.O     00000000 Glb Txt
+
+_shel_pu SH_PUT.O     00000000 Glb Txt
+
+_shel_re SH_READ.O    00000000 Glb Txt
+
+_shel_wr SH_WRITE.O   00000000 Glb Txt
+
+_wind_ca WN_CALC.O    00000000 Glb Txt
+
+_wind_cl WN_CLOSE.O   00000000 Glb Txt
+
+_wind_cr WN_CREAT.O   00000000 Glb Txt
+
+_wind_de WN_DELET.O   00000000 Glb Txt
+
+_wind_fi WN_FIND.O    00000000 Glb Txt
+
+_wind_ge WN_GET.O     00000000 Glb Txt
+
+_wind_op WN_OPEN.O    00000000 Glb Txt
+
+_wind_se WN_SET.O     00000000 Glb Txt
+
+_wind_up WN_UPDAT.O   00000000 Glb Txt

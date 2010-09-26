@@ -1,0 +1,67 @@
+
+
+
+     SSSSUUUUNNNN((((1111))))                UUUUNNNNIIIIXXXX 5555....0000 ((((9999 MMMMaaaayyyy 1111999988885555))))                SSSSUUUUNNNN((((1111))))
+
+
+
+     NNNNAAAAMMMMEEEE
+          sun - calculate sunrise and sunset times
+
+     SSSSYYYYNNNNOOOOPPPPSSSSIIIISSSS
+          ssssuuuunnnn [ ----pppp ] [ ----tttt _h:_m:_s ] [ ----dddd _m/_d/_y ] [ ----aaaa _l_a_t ] [ ----oooo _l_o_n ]
+           [ ----zzzz _t_z ]
+
+     DDDDEEEESSSSCCCCRRRRIIIIPPPPTTTTIIIIOOOONNNN
+          _S_u_n Calculates the times of sunrise and sunset for the
+          current system date.  Optionally, _s_u_n calculates the current
+          position of the sun and its position at sunrise and sunset
+          for other dates, times and places.
+
+          The command line options are:
+
+          ----pppp   Show current altitude and azimuth for the sun and its
+               azimuth at sunrise and sunset.
+
+          ----tttt _h:_m:_s
+               Use _h:_m:_s as local hours (24 hour clock), minutes and
+               seconds as the time instead of the current system time.
+
+          ----dddd _m/_d/_y
+               Use _m/_d/_y as the month, day and year instead of the
+               current system date.
+
+          ----aaaa _l_a_t
+               Use _l_a_t as the latitude of the observer, instead of the
+               system latitude.  The latitude is specified in decimal
+               degrees north.  For example, use 45.5333 for Beaverton,
+               Oregon.
+
+          ----oooo _l_o_n
+               Use _l_o_n as the longitude of the observer, instead of
+               the system longitude.  The longitude is specified in
+               decimal degrees west.  For example, use 122.8333 for
+               Beaverton, Oregon.
+
+          ----zzzz _t_z
+               Use _t_z as the time zone of the observer, instead of the
+               current system timezone.  Timezone is specified as a
+               positive number for locations west of Greenwich.  For
+               example, use 8 for Pacific Standard Time.
+
+     AAAAUUUUTTTTHHHHOOOORRRR
+          Robert Bond
+
+     BBBBUUUUGGGGSSSS
+          Should figure out timezone and guess at longitude from the
+          system time. Timezone, latitude and longitude are compiled
+          in.
+
+
+
+
+     Page 1                                          (printed 5/15/85)
+
+
+
+

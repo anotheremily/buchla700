@@ -1,0 +1,20 @@
+Organization	Part		Type	Vpp	Address lines
+------------	------		----	-----	-------------
+
+ 1K x 8		2708		NMOS	21.0V	10     A9..A0
+
+ 2K x 8		2716		NMOS	21.0V	11    A10..A0
+
+ 4K x 8		2732		NMOS	21.0V	12    A11..A0
+ 4K x 8		27C32		CMOS	12.5V	12    A11..A0
+
+ 8K x 8		2764		NMOS	21.0V	13    A12..A0
+ 8K x 8		27C64		CMOS	12.5V	13    A12..A0
+
+16K x 8		27128		NMOS	21.0V	14    A13..A0
+16K x 8		27C128		CMOS	12.5V	14    A13..A0
+
+32K x 8		27256		NMOS	21.0V	15    A14..A0
+32K x 8		27C256		CMOS	12.5V	15    A14..A0
+
+64K x 8		27C512		CMOS	12.5V	16    A15..A0

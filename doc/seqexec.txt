@@ -1,0 +1,159 @@
+Sequencer extensions to MIDAS-VII		Rev 2	1988-11-07
+---------------------------------		-----	----------
+
+
+struct	seqent	{	/* sequence table entry -- 14 bytes per entry */
+
+	unsigned short	seqtime;	/* time */
+	unsigned short	seqact1;	/* action 1 */
+	unsigned short	seqdat1;	/* action 1 data */
+	unsigned short	seqact2;	/* action 2 */
+	unsigned short	seqdat2;	/* action 2 data */
+	unsigned short	seqact3;	/* action 3 */
+	unsigned short	seqdat3;	/* action 3 data */
+};
+
+#define	NSLINES		1000		/* sequence table size */
+
+#define	SQ_MACT	0x00FF		/* action mask */
+#define	SQ_MOBJ	0xFF00		/* object mask */
+#define	SQ_MTYP	0xFF00		/* data type mask */
+#define	SQ_MVAL	0x00FF		/* data value mask */
+
+#define	SQ_CKEY	0x0001		/* Key closure */
+#define	SQ_RKEY	0x0002		/* Key release */
+#define	SQ_TKEY	0x0003		/* Key transient */
+#define	SQ_IKEY	0x0004		/* If key active*/
+
+#define	SQ_STRG	0x0005		/* Trigger on */
+#define	SQ_CTRG	0x0006		/* Trigger off */
+#define	SQ_TTRG	0x0007		/* Trigger toggle */
+#define	SQ_ITRG	0x0008		/* If trigger active */
+
+#define	SQ_SREG	0x0009		/* Set register */
+#define	SQ_IREQ	0x000A		/* If register = */
+#define	SQ_IRLT	0x000B		/* If register < */
+#define	SQ_IRGT	0x000C		/* If register > */
+
+#define	SQ_ISTM	0x000D		/* If stimulus */
+#define	SQ_JUMP	0x000E		/* Jump to */
+#define	SQ_STOP	0x000F		/* Stop */
+
+#define	SQ_REG	0x0000		/* register */
+#define	SQ_VAL	0x0100		/* value */
+#define	SQ_VLT	0x0200		/* voltage */
+#define	SQ_RND	0x0300		/* random */
+
+Kc nnn n nn	SQ_CKEY		0x0001
+
+	action	SQ_CKEY		Key closure
+	data	key number	(port, channel, key)
+
+
+Kr nnn n nn	SQ_RKEY		0x0002
+
+	action	SQ_RKEY		Key release
+	data	key number	(port, channel, key)
+
+
+Kt nnn n nn	SQ_TKEY		0x0003
+
+	action	SQ_TKEY		Key transient  (closure / release)
+	data	key number	(port, channel, key)
+
+
+If nnn n nn	SQ_IKEY		0x0004
+
+	action	SQ_IKEY		If key active
+	data	key number	(port, channel, key)
+
+
+Trig on  nn	SQ_STRG		0x0005
+
+	action	SQ_STRG		Trigger on
+	data	trigger number
+
+
+Trig off nn	SQ_CTRG		0x0006
+
+	action	SQ_CTRG		Trigger off
+	data	trigger number
+
+
+Trig tgl nn	SQ_TTRG		0x0007
+
+	action	SQ_TTRG		Toggle trigger (opposite state)
+	data	trigger number
+
+
+If trig  nn	SQ_ITRG		0x0008
+
+	action	SQ_ITRG		If trigger active
+	data	trigger number
+
+
+Set Rnn=xxx	SQ_SREG		0x0009
+
+	action	SQ_SREG		Set register value
+		SQ_MOBJ		register number
+
+	data
+		Rnn	SQ_REG	register number
+		nn	SQ_VAL	value
+		Vn	SQ_VLT	voltage port
+		?n	SQ_RND	scale
+
+
+If  Rnn=xxx	SQ_IREQ		0x000A
+
+	action	SQ_IREQ		Compare register -- equal to
+		SQ_MOBJ		register number
+
+	data
+		Rnn	SQ_REG	register number
+		nn	SQ_VAL	value
+		Vn	SQ_VLT	voltage port
+		?n	SQ_RND	scale
+
+
+If  Rnn<xxx	SQ_IRLT		0x000B
+
+	action	SQ_IRLT		Compare register -- less than
+		SQ_MOBJ		register number
+
+	data
+		Rnn	SQ_REG	register number
+		nn	SQ_VAL	value
+		Vn	SQ_VLT	voltage port
+		?n	SQ_RND	scale
+
+
+If  Rnn>xxx	SQ_IRGT		0x000C
+
+	action	SQ_IRGT		Compare register -- greater than
+		SQ_MOBJ		register number
+
+	data
+		Rnn	SQ_REG	register number
+		nn	SQ_VAL	value
+		Vn	SQ_VLT	voltage port
+		?n	SQ_RND	scale
+
+
+If stim act	SQ_ISTM		0x000D
+
+	action	SQ_ISTM		If sequence stimulus active
+	data	-unused-
+
+
+Jump to nnn	SQ_JUMP		0x000E
+
+	action	SQ_JUMP		Jump to sequence line
+	data	line number	0..999
+
+
+Stop		SQ_STOP		0x000F
+
+	action	SQ_STOP		Stop sequence
+	data	-unused-
+

@@ -1,0 +1,30 @@
+NAME
+
+	lcount -- count the lines in each of a set of C or .ASM files
+
+
+SYNOPSIS
+
+	lcount [-] [file] ...
+
+
+DESCRIPTION
+
+	Reads from named files and/or stdin,  output is to stdout.
+
+	If no files are named, stdin is assumed as input.
+
+	Allows the use of the dash '-' as a synonym for stdin
+	in a list of files to be processed.
+
+	Outputs a final summary if more than one file is processed.
+
+
+Output format:
+
+	total_lines  non_comment  comment  %comment  max_linelength  file_name
+
+
+AUTHOR
+
+	Version 4 -- 1989-02-24 -- D.N. Lynx Crowe

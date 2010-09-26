@@ -1,0 +1,52 @@
+TMS320C25 Direct Addressing Mode
+--------------------------------
+
+Instruction bits
+Op-Code  Address
+-------- --------
+xxxxxxxx 0AAAAAAA	Direct memory address -- AAAAAAA is the address 0..7F
+
+			The address is formed from the Data Page register
+			and the address bits of the instruction.
+
+			The data page register points to one of 512 pages of
+			128 words each.  The address bits point to the word
+			in the page.
+
+TMS320C25 Indirect Addressing Mode
+----------------------------------
+
+Instruction bits
+Op-Code  Address
+-------- --------
+xxxxxxxx 1RIDNYYY	Indirect addressing -- address is in AR(ARP)
+          ||||-+-
+          |||| |
+          |||| +-------	next ARP value if N = 1
+          |||+---------	0 = leave ARP unchanged,  1 = set ARP = YYY
+          ||+----------	0 = no change,  1 = decrement AR(ARP) by 1 or AR0
+          |+-----------	0 = no change,  1 = increment AR(ARP) by 1 or AR0
+          +------------	0 = use 1 as the value,  1 = use AR0 as the value
+
+			The address is contained in the Auxilliary register
+			pointed to by ARP.  This register may be modified
+			and a new one selected by the appropriate choice of
+			address modes shown in the table below:
+
+Instruction bits
+Op-Code  Address	Notation	Operation
+-------- --------	--------	-------------------------------------
+xxxxxxxx 10000YYY	*		No change to ARs/ARP
+xxxxxxxx 10001YYY	*,Y		Y -> ARP
+xxxxxxxx 10010YYY	*-		AR(ARP) - 1 -> AR(ARP)
+xxxxxxxx 10011YYY	*-,Y		AR(ARP) - 1 -> AR(ARP);  Y -> ARP
+xxxxxxxx 10100YYY	*+		AR(ARP) + 1 -> AR(ARP)
+xxxxxxxx 10101YYY	*+,Y		AR(ARP) - 1 -> AR(ARP);  Y -> ARP
+xxxxxxxx 11000YYY	*BR0-		AR(ARP) - rcAR0 -> AR(ARP)
+xxxxxxxx 11001YYY	*BR0-,Y		AR(ARP) - rcAR0 -> AR(ARP);  Y -> ARP
+xxxxxxxx 11010YYY	*0-		AR(ARP) - AR0 -> AR(ARP)
+xxxxxxxx 11011YYY	*0-,Y		AR(ARP) - AR0 -> AR(ARP);  Y -> ARP
+xxxxxxxx 11100YYY	*0+		AR(ARP) + AR0 -> AR(ARP)
+xxxxxxxx 11101YYY	*0+,Y		AR(ARP) + AR0 -> AR(ARP);  Y -> ARP
+xxxxxxxx 11110YYY	*BR0+		AR(ARP) + rcAR0 -> AR(ARP)
+xxxxxxxx 11111YYY	*BR0+,Y		AR(ARP) + rcAR0 -> AR(ARP);  Y -> ARP

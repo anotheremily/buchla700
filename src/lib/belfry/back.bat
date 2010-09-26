@@ -1,0 +1,40 @@
+echo Latest backup:  >latest
+t >>latest
+copy latest a:\belfry
+copy as.bat a:\belfry
+copy asl.bat a:\belfry
+copy asr.bat a:\belfry
+copy asrl.bat a:\belfry
+copy back.bat a:\belfry
+copy bak.bat a:\belfry
+copy c.bat a:\belfry
+copy c1.bat a:\belfry
+copy c2.bat a:\belfry
+copy cleanup.bat a:\belfry
+copy clink.bat a:\belfry
+copy clink2.bat a:\belfry
+copy cr.bat a:\belfry
+copy crs.bat a:\belfry
+copy crset.bat a:\belfry
+copy cs.bat a:\belfry
+copy csa.bat a:\belfry
+copy cur.bat a:\belfry
+copy date.prg a:\belfry
+copy db.bat a:\belfry
+copy edit.bat a:\belfry
+copy free.bat a:\belfry
+copy linkacc.bat a:\belfry
+copy linkap.bat a:\belfry
+copy linkfat.bat a:\belfry
+copy linkio.bat a:\belfry
+copy linkit.bat a:\belfry
+copy linkit2.bat a:\belfry
+copy linkstk.bat a:\belfry
+copy linkstk2.bat a:\belfry
+copy linkthin.bat a:\belfry
+copy prset.bat a:\belfry
+copy rlink.bat a:\belfry
+copy rlink2.bat a:\belfry
+copy space.bat a:\belfry
+copy t.prg a:\belfry
+df a:

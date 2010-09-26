@@ -1,0 +1,399 @@
+atoi.c
+	atoi(cp)
+	register char *cp;
+
+atol.c
+	long
+	atol(cp)
+	register char *cp;
+
+blkrd.c
+	int
+	blkrd(fcp, buf, ns)
+	struct fcb *fcp;
+	char *buf;
+	int ns;
+
+close.c
+	int
+	close(fd)
+	int fd;
+
+	int
+	_filecl(fp)
+	register struct fcb *fp;
+
+	_fd_cls()
+
+conin.c
+	int
+	_conin(x, buff, len)
+	char *buff;
+
+conwr.c
+	int
+	_conwr(kind, buff, len)
+	int kind;
+	register char *buff;
+	int len;
+
+croot.c
+	exit(code)
+
+	static
+	_eredir(name)
+	char *name;
+
+	Croot(cp)
+	register char *cp;
+
+dirfns.c
+	char *
+	atrstr(atr, s)
+	register short atr;
+	register char s[];
+
+	char *
+	mname(n)
+	short n;
+
+	char *
+	dtunpk(din, tin, s, fmt)
+	short din, tin, fmt;
+	char *s;
+
+fgets.c
+	char *
+	gets(line)
+	char *line;
+
+	char *
+	fgets(s, n, fp)
+	char *s;
+	FILE *fp;
+
+	agetc(ptr)
+	register FILE *ptr;
+
+filesys.c
+	int
+	_badfd()
+
+	int
+	_noper()
+
+	int
+	_cl2lsn(bpp, clnum)
+	struct bpb *bpp;
+	int clnum;
+
+	putlc12(fat, cl, val)
+	register char *fat;
+	int cl, val;
+
+	int
+	_gtcl12(fat, cl)
+	register char *fat;
+	int cl;
+
+	int
+	_getfat(bufad, bpp, nfat)
+	int *bufad, nfat;
+	register struct bpb *bpp;
+
+	int
+	_rdfat(bufad, bpp)
+	int *bufad;
+	struct bpb *bpp;
+
+	int
+	_rdroot(buf, bpp)
+	int *buf;
+	register struct bpb *bpp;
+
+	int
+	_nsic(fcp, bpp, fp)
+	register struct fcb *fcp;
+	struct bpb *bpp;
+	char *fp;
+
+	struct dirent *
+	_dsrch(de)
+	register struct dirent *de;
+
+	_deadio(fcp)
+	register struct fcb *fcp;
+
+	int
+	_seek(fcp)
+	register struct fcb *fcp;
+
+	int
+	_ftrnc(dp)
+	struct dirent *dp;
+
+	int
+	_fmake(fcp)
+	struct fcb *fcp;
+
+	int
+	_opfcb(fcp)
+	register struct fcb *fcp;
+
+	int
+	_inifcb(fcp, name, ext, mode)
+	register struct fcb *fcp;
+	char *name, *ext;
+	int mode;
+
+	int
+	_fsize(fcp)
+	struct fcb *fcp;
+
+	int
+	_rdsec(fcp, buf, ns)
+	struct fcb *fcp;
+	char *buf;
+	long ns;
+
+	int
+	ClusMap(fcp)
+	struct fcb *fcp;
+
+	struct fcb *
+	FCBmode(fcp)
+	struct fcb *fcp;
+
+	SnapFCB(fcp)
+	struct fcb *fcp;
+
+filname.c
+	char *
+	FilName(s)
+	char *s;
+
+	char *
+	FilExt(s)
+	char *s;
+
+flread.c
+	int
+	flread(buff, len, fp)
+	register char *buff;
+	register long len;
+	FILE *fp;
+
+fopen.c
+	fopen(name,mode)
+	char *name, *mode;
+
+fprintf.c
+	printf(fmt,args)
+	char *fmt;
+	unsigned args;
+
+	fprintf(stream,fmt,args)
+	FILE *stream;
+	char *fmt;
+	unsigned args;
+
+	static
+	fpsub(c)
+
+fputs.c
+	puts(str)
+	register char *str;
+
+	fputs(s,fp)
+	register char *s;
+	FILE *fp;
+
+	aputc(c,ptr)
+	register int c;
+	register FILE *ptr;
+
+fread.c
+	int
+	fread(buffer, size, number, stream)
+	register char *buffer;
+	unsigned size;
+	int number;
+	FILE *stream;
+
+fscanf.c
+	scanf(fmt, args)
+	char *fmt;
+	int *args;
+
+	fscanf(fp, fmt, args)
+	FILE *fp;
+	char *fmt;
+	int *args;
+
+	static
+	gchar(what)
+
+fseek.c
+	fseek(fp, pos, mode)
+	register FILE *fp;
+	long pos;
+	int mode;
+
+ftell.c
+	long
+	ftell(fp)
+	register FILE *fp;
+
+fwrite.c
+	int
+	fwrite(buffer, size, number, stream)
+	register char *buffer;
+	unsigned size, number;
+	FILE *stream;
+
+getbuff.c
+	getbuff(ptr)
+	register FILE *ptr;
+
+getc.c
+	getw(stream)
+	FILE *stream;
+
+	getc(ptr)
+	register FILE *ptr;
+
+lseek.c
+	long
+	lseek(fd, pos, how)
+	int fd;
+	long pos;
+	int how;
+
+open.c
+	open(name, flag, mode)
+	char *name;
+
+	creat(name, mode)
+	char *name;
+
+	int
+	_fileop(name, flag, mode, chp, dp)
+	char *name;
+	int flag, mode;
+	struct channel *chp;
+	struct devtabl *dp;
+
+posit.c
+	int
+	posit(fd, pos)
+	int fd;
+	unsigned pos;
+
+putc.c
+	int
+	puterr(c)
+
+	int
+	putw(w, stream)
+	register unsigned w;
+	FILE *stream;
+
+	int
+	putc(c, ptr)
+	int c;
+	register FILE *ptr;
+
+	fflush(ptr)
+	FILE *ptr;
+
+	static
+	closall()
+
+	fclose(ptr)
+	register FILE *ptr;
+
+	int
+	flush_(ptr, data)
+	register FILE *ptr;
+
+read.c
+	int
+	read(fd, buff, len)
+	char *buff;
+
+	int
+	_getsec(fp, buf, len)
+	register struct fcb *fp;
+	char *buf;
+	unsigned len;
+
+	int
+	_filerd(fp, buffer, len)
+	register struct fcb *fp;
+	char *buffer;
+	unsigned len;
+
+readrn.c
+	int
+	ReadRN(fcp, buf)
+	struct fcb *fcp;
+	char *buf;
+
+rename.c
+	rename(old, new)
+	char *old, *new;
+
+scan.c
+	sscanf(string, fmt, arg)
+	char *string, *fmt;
+	int *arg;
+
+	static
+	sgetc(what)
+
+	scanfmt(getsub, fmt, args)
+	int (*getsub)();
+	register char *fmt;
+	int **args;
+
+	skipblank()
+
+	double
+	getflt(buffer)
+	char *buffer;
+
+	long	
+	getnum(list, values, base)
+	char *list;
+	char *values;
+	int base;
+
+setbuf.c
+	setbuf(stream, buffer)
+	register FILE *stream;
+	char *buffer;
+
+ungetc.c
+	ungetc(c,ptr)
+	int c; register FILE *ptr;
+
+unlink.c
+	unlink(name)
+	char *name;
+
+write.c
+	int
+	_putsec(fp, buf, len)
+	register struct fcb *fp;
+	char *buf;
+	unsigned len;
+
+	int
+	_filewr(fp, buffer, len)
+	register struct fcb *fp;
+	char *buffer;
+	unsigned len;
+
+	int
+	write(fd, buff, len)
+	char *buff;

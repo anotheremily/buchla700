@@ -1,0 +1,22 @@
+
+SHOW(1)		   TOOLS Programmer's Manual		  SHOW(1)
+
+NAME
+     show - show non-prinable characters in a file
+
+SYNOPSIS
+     show [ file ] ...
+
+DESCRIPTION
+     Show displays non-printable characters in printable form.
+     All printing characters and blanks are printed unchanged.
+
+     Control characters are usually displayed as a '^' followed
+     by an uppercase alphabetic character, with the following 
+     execptions:
+
+     Newlines are displayed as '$' followed by a real newline.
+
+     Tabs are displaywed as '>'.
+
+     

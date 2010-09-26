@@ -1,0 +1,80 @@
+				CGREP
+
+NAME
+	cgrep \- search a file for a piece of context
+
+SYNOPSIS
+
+	cgrep [-mi] [-n -p -/pat] [+n +p +/pat] pattern [ files... ]
+
+DESCRIPTION
+
+	Cgrep takes a chunk of context out of a text file based on a pattern
+	that lies inside the context, and rules for specifying the amount of
+	context.  If no rules are specified, then cgrep works just like grep
+	except that it finds only the first occurrence of "pattern".
+
+	A backward searching rule need not be matched by a forward searching
+	rule, and vice versa, however, no more than one rule "per direction"
+	should be used.  
+
+	Cgrep does not recognize the grep family metacharacters.  It matches
+	exactly what it is given.  The default input is stdin.
+
+	When more than one file is searched, the name of the file in which the
+	context is found is enclosed in <> at the top of the text.
+
+OPTIONS
+
+	-n	Begin printing 'n' lines before the first occurrence of
+		"pattern". If no 'n' is specified, default is one.
+
+	-p	Begin printing at the beginning of the paragraph 
+		containing the first occurrence of "pattern".  (assuming
+		that paragraphs are separated by a blank line)
+
+	-/pat	Begin printing at the line containing "pat" nearest 
+		before the first occurrence of "pattern".
+
+	+n	Stop printing 'n' lines after the first occurrence of
+		"pattern".  If no 'n' is specified, default is one.
+
+	+p	Stop printing at the end of the paragraph containing the
+		first occurrence of "pattern".  (i.e. the next blank line)
+
+	+/pat	Stop printing at the first line past "pattern" which
+		contains "pat".
+
+	-i	Ignore case.
+
+	-m	Mail mode.  Delete all blank space at the beginning of the
+		lines to be printed and insert "> ".  This may be useful
+		from within the editor in replying to mail or news.
+
+EXAMPLE
+
+		cgrep -2 +/john harry file1
+
+	searches file1, and prints starting 2 lines before the first
+	occurrence of "harry" and ending when it finds a line containing "john"
+
+		cgrep -p +p george file2
+
+	searches file2 and prints the paragraph containing "george"
+
+BUGS
+
+	When using both -m and -i, use separate flags.
+
+	Results are unpredictable if multiple rules for searching the same
+	direction are given, though it will probably use the latter.
+
+	If the pattern is found in the first of multiple files,
+	the filename is not printed at the top.
+
+	If a backward pattern search is done on a non-existent pattern,
+	the backward search is ignored.
+
+	Line length is limited to 256 characters.
+
+	Send all comments, etc to iannucci@sjuvax.UUCP

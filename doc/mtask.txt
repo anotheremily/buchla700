@@ -1,0 +1,430 @@
+Mutli-Tasker Notes -- 1988-04-14 -- Rev 15			D.N. Lynx Crowe
+
+Summary
+-------
+
+. Task scheduling:
+
+	. Priority scheduler
+
+	. Multiple priority levels,  0..65535  (0 is lowest)
+
+	. Round-Robin scheduling within each level
+
+	. Multi-level interrupt support
+
+	. Time slicing optionally supported
+
+	. Tasks are either stopped, waiting, ready, or running
+
+	. Arbitrary number of Task Control Blocks  (up to 65535)
+
+	. Swapping rules designed to minimize chance of system lockup
+
+
+
+. Inter-task communication:
+
+	. Supports counting semaphores for event signalling or
+	  control of exclusive access to shared resources
+
+	. Supports inter-task mailboxes  (message queues)
+
+Multitasker support functions
+-----------------------------
+
+	. Task functions
+
+		void		MTInit()
+		unsigned	MTID()
+		short		MTRun(tid, pri, stat, slice, pstack, func, par)
+		void		MTSetT(tcp, tid, pri, stat, slice, pstack, func, par)
+		unsigned	MTSetP(pri)
+		void		MTSwap()
+		void		MTNext()
+		short		MTStop(tid)
+		short		MTZap(tid)
+		void		MTExit()
+		void		MTQuit()
+		short		MTStat(tid)
+		unsigned	MTGetID()
+
+
+	. Semaphore functions
+
+		void		SMInit(psem, n)
+		short		SMStat(psem)
+		void		SMSig(psem)
+		void		SMWait(psem)
+		short		SMCSig(psem)
+		short		SMCWait(psem)
+
+
+	. Mailbox functions
+
+		void		MBInit(pmbox)
+		void		MBSend(pmbox, pmsg)
+		MSG *		MBRecv(pmbox)
+		MSG *		MBChek(pmbox)
+		short		MBDel(pmbox, pmsg)
+
+
+	. System variables
+
+		TCB		*MT_TCBs	pointer to TCB chain
+		TCB		*MT_CurP	pointer to current TCB
+		TCB		*MT_RdyQ	pointer to ready queue
+		unsigned	MT_IDct		task ID assignment counter
+		unsigned	*_MT_Vc1	saved TRAP 8 vector  (_MT_Swp)
+		unsigned	*_MT_Vc2	saved TRAP 9 vector  (_MT_Nxt)
+		long		_MT_Stk[48]	stack for _MT_Nil()  (null task)
+		TCB		_MT_TCB		dummy TCB for shutdown
+		
+Data structures
+---------------
+
+	. SEM - Semaphore  (counting type)
+
+		typedef long SEM;
+
+		. Single 32 bit word per semaphore used for both semaphore
+		  counter and wait queue pointer
+
+		. LSB indicates status of semaphore and meaning of MS bits
+
+			. 1 = MS bits are the number of signals received and
+			  not processed
+			  
+			. 0 = MS bits are a pointer to the queue of tasks
+			  waiting on the semaphore
+
+			. Initialize to a count of 0 (value = 0) for event
+			  signalling,  or to a count of 1 (value = 3) for
+			  controlling mutually exclusive access to a shared
+			  resource
+
+	. MSG - Message
+
+		typedef	struct MSG {
+
+			MSG	*next;
+			SEM	reply;		/* initialize to 0 */
+			long	msize;
+			long	mdata;
+		};
+
+		. Consists of a queue pointer, a semaphore, a size variable,
+		  and a data pointer
+
+			. 'next' -- pointer -- points to the next message
+			   in the message queue
+
+			. 'reply' -- semaphore -- used to indicate reply status
+
+			. 'msize' -- variable -- contains the size of the
+			  message if 'mdata' contains a pointer, or 0 if 'mdata'
+			  contains the data itself
+
+			. 'mdata' -- variable -- points to the actual data,
+			  or is the data itself
+
+
+	. MBOX - Mailbox  (intertask message queue)
+
+		typedef	struct MBOX {
+
+			SEM	mail;		/* initialize to zero */
+			SEM	mutex;		/* initialize to 1 */
+			MSG	*head;		/* initialize to NIL */
+			MSG	*tail;		/* initialize to NIL */
+		};
+
+		. Managed by two semaphores and two pointers
+
+			. 'mail' -- semaphore -- indicates messages present
+			  in the message queue
+
+			. 'mutex' -- semaphore -- enforces mutually exclusive
+			  access to the message queue
+
+			. 'head' -- pointer -- points to the first message
+			  in the message queue, or NIL if the queue is empty
+
+			. 'tail' -- pointer -- points to the last message
+			  in the message queue, or NIL if the queue is empty
+
+	. TCB - Task Control Block
+
+		typedef	struct TCB {
+
+			TCB		*next;		 4 bytes
+			TCB		*fwd;		 4 bytes
+			unsigned	tid;		 2 bytes
+			unsigned	pri;		 2 bytes
+			long		slice;		 4 bytes
+			long		reg[16];	64 bytes
+			long		sp;		 4 bytes
+			long		pc;		 4 bytes
+			unsigned	sr;		 2 bytes
+			unsigned	flags;		 2 bytes
+			long		tos;		 4 bytes
+		};					--
+							96 bytes total
+
+		. 'next' points to the next task in the task queue or NIL
+
+		. 'fwd' points to the next TCB in the TCB chain
+
+		. 'tid' contains the task identifier	(0..65536)
+
+		. 'pri' contains the task priority	(0..65535, 0 is lowest)
+
+		. 'slice' contains the time slice (milliseconds) for the task,
+		  or -1 for a task that isn't sliced
+
+		. 'reg[]' contains the task register contents when
+		  the task is not executing  (D0-D7/A0-A7)
+
+		. 'sp' contains the task stack pointer when the task
+		  is not executing
+
+		. 'pc' contains the task Program Counter contents when
+		  the task is not executing
+
+		. 'sr' contains the task Status Register contents when
+		  the task is not executing
+
+		. 'flags' contains the task control flags:
+
+			MTF_OCC	0x8000	/* TCB occupied */
+			MTF_RDY	0x0001	/* task ready to run  (on MT_RdyQ) */
+			MTF_SWT	0x0002	/* task waiting on a semaphore */
+			MTF_RUN	0x0004	/* task running (MT_CurP) */
+			MTF_STP	0x0008	/* task to be stopped  (waiting) */
+
+		. 'tos' points to the top of the task's stack
+
+Multitasker support function calling sequences
+----------------------------------------------
+
+	. Initialize the multi-tasker
+
+		void
+		MTInit()
+
+	. Get next available task ID
+
+		unsigned			task ID
+		MTID()
+
+	. Acquire and initialize a TCB and start a task
+
+		short				result code
+		MTRun(tid, pri, stat, slice, pstack, func, par)
+		unsigned tid;			task ID
+		unsigned pri;			initial task priority
+		unsigned stat;			initial task status register
+		long slice;			time slice, or -1
+		long pstack;			top of stack address
+		short (*func)();		initial task program counter
+		long par;			long parameter passed to task
+
+		result code:
+
+			SUCCESS		TCB created and placed on ready queue
+			FAILURE		no TCB available for task
+
+		Note:  acquires a free TCB from the current chain of known TCBs.
+
+	. Initialize a specific TCB and start a task
+
+		MTSetT(tcp, tid, pri, stat, slice, pstack, func, par)
+		TCB *tcp;			TCB pointer
+		unsigned tid;			task ID
+		unsigned pri;			initial task priority
+		unsigned stat;			initial task status register
+		long slice;			time slice, or -1
+		long pstack;			top of stack address
+		short (*func)();		initial task program counter
+		long par;			long parameter passed to task
+
+		Note:  adds the TCB to the current chain of known TCBs.
+
+	. Set the priority of the current task and swap to the highest
+	  priority ready task
+
+		unsigned			old priority	(0..65535)
+		MTSetP(pri)
+		unsigned pri;			new priority	(0..65535)
+
+	. Swap to the highest priority ready task,
+		re-schedule the current task
+
+		void
+		MTSwap();
+
+	. Swap to the highest priority ready task,
+		don't re-schedule the current task
+
+		void
+		MTNext();
+
+		Note:  this is an internal function,  use with caution.
+
+	. Stop a specific task
+
+		short				result code
+		MTStop(tid)
+		unsigned tid;			task ID of task to stop
+
+		result code:
+
+		  -3 - task not stopped		(was the current task)
+		  -2 - task not stopped		(can't find it on ready queue)
+		  -1 - task not stopped		(can't find it at all)
+		   0 - task stopped		(was ready to run)
+		   1 - task stopped  		(was waiting)
+		   2 - task already stopped	(wasn't waiting or on ready queue)
+		   3 - task will be stopped	(has MTF_STP set)
+
+	. Delete a specific task,  free its TCB
+
+		short			result code
+		MTZap(tid)
+		unsigned tid;		task ID
+
+		result code:
+
+		   -1	not deleted	(was active or waiting)
+		    0	deleted
+		    1	not found
+
+	. Terminate the current task,  free its TCB
+
+		void
+		MTExit()
+
+	. Shut down the multi-tasker
+
+		void
+		MTQuit();
+
+		Note:  this brings everything to a halt.  Use with caution.
+
+	. Get the task ID of the currently running task
+
+		unsigned
+		MTGetID()
+
+	. Check the state of a specific task
+
+		short			result code
+		MTStat(tid)
+		unsigned tid;		task ID
+
+		result code:
+
+		   -3	stopped, waiting on a sempahore
+		   -2	stopped, not waiting
+		   -1	not found
+		    0	running  (current task)
+		    1	ready to run
+		    2	waiting on a sempahore
+
+
+Semaphore Operation function calling sequences
+----------------------------------------------
+
+	. Initialize a semaphore
+
+		void
+		SMInit(psem, n)
+		SEM *psem;			pointer to semaphore
+		long n;				count to put in semaphore
+
+	. Check the status of a semaphore
+
+		short				result code
+		SMStat(psem)
+		SEM *psem;			pointer to semaphore
+
+		result code:
+
+		   -1	awaited		at least one process is waiting
+		    0	not signalled	no signals, no waiting processes
+		    1	signalled	at least one unreceived signal
+
+	. Signal a semphore
+
+		void
+		SMSig(psem)
+		SEM *psem;			pointer to semaphore
+
+	. Wait on a semaphore
+
+		void
+		SMWait(psem)
+		SEM *psem;			pointer to semaphore
+
+	. Conditionally signal a semaphore
+
+		short				result code
+		SMCSig(psem)
+		SEM *psem;			pointer to semaphore
+
+		result code:
+
+		   -1	stopped task signalled
+		    0	nothing signalled
+		    1	waiting task signalled
+
+	. Conditional wait on a semaphore
+
+		short				result code
+		SMCWait(psem)
+		SEM *psem;			pointer to semaphore
+
+		result code:
+
+		   TRUE   semaphore was non-zero, and was decremented
+		   FALSE  semaphore was zero, or tasks were waiting for it
+
+Mailbox Operation function calling sequences
+--------------------------------------------
+
+	. Initialize a mailbox
+
+		void
+		MBInit(pmbox)
+		MBOX *pmbox;			pointer to mailbox
+
+	. Send a message to a mailbox queue
+
+		void
+		MBSend(pmbox, pmsg)
+		MBOX *pmbox;			pointer to mailbox
+		MSG *pmsg;			pointer to message
+
+	. Receive a message from a mailbox queue  (wait for message)
+
+		MSG *				pointer to message received
+		MBRecv(pmbox)
+		MBOX *pmbox;			pointer to mailbox
+
+	. Check for a message from a mailbox queue and conditionally receive it
+
+		MSG *				pointer to message, or NIL
+		MBChek(pmbox)
+		MBOX *pmbox;			pointer to mailbox
+
+	. Delete a message from a mailbox queue  (cancel message)
+
+		short				result code
+		MBDel(pmbox, pmsg)
+		MBOX *pmbox;			pointer to mailbox
+		MSG *pmsg;			pointer to message
+
+		result code:
+
+		   FAILURE	unable to find the message
+		   SUCCESS	message found and deleted from mailbox

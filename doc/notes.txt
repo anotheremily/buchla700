@@ -1,0 +1,138 @@
+Correspondence between note value, pixel and MIDI note number
+-------------------------------------------------------------
+
+Version 6 -- 1988-09-28 -- D.N. Lynx Crowe
+
+Note	Pixel	MIDI	Notes
+----    -----   ----    --------------------------------------------
+C7	2	108	Note:  the conventional note value
+B7	6	107	Pixel: the center pixel of 3 for the note
+B7b	6	106	MIDI:  the MIDI note number
+A7#	10	106
+A7	10	105	
+A7b	10	104
+
+G6#	14	104
+G6	14	103
+G6b	14	102
+F6#	18	102
+F6	18	101
+E6	22	100
+E6b	22	99
+D6#	26	99
+D6	26	98
+D6b	26	97
+C6#	30	97
+C6	30	96
+B6	34	95
+B6b	34	94
+A6#	38	94
+A6	38	93
+A6b	38	92
+
+G5#	42	92
+G5	42	91	 -G-	treble clef ledger line
+G5b	42	90
+F5#	46	90
+F5	46	89
+E5	50	88	 -E-	treble clef ledger line
+E5b	50	87
+D5#	54	87
+D5	54	86
+D5b	54	85
+C5#	58	85
+C5	58	84	 -C-	treble clef ledger line
+B5	62	83
+B5b	62	82
+A5#	66	82
+A5	66	81	 -A-	treble clef ledger line
+A5b	66	80
+
+G4#	70	80
+G4	70	79
+G4b	70	78
+F4#	74	78
+F4	74	77	--F--	treble clef line
+E4	78	76
+E4b	78	75
+D4#	82	75
+D4	82	74	--D--	treble clef line
+D4b	82	73
+C4#	86	73
+C4	86	72
+B4	90	71	--B--	treble clef line
+B4b	90	70
+A4#	94	70
+A4	94	69
+A4b	94	68
+
+G3#	98	68
+G3	98	67	--G--	treble clef line
+G3b	98	66
+F3#	102	66
+F3	102	65
+E3	106	64	--E--	treble clef line
+E3b	106	63
+D3#	110	63
+D3	110	62
+D3b	110	61
+C3#	114	61
+C3	114	60		(Middle C)
+B3	118	59
+B3b	118	58
+A3#	122	58
+A3	122	57	--A--	bass clef line
+A3b	122	56
+
+G2#	126	56
+G2	126	55
+G2b	126	54
+F2#	130	54
+F2	130	53	--F--	bass clef line
+E2	134	52
+E2b	134	51
+D2#	138	51
+D2	138	50	--D--	bass clef line
+D2b	138	49
+C2#	142	49
+C2	142	48
+B2	146	47	--B--	bass clef line
+B2b	146	46
+A2#	150	46
+A2	150	45
+A2b	150	44
+
+G1#	154	44
+G1	154	43	--G--	bass clef line
+G1b	154	42
+F1#	158	42
+F1	158	41
+E1	162	40	 -E-	bass clef ledger line
+E1b	162	39
+D1#	166	39
+D1	166	38
+D1b	166	37
+C1#	170	37
+C1	170	36	 -C-	bass clef ledger line
+B1	174	35
+B1b	174	34
+A1#	178	34
+A1	178	33	 -A-	bass clef ledger line
+A1b	178	32
+
+G0#	182	32
+G0	182	31
+G0b	182	30
+F0#	186	30
+F0	186	29	 -F-	bass clef ledger line
+E0	190	28
+E0b	190	27
+D0#	194	27
+D0	194	26
+D0b	194	25
+C0#	198	25
+C0	198	24
+B0	202	23
+B0b	202	22
+A0#	206	22
+A0	206	21

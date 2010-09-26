@@ -1,0 +1,67 @@
+TI 855 Printer Parallel Interface Cable		P/N 2223106-0001
+---------------------------------------		----------------
+
+P1	Signature	P2	Signature	Function
+--	--------------	--	--------------	--------------------------------
+ 1	*DATA STROBE	 1			Sample data at leading edge
+
+ 2	DATA 1		 2			Input data LS bit
+ 3	DATA 2		 3			Input data
+ 4	DATA 3		 4			Input data
+ 5	DATA 4		 5			Input data
+ 6	DATA 5		 6			Input data
+ 7	DATA 6		 7			Input data
+ 8	DATA 7		 8			Input data
+ 9	DATA 8		 9			Input data MS bit
+
+10	*ACKNOWLEDGE	10			Character received
+11	BUSY		11			Device busy - cannot receive
+12	PE		12	PAGE END	Paper-out error
+13	SELECT		13	ONLINE		Printer on-line
+14	*AUTO FEED	14			Automatic line feed
+32	*FAULT		15			Fault
+31	*INIT		16			Initialize printer
+36	*SELECTION	17	*SELECT IN	Select printer for reception
+
+33	GROUND		18			Ground
+19	GROUND		19			Signal return
+21	GROUND		20			Signal return
+23	GROUND		21			Signal return
+21	GROUND		22			Signal return
+21	GROUND		23			Signal return
+21	GROUND		24			Signal return
+21	GROUND		25			Signal return
+
+* = Active LOW
+
+P1 is a 36 pin Cinch male connector that goes to the printer.
+
+P2 is a 25 pin DB-25P male connector that goes to the cpu.
+
+TI 855 Printer Serial Interface Connector	P/N 2222477-0001
+-----------------------------------------	----------------
+
+P1	Signature	P2	Signature	Function
+--	--------------	--	--------------	--------------------------------
+17	CHASSIS GND	 1	FG		Chassis ground
+
+16	RXD		 2	XMTD		Serial data from host to printer
+35	TXD		 3	RXD		Serial data from printer to host
+
+19	SIGNAL GND	 7	SG		Signal return
+
+15	READY/BUSY	11	BUSY		Busy when LOW - Jumper to P2-19
+			19	BUSY		Busy when LOW - Jumper to P2-11
+
+nc			 4	RTS		Jumper to pin P2-5
+nc			 5	CTS		Jumper to pin P2-4
+
+nc			 6	DSR		Jumper to P2-8 and P2-20
+nc			 8	DCD		Jumper to P2-6 and P2-20
+nc			20	DTR		Jumper to P2-6 and P2-8
+
+nc = not connected.
+
+P1 is a 36 pin Cinch male connector that goes to the printer.
+
+P2 is a 25 pin DB-25P male connector that goes to the cpu.

@@ -1,0 +1,41 @@
+Netters,
+
+Here are some directory routines I put together awhile back for MS-DOS
+which provide the same functionality as the 4.2 BSD directory routines.
+In this kit you will find scandir(), opendir(), readdir(), seekdir(),
+telldir(), closedir(), etc.  They behave like the 4.2 routines with some
+minor exceptions:  The actual directory structure is different since
+MS-DOS keeps the equivilent of directory entry and inode in its directory,
+and a picture of the directory is read in during an opendir() call, so if
+something changes in the directory it will not show up in readdir() calls,
+unless you do another opendir().
+
+These routines were written for Microsoft C, though the only special
+functions I used were realloc() and intdos(), which most 'modern' C
+compilers have.
+
+I have also compiled these under all memory models with no problems.
+Microsoft C automatically provides a #define for use in detecting
+which memory model is in use.  I use this in scandir() to set up the
+pointers correctly.  I also use the FP_SEG and FP_OFF macro's too.
+Other C compilers will have to have this section changed to handle 
+their method of splitting far pointers into segments and offsets.
+
+Also included in this kit (Don't send your money now, there's more!)
+are two simple test programs, test1.c and test2.c.  These programs
+show how to do a simple directory search, with test1.c using opendir(),
+and test2.c using scandir().  Test2.c also uses another function
+called fmatch(), which I found on the net many months ago in a slightly
+different form.  To compile the test programs, use:
+
+	cl test1.c dir.obj scandir.obj
+	cl test2.c fmatch.obj scandir.obj
+
+after compiling dir.c, scandir.c, and fmatch.c.
+
+If you have any comments or bug reports, send them to:
+
+Bill Marsh, Naval Ocean Systems Center, San Diego, CA
+{arpa,mil}net: bmarsh@nosc
+uucp: {ihnp4,akgua,decvax,dcdwest,ucbvax}!sdcsvax!noscvax!bmarsh
+

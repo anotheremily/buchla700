@@ -1,0 +1,314 @@
+Patch data entry details			Rev 5		1988-12-02
+------------------------			-----		----------
+
+Destination	Label		Selection	Data entry (ptedest)
+-----------	-------		---------	--------------------
+PA_KEY	01	Key		box 1		format 0
+PA_TRG	02	Trg		box 3		format 1
+PA_PLS	03	Pls		box 4		format 2
+PA_LED	04	LED		box 5		format 3
+PA_SLIN	05	SeqLin		box 6		format 4
+PA_SCTL	06	SeqCtl		box 7		format 4
+PA_TUNE	07	Tuning		box 8		format 5
+PA_RSET	08	RegSet		box 9		format 4
+PA_RADD	09	RegAdd		box 10		format 4
+PA_INST	10	Instr		box 11		format 6
+PA_OSC	11	Osc		box 12		format 9
+PA_WAVA	12	WaveA		box 13		format 6
+PA_WAVB	13	WaveB		box 14		format 6
+PA_CNFG	14	Confg		box 15		format 6
+PA_LEVL	15	Level		box 21		format 10
+PA_INDX	16	Index		box 16		format 9
+PA_FREQ	17	Freq		box 17		format 9
+PA_FILT	18	Filtr		box 23		format 10
+PA_FILQ	19	Fil Q		box 24		format 10
+PA_LOCN	20	Loctn		box 22		format 10
+PA_DYNM	21	Dynmc		box 25		format 10
+PA_AUX	22	Aux		box 30		format 7
+PA_RATE	23	Rate		box 28		format 7
+PA_INTN	24	Inten		box 29		format 7
+PA_DPTH	25	Depth		box 27		format 7
+PA_VOUT	26	V Out		box 26		format 8
+
+Data entry formats
+------------------
+
+Destination
+-----------
+
+	2233333333334
+ptedest	8901234567890	type
+-------	-------------	----
+   0	M DDD D DD   	Key
+   1	MMMMMMM DD   	Trg
+   2	MMMMM D      	Pls
+   3	MMM D        	LED
+   4	MMM DD MMM   	SeqLin, SeqCtl, RegSet, RegAdd
+   5	MMMMMMMMMM   	Tune
+   6	MMMMMMMMMM DD	Inst, WavA, WavB, Conf
+   7	MMMMM MMMM   	Aux, Rate, Inten, Depth
+   8	MMM D MMMM   	V Out
+   9	MMM D MMMM DD	Osc, Index, Freq
+  10	MMMMM MMMM DD	Level, Filtr, Fil Q, Loctn, Dynmc
+
+Datum
+-----
+
+ptedata	Datum			format
+-------	-----			------
+   0	-none-
+
+   1	multiplier		+1.00		 -1.00 .. +1.00
+   2	time			32767		 00001 .. 32767
+   3	value			+10.00		-10.00 .. +10.00	(*)
+
+   4	interval		+1200		 -1200 .. +1200
+   5	ratio			9/9		   1/1 .. 9/9
+   6	frequency		15.9		  00.1 .. 15.9
+   7	pitch			9C#99		 0Cb00 .. 9C#99
+
+   8	trans/stop/start	trans = 7 ( ), stop = 8 (-), start = 9 (+)
+   9	stop/start		stop = 8 (-), start = 9 (+)
+  10	off/on			off = 8 (-), on = 9 (+)
+
+  11	source			from menu
+
+  12	register / value	+99 / R16   R = 7 ( ), - = 8 (-), + = 9 (+)
+
+  13	sequence line		999		000 .. 999
+  14	LED controls		9999		000 .. 333 or 0000 .. 3333
+  15	intrument number	99		 00 .. 40
+  16	waveshape number	99		 01 .. 20
+  17	configuration number	99		 00 .. 11
+  18	tuning table number	9		  0 .. 9
+
+Destinations
+------------
+
+	2233333333334		2233333333334
+ptedest	8901234567890		8901234567890	data entry columns	ptedata
+-------	------------- 		------------- 	------------------	-------
+  0	K 127 1 16    		M DDD D DD   	30..32, 34, 36..37	8
+
+  1	Trigger 16    		MMMMMMM DD   	36..37			9
+
+  2	Pulse 1       		MMMMM D      	34			8
+
+  3	LED A         		MMM D        	32			14
+
+  4	Seq nn Lin    		MMM DD MMM   	32..33			13
+  4	Seq nn Ctl    		MMM DD MMM   	32..33			9
+  4	Reg nn Set    		MMM DD MMM   	32..33			12
+  4	Reg nn Add    		MMM DD MMM   	32..33			12
+
+  5	Tune Table    		MMMMMMMMMM   				18
+
+  6	Instrument V1 		MMMMMMMMMM DD	39..40			15
+  6	WaveshapeA V1 		MMMMMMMMMM DD	39..40			16
+  6	WaveshapeB V1 		MMMMMMMMMM DD	39..40			16
+  6	Configure  V1 		MMMMMMMMMM DD	39..40			17
+
+  7	Aux   Srce    		MMMMM MMMM				{11,1,2,3,10}[padat1]
+  7	Rate  Srce    		MMMMM MMMM		 		{11,1,2,3}[padat1]
+  7	Inten Srce    		MMMMM MMMM		 		{11,1,2,3}[padat1]
+  7	Depth Srce    		MMMMM MMMM		 		{11,1,2,3}[padat1]
+
+  8	Vlt 5 Srce    		MMM D MMMM   	32			{11,1,2,3}[padat1]
+
+  9 	Osc 4 Int  V1 		MMM D MMMM DD	32, 39..40		{4,5,6,7}[padat1]
+  9	Ind 6 Srce V1 		MMM D MMMM DD	32, 39..40		{11,1,2,3,9}[padat1]
+  9	Frq 4 Srce V1 		MMM D MMMM DD	32, 39..40		{11,1,2,3,9}[padat1]
+
+ 10	Level Srce V1 		MMMMM MMMM DD	39..40			{11,1,2,3,9}[padat1]
+ 10	Filtr Srce V1 		MMMMM MMMM DD	39..40			{11,1,2,3,9}[padat1]
+ 10	Fil Q Srce V1 		MMMMM MMMM DD	39..40			{11,1,2,3}[padat1]
+ 10	Loctn Srce V1 		MMMMM MMMM DD	39..40			{11,1,2,3,9}[padat1]
+ 10	Dynmc Srce V1 		MMMMM MMMM DD	39..40			{11,1,2,3}[padat1]
+
+	Note:	FPU related data is {source, multiplier, time, value, function}		
+		Osc related data is {interval, ratio, frequency, pitch}
+
+Destinations
+------------
+	Columns 30..34, 36..37, and 39..40 are used for destination data entry:
+
+		columns		dest	range
+		-------		----	-----
+		30..32		key	001 .. 128
+
+		32		LED	A .. G		(as 0 = A .. 6 = G)
+				vlt	1 .. 5
+				osc	1 .. 4
+				ind	1 .. 6
+				frq	1 .. 4
+
+		32..33		seq	01 .. 16
+				reg	01 .. 16
+
+		34		p	1 .. L		(as 1, 2, 7 ( ) = L)
+				pls	1 .. 4
+
+		36..37		ch	01 .. 16
+				trg	01 .. 16
+
+		39..40		vg	V1 .. V11 or G1 .. G11  (compressed)
+
+
+Definers and Stimulli
+---------------------
+
+	Definer_p_ch				Stmulus_p_ch
+	------------				------------
+	000000001111				111112222222
+	234567890123				567890123456
+
+	Key nnn p cc	range 0..127		Key nnn	p cc	range 0..127
+	Rel nnn p cc	range 0..127		Rel nnn	p cc	range 0..127
+	Trig nn		range 1..16		Trig nn		range 1..16
+	Pulse n		range 1..4		Pulse n		range 1..4
+
+	Columns 6..8, 10, 12..13, 19..21, 23, and 25..26
+	are used for data entry:
+
+		def	stm	type		range
+		----	---	----		-----
+		6..8	19..21	key, rel	001 .. 128
+
+		7..8	20..21	trg		01 .. 16
+
+		8	21	pls		1 .. 4
+
+		10	23	key, rel	1 .. L
+
+		12..13	25..26	key, rel	01 .. 16
+
+FPU Output Sub-Addresses
+------------------------
+	Srce	PSA_SRC		0	Source			box 31
+	Mult	PSA_MLT		1	Multiplier		box 32
+	Time	PSA_TIM		2	Time			box 33
+	Valu	PSA_VAL		3	Value			box 34
+	Func 	PSA_FNC		4	Function control	box 35
+
+Oscillator Mode Sub-Addresses
+-----------------------------
+	Intvl	PSO_INT		0	Interval mode		box 19
+	Ratio	PSO_RAT		1	Ratio mode		box 20
+	Freq	PSO_FRQ		2	Frequency mode		box 17
+	Pitch	PSO_PCH		3	Pitch mode		box 18
+
+Sources
+-------
+	FPU outputs can have sources,  in the form:
+
+		Destnation vg  Datum
+		-------------  -----
+		????? Srce     *****
+
+	where ????? is one of:
+
+		Label	Symbol		code	parameter		box
+		-----	------		----	---------		---
+		Level	PA_LEVL		16	Level			21
+		Ind n	PA_INDX		17	Index			16
+		Frq n	PA_FREQ		18	Frequency		17
+		Filtr	PA_FILT		19	Filter frequency	23
+		Fil Q	PA_FILQ		20	Filter resonance	24
+		Loctn	PA_LOCN		21	Location		22
+		Dynmc	PA_DYNM		22	Dynamics		25
+		Aux	PA_AUX		23	Auxiliary control	30
+		Rate	PA_RATE		24	Phase shifter rate	28
+		Inten	PA_INTN		25	Phase shifter inten	29
+		Depth	PA_DPTH		26	Phase shifter depth	27
+		Vlt n	PA_VOLT		27	Control voltage output	26
+
+	and ***** is one of:
+
+		Label	Symbol		code	source			box
+		-----	------		----	------			---
+		Randm	SM_RAND		1	Random value		45
+		GPC/V	SM_CTL1		2	G. P. Controller	40
+		Pitch	SM_PTCH		5	Pitch			41
+		KeyPr	SM_KPRS		6	Key Pressure		44
+		KeyVl	SM_KVEL		7	Key Velocity		43
+		Pedal	SM_PED1		8	Pedal 1			39
+		Freq	SM_FREQ		10	Frequency		42
+		PchWh	SM_HTPW		11	Pitch Wheel		36
+		ModWh	SM_VTMW		12	Mod. Wheel		37
+		Breth	SM_LPBR		13	Breath Controller	38
+
+Sub-menu Highlighting Controls
+------------------------------
+
+HT_0	0x01	/* definer, stimulus */
+HT_1	0x02	/* source */
+HT_2	0x04	/* destination */
+HT_3	0x08	/* oscillator */
+HT_4	0x10	/* level, index, freq, location, filter */
+HT_5	0x20	/* filq, dynamc, vout, depth, rate, inten, aux */
+
+HT_OFF	0x00	/* no submenu highlighted */
+
+
+hilitab[][8] -- submenu highlight table
+---------------------------------------
+
+start   width   row1       row2       row3       row4       row5
+-----   -----   ---------  ---------  ---------  ---------  ---------
+  2       3	HT_0|HT_2  HT_0       HT_0|HT_2  HT_0|HT_2  HT_2
+  7       6     HT_2       HT_2       HT_2       HT_2       HT_2
+ 15       5     HT_2       HT_2       HT_2       HT_2       HT_2
+ 22       5     HT_2       HT_2|HT_3  HT_2       HT_2       HT_2
+ 29       5     HT_2       HT_2       HT_2       HT_2       HT_2
+ 36       5     HT_2       HT_2       HT_2       HT_2       HT_2
+ 43       4     HT_4|HT_5  HT_4|HT_5  HT_4|HT_5  HT_4|HT_5  HT_4
+ 49       5     HT_1       HT_1       HT_1       HT_1       HT_1
+ 56       5     HT_1       HT_1       HT_1       HT_1       HT_1
+
+HT_0 - Definer or Stimulus menu
+-------------------------------
+19 | Key                                                         |
+20 | Rel                                                         |
+21 | Trg                                                         |
+22 | Pls                                                         |
+23 |                                                             |
+
+HT_1 -- Source menu
+-------------------
+19 |                                                PchWh  Pitch |
+20 |                                                ModWh  Freq  |
+21 |                                                Breth  KeyVl |
+22 |                                                Pedal  KeyPr |
+23 |                                                GPC/V  Randm |
+
+HT_2 -- Initial destination menu
+---------------------------------
+19 | Key  SeqLin  Instr  Index  Level  V Out                     |
+20 |      SeqCtl  Osc    Freq   Loctn  Depth                     |
+21 | Trg  Tuning  WaveA         Filtr  Rate                      |
+22 | Pls  RegSet  WaveB         Fil Q  Inten                     |
+23 | LED  RegAdd  Confg         Dynmc  Aux                       |
+
+HT_3 -- Osc sub-address menu
+----------------------------
+19 |                                                             |
+20 |                     Freq                                    |
+21 |                     Pitch                                   |
+22 |                     Intvl                                   |
+23 |                     Ratio                                   |
+
+HT_4 -- Level,  Index,  Freq,  Loctn,  Filtr sub-address menu
+-------------------------------------------------------------
+19 |                                          Srce               |
+20 |                                          Mult               |
+21 |                                          Valu               |
+22 |                                          Time               |
+23 |                                          Func               |
+
+HT_5 -- Fil Q,  Dynmc,  V Out,  Depth,  Rate,  Inten,  Aux sub-address menu
+---------------------------------------------------------------------------
+19 |                                          Srce               |
+20 |                                          Mult               |
+21 |                                          Valu               |
+22 |                                          Time               |
+23 |                                                             |

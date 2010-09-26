@@ -1,0 +1,88 @@
+TC(3WI)									UNIX 5.0						TC(3WI)
+
+	NAME
+		tiny curses - screen functions without ``optimal'' cursor
+		motion
+
+	SYNOPSIS
+		cc [flags] files tc.o -ltermlib [libraries]
+
+	DESCRIPTION
+		These routines give the programmer the high level curses(3)
+		interface to the termcap(3) functions without the overhead
+		of the curses(3) screen optimization capabilities.  Tiny
+		curses is useful for simple screen formatting and is more
+		efficient for displays that do not require significant
+		redrawing.
+
+		To use the routines, the function initscr() should be called
+		before any others.  The routine endwin() should be called
+		before exiting.
+
+		The names of the functions are identical to those of
+		curses(3) so that it is easy to move from Tiny curses to
+		real curses(3).  There are many functions provided by
+		curses(3) that are not provided here (e.g., windows), so the
+		opposite translation is more difficult.
+
+	AUTHOR
+		Gary Perlman
+
+	SEE ALSO
+		curses(3), termcap(3), termcap(5)
+
+	FILES
+		#include "curses.h"definitions of variables and compatibility functions
+		/etc/termcap   terminal capability database
+
+	VARIABLES
+		int LINES;/* number of lines in display */
+		int COLS; /* number of columns in display */
+
+	FUNCTIONS
+		Basic
+			endwin () reset tty to old parameters
+			initscr ()initialize screen
+			move (y, x)move to line=y column=x (zero origin)
+			refresh ()flush output to screen (fflush(stdout))
+
+		Clear Regions
+			clear ()  clear screen
+			clrtobot ()clear to bottom of screen
+			clrtoeol ()clear to end of line
+
+		Terminal Functions
+			crmode () cbreak mode
+			echo ()   echo characters
+			nocrmode ()out of cbreak mode
+			noecho () don't echo characters
+			noraw ()  no raw mode
+			raw ()    raw mode
+			resetty ()reset tty to stored state
+			savetty ()save tty state
+
+		Highlighting
+			beep ()   visible or at least audible bell
+			standend ()don't highlight text
+			standout ()highlight text
+			underend ()end underscore mode
+			underscore ()underscore characters
+
+		Editing Functions
+			delch ()  delete the character under the cursor
+			deleteln ()delete the current line
+			insch (c) insert character
+			insertln ()insert line
+
+	DIAGNOSTICS
+		To be compatible with curses(3), there are no diagnostics.
+
+	NOTES
+		The refresh() function is actually a call to fflush(stdout)
+		to flush the output buffer.  Thus, the tiny curses refresh()
+		may be used to guarantee that some text is on the screen,
+		but it might go out sooner.
+
+		Tiny curses assumes you want to catch interrupts, so
+		initscr() sets things up so that an interrupt will reset the
+		tty, move to the bottom of the screen, and exit.

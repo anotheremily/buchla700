@@ -1,0 +1,698 @@
+Patch Execution Table Definitions		Rev 8		1988-11-18
+---------------------------------		-----		----------
+
+Source:	patch.h	Version 20 -- 1988-11-15
+
+
+#define	MAXPATCH	256		/* patch table size */
+#define	RAWDEFS		256		/* def table size */
+
+#define	DATAROW		9		/* data entry row */
+
+#define	NDEFSTMS	5120		/* number of stms/defs */
+#define	NPTEQELS	256		/* number of trigger fifo entries */
+
+#define	NPTEQLO		(NPTEQELS >> 2)		/* trigger fifo lo water */
+#define	NPTEQHI		(NPTEQELS - NPTEQLO)	/* trigger fifo hi water */
+
+#define	NULL_DEF	0x1200		/* blank definer code */
+
+#define	ADR_MASK	0x00FF		/* patch / defent table index mask */
+#define	TRG_MASK	0x1FFF		/* trigger mask */
+#define	PE_SPEC		0x00FF		/* destination spec mask */
+#define	PE_TBIT		0x8000		/* DEF triggered bit */
+
+struct	patch	{	/* patch table entry (16 bytes per entry) */
+
+	unsigned short	nextstm;	/* index of next entry in stm chain */
+	unsigned short	prevstm;	/* index of previous entry in stm chain */
+	unsigned short	defnum;		/* definer */
+	unsigned short	stmnum;		/* stimulus */
+	unsigned short	paspec;		/* destination type and flags */
+	unsigned short	pasuba;		/* sub-address */
+	unsigned short	padat1;		/* data word 1 */
+	unsigned short	padat2;		/* data word 2 */
+};
+
+struct	defent	{	/* definition table entry -- 10 bytes per entry */
+
+	unsigned short	nextdef;	/* index of next in def chain */
+	unsigned short	stm;		/* stimulus */
+	unsigned short	adspec;		/* destination type */
+	unsigned short	adsuba;		/* sub-address */
+	unsigned short	addat1;		/* data word 1 */
+};
+
+extern	char	stmptr[];		/* stimulus pointer table */
+extern	char	defptr[];		/* definition pointer table */
+
+extern	struct	patch	patches[];	/* patch table */
+
+extern	struct	defent	defents[];	/* definition control table */
+
+Destination types
+-----------------
+
+	Symbol	Code	Type		Sub-address types
+	------	----	--------	------------------------
+	PA_KEY	01	Key
+	PA_TRG	02	Trg
+	PA_PLS	03	Pls
+	PA_LED	04	LED
+	PA_SLIN	05	SeqLin
+	PA_SCTL	06	SeqCtl
+	PA_TUNE	07	Tuning
+	PA_RSET	08	RegSet
+	PA_RADD	09	RegAdd
+	PA_INST	10	Instr
+	PA_OSC	11	Osc		Freq Pitch Intvl Ratio
+	PA_WAVA	12	WaveA
+	PA_WAVB	13	WaveB
+	PA_CNFG	14	Confg
+	PA_LEVL	15	Level		Srce Mult Valu Time Func 
+	PA_INDX	16	Index		Srce Mult Valu Time Func 
+	PA_FREQ	17	Freq		Srce Mult Valu Time Func 
+	PA_FILT	18	Filtr		Srce Mult Valu Time Func 
+	PA_FILQ	19	Fil Q		Srce Mult Valu Time
+	PA_LOCN	20	Loctn		Srce Mult Valu Time Func 
+	PA_DYNM	21	Dynmc		Srce Mult Valu Time
+	PA_AUX	22	Aux		Srce Mult Valu Time
+	PA_RATE	23	Rate		Srce Mult Valu Time
+	PA_INTN	24	Inten		Srce Mult Valu Time
+	PA_DPTH	25	Depth		Srce Mult Valu Time
+	PA_VOUT	26	V Out		Srce Mult Valu Time
+
+Sub-Addresses
+-------------
+
+	Srce	0	PSA_SRC		source
+	Mult	1	PSA_MLT		multiplier
+	Time	2	PSA_TIM		time
+	Valu	3	PSA_VAL		value
+	Func 	4	PSA_FNC		function control
+
+	Intvl	0	PSO_INT		interval mode
+	Ratio	1	PSO_RAT		ratio mode
+	Freq	2	PSO_FRQ		frequency mode
+	Pitch	3	PSO_PCH		pitch mode
+
+Sources
+-------
+
+	FPU outputs can have sources,  in the form:
+
+		Destnation vg  Data
+		-------------  -----
+		????? Srce     *****
+
+	where ????? is one of:
+
+		Level	PA_LEVL		16	Level
+		Ind n	PA_INDX		17	Index
+		Frq n	PA_FREQ		18	Frequency
+		Filtr	PA_FILT		19	Filter frequency
+		Fil Q	PA_FILQ		20	Filter resonance
+		Loctn	PA_LOCN		21	Location
+		Dynmc	PA_DYNM		22	Dynamics
+		Aux	PA_AUX		23	Auxiliary control
+		Rate	PA_RATE		24	Phase shifter rate
+		Inten	PA_INTN		25	Phase shifter inten
+		Depth	PA_DPTH		26	Phase shifter depth
+		Vlt n	PA_VOUT		27	Control voltage output
+
+	and ***** is one of:
+
+		Randm	SM_RAND		1	Random value
+		GPC/V	SM_CTL1		2	Gen. Purpose Contr. / CV 1
+		Pitch	SM_PTCH		5	Pitch
+		KeyPr	SM_KPRS		6	Key Pressure
+		KeyVl	SM_KVEL		7	Key Velocity
+		Pedal	SM_PED1		8	Pedal 1
+		Freq	SM_FREQ		10	Frequency
+		PchWh	SM_HTPW		11	Pitch Wheel / Hor. tablet
+		ModWh	SM_VTMW		12	Mod. Wheel / Vrt. tablet
+		Breth	SM_LPBR		13	Breath Contr. / Long Pot
+
+
+Patch Action Descriptions
+-------------------------
+
+	In the descriptions of the patch actions, below, the symbol **** is
+used to represent the 2 byte Definer field, and the symbol #### is used to
+represent the 2 byte Stimulus field.
+
+
+Key action					PA_KEY		1	0x0001
+----------					------		-	------
+
+	This destination type causes a simulated key action to occur on the
+specified port and channel.
+
+Destnation vg  Data
+-------------  -----
+K 128 1 16     Start		key closure # 1..128, port 1,2,L, channel 1..16
+K 128 1 16     Stop		Trans = 7 (blank), Stop = 8 (-), Start = 9 (+)
+K 128 1 16     Trans
+
+	paspec	destination type	PA_KEY		1	0x0001
+	pasuba	sub-address	  ssss	trigger (port, channel, key)
+	padat1	data word 1		-unused-
+	padat2	data word 2	    dd	trans = 0, stop = 1, start = 2
+
+
+	Disk format:	01 **** #### ssss dd			Length:  8
+
+	Note that the form using port 'L' does not include the channel.
+
+
+Trigger						PA_TRG		2	0x0002
+-------						------		-	------
+
+	This destination type sets the state of a trigger.
+
+Destnation vg  Data
+-------------  -----
+Trigger 16     Start		trigger 01..16
+Trigger 16     Stop		Stop = 8 (-), Start = 9 (+)
+
+	paspec	destination type	PA_TRG		2	0x0002
+	pasuba	sub-address	  ssss	trigger = (0x1100 | trig)
+	padat1	data word 1		-unused-
+	padat2	data word 2	    dd	stop = 0, start = 1
+
+
+	Disk format:	02 **** #### ssss dd			Length:  8
+
+
+Pulse output					PA_PLS		3	0x0003
+------------					------		-	------
+
+	This destination type causes a pulse output to occur on the specified
+pulse output channel.
+
+Destnation vg  Data
+-------------  -----
+Pulse 1        Start		pulse 1..2
+Pulse 1        Stop		Trans = 7 (blank), Stop = 8 (-), Start = 9 (+)
+Pulse 1        Trans
+
+	paspec	destination type	PA_PLS		3	0x0003
+	pasuba	sub-address	    ss	pulse number
+	padat1	data word 1		-unused-
+	padat2	data word 2	    dd	trans = 0, stop = 1, start = 2
+
+
+	Disk format:	03 **** #### ss dd			Length:  7
+
+
+LED control					PA_LED		4	0x0004
+-----------					------		-	------
+
+	This destination type sets the state of a front panel keyboard LED.
+
+Destnation vg  Data
+-------------  -----
+LED A          333		0 = ignore, 1 = on, 2 = off, 3 = toggle
+LED B          3333
+LED C          333
+LED D          3333
+LED E          333
+LED F          3333
+LED G          333
+
+	paspec	destination type	PA_LED		4	0x0004
+	pasuba	sub-address	    ss	LED group  (A = 0, ..., G = 6)
+	padat1	data word 1	  dd	LED control data  (LJZF)
+	padat2	data word 2		-unused-
+
+	Disk format:	04 **** #### ss dd			Length:  7
+
+
+Sequence Line					PA_SLIN		5	0x0005
+-------------					-------		-	------
+
+	This destination type sets the next sequence step to be executed for
+	a specified sequence channel.
+
+Destnation vg  Data
+-------------  -----
+Seq nn Lin     999		seq range 01..16, line 000..999
+
+	paspec	destination type	PA_SLIN		5	0x0005
+	pasuba	sub-address	    ss	sequence number
+	padat1	data word 1	  dddd	sequence line
+	padat2	data word 2		-unused-
+
+	Disk format:	05 **** #### ss dddd			Length:  8
+
+
+Sequence control				PA_SCTL		6	0x0006
+----------------				-------		-	------
+
+	This destination type starts or stops a specified sequence channel.
+
+Destnation vg  Data
+-------------  -----
+Seq nn Ctl     Start		seq range 01..16
+Seq nn Ctl     Stop		Stop = 8 (-), Start = 9 (+)
+
+	paspec	destination type	PA_SCTL		6	0x0006
+	pasuba	sub-address	    ss	sequence number
+	padat1	data word 1		-unused-
+	padat2	data word 2	    dd	stop = 0, start = 1
+
+
+	Disk format:	06 **** #### ss dd			Length:  7
+
+Tuning table selection				PA_TUNE		7	0x0007
+----------------------				-------		-	------
+
+	This destination type selects the current tuning table.
+
+Destnation vg  Data
+-------------  -----
+Tune Table     9		range 0..9
+
+	paspec	destination type	PA_TUNE		7	0x0007
+	pasuba	sub-address		0
+	padat1	data word 1	    dd	tuning table number
+	padat2	data word 2		-unused-
+
+	Disk format:	07 **** #### dd				Length:  6
+
+
+Register Set					PA_RSET		8	0x0008
+------------					-------		-	------
+
+	This destination type sets the value of a register to a constant or
+	the value of another register.
+
+Destnation vg  Data
+-------------  -----
+Reg nn Set     +99		reg 01..16, values -99..+99, R01..R16
+
+	paspec	destination type	PA_RSET		8	0x0008
+	pasuba	sub-address	    ss	register number
+	padat1	data word 1	    dd	type:  0 = value, 1 = register
+	padat2	data word 2	    dd	value or register number
+
+	Disk format:	08 **** #### ss dd dd			Length:  8
+
+
+Register Add					PA_RADD		9	0x0009
+------------					-------		-	------
+
+	This destination type adds a constant or the contents of a register
+	to the value of a register.
+
+Destnation vg  Data
+-------------  -----
+Reg nn Add     -99		reg 01..16, values -99..+99, R01..R16
+
+	paspec	destination type	PA_RADD		9	0x0009
+	pasuba	sub-address	    ss	register number
+	padat1	data word 1	    dd	type:  0 = value, 1 = register
+	padat2	data word 2	    dd	value or register number
+
+	Disk format:	09 **** #### ss dd dd			Length:  8
+
+Instrument selection				PA_INST		10	0x000A
+--------------------				-------		--	------
+
+	This destination type selects an instrument for a voice or a group.
+
+Destnation vg  Data
+-------------  -----
+Instrument V1  40		range 00..40
+
+	paspec	destination type	PA_INST		10	0x000A
+	pasuba	sub-address	  ss	15..8 = v/g,  7..0 = 0
+	padat1	data word 1	    dd	instrument number
+	padat2	data word 2		-unused-
+
+	Disk format:	0A **** #### ss dd			Length:  7
+
+
+Oscillator mode and offset			PA_OSC		11	0x000B
+--------------------------			------		--	------
+
+	This destination type sets the oscillator mode and offset for a
+specified oscillator in a voice or a group.
+
+Destnation vg  Data
+-------------  -----
+Osc 4 Int  V1  +1200		osc 1..4, value -1200..+1200
+Osc 4 Rat  V1  1/1		value 1/1..9/9
+Osc 4 Pch  V1  9C#00		value 0Cb99..9C#99
+Osc 4 Frq  V1  15.9		value 0.00..15.9
+
+	paspec	destination type	PA_OSC		11	0x000B
+	pasuba	sub-address	  ssss	15..8 = v/g, 7..0 = osc
+	padat1	data word 1	    dd	type  (int, rat, frq, pch)
+	padat2	data word 2	  dddd	value
+
+	Disk format:	0B **** #### ssss dd dddd		Length:  10
+
+Waveshape A selection				PA_WAVA		12	0x000C
+---------------------				-------		--	------
+
+	This destination type selects the waveshape used by a voice or group
+	in slot A.
+
+Destnation vg  Data
+-------------  -----
+WaveshapeA V1  20		range 01..20
+
+	paspec	destination type	PA_WAVA		12	0x000C
+	pasuba	sub-address	  ss	15..8 = v/g,  7..0 = 0
+	padat1	data word 1	    dd	waveshape number
+	padat2	data word 2		-unused-
+
+	Disk format:	0C **** #### ss dd			Length:  7
+
+
+Waveshape B selection				PA_WAVB		13	0x000D
+---------------------				-------		--	------
+
+	This destination type selects the waveshape used by a voice or group
+	in slot B.
+
+Destnation vg  Data
+-------------  -----
+WaveshapeB V1  20		range 01..20
+
+	paspec	destination type	PA_WAVB		13	0x000D
+	pasuba	sub-address	  ss	15..8 = v/g,  7..0 = 0
+	padat1	data word 1	    dd	waveshape number
+	padat2	data word 2		-unused-
+
+	Disk format:	0D **** #### ss dd			Length:  7
+
+
+Configuration selection				PA_CNFG		14	0x000E
+-----------------------				-------		--	------
+
+	This destination type selects the configuration used by a voice or group.
+
+Destnation vg  Data
+-------------  -----
+Configure  V1  11		range 00..11
+
+	paspec	destination type	PA_CNFG		14	0x000E
+	pasuba	sub-address	  ss	15..8 = v/g,  7..0 = 0
+	padat1	data word 1	    dd	configuration number 0..11
+	padat2	data word 2		-unused-
+
+	Disk format:	0E **** #### ss dd			Length:  7
+
+Level						PA_LEVL		15	0x000F
+-----						-------		--	------
+
+	This destination type alters the level for a voice or group.
+
+Destnation vg  Data
+-------------  -----
+Level Srce V1  PchWh		ind 1..6, see table below for sources
+Level Mult V1  +1.00		range -1.00..+1.00
+Level Valu V1  +0.00		range -10.00..+10.00  (signed first digit)
+Level Time V1  32767		range 00001..32767 (in milliseconds)
+Level Func V1  Start		Stop = 8 (-), Start = 9 (+)
+Level Func V1  Stop
+
+	paspec	destination type	PA_LEVL		15	0x000F
+	pasuba	sub-address	  ss	15..8 = v/g,  7..0 = 0
+	padat1	data word 1	    dd	type  (src, mlt, val, tim, fnc)
+	padat2	data word 2	  dddd	value
+
+	Disk format:	0F **** #### ss dd dddd			Length:  9
+
+	Output is to voice parameter 2.
+
+
+Index						PA_INDX		16	0x0010
+-----						-------		--	------
+
+	This destination type alters a specified index for a voice or group.
+
+Destnation vg  Data
+-------------  -----
+Ind 6 Srce V1  PchWh		ind 1..6, see table below for sources
+Ind 6 Mult V1  +1.00		range -1.00..+1.00
+Ind 6 Valu V1  +0.00		range -10.00..+10.00  (signed first digit)
+Ind 6 Time V1  32767		range 00001..32767 (in milliseconds)
+Ind 6 Func V1  Start		Stop = 8 (-), Start = 9 (+)
+Ind 6 Func V1  Stop
+
+	paspec	destination type	PA_INDX		16	0x0010
+	pasuba	sub-address	  ssss	15..8 = v/g, 7..0 = osc
+	padat1	data word 1	    dd	type  (src, mlt, val, tim, fnc)
+	padat2	data word 2	  dddd	value
+
+	Disk format:	10 **** #### ssss dd dddd		Length:  10
+
+	Ind	Par
+	---	---
+	 1	  9
+	 2	 11
+	 3	 12
+	 4	 13
+	 5	 14
+	 6	 15
+
+Frequency					PA_FREQ		17	0x0011
+---------					-------		--	------
+
+	This destination type alters a specified frequency for a voice or group.
+
+Destnation vg  Data
+-------------  -----
+Frq 4 Srce V1  PchWh		frq 1..4, see table below for sources
+Frq 4 Mult V1  +1.00		range -1.00..+1.00
+Frq 4 Valu V1  +0.00		range -10.00..+10.00  (signed first digit)
+Frq 4 Time V1  32767		range 00001..32767 (in milliseconds)
+Frq 4 Func V1  Start		Stop = 8 (-), Start = 9 (+)
+Frq 4 Func V1  Stop
+
+	paspec	destination type	PA_FREQ		17	0x0011
+	pasuba	sub-address	  ssss	15..8 = v/g,  7..0 = osc
+	padat1	data word 1	    dd	type  (src, mlt, val, tim, fnc)
+	padat2	data word 2	  dddd	value
+
+	Disk format:	11 **** #### ssss dd dddd		Length:  10
+
+	Freq	Par
+	----	---
+	  1	 1
+	  2	 3
+	  3	 5
+	  4	 7
+
+
+Filter frequency				PA_FILT		18	0x0012
+----------------				-------		--	------
+
+	This destination type sets the filter frequency for a voice or group.
+
+Destnation vg  Data
+-------------  -----
+Filtr Srce V1  PchWh		see table below for sources
+Filtr Mult V1  +1.00		range -1.00..+1.00
+Filtr Valu V1  +0.00		range -10.00..+10.00  (signed first digit)
+Filtr Time V1  32767		range 00001..32767 (in milliseconds)
+Filtr Func V1  Start		Stop = 8 (-), Start = 9 (+)
+Filtr Func V1  Stop
+
+	paspec	destination type	PA_FILT		18	0x0012
+	pasuba	sub-address	  ss	15..8 = v/g,  7..0 = 0
+	padat1	data word 1	    dd	type  (src, mlt, val, tim, fnc)
+	padat2	data word 2	  dddd	value
+
+	Disk format:	12 **** #### ss dd dddd			Length:  9
+
+	Output is to voice parameter 10.
+
+Filter Q					PA_FILQ		19	0x0013
+--------					-------		--	------
+
+	This destination type sets the filter resonance for a voice or group.
+
+Destnation vg  Data
+-------------  -----
+Fil Q Srce V1  PchWh		see table below for sources
+Fil Q Mult V1  +1.00		range -1.00..+1.00
+Fil Q Valu V1  +0.00		range -10.00..+10.00  (signed first digit)
+Fil Q Time V1  32767		range 00001..32767 (in milliseconds)
+
+	paspec	destination type	PA_FILQ		19	0x0013
+	pasuba	sub-address	  ss	15..8 = v/g,  7..0 = 0
+	padat1	data word 1	    dd	type  (src, mlt, val, tim)
+	padat2	data word 2	  dddd	value
+
+	Disk format:	13 **** #### ss dd dddd			Length:  9
+
+	Output is to voice parameter 6.
+
+
+Location					PA_LOCN		20	0x0014
+--------					-------		--	------
+
+	This destination type sets the location for a voice or group.
+
+Destnation vg  Data
+-------------  -----
+Loctn Srce V1  PchWh		see table below for sources
+Loctn Mult V1  +1.00		range -1.00..+1.00
+Loctn Valu V1  +0.00		range -10.00..+10.00  (signed first digit)
+Loctn Time V1  32767		range 00001..32767 (in milliseconds)
+Loctn Func V1  Start		Stop = 8 (-), Start = 9 (+)
+Loctn Func V1  Stop
+
+	paspec	destination type	PA_LOCN		20	0x0014
+	pasuba	sub-address	  ss	15..8 = v/g,  7..0 = 0
+	padat1	data word 1	    dd	type  (src, mlt, val, tim, fnc)
+	padat2	data word 2	  dddd	value
+
+	Disk format:	14 **** #### ss dd dddd			Length:  9
+
+	Output is to voice parameter 4.
+
+Dynamics					PA_DYNM		21	0x0015
+--------					-------		--	------
+
+	This destination type sets the dynamics for a voice or group.
+
+Destnation vg  Data
+-------------  -----
+Dynmc Srce V1  PchWh		see table below for sources
+Dynmc Mult V1  +1.00		range -1.00..+1.00
+Dynmc Valu V1  +0.00		range -10.00..+10.00  (signed first digit)
+Dynmc Time V1  32767		range 00001..32767 (in milliseconds)
+
+	paspec	destination type	PA_DYNM		21	0x0015
+	pasuba	sub-address	  ss	15..8 = v/g,  7..0 = 0
+	padat1	data word 1	    dd	type  (src, mlt, val, tim)
+	padat2	data word 2	  dddd	value
+
+	Disk format:	15 **** #### ss dd dddd			Length:  9
+
+	Output is to voice parameter 8.
+
+
+Auxiliary control				PA_AUX		22	0x0016
+-----------------				------		--	------
+
+	This destination type sets the value of the auxiliary control voltage
+	and its associated control bit.
+	
+Destnation vg  Data
+-------------  -----
+Aux   Srce     PchWh		see table below for sources
+Aux   Mult     +1.00		range -1.00..+1.00
+Aux   Valu     +0.00		range -10.00..+10.00  (signed first digit)
+Aux   Time     32767		range 00001..32767 (in milliseconds)
+Aux            On		Off = 8 (-), On = 9 (+)
+
+	paspec	destination type	PA_AUX		22	0x0016
+	pasuba	sub-address		0
+	padat1	data word 1	    dd	type  (src, mlt, val, tim, fnc)
+	padat2	data word 2	  dddd	value
+
+	Disk format:	16 **** #### dd dddd			Length:  8
+
+	Output is to voice 9 spare.
+
+Phase shifter rate				PA_RATE		23	0x0017
+------------------				-------		--	------
+
+	This destination type sets the phase shifter rate.
+
+Destnation vg  Data
+-------------  -----
+Rate  Srce     PchWh		see table below for sources
+Rate  Mult     +1.00		range -1.00..+1.00
+Rate  Valu     +0.00		range -10.00..+10.00  (signed first digit)
+Rate  Time     32767		range 00001..32767 (in milliseconds)
+
+	paspec	destination type	PA_RATE		23	0x0017
+	pasuba	sub-address		0
+	padat1	data word 1	    dd	type  (src, mlt, val, tim)
+	padat2	data word 2	  dddd	value
+
+	Disk format:	17 **** #### dd dddd			Length:  8
+
+	Output is to voice 2 spare.
+
+
+Phase shifter intensity				PA_INTN		24	0x0018
+-----------------------				-------		--	------
+
+	This destination type sets the phase shifter intensity.
+
+Destnation vg  Data
+-------------  -----
+Inten Srce     PchWh		see table below for sources
+Inten Mult     +1.00		range -1.00..+1.00
+Inten Valu     +0.00		range -10.00..+10.00  (signed first digit)
+Inten Time     32767		range 00001..32767 (in milliseconds)
+
+	paspec	destination type	PA_INTN		24	0x0018
+	pasuba	sub-address		0
+	padat1	data word 1	    dd	type  (src, mlt, val, tim)
+	padat2	data word 2	  dddd	value
+
+	Disk format:	18 **** #### dd dddd			Length:  8
+
+	Output is to voice 1 spare.
+
+Phase shifter depth				PA_DPTH		25	0x0019
+-------------------				-------		--	------
+
+	This destination type sets the phase shifter depth.
+
+Destnation vg  Data
+-------------  -----
+Depth Srce     PchWh		see table below for sources
+Depth Mult     +1.00		range -1.00..+1.00
+Depth Valu     +0.00		range -10.00..+10.00  (signed first digit)
+Depth Time     32767		range 00001..32767 (in milliseconds)
+
+	paspec	destination type	PA_DPTH		25	0x0019
+	pasuba	sub-address		0
+	padat1	data word 1	    dd	type  (src, mlt, val, tim)
+	padat2	data word 2	  dddd	value
+
+	Disk format:	19 **** #### dd dddd			Length:  8
+
+	Output is to voice 3 spare.
+
+
+Control voltage output				PA_VOUT		26	0x001A
+----------------------				-------		--	------
+
+	This destination type sets a control voltage output.
+
+Destnation vg  Data
+-------------  -----
+Vlt 5 Srce     PchWh		vlt 1..5 see table below for sources
+Vlt 5 Mult     +1.00		range -1.00..+1.00
+Vlt 5 Valu     +0.00		range -10.00..+10.00  (signed first digit)
+Vlt 5 Time     32767		range 00001..32767 (in milliseconds)
+
+	Note:	Voltages 1..4 are CV1..CV4.
+		Voltage 5 is added to the system Amplitude value.
+
+	paspec	destination type	PA_VOUT		26	0x001A
+	pasuba	sub-address	    ss	control voltage number
+	padat1	data word 1	    dd	type  (src, mlt, val, tim)
+	padat2	data word 2	  dddd	value
+
+	Disk format:	1A **** #### ss dd dddd			Length:  9
+
+	Output is to the spare on:
+
+		Vlt	Voice
+		---	-----
+		 1	 11
+		 2	 10
+		 3	  6
+		 4	  8

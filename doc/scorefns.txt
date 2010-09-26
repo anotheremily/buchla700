@@ -1,0 +1,64 @@
+scinit.c -- score list functions
+Version 3 -- 1987-04-24
+
+Score storage variables:
+
+BOOL	se_chg;			/* Score free list changed flag */
+
+long	spcount;		/* Score storage pool free entry count */
+long	frags;			/* Score storage pool fragment count */
+
+long	se1_cnt;		/* Score free list E_SIZE1 entry count */
+long	se2_cnt;		/* Score free list E_SIZE2 entry count */
+long	se3_cnt;		/* Score free list E_SIZE3 entry count */
+
+long	*pspool;		/* Score storage pool pointer */
+
+struct	s_entry	*size1;		/* Score E_SIZE1 entry free list pointer */
+struct	s_entry	*size2;		/* Score E_SIZE2 entry free list pointer */
+struct	s_entry	*size3;		/* Score E_SIZE3 entry free list pointer */
+
+long	spool[MAX_SE];		/* Score storage pool */
+
+
+
+Functions:
+
+	struct s_entry *
+	e_clr(e1)
+	struct s_entry *e1;
+
+		Clear the event pointed to by 'e1'.  Returns 'e1'.
+
+	struct s_entry *
+	e_ins(e1, e2)
+	struct s_entry *e1, *e2;
+
+		Insert the event pointed to by 'e1' after the event
+		pointed to by 'e2'.  Returns 'e1'.
+
+	struct s_entry *
+	e_rmv(e1)
+	struct s_entry *e1;
+
+		Remove the event pointed to by 'e1' from the list it's in.
+		Returns 'e1'.
+
+	struct s_entry *
+	e_alc(w)
+	int w;
+		Allocate a new event entry.  Returns the event entry address,
+		or E_NULL if none can be allocated.
+
+	int
+	e_del(e1)
+	struct s_entry *e1;
+
+		Deallocate the event entry pointed to by 'e1'.
+		Returns 0 if successful, 1 if not.
+
+	long
+	scinit()
+
+		Initialize the score data structures.
+		Returns the number of free storage units.

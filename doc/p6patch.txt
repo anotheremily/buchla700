@@ -1,0 +1,238 @@
+Subroutines by Name
+-------------------
+
+ADLE	P6PTCH	Allocate DEFLST entry
+ADRTAC	P6PDH	Access ADRTAB entry
+APTE	P6PTCH	Allocate patch table entry
+
+BLNKS	P6PDH	Fill an area with blanks
+
+CENTER	P6SCR	Find center line of text screen area
+CLADR	P6PTD	Calculate line address
+COLA	P6SCR	Calculate offset line address
+CPTE	P6PTCH	Compate patch table entries
+CTOP	P6SCR	Get line number of top of screen
+
+DCSB	P6PTD	Display CTL subfield
+DCTL	P6PTD	Display CTL DA field
+DCVAL	P6PTD	Display C-Value
+DDAF	P6PTD	Display DA field of patch
+DFNF	P6PTD	Display function (FN) data field
+DKP	P6PTD	Display KEY or PLS DA field
+DNV	P6PTD	Display note value
+DOSF	P6PTD	Display patch DEF or STM field
+DPAD	P6PTD	Display patch address
+DPOP	P6PTD	Display patch OP-CODE
+DPOPQ	P6PTD	Display OP-CODE type for DPOP
+DPTW	P6PTD	Display patch table window
+DREG	P6PTD	Display REG DA field
+DSMF	P6PTD	Display source/multiplier (SM) data field
+DSMU	P6PTD	Display submenu
+DSPCUR	P6PTD	Initialize the cursor
+DSPON	P6PTD	Setup the display attributes
+DSPP	P6PTD	Display patch entry
+DTRG	P6PTD	Display TRG DA field
+DVLF	P6PTD	Display value (VL) data field
+
+F$CD	P6SCR	Function display cursor down handler
+F$CU	P6SCR	Function display cursor up handler
+FDLE	P6PTCH	Free DEFLST entry
+FDST	P6PTCH	Find DEF/STM entry in DEFLST
+FFP	P6SCR	Find first patch
+FNDP	P6PTCH	Find patch entry
+FPDF	P6PTD	Fetch patch DA data field
+FPPD	P6PTD	Find patch predecessor for display
+FPSD	P6PTD	Find patch successor for display
+FPTE	P6PTCH	Free patch table entry
+
+IDOK	P6PDH	Check PBSWS status for a complete ID
+IPTE	P6PTCH	Insert patch table entry
+ISMA	P6PTD	Intensify submenu area
+ISMM	P6PTD	Intnesify submenu strip
+
+Subroutines by Name -- continued
+-------------------
+
+MBF	P6PTD	Convert from mixed base hex to binary
+MBT	P6PTD	Convert from binary to mixed base hex
+
+NOOP0	P6PTD	Return 0  (Z)
+NOOP1	P6PTD	Return 1  (NZ)
+
+OBSC	P6PDH	Offset binary sign change
+
+P$ATP	P6PDH	Patch display cursor action dispatcher
+P$CD	P6SCR	Patch table cursor down handler
+P$CU	P6SCR	Patch table cursor up handler
+P$DH1	P6PDH	Dispatcher for patch decoders
+P$DH2	P6PDH	Dispatcher for patch encoders
+P$FPA	P6PDH	Patch field pointer access routine
+P$MDH	P6PDH	Patch display menu data handler
+P$PMR	P6PDH	Patch + / - handler
+P$SMU	P6PTD	Patch display submenu handler
+P6SCR	P6SCR	Scrolling task
+PCHOK	P6PDH	Check PBSWS status for a complete patch
+PD01	P6PDH	Decode DEF field
+PD02	P6PDH	Decode STM field
+PD03	P6PDH	Decode ADDRS field
+PD04	P6PDH	Decode F of SM field F+C7
+PD05	P6PDH	Decode VL field
+PD06	P6PDH	Decode FN field
+PD07	P6PDH	Decode C7 of SM F+C7
+PD08	P6PDH	Decode DA field
+PE01	P6PDH	Patch data encoder for DEF field
+PE02	P6PDH	Patch data encoder for STM field
+PE03	P6PDH	Handle patch ADDRS field format
+PE04	P6PDH	Handle patch "SM F+C7" format  (part 1 - "F")
+PE05	P6PDH	Handle patch VL field format
+PE06	P6PDH	Handle patch FN field format
+PE07	P6PDH	Handle patch "SM F+C7" format  (part 2)
+PE09	P6PDH	Handle patch "DA F" format
+PE10	P6PDH	Handle patch "DA FF" format
+PE11	P6PDH	Handle patch "DA FFF" format
+PE12	P6PDH	Handle patch "DA FFFF" format
+PE13	P6PDH	Handle patch "DA G939" format
+PE15	P6PDH	Handle patch "DA !RF" format
+PE16	P6PDH	Handle patch "DA RF=C7" format
+PSRCH	P6PDH	Search for and display a patch
+PTDI	P6PTD	Patch display setup
+PTPRC	P6PDH	Locate or update a patch and display it and its neighbors
+PUTHDR	P6PTD	Display header routine
+
+RELJMP	P6PDH	Relative jump through a table at (DE) based on (A)
+
+S$CD	P6SCR	Sequence display cursor down handler
+S$CU	P6SCR	Sequence display cursor up handler
+SPREP	P6SCR	Prepare for scrollin
+
+Subroutines by Name -- continued
+-------------------
+
+TRJMP	P6PDH	Jump based on @TYP and (DE)
+
+UPCP	P6SCR	Update CPOS, PBUF, and PBSWS
+UPDTP	P6PDH	Update or insert a patch
+
+VBLANK	P6SCR	Output (C) blanks to the fixed text display
+VBLNKS	P6SCR	Output (C) blanks to the display
+
+XDFE	P6PTCH	Remove a DEFLST entry from the DEFPTR chain and delete it
+XPTE	P6PTCH	Delete patch table entry
+
+Subroutines by Module
+---------------------
+
+P6PDH
+-----
+ADRTAC		Access ADRTAB entry
+BLNKS		Fill an area with blanks
+IDOK		Check PBSWS status for a complete ID
+OBSC		Offset binary sign change
+P$ATP		Patch display cursor action dispatcher
+P$DH1		Dispatcher for patch decoders
+P$DH2		Dispatcher for patch encoders
+P$FPA		Patch field pointer access routine
+P$MDH		Patch display menu data handler
+P$PMR		Patch + / - handler
+PCHOK		Check PBSWS status for a complete patch
+PD01		Decode DEF field
+PD02		Decode STM field
+PD03		Decode ADDRS field
+PD04		Decode F of SM field F+C7
+PD05		Decode VL field
+PD06		Decode FN field
+PD07		Decode C7 of SM F+C7
+PD08		Decode DA field
+PE01		Patch data encoder for DEF field
+PE02		Patch data encoder for STM field
+PE03		Handle patch ADDRS field format
+PE04		Handle patch "SM F+C7" format  (part 1 - "F")
+PE05		Handle patch VL field format
+PE06		Handle patch FN field format
+PE07		Handle patch "SM F+C7" format  (part 2)
+PE09		Handle patch "DA F" format
+PE10		Handle patch "DA FF" format
+PE11		Handle patch "DA FFF" format
+PE12		Handle patch "DA FFFF" format
+PE13		Handle patch "DA G939" format
+PE15		Handle patch "DA !RF" format
+PE16		Handle patch "DA RF=C7" format
+PSRCH		Search for and display a patch
+PTPRC		Locate or update a patch and display it and its neighbors
+RELJMP		Relative jump through a table at (DE) based on (A)
+TRJMP		Jump based on @TYP and (DE)
+UPDTP		Update or insert a patch
+
+Subroutines by Module -- continued
+---------------------
+
+P6PTCH
+------
+ADLE		Allocate DEFLST entry
+APTE		Allocate patch table entry
+CPTE		Compate patch table entries
+FDLE		Free DEFLST entry
+FDST		Find DEF/STM entry in DEFLST
+FNDP		Find patch entry
+FPTE		Free patch table entry
+IPTE		Insert patch table entry
+XDFE		Remove a DEFLST entry from the DEFPTR chain and delete it
+XPTE		Delete patch table entry
+
+P6PTD
+-----
+CLADR		Calculate line address
+DCSB		Display CTL subfield
+DCTL		Display CTL DA field
+DCVAL		Display C-Value
+DDAF		Display DA field of patch
+DFNF		Display function (FN) data field
+DKP		Display KEY or PLS DA field
+DNV		Display note value
+DOSF		Display patch DEF or STM field
+DPAD		Display patch address
+DPOP		Display patch OP-CODE
+DPOPQ		Display OP-CODE type for DPOP
+DPTW		Display patch table window
+DREG		Display REG DA field
+DSMF		Display source/multiplier (SM) data field
+DSMU		Display submenu
+DSPCUR		Initialize the cursor
+DSPON		Setup the display attributes
+DSPP		Display patch entry
+DTRG		Display TRG DA field
+DVLF		Display value (VL) data field
+FPDF		Fetch patch DA data field
+FPPD		Find patch predecessor for display
+FPSD		Find patch successor for display
+ISMA		Intensify submenu area
+ISMM		Intnesify submenu strip
+MBF		Convert from mixed base hex to binary
+MBT		Convert from binary to mixed base hex
+NOOP0		Return 0  (Z)
+NOOP1		Return 1  (NZ)
+P$SMU		Patch display submenu handler
+PTDI		Patch display setup
+PUTHDR		Display header routine
+
+Subroutines by Module -- continued
+---------------------
+
+P6SCR
+-----
+CENTER		Find center line of text screen area
+COLA		Calculate offset line address
+CTOP		Get line number of top of screen
+F$CD		Function display cursor down handler
+F$CU		Function display cursor up handler
+FFP		Find first patch
+P$CD		Patch table cursor down handler
+P$CU		Patch table cursor up handler
+P6SCR		Scrolling task
+S$CD		Sequence display cursor down handler
+S$CU		Sequence display cursor up handler
+SPREP		Prepare for scrollin
+UPCP		Update CPOS, PBUF, and PBSWS
+VBLANK		Output (C) blanks to the fixed text display
+VBLNKS		Output (C) blanks to the display
+

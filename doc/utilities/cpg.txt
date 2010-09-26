@@ -1,0 +1,145 @@
+NAME	cpg - C source listing formatter
+
+SYNOPSIS
+
+	cpg [ -b<asename> ] [ -t tabstop ] [ file... ]
+
+DESCRIPTION
+
+cpg is a C language source listing formatter.  It employs certain
+triggers to perform its formatting.  Those same triggers may be used to
+extract in-line documentation to create documentation.  At the end of
+the listing produced by cpg is a table of contents of all files and
+functions contained in the current listing.  The table of contents is
+sorted alphabetically by function and file.
+
+
+The listing produced by cpg includes on each line a line number.  On each
+line containing any braces ({}), there will also be a
+nesting level indicator.  The nesting level indicator includes a number
+(the current nesting level) and a directional character.  The
+directional characters are:
+
+	> 6	The nesting level increased on this line
+	< 6	The nesting level decreased on this line
+	* 6	The nesting level changed both ways, with a net change of zero
+
+The triggers that cpg recognizes are itemized below.  Each must appear
+in column 1.
+
+<formfeed>
+
+	A formfeed will cause a new page to be started with a full header.
+
+/*F filename *<anything>
+
+	The file name may be specified in a comment preceding a descriptive
+	header block.  The filename argument must be delimited by asterisks in
+	the trigger.  The filename will appear in all page headings up to the
+	next filename trigger or the next file.  A filename comment block
+	MUST be terminated by the endofblock trigger (see below).
+
+	This trigger will print as a line in the listing.  This trigger causes
+	the start of a new page (form feed) in the listing, with printing of the
+	page header including the current file name.
+
+/*H funcname *<anything>
+
+	The function name may be specified in a comment preceding a descriptive
+	header block.  The funcname argument must be delimited by asterisks in
+	the trigger.  The funcname will appear in all page headings up to the
+	next funcname trigger or the next file.  A funcname comment block
+	MUST be terminated by the endofblock trigger (see below).
+
+	This trigger will print as a line in the listing.  This trigger causes
+	the start of a new page (form feed) in the listing, with printing of the
+	page header including the current function name.
+
+/*E*/
+
+	This is the endofblock trigger.  Everything between the last filename or
+	funcname trigger and the endofblock trigger will be passed straight
+	through by cpg without evaluation of nesting levels, comments, or quoted
+	strings.  Thus, a header block is treated as one long comment by cpg.
+
+	This trigger will print as a line in the listing.
+
+/*P*/
+
+	This is a page eject trigger.  It will not print in the listing, but
+	will be counted for line numbering purposes.  This trigger causes the
+	page heading, title, and subtitle to be reprinted based on their current
+	values (see title and subtitle below).
+
+/*S <text> */
+
+	This is the subtitle trigger.  It determines the contents of the second
+	title line on the page header.  All characters after the initial space
+	and up to but not including the following asterisk (required) are
+	included as part of the subtitle.  This trigger will not print in the
+	listing but will be counted for line numbering purposes.
+
+/*T <text> */
+
+	This is the title trigger.  It determines the contents of the first
+	title line on the page header.  All characters after the initial space
+	and up to but not including the following asterisk (required) are
+	included as part of the title.  This trigger will not print in the
+	listing but will be counted for line numbering purposes.
+
+OPTIONS
+
+-b
+
+	The basename option causes cpg to use only the basename portion of
+	the filename (whether obtained from the fileheader trigger or the
+	current filename) in page headers as well as the table of contents.
+	Thus, if a file is printed using "cpg -bt4 `pwd`/xyz.c", only "xyz.c"
+	will show up in the page header.
+
+-t tabstop
+
+	The tabstop argument to the -t option specifies how to expand tabs.  The
+	expansion is performed automatically with a tabstop of 8 if none is
+	specified.
+
+ARGUMENTS
+
+file
+
+	Any number of file names may be specified on the command line (within
+	limits set by whichever shell is used).  Each file will be formatted and
+	its name added to the table of contents.  If no file names are
+	specified, cpg will read the standard input.
+
+FILES
+
+/tmp/toc_XXXXXX
+
+	temporary file for building the table of contents.
+
+SEE ALSO
+
+	dtab(1), nl(1), pr(1), sort(1)
+
+NOTES
+
+	This tool was developed at Benetics Corporation.
+
+	A side note: cpg also properly processes comments in shell scripts and
+	makefiles.  These comments are correctly handled when the comment
+	character (# or :) is the first nonblank character on a line.  In order
+	to facilitate documentation of shell scripts, cpg recognizes the
+	sequences #{ and #} as the beginning and ending of nesting, and treats
+	them as it does in C program sources.  Thus lengthy for, if, while, and
+	case statements may be more clearly documented as to nesting levels,
+	particulary in shell scripts.
+
+AUTHOR
+
+	Steven M. List
+	Benetics Corporation
+	Mountain View, CA.
+	{cdp,idi,greipa,oliveb,sun,tolerant}!bene!luke!steven
+
+	Modified to run under GEMDOS by:  D.N. Lynx Crowe

@@ -1,0 +1,206 @@
+Drivers for the Epson Graphic LCD Controller (GLC) chip
+-------------------------------------------------------
+
+Document:	glcfns.doc	Version 3	1988-08-03
+
+Based on:	glcinit.c	Version 5	1988-08-03
+		glcdefs.h	Version 3	1988-08-03
+		glcplot.s	Version 2	1987-04-23
+
+--------------------------------------------------------------------------------
+
+
+GLC Function synopsis:
+----------------------
+
+GLCcrc		unsigned	GLCcrc(row, col)
+GLCcurs		void		GLCcurs(crs)
+GLCcxy		unsigned	GLCcxy(x, y)
+GLCdisp		void		GLCdisp(dsp, crs, blk1, blk2, blk3)
+GLCinit		void		GLCinit()
+GLCplot		void		GLCplot(x, y, val)
+GLCtext		void		GLCtext(row, col, s)
+GLCwrts		void		GLCwrts(s)
+
+
+GLC Variable synopsis:
+----------------------
+
+lcdbase		unsigned	lcdbase;	LCD graphics base address
+lcdbit		unsigned	lcdbit;		LCD graphics pixel bit mask
+lcdcol		unsigned	lcdcol;		LCD text column
+lcdctl1		unsigned	lcdctl1;	LCD display control -- command
+lcdctl2		unsigned	lcdctl2;	LCD display control -- data
+lcdcurs		unsigned	lcdcurs;	LCD graphics pixel byte address
+lcdrow		unsigned	lcdrow;		LCD text row
+lcdx		unsigned	lcdx;		LCD graphics x
+lcdy		unsigned	lcdy;		LCD graphics y
+
+GLC Constants:
+--------------
+
+#define	G_INIT		(char)0x40		initialize GLC
+#define	G_MWRITE	(char)0x42		set memory write mode
+#define	G_MREAD		(char)0x43		set memory read mode
+#define	G_SETSAD	(char)0x44		set scroll addresses
+#define	G_CRSWR		(char)0x46		write cursor address
+#define	G_CRSRD		(char)0x47		read cursor address
+#define	G_CRSMRT	(char)0x4C		set cursor direction - right
+#define	G_CRSMLT	(char)0x4D		set cursor direction - left
+#define	G_CRSMUP	(char)0x4E		set cursor direction - up
+#define	G_CRSMDN	(char)0x4F		set cursor direction - down
+#define	G_ERASE		(char)0x52		erase
+#define	G_SLEEP		(char)0x53		set sleep mode
+#define	G_DSPCTL	(char)0x58		set display controls
+#define	G_HSCRL		(char)0x5A		set horizontal dot scroll
+#define	G_OVRLAY	(char)0x5B		set overlay mode
+#define	G_CGRAM		(char)0x5C		set CG RAM base
+#define	G_CRSFRM	(char)0x5D		set cursor format
+
+#define	LCD_WC		lcd_a1			write command address
+#define	LCD_RS		lcd_a0			read status address
+#define	LCD_WD		lcd_a0			write data address
+#define	LCD_RD		lcd_a1			read data address
+
+#define	G_PLANE1	(unsigned)0x0000	plane 1 base address
+#define	G_PLANE2	(unsigned)0x2000	plane 2 base address
+
+#define	G_OFF		0			off
+#define	G_ON		1			on
+#define	G_B2		2			blink - FR/32
+#define	G_B1		3			blink - FR/64
+GLC characteristics:
+--------------------
+
+	Graphics:
+
+		510 pixels wide by 64 pixels high.
+		Graphics are in plane 2.
+		X = 0, Y = 0 is the lower left corner of the display.
+	
+	Text:
+
+		8 rows by 85 columns
+		Text is in plane 1.
+		Row 0, Column 0 is the upper left corner of the display.
+
+	Characters:
+
+		Internal ASCII character generator.
+		5 pixels wide by 7 pixels high, in a 6 by 8 block.
+
+G_INIT parameters:
+------------------
+
+	0x12	P1	IV, M/S, W/S, M2, M1, M0
+	0x05	P2	WF, FX
+	0x07	P3	FY
+	0x54	P4	C/R
+	0x58	P5	TC/R
+	0x3F	P6	L/F
+	0x55	P7	APL
+	0x00	P8	APH
+
+G_SETSAD parameters:
+--------------------
+
+	0x00	P1	SAD1L
+	0x00	P2	SAD1H
+	0x3F	P3	SL1
+	0x00	P4	SAD2L
+	0x20	P5	SAD2H
+	0x3F	P6	SL2
+	0x00	P7	SAD3L
+	0x00	P8	SAD3H
+
+GLC initialization values:
+--------------------------
+
+	G_INIT:
+	-------
+
+	IV	0		correct screen to top line
+	M/S	1		master mode
+	W/S	0		single screen drive
+	M2	0		8 pixel wide CG
+	M1	0		32 character CG RAM area
+	M0	0		internal CG
+
+	WF	0		"line reversion" drive
+	FX	0x05		6 pixel character block width
+
+	FY	0x07		8 pixel character block height
+
+	C/R	0x54		85 characters per line
+
+	TC/R	0x58		89 scan times per line
+
+	L/F	0x3F		64 lines
+
+	APL,APH	0x0055		virtual screen size = 85 characters
+
+
+	G_SETSAD:
+	---------
+
+	SAD1	0x0000		plane 1 (text plane) address = 0x0000
+
+	SL1	0x3F		plane 1 height = 64 lines
+
+	SAD2	0x2000		plane 2 (graphics plane) address = 0x2000
+
+	SL2	0x3F		plane 2 height = 64 lines
+Functions:
+----------
+
+	unsigned
+	GLCcrc(row, col)
+	unsigned row, col;
+
+		Positions the GLC cursor at ('row', 'col') preparatory
+		to writing text.  Returns the calculated cursor address.
+
+	GLCcurs(crs)
+	short crs;
+
+		Turns the cursor on or off.
+
+	unsigned
+	GLCcxy(x, y)
+	unsigned x, y;
+
+		Positions the GLC cursor at ('x', 'y') preparatory to
+		writing graphics.  Returns a bit mask for the pixel.
+		Leaves the cursor address in lcdcurs.
+		Limits:  0 LE x LE 511,  0 LE y LE 63.
+
+	GLCdisp(dsp, crs, blk1, blk2, blk3)
+	short dsp, crs, blk1, blk2, blk3;
+
+		Sets the overall display, cursor and block status values.
+
+	GLCinit()
+
+		Initializes the GLC.
+
+	GLCplot(x, y, val)
+	unsigned x, y, val;
+
+		Plots a dot at x, y.  The dot will be dark if val is non-zero.
+
+	GLCtext(row, col, s)
+	unsigned row, col;
+	char *s;
+
+		Sets the GLC cursor to ('row', 'col'), then writes the
+		character string pointed to by 's'.
+		Cursor must start and end on the same line.
+		No error checks are done.
+
+	GLCwrts(s)
+	char *s;
+
+		Writes the character string pointed to by 's' at the
+		current cursor position on the LCD display.
+		Cursor must start and end on the same line.
+		No error checks are done.

@@ -1,0 +1,67 @@
+
+
+
+     CCCCOOOOUUUUCCCCHHHH((((1111))))             UUUUNNNNIIIIXXXX 5555....0000 ((((11111111 JJJJuuuunnnneeee 1111999988886666))))             CCCCOOOOUUUUCCCCHHHH((((1111))))
+
+
+
+     NNNNAAAAMMMMEEEE
+          couch - count characters
+
+     SSSSYYYYNNNNOOOOPPPPSSSSIIIISSSS
+          ccccoooouuuucccchhhh [ ----bbbbccccddddllllppppMMMM ] file ...
+
+     DDDDEEEESSSSCCCCRRRRIIIIPPPPTTTTIIIIOOOONNNN
+          _C_o_u_c_h counts the different characters in the argument files
+          or the standard input and writes the totals to the standard
+          output.  Each output line contains two fields: a character
+          and the number of times it appears.  Unprintable characters
+          appear in "^_x" format; blank is denoted by "^`".
+
+          Various options select types of characters: ----bbbb for blanks,
+          ----cccc for control characters, ----dddd for digits, ----llll for letters,
+          and ----pppp for punctuation.  The default is all characters;
+          i.e., ----bbbbccccddddllllpppp .... The parity bit is normally ignored; to take
+          it into account, specify ----MMMM ....
+
+     AAAAUUUUTTTTHHHHOOOORRRR
+          Col. Sicherman
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+     Page 1                                         (printed 10/23/86)
+
+
+
+

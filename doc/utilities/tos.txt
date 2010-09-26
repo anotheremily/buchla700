@@ -1,0 +1,66 @@
+Commands in TOS
+
+CAT  filenm.ext
+TYPE filenm.ext
+	Writes filenm.ext to standard output.
+
+CD [pathnm]
+	With pathnm it sets the current working directory.
+	Without pathnm it displays the current working directory.
+
+CLS
+	Clears the screen.
+
+COPY source_file [destination_file]
+	Copies source to destination.  If no destination is given, the 
+	current directory is assumed.
+
+DIR or LS [filenm.ext] [/f] [/d] [/t]
+	/f - anything but directoryies.
+	/d - directories only.
+	/t - terse: names only.
+
+EXIT
+	Exits CLI to invoking program.
+
+INIT [drive_spec:]
+	Reinitializes FAT entries, thereby wiping the disk.
+
+MD [subdirectory name]
+	Creates a new subdirectory in current directory.
+
+MOVE source_file [destination_file]
+	Copies source to destination and deletes source.
+	If no destination is given, uses the current directory.
+
+NOWRAP
+	Disables line wrap.
+
+PATH [pathnm[;pathnm]...]
+	With path name sets default path for batch and commands.
+	Without path name displays current path
+
+PAUSE
+	Writes 'CR to continue...' to standard output
+	and waits for a carriage return from standard input.
+
+RD [pathnm]
+	Removes named directory.
+
+REM or ECHO ["string"]
+	Strips quotes and writes string to standard output.
+
+REN source_file_nm [destination_file_nm]
+	Renames source to destination.
+
+RM or DEL or ERA filenm
+	Removes named file from directory.
+
+SHOW [drive_spec:]
+	Displays disk status for default drive or drive specified.
+
+VERSION
+	Displays current version of OS.
+
+WRAP
+	Enbles line wrap.

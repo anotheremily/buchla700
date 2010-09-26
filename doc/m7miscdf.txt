@@ -1,0 +1,37 @@
+sliders.h -- slider and switch display state definitions
+
+	LS_PRMTR	0
+	LS_VOICE	1
+	LS_OTHER	2
+	LS_EQ		3
+
+sclock.h -- score clock sources and controls
+
+	CK_LOCAL	0
+	CK_MIDI		1
+	CK_SMPTE	2
+	CK_PLS24	3
+	CK_PLS48	4
+	CK_PLS96	5
+	CK_STEP		6
+
+smdefs.h -- MIDAS Source / Multiplier definitions
+
+	SM_NONE		0	/* No source - always 0 */
+	SM_RAND		1	/* Random source */
+	SM_CTL1		2	/* Control Voltage 1 / MIDI GPC 1 */
+
+	SM_PTCH		5	/* Key Pitch     (not updated in scan table) */
+	SM_KPRS		6	/* Key Pressure */
+	SM_KVEL		7	/* Key Velocity */
+	SM_PED1		8	/* Pedal 1 */
+
+	SM_FREQ		10	/* Key frequency (not updated in scan table) */
+	SM_HTPW		11	/* Tablet X / MIDI Pitch Wheel */
+	SM_VTMW		12	/* Tablet Y / MIDI Mod Wheel */
+	SM_LPBR		13	/* LongPot / MIDI Breath Controller */
+
+/* Sources 3, 4, and 9 no longer exist */
+
+	NSRCS		14		/* Highest source number + 1 */
+	NGPSRS		(12 << 4)	/* Number of group/source pairs */

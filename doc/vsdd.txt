@@ -1,0 +1,34 @@
+82716 VSDD Timing Calculations
+------------------------------
+
+   with HRS = 1 and PSA = 0
+
+Clock values
+------------
+
+VCK    = 12800000 Hz   Master clock
+PIXCLK = 12800000 Hz   Pixel clock
+VPH    =  6400000 Hz   Internal clock
+GCLK   =   800000 Hz   General clock  (1250 nanoseconds)
+
+Horizontal values                 Vertical values
+-----------------                 ---------------
+
+HC0    =        4 GCLKs           VC0    =        9 lines   sync
+HC1    =        6 GCLKs           VC1    =       11 lines   start
+HC2    =       38 GCLKs           VC2    =      361 lines   stop
+HC3    =       41 GCLKs           VC3    =      363 lines   sweep
+
+AHP    =       32 GCLKs           AVL    =      350 lines   active
+IHP    =        9 GCLKs           IVL    =       13 lines   inactive
+
+HSYNC  =     5000 nanoseconds     VSYNC  =   461250 nanoseconds
+HSWEEP =    51250 nanoseconds     VSWEEP = 18603750 nanoseconds
+AHZ    =    40000 nanoseconds     AVZ    = 17937500 nanoseconds
+
+Miscellaneous values
+--------------------
+
+GPIX   =       16 pixels / GCLK   HPIX   =      512 pixels displayed
+HRATE  =    19512 Hz              VRATE  =       53 Hz
+

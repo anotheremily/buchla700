@@ -1,0 +1,49 @@
+NAME
+	body - display lines from the body of a file
+
+SYNOPSIS
+	body [-s num] [-{e|n} num] [-{l|w|c}] [-d num] [file] ...
+
+DESCRIPTION
+	Body reads each file in sequence and displays it on the
+	standard output.  Thus
+
+		body file
+
+	displays the file on the standard output, and
+
+		body file1 file2 >file3
+
+	concatenates the first two files and places the result on
+	the third.
+
+	If no input file is given body reads from the standard input
+	file.
+
+	The -s option specifies the unit to start output at. If no
+	starting unit is specified, 1 is used.
+
+	The -e option specifies the unit to end output at. The
+	default is to output until end of file.
+
+	The -n option specifies the number of units to output. The
+	default is 10.
+
+	The -{lwc} option specifies the unit to use for -e, -s, and
+	-f. The units are line, word, or character.
+
+	Only one of -e or -n, or one of -l, -w, or -c allowed.
+
+	The -d option specifies debug flags.  Normally this option
+	will not be used.
+
+EXAMPLES
+	To copy lines 5 through 10 of the file myfile to the file
+	junk, use:
+
+		body -s 5 -e 10 myfile > junk
+	or
+		body -s 5 -n 5 myfile > junk
+
+NOTES
+	There is an arbitray limit of 1024 characters per line.

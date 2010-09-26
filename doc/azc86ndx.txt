@@ -1,0 +1,53 @@
+agetc(ptr)				FGETS.C
+alloc(size)				ALLOC.C
+aputc(c, ptr)				FPUTS.C
+
+cgets(s)				CONIO.C
+closall()				PUTC.C
+close(fd)				OPEN.C
+conin(x, buff, len)			READ.C
+conwr(kind, buff, len)			WRITE.C
+cputs(s)				CONIO.C
+creat(name, mode)			OPEN.C
+
+fclose(ptr)				PUTC.C
+fd_clsall()				OPEN.C
+fflush(ptr)				PUTC.C
+fgets(s, n, fp)				FGETS.C
+filecl(fp)				OPEN.C
+fileop(name, flag, mode, chp, dp)	OPEN.C
+flush_(ptr, data)			PUTC.C
+fopen(name, mode)			FOPEN.C
+fputs(s, fp)				FPUTS.C
+fread(buffer, size, number, stream)	FREAD.C
+fseek(fp, pos, mode)			FSEEK.C
+ftell(fp)				FSEEK.C
+fwrite(buffer, size, number, stream)	FREAD.C
+
+getbuff(ptr)				GETBUFF.C
+getc(ptr)				GETC.C
+getch()					CONIO.C
+gets(line)				FGETS.C
+getw(stream)				GETC.C
+
+lseek(fd, pos, how)			LSEEK.C
+
+open(name, flag, mode)			OPEN.C
+
+posit(fd, pos)				POSIT.C
+putc(c, ptr)				PUTC.C
+putch(c)				CONIO.C
+puterr(c)				PUTC.C
+puts(str)				FPUTS.C
+putw(w, stream)				PUTC.C
+
+read(fd, buff, len)			READ.C
+rename(old, new)			RENAME.C
+
+setbuf(stream, buffer)			SETBUF.C
+
+ungetc(c, ptr)				UNGETC.C
+ungetch(c)				CONIO.C
+unlink(name)				UNLINK.C
+
+write(fd, buff, len)			WRITE.C

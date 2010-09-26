@@ -1,0 +1,809 @@
+Subroutines by Module
+---------------------
+
+P6DISK
+------
+C3DADR		Calculate 3.5" disk address
+C8DADR		Calculate 8.0" disk address
+DIRUPD		Update the directory on disk if needed
+DSKSET		Setup for 8.0" block operations
+FIRSTB		Calculate starting sector of block
+FNDBLK		Find a free block
+HLBY2		Divide (HL) by 2
+MDSET		Setup for 3.5" disk I/O
+R3BLK		Read a group of sectors from the 3.5" disk
+R8BLK		Read block from 8.0" disk
+RDDIR		Read directory
+RDISK		Read a block from disk
+W3BLK		Write a group of sectors on the 3.5" disk
+W8BLK		Write a block on the 8.0" disk
+WDISK		Write a block on disk
+YDSKSE		Setup the microfloppy
+YERCHK		Error check and retry handler
+YHOME		Home the drive
+YREAD		Read a 256 byte sector from the 3.5" disk
+YSETRK		Set track and seek
+YWRITE		Write a 256 byte sector on the 3.5" disk
+
+P6FNS
+-----
+CFLA		Calculate function line address
+CFTO		Convert (HL) for time format and output
+DFNA		Display function Action field
+DFNI		Display function I field
+DFNT		Display function Time field
+DFNV		Display function value field
+DFTW		Display function table window
+DSFE		Display function table entry
+F$ATP		Function display cursor routine dispatcher
+F$DEL		Function display delete key handler
+F$DH1		Dispatcher for function field decoders
+F$DH2		Dispatcher for function field encoders
+F$FPA		Function field pointer access routine
+F$MDH		Function display menu data handler
+F$PMR		Function display + / - handler
+F$SMU		Function submenu display handler
+FD01		Function field decoder 1 - Line number
+FD02		Function field decoder 2 - Time
+FD03		Function field decoder 3 - Value
+FD04		Function field decoder 4 - Action = PLS
+
+Subroutines by Module -- continued
+---------------------
+
+P6FNS - continued
+-----
+FD05		Function field decoder 5 - Action = KEY/ JMP
+FE01		Function field encoder 1 - Line number
+FE02		Function field encoder 2 - Time
+FE03		Function field encoder 3 - Value
+FE04		Function field encoder 4 - PLS
+FE05		Function field encoder 5 - KEY / JMP
+FTDI		Function display setup
+GRAB		Grab a byte from (A) + (HL)
+SPACER		Output a space
+
+P6FPT
+-----
+BTOFPU		Convert (HL) to FPU format
+FPUTOB		Convert (HL) to binary from FPU format
+FTTB		Convert @EBUF FPU time image to binary
+TTBM		Convert digit in A and update HL
+
+P6FPU
+-----
+FPU		Process FPU inputs
+XTRG		Entry for Sustain / Enable processing  (pendant functions)
+
+P6IDKV
+------
+IDKV		Validate character entry
+
+P6INI
+-----
+CMISC		Clear miscellaneous execution tables
+FZAP		Clear the function data structure
+P6INI		Initialize Patch-VI
+PLZAP		Clear the polyphony table
+PZAP		Clear the patch data structure
+SZAP		Clear the sequence data structure
+WZAP		Reset all waveshapes to the default waveshape
+
+P6LBRY
+------
+BADIO		Display I/O error message
+CDIRAD		Calculate directory entry address
+CPSUM		Calculate buffer area checksum
+CSCMN		Common processing for character selector
+DAPREP		Display Append / Replace
+DDE		Display directory entry
+
+Subroutines by Module -- continued
+---------------------
+
+P6LBRY - continued
+------
+L$ATP		Library cursor action dispatcher
+L$DEL		Delete key handler
+L$DH1		Library field decoder dispatcher
+L$DH2		Library field encoder dispatcher
+L$GCX		Graphics cursor handler
+L$PFA		Library field pointer access routine
+L$PMR		Plus / minus handler
+L$PTM		Cursor post-move action routine
+LBRY		Library display initialization
+LCSOFF		Turn off character selector
+LCSON		Turn on character selector
+LLDLS		Display load options and instrument name
+LSD01		Library field decoder 1 - file number
+LSDMD		Display media selection
+LSE01		Library field encoder 1 - file number
+LSELFT		Select Functions
+LSELPT		Select Patches
+LSELST		Select Sequences
+LSEWT		Select Waveshapes
+PCKPT		Pack patch table
+RLOAD		Reset load safety switch and clear message line
+ROADIE		Instrument packer
+RTAPE		Read block from tape
+SAPREP		Select Append / Replace
+SDISK1		Select Disk-1  (3.5" drive)
+SDISK2		Select Disk-2  (8.0" drive)
+SLOAD		Load
+SSTORE		Store
+STAPE		Select tape
+TWAIT		Wait for tape inter-record gap  (IRG)
+UPDIR		Update directory display
+UPPTB		Update patch table
+VBLNKS		Display blanks on the color display
+WTAPE		Write block on tape
+
+P6MSL
+-----
+FPULSE		Turn off a pulse
+MSL		Patch-VI Main scan loop
+PJS		Process joystick input
+TPULSE		Turn on a pulse
+
+Subroutines by Module -- continued
+---------------------
+
+P6MTSK
+------
+IVSET		Setup interrupt vectors for multitasker
+MTINIT		Initialize the multitasker
+MTOFF		Disable multitasking
+MTOGL		Enable interrupts if MT is enabled
+MTON		Enable multitasking
+TCBI		Insert TCB into TCB chain
+TINSH		Insert TCB at head of TCB chain
+TINST		Insert TCB at tail of TCB chain
+TRMV		Remove TCB from TCB chain
+TRUN		Put a task in run mode
+TSTART		Start a task
+TSTOP		Put a task in stop mode
+
+P6PDH
+-----
+ADRTAC		Access ADRTAB entry
+BLNKS		Fill an area with blanks
+IDOK		Check PBSWS status for a complete ID
+OBSC		Offset binary sign change
+P$ATP		Patch display cursor action dispatcher
+P$DH1		Dispatcher for patch decoders
+P$DH2		Dispatcher for patch encoders
+P$FPA		Patch field pointer access routine
+P$MDH		Patch display menu data handler
+P$PMR		Patch + / - handler
+PCHOK		Check PBSWS status for a complete patch
+PD01		Decode DEF field
+PD02		Decode STM field
+PD03		Decode ADDRS field
+PD04		Decode F of SM field F+C7
+PD05		Decode VL field
+PD06		Decode FN field
+PD07		Decode C7 of SM F+C7
+PD08		Decode DA field
+PE01		Patch data encoder for DEF field
+PE02		Patch data encoder for STM field
+PE03		Handle patch ADDRS field format
+PE04		Handle patch "SM F+C7" format  (part 1 - "F")
+PE05		Handle patch VL field format
+PE06		Handle patch FN field format
+PE07		Handle patch "SM F+C7" format  (part 2)
+PE09		Handle patch "DA F" format
+PE10		Handle patch "DA FF" format
+PE11		Handle patch "DA FFF" format
+PE12		Handle patch "DA FFFF" format
+PE13		Handle patch "DA G939" format
+PE15		Handle patch "DA !RF" format
+
+Subroutines by Module -- continued
+---------------------
+
+P6PDH - continued
+-----
+PE16		Handle patch "DA RF=C7" format
+PSRCH		Search for and display a patch
+PTPRC		Locate or update a patch and display it and its neighbors
+RELJMP		Relative jump through a table at (DE) based on (A)
+TRJMP		Jump based on @TYP and (DE)
+UPDTP		Update or insert a patch
+
+P6PDK
+-----
+DDIR		Display directory
+DSPSU		Reset display from safety net mode
+KCLR		Clear 448 keyboard FIFO
+MAKDSK		Make a system disk on the 3.5" microfloppy
+MH0		Directory menu handler
+PDK		Process a data key entry from the 448 keyboard
+PUTKYN		Put in key numbers
+SETDSP		Set menu itme attributes
+SYSDSK		Entry for ROMP to make a disk
+TVTEST		CRT alignment test pattern
+XHWR		Linkage to HWR
+XMAKTP		Store system on tape
+XSINI		User safety net routine for Init. System command
+
+P6PRNT
+------
+DPRCLR		Clear print status lines
+DPRSEL		Display print selections
+DPRSTT		Display print status
+DPRSUB		Display a print selection entry
+GNL		Get next line to print
+HDG		Print page heading
+NXTPT		Get next print type
+PR$DEL		Process delete key for print display
+PR$FPA		Print display field pointer access routine
+PR$PMR		Print + / - handler
+PRDI		Initialize print display
+PRINTX		Printing routine
+PRTLN		Print a line from PRMBUF
+TOF		Skip to top of form
+
+Subroutines by Module -- continued
+---------------------
+
+P6PTCH
+------
+ADLE		Allocate DEFLST entry
+APTE		Allocate patch table entry
+CPTE		Compate patch table entries
+FDLE		Free DEFLST entry
+FDST		Find DEF/STM entry in DEFLST
+FNDP		Find patch entry
+FPTE		Free patch table entry
+IPTE		Insert patch table entry
+XDFE		Remove a DEFLST entry from the DEFPTR chain and delete it
+XPTE		Delete patch table entry
+
+P6PTD
+-----
+CLADR		Calculate line address
+DCSB		Display CTL subfield
+DCTL		Display CTL DA field
+DCVAL		Display C-Value
+DDAF		Display DA field of patch
+DFNF		Display function (FN) data field
+DKP		Display KEY or PLS DA field
+DNV		Display note value
+DOSF		Display patch DEF or STM field
+DPAD		Display patch address
+DPOP		Display patch OP-CODE
+DPOPQ		Display OP-CODE type for DPOP
+DPTW		Display patch table window
+DREG		Display REG DA field
+DSMF		Display source/multiplier (SM) data field
+DSMU		Display submenu
+DSPCUR		Initialize the cursor
+DSPON		Setup the display attributes
+DSPP		Display patch entry
+DTRG		Display TRG DA field
+DVLF		Display value (VL) data field
+FPDF		Fetch patch DA data field
+FPPD		Find patch predecessor for display
+FPSD		Find patch successor for display
+ISMA		Intensify submenu area
+ISMM		Intnesify submenu strip
+MBF		Convert from mixed base hex to binary
+MBT		Convert from binary to mixed base hex
+NOOP0		Return 0  (Z)
+NOOP1		Return 1  (NZ)
+P$SMU		Patch display submenu handler
+PTDI		Patch display setup
+PUTHDR		Display header routine
+
+Subroutines by Module -- continued
+---------------------
+
+P6RTC
+-----
+P6RTC		"Real-Time" clock task
+SQTIME		Update sequence timers
+
+P6S1
+----
+CVO		Calculate waveshape offset
+CVU		Control voltage update
+OCV		Calculate CV number and FPU address
+OFC		Calculate CV number or oscillator offset
+OPA		Calculate oscillator parameter address
+OSM		Output source value
+SMX		Output source control bytes for a voice
+
+P6S2
+----
+ADR		Convert (HL) to a window address
+WMF		Move from window memory to main memory
+WMT		Move from main memory to window memory
+
+P6S3
+----
+MTC		Move text cursor
+TCM		Text cursor motion control routine
+TRC		Calculate text offset
+TXY		Setup text cursor location
+CTA		Call (?FPA) to calculate ?FTP
+CC0		Null cursor routine
+CC1		Cursor up
+CC2		Cursor down
+CC3		Cursor right
+CC4		Cursor left
+PCURS		Position cursor
+STRB		Setup edit buffer switch and pointer
+STRC		Setup @TCR and @TCC
+TCOFF		Turn off text cursor
+TCON		Turn on text cursor
+XNO		Get current field number
+
+P6S4
+----
+HWR		Hardware / software reset
+
+Subroutines by Module -- continued
+---------------------
+
+P6SCR
+-----
+CENTER		Find center line of text screen area
+COLA		Calculate offset line address
+CTOP		Get line number of top of screen
+F$CD		Function display cursor down handler
+F$CU		Function display cursor up handler
+FFP		Find first patch
+P$CD		Patch table cursor down handler
+P$CU		Patch table cursor up handler
+P6SCR		Scrolling task
+S$CD		Sequence display cursor down handler
+S$CU		Sequence display cursor up handler
+SPREP		Prepare for scrollin
+UPCP		Update CPOS, PBUF, and PBSWS
+VBLANK		Output (C) blanks to the fixed text display
+VBLNKS		Output (C) blanks to the display
+
+P6SEQ
+-----
+CSLA		Get sequence line into buffer
+CSLU		Update sequence line in window memory
+CSLWA		Calculate sequence line window address
+DSAF		Display sequence action field
+DSLN		Display sequence line number
+DSSE		Display sequence table entry
+DSTF		Display sequence time field
+DSTW		Display sequence table window
+S$ATP		Sequence display cursor action routine dispatcher
+S$DEL		Sequence delete key processor
+S$DH1		Dispatcher for sequence field decoders
+S$DH2		Dispatcher for sequence field encoders
+S$FPA		Sequence field pointer access routine
+S$MDH		Sequence menu data handler
+S$PMR		Sequence + / - handler
+S$SMU		Sequence submenu display routine
+SD01		Sequence field 1 decoder - line number
+SD02		Sequence field 2 decoder - time
+SD03		Sequence field 3 deocder - action
+SE01		Sequence field 1 encoder - line number
+SE02		Sequence field 2 encoder - time
+SE03		Sequence field 3 encoder - action
+SFADR		Calculate sequence subfield address
+SRDSP		Redisplay current sequence line
+STDI		Sequence display initialization
+
+P6STAT
+------
+DSTAT		Display setup for status display
+P6STAT		Background task for the status display
+
+Subroutines by Module -- continued
+---------------------
+
+P6XEQ
+-----
+BITX		CTL bit execution subroutine
+CSEQLN		Get address of sequence line for execution
+ECVAL		Evaluate a C-Value
+EXECP		Execute patch
+EXFN		Execution code for FN ops
+EXHDR		Execution header for calculating CVNUM and FPUADR
+EXSM		Execution code for SM ops
+EXVL		Execution code for VL ops
+FKE		Process performance keys
+GETTRG		Get a trigger from the trigger FIFO
+LEDX		LED execution code
+NEWTRG		Enter a trigger into the trigger FIFO  (with DI/EI)
+NITRG		Enter a trigger into the trigger FIFO  (without DI/EI)
+OSG		Output a function segment
+PSEQ		Process sequences
+PTRG		Process a trigger
+RGMIN		Subtract CVALUE from a register
+RGPLUS		Add CVALUE to a register
+RGRND		Add / Subtract CVALUE from a register at random
+RGSET		Store CVALUE in a register
+RNSCAL		Scale a random value
+TSCAN		Scan triggers
+UNPEND		Remove a function from the pendant function list
+
+TASKER
+------
+RST4		RTC interrupt handler / Debug relinquish CPU
+RST5		Relinquish CPU
+$$NXT		Dispatch next task
+
+Subroutines by Name
+-------------------
+
+$$NXT	TASKER	Dispatch next task
+
+ADLE	P6PTCH	Allocate DEFLST entry
+ADR	P6S2	Convert (HL) to a window address
+ADRTAC	P6PDH	Access ADRTAB entry
+APTE	P6PTCH	Allocate patch table entry
+
+BADIO	P6LBRY	Display I/O error message
+BITX	P6XEQ	CTL bit execution subroutine
+BLNKS	P6PDH	Fill an area with blanks
+BTOFPU	P6FPT	Convert (HL) to FPU format
+
+C3DADR	P6DISK	Calculate 3.5" disk address
+C8DADR	P6DISK	Calculate 8.0" disk address
+CC0	P6S3	Null cursor routine
+CC1	P6S3	Cursor up
+CC2	P6S3	Cursor down
+CC3	P6S3	Cursor right
+CC4	P6S3	Cursor left
+CDIRAD	P6LBRY	Calculate directory entry address
+CENTER	P6SCR	Find center line of text screen area
+CFLA	P6FNS	Calculate function line address
+CFTO	P6FNS	Convert (HL) for time format and output
+CLADR	P6PTD	Calculate line address
+CMISC	P6INI	Clear miscellaneous execution tables
+COLA	P6SCR	Calculate offset line address
+CPSUM	P6LBRY	Calculate buffer area checksum
+CPTE	P6PTCH	Compate patch table entries
+CSCMN	P6LBRY	Common processing for character selector
+CSEQLN	P6XEQ	Get address of sequence line for execution
+CSLA	P6SEQ	Get sequence line into buffer
+CSLU	P6SEQ	Update sequence line in window memory
+CSLWA	P6SEQ	Calculate sequence line window address
+CTA	P6S3	Call (?FPA) to calculate ?FTP
+CTOP	P6SCR	Get line number of top of screen
+CVO	P6S1	Calculate waveshape offset
+CVU	P6S1	Control voltage update
+
+Subroutines by Name -- continued
+-------------------
+
+DAPREP	P6LBRY	Display Append / Replace
+DCSB	P6PTD	Display CTL subfield
+DCTL	P6PTD	Display CTL DA field
+DCVAL	P6PTD	Display C-Value
+DDAF	P6PTD	Display DA field of patch
+DDE	P6LBRY	Display directory entry
+DDIR	P6PDK	Display directory
+DFNA	P6FNS	Display function Action field
+DFNF	P6PTD	Display function (FN) data field
+DFNI	P6FNS	Display function I field
+DFNT	P6FNS	Display function Time field
+DFNV	P6FNS	Display function value field
+DFTW	P6FNS	Display function table window
+DIRUPD	P6DISK	Update the directory on disk if needed
+DKP	P6PTD	Display KEY or PLS DA field
+DNV	P6PTD	Display note value
+DOSF	P6PTD	Display patch DEF or STM field
+DPAD	P6PTD	Display patch address
+DPOP	P6PTD	Display patch OP-CODE
+DPOPQ	P6PTD	Display OP-CODE type for DPOP
+DPRCLR	P6PRNT	Clear print status lines
+DPRSEL	P6PRNT	Display print selections
+DPRSTT	P6PRNT	Display print status
+DPRSUB	P6PRNT	Display a print selection entry
+DPTW	P6PTD	Display patch table window
+DREG	P6PTD	Display REG DA field
+DSAF	P6SEQ	Display sequence action field
+DSFE	P6FNS	Display function table entry
+DSKSET	P6DISK	Setup for 8.0" block operations
+DSLN	P6SEQ	Display sequence line number
+DSMF	P6PTD	Display source/multiplier (SM) data field
+DSMU	P6PTD	Display submenu
+DSPCUR	P6PTD	Initialize the cursor
+DSPON	P6PTD	Setup the display attributes
+DSPP	P6PTD	Display patch entry
+DSPSU	P6PDK	Reset display from safety net mode
+DSSE	P6SEQ	Display sequence table entry
+DSTAT	P6STAT	Display setup for status display
+DSTF	P6SEQ	Display sequence time field
+DSTW	P6SEQ	Display sequence table window
+DTRG	P6PTD	Display TRG DA field
+DVLF	P6PTD	Display value (VL) data field
+
+Subroutines by Name -- continued
+-------------------
+
+ECVAL	P6XEQ	Evaluate a C-Value
+EXECP	P6XEQ	Execute patch
+EXFN	P6XEQ	Execution code for FN ops
+EXHDR	P6XEQ	Execution header for calculating CVNUM and FPUADR
+EXSM	P6XEQ	Execution code for SM ops
+EXVL	P6XEQ	Execution code for VL ops
+
+F$ATP	P6FNS	Function display cursor routine dispatcher
+F$CD	P6SCR	Function display cursor down handler
+F$CU	P6SCR	Function display cursor up handler
+F$DEL	P6FNS	Function display delete key handler
+F$DH1	P6FNS	Dispatcher for function field decoders
+F$DH2	P6FNS	Dispatcher for function field encoders
+F$FPA	P6FNS	Function field pointer access routine
+F$MDH	P6FNS	Function display menu data handler
+F$PMR	P6FNS	Function display + / - handler
+F$SMU	P6FNS	Function submenu display handler
+FD01	P6FNS	Function field decoder 1 - Line number
+FD02	P6FNS	Function field decoder 2 - Time
+FD03	P6FNS	Function field decoder 3 - Value
+FD04	P6FNS	Function field decoder 4 - Action = PLS
+FD05	P6FNS	Function field decoder 5 - Action = KEY/ JMP
+FDLE	P6PTCH	Free DEFLST entry
+FDST	P6PTCH	Find DEF/STM entry in DEFLST
+FE01	P6FNS	Function field encoder 1 - Line number
+FE02	P6FNS	Function field encoder 2 - Time
+FE03	P6FNS	Function field encoder 3 - Value
+FE04	P6FNS	Function field encoder 4 - PLS
+FE05	P6FNS	Function field encoder 5 - KEY / JMP
+FFP	P6SCR	Find first patch
+FIRSTB	P6DISK	Calculate starting sector of block
+FKE	P6XEQ	Process performance keys
+FNDBLK	P6DISK	Find a free block
+FNDP	P6PTCH	Find patch entry
+FPDF	P6PTD	Fetch patch DA data field
+FPPD	P6PTD	Find patch predecessor for display
+FPSD	P6PTD	Find patch successor for display
+FPTE	P6PTCH	Free patch table entry
+FPU	P6FPU	Process FPU inputs
+FPULSE	P6MSL	Turn off a pulse
+FPUTOB	P6FPT	Convert (HL) to binary from FPU format
+FTDI	P6FNS	Function display setup
+FTTB	P6FPT	Convert @EBUF FPU time image to binary
+FZAP	P6INI	Clear the function data structure
+
+GETTRG	P6XEQ	Get a trigger from the trigger FIFO
+GNL	P6PRNT	Get next line to print
+GRAB	P6FNS	Grab a byte from (A) + (HL)
+
+Subroutines by Name -- continued
+-------------------
+
+HDG	P6PRNT	Print page heading
+HLBY2	P6DISK	Divide (HL) by 2
+HWR	P6S4	Hardware / software reset
+
+IDKV	P6IDKV	Validate character entry
+IDOK	P6PDH	Check PBSWS status for a complete ID
+IPTE	P6PTCH	Insert patch table entry
+ISMA	P6PTD	Intensify submenu area
+ISMM	P6PTD	Intnesify submenu strip
+IVSET	P6MTSK	Setup interrupt vectors for multitasker
+
+KCLR	P6PDK	Clear 448 keyboard FIFO
+
+L$ATP	P6LBRY	Library cursor action dispatcher
+L$DEL	P6LBRY	Delete key handler
+L$DH1	P6LBRY	Library field decoder dispatcher
+L$DH2	P6LBRY	Library field encoder dispatcher
+L$GCX	P6LBRY	Graphics cursor handler
+L$PFA	P6LBRY	Library field pointer access routine
+L$PMR	P6LBRY	Plus / minus handler
+L$PTM	P6LBRY	Cursor post-move action routine
+LBRY	P6LBRY	Library display initialization
+LCSOFF	P6LBRY	Turn off character selector
+LCSON	P6LBRY	Turn on character selector
+LEDX	P6XEQ	LED execution code
+LLDLS	P6LBRY	Display load options and instrument name
+LSD01	P6LBRY	Library field decoder 1 - file number
+LSDMD	P6LBRY	Display media selection
+LSE01	P6LBRY	Library field encoder 1 - file number
+LSELFT	P6LBRY	Select Functions
+LSELPT	P6LBRY	Select Patches
+LSELST	P6LBRY	Select Sequences
+LSEWT	P6LBRY	Select Waveshapes
+
+MAKDSK	P6PDK	Make a system disk on the 3.5" microfloppy
+MBF	P6PTD	Convert from mixed base hex to binary
+MBT	P6PTD	Convert from binary to mixed base hex
+MDSET	P6DISK	Setup for 3.5" disk I/O
+MH0	P6PDK	Directory menu handler
+MSL	P6MSL	Patch-VI Main scan loop
+MTC	P6S3	Move text cursor
+MTINIT	P6MTSK	Initialize the multitasker
+MTOFF	P6MTSK	Disable multitasking
+MTOGL	P6MTSK	Enable interrupts if MT is enabled
+MTON	P6MTSK	Enable multitasking
+
+Subroutines by Name -- continued
+-------------------
+
+NEWTRG	P6XEQ	Enter a trigger into the trigger FIFO  (with DI/EI)
+NITRG	P6XEQ	Enter a trigger into the trigger FIFO  (without DI/EI)
+NOOP0	P6PTD	Return 0  (Z)
+NOOP1	P6PTD	Return 1  (NZ)
+NXTPT	P6PRNT	Get next print type
+
+OBSC	P6PDH	Offset binary sign change
+OCV	P6S1	Calculate CV number and FPU address
+OFC	P6S1	Calculate CV number or oscillator offset
+OPA	P6S1	Calculate oscillator parameter address
+OSG	P6XEQ	Output a function segment
+OSM	P6S1	Output source value
+
+P$ATP	P6PDH	Patch display cursor action dispatcher
+P$CD	P6SCR	Patch table cursor down handler
+P$CU	P6SCR	Patch table cursor up handler
+P$DH1	P6PDH	Dispatcher for patch decoders
+P$DH2	P6PDH	Dispatcher for patch encoders
+P$FPA	P6PDH	Patch field pointer access routine
+P$MDH	P6PDH	Patch display menu data handler
+P$PMR	P6PDH	Patch + / - handler
+P$SMU	P6PTD	Patch display submenu handler
+P6INI	P6INI	Initialize Patch-VI
+P6RTC	P6RTC	"Real-Time" clock task
+P6SCR	P6SCR	Scrolling task
+P6STAT	P6STAT	Background task for the status display
+PCHOK	P6PDH	Check PBSWS status for a complete patch
+PCKPT	P6LBRY	Pack patch table
+PCURS	P6S3	Position cursor
+PD01	P6PDH	Decode DEF field
+PD02	P6PDH	Decode STM field
+PD03	P6PDH	Decode ADDRS field
+PD04	P6PDH	Decode F of SM field F+C7
+PD05	P6PDH	Decode VL field
+PD06	P6PDH	Decode FN field
+PD07	P6PDH	Decode C7 of SM F+C7
+PD08	P6PDH	Decode DA field
+PDK	P6PDK	Process a data key entry from the 448 keyboard
+PE01	P6PDH	Patch data encoder for DEF field
+PE02	P6PDH	Patch data encoder for STM field
+PE03	P6PDH	Handle patch ADDRS field format
+PE04	P6PDH	Handle patch "SM F+C7" format  (part 1 - "F")
+PE05	P6PDH	Handle patch VL field format
+PE06	P6PDH	Handle patch FN field format
+PE07	P6PDH	Handle patch "SM F+C7" format  (part 2)
+
+Subroutines by Name -- continued
+-------------------
+
+PE09	P6PDH	Handle patch "DA F" format
+PE10	P6PDH	Handle patch "DA FF" format
+PE11	P6PDH	Handle patch "DA FFF" format
+PE12	P6PDH	Handle patch "DA FFFF" format
+PE13	P6PDH	Handle patch "DA G939" format
+PE15	P6PDH	Handle patch "DA !RF" format
+PE16	P6PDH	Handle patch "DA RF=C7" format
+PJS	P6MSL	Process joystick input
+PLZAP	P6INI	Clear the polyphony table
+PR$DEL	P6PRNT	Process delete key for print display
+PR$FPA	P6PRNT	Print display field pointer access routine
+PR$PMR	P6PRNT	Print + / - handler
+PRDI	P6PRNT	Initialize print display
+PRINTX	P6PRNT	Printing routine
+PRTLN	P6PRNT	Print a line from PRMBUF
+PSEQ	P6XEQ	Process sequences
+PSRCH	P6PDH	Search for and display a patch
+PTDI	P6PTD	Patch display setup
+PTPRC	P6PDH	Locate or update a patch and display it and its neighbors
+PTRG	P6XEQ	Process a trigger
+PUTHDR	P6PTD	Display header routine
+PUTKYN	P6PDK	Put in key numbers
+PZAP	P6INI	Clear the patch data structure
+
+R3BLK	P6DISK	Read a group of sectors from the 3.5" disk
+R8BLK	P6DISK	Read block from 8.0" disk
+RDDIR	P6DISK	Read directory
+RDISK	P6DISK	Read a block from disk
+RELJMP	P6PDH	Relative jump through a table at (DE) based on (A)
+RGMIN	P6XEQ	Subtract CVALUE from a register
+RGPLUS	P6XEQ	Add CVALUE to a register
+RGRND	P6XEQ	Add / Subtract CVALUE from a register at random
+RGSET	P6XEQ	Store CVALUE in a register
+RLOAD	P6LBRY	Reset load safety switch and clear message line
+RNSCAL	P6XEQ	Scale a random value
+ROADIE	P6LBRY	Instrument packer
+RST4	TASKER	RTC interrupt handler / Debug relinquish CPU
+RST5	TASKER	Relinquish CPU
+RTAPE	P6LBRY	Read block from tape
+
+Subroutines by Name -- continued
+-------------------
+
+S$ATP	P6SEQ	Sequence display cursor action routine dispatcher
+S$CD	P6SCR	Sequence display cursor down handler
+S$CU	P6SCR	Sequence display cursor up handler
+S$DEL	P6SEQ	Sequence delete key processor
+S$DH1	P6SEQ	Dispatcher for sequence field decoders
+S$DH2	P6SEQ	Dispatcher for sequence field encoders
+S$FPA	P6SEQ	Sequence field pointer access routine
+S$MDH	P6SEQ	Sequence menu data handler
+S$PMR	P6SEQ	Sequence + / - handler
+S$SMU	P6SEQ	Sequence submenu display routine
+SAPREP	P6LBRY	Select Append / Replace
+SD01	P6SEQ	Sequence field 1 decoder - line number
+SD02	P6SEQ	Sequence field 2 decoder - time
+SD03	P6SEQ	Sequence field 3 deocder - action
+SDISK1	P6LBRY	Select Disk-1  (3.5" drive)
+SDISK2	P6LBRY	Select Disk-2  (8.0" drive)
+SE01	P6SEQ	Sequence field 1 encoder - line number
+SE02	P6SEQ	Sequence field 2 encoder - time
+SE03	P6SEQ	Sequence field 3 encoder - action
+SETDSP	P6PDK	Set menu itme attributes
+SFADR	P6SEQ	Calculate sequence subfield address
+SLOAD	P6LBRY	Load
+SMX	P6S1	Output source control bytes for a voice
+SPACER	P6FNS	Output a space
+SPREP	P6SCR	Prepare for scrollin
+SQTIME	P6RTC	Update sequence timers
+SRDSP	P6SEQ	Redisplay current sequence line
+SSTORE	P6LBRY	Store
+STAPE	P6LBRY	Select tape
+STDI	P6SEQ	Sequence display initialization
+STRB	P6S3	Setup edit buffer switch and pointer
+STRC	P6S3	Setup @TCR and @TCC
+SYSDSK	P6PDK	Entry for ROMP to make a disk
+SZAP	P6INI	Clear the sequence data structure
+
+Subroutines by Name -- continued
+-------------------
+
+TCBI	P6MTSK	Insert TCB into TCB chain
+TCM	P6S3	Text cursor motion control routine
+TCOFF	P6S3	Turn off text cursor
+TCON	P6S3	Turn on text cursor
+TINSH	P6MTSK	Insert TCB at head of TCB chain
+TINST	P6MTSK	Insert TCB at tail of TCB chain
+TOF	P6PRNT	Skip to top of form
+TPULSE	P6MSL	Turn on a pulse
+TRC	P6S3	Calculate text offset
+TRJMP	P6PDH	Jump based on @TYP and (DE)
+TRMV	P6MTSK	Remove TCB from TCB chain
+TRUN	P6MTSK	Put a task in run mode
+TSCAN	P6XEQ	Scan triggers
+TSTART	P6MTSK	Start a task
+TSTOP	P6MTSK	Put a task in stop mode
+TTBM	P6FPT	Convert digit in A and update HL
+TVTEST	P6PDK	CRT alignment test pattern
+TWAIT	P6LBRY	Wait for tape inter-record gap  (IRG)
+TXY	P6S3	Setup text cursor location
+
+UNPEND	P6XEQ	Remove a function from the pendant function list
+UPCP	P6SCR	Update CPOS, PBUF, and PBSWS
+UPDIR	P6LBRY	Update directory display
+UPDTP	P6PDH	Update or insert a patch
+UPPTB	P6LBRY	Update patch table
+
+VBLANK	P6SCR	Output (C) blanks to the fixed text display
+VBLNKS	P6LBRY	Display blanks on the color display
+VBLNKS	P6SCR	Output (C) blanks to the display
+
+W3BLK	P6DISK	Write a group of sectors on the 3.5" disk
+W8BLK	P6DISK	Write a block on the 8.0" disk
+WDISK	P6DISK	Write a block on disk
+WMF	P6S2	Move from window memory to main memory
+WMT	P6S2	Move from main memory to window memory
+WTAPE	P6LBRY	Write block on tape
+WZAP	P6INI	Reset all waveshapes to the default waveshape
+
+Subroutines by Name -- continued
+-------------------
+
+XDFE	P6PTCH	Remove a DEFLST entry from the DEFPTR chain and delete it
+XHWR	P6PDK	Linkage to HWR
+XMAKTP	P6PDK	Store system on tape
+XNO	P6S3	Get current field number
+XPTE	P6PTCH	Delete patch table entry
+XSINI	P6PDK	User safety net routine for Init. System command
+XTRG	P6FPU	Entry for Sustain / Enable processing  (pendant functions)
+
+YDSKSE	P6DISK	Setup the microfloppy
+YERCHK	P6DISK	Error check and retry handler
+YHOME	P6DISK	Home the drive
+YREAD	P6DISK	Read a 256 byte sector from the 3.5" disk
+YSETRK	P6DISK	Set track and seek
+YWRITE	P6DISK	Write a 256 byte sector on the 3.5" disk

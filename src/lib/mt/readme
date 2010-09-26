@@ -1,0 +1,19 @@
+IMPORTANT NOTE:
+---------------
+
+This version of the Multi-Tasker has a debug buffer optionally located at
+$40000 in RAM.  To use it, the symbol "DEBUGGER" must be defined, and the
+include file "debug.h" must be included in files which are to be debugged.
+
+The linkrt.bat file is used to link the system for test ROMs.
+
+The linkrom.bat file is used to link the system for production ROMs.
+
+For production versions, be certain not to define "DEBUGGER" anywhere,
+or the debug code will corrupt whatever is living at $40000 and above.
+
+Before testing the code, remember to clear the debug buffer with ROMP
+or mysterious crashes are likely to occur.
+
+Use grep to find the address of DB_Dump to be able to get a readable dump
+of the debug data.

@@ -1,0 +1,54 @@
+NAME
+	kermit -- Kermit for the Atari ST
+
+SYNOPSIS
+
+     kermit c [lbiphe line baud par escape-char]        to connect
+     kermit s [ddzinlbpt line baud par] file ...        to send files
+     kermit r [ddzinlbpto line baud par string]         to receive files
+     kermit g [ddzinlbpto line baud par string] file ...to get files
+     kermit v [ddzinlbpto line baud par string]         to enter server mode
+     kermit f [ddz]      to shut down remote server
+     kermit x [ddz]      to shut down remote server and logout remote
+
+DESCRIPTION
+
+	This is the Atari version of the public domain Kermit telecommunication
+	protocol.
+
+Commands:
+
+	c=connect
+	g=get
+	f=finish
+	r=receive
+	s=send
+	v=server
+	x=exit
+
+Modifiers:
+
+	b=baud rate
+	d=debug
+	e=escape char
+	h=half duplex
+	i=image mode,
+	l=tty line
+	n=no filename conversion
+	o=prepend string to output files,
+	p=parity
+	t=suppress timeouts
+	z=log packet transactions.
+
+When sending, kermit will expand wildcards and handle drives.  The line
+
+	kermit s 0d:*.c
+
+sends all files with an extension of c in user 0 of disk d.  Since this is
+a feature of the runtime, when using the get command, filenames containing
+wildcards must be in double quotes.
+
+Both the remote and local kermit must know an image file is being
+transferred in order for the file to be useable.
+
+Baud rate is not implemented.

@@ -1,0 +1,51 @@
+
+
+
+          TMS320C25 Memory Page   0
+
+
+            0    DRR       32 -reserved-   64 -reserved-   96 __________
+            1    DXR       33 -reserved-   65 -reserved-   97 __________
+            2    TIM       34 -reserved-   66 -reserved-   98 __________
+            3    PRD       35 -reserved-   67 -reserved-   99 __________
+            4    IMR       36 -reserved-   68 -reserved-  100 __________
+            5    GREG      37 -reserved-   69 -reserved-  101 __________
+            6 -reserved-   38 -reserved-   70 -reserved-  102 __________
+            7 -reserved-   39 -reserved-   71 -reserved-  103 __________
+            8 -reserved-   40 -reserved-   72 -reserved-  104 __________
+            9 -reserved-   41 -reserved-   73 -reserved-  105 __________
+           10 -reserved-   42 -reserved-   74 -reserved-  106 __________
+           11 -reserved-   43 -reserved-   75 -reserved-  107 __________
+           12 -reserved-   44 -reserved-   76 -reserved-  108 __________
+           13 -reserved-   45 -reserved-   77 -reserved-  109 __________
+           14 -reserved-   46 -reserved-   78 -reserved-  110 __________
+           15 -reserved-   47 -reserved-   79 -reserved-  111 __________
+           16 -reserved-   48 -reserved-   80 -reserved-  112 __________
+           17 -reserved-   49 -reserved-   81 -reserved-  113 __________
+           18 -reserved-   50 -reserved-   82 -reserved-  114 __________
+           19 -reserved-   51 -reserved-   83 -reserved-  115 __________
+           20 -reserved-   52 -reserved-   84 -reserved-  116 __________
+           21 -reserved-   53 -reserved-   85 -reserved-  117 __________
+           22 -reserved-   54 -reserved-   86 -reserved-  118 __________
+           23 -reserved-   55 -reserved-   87 -reserved-  119 __________
+           24 -reserved-   56 -reserved-   88 -reserved-  120 __________
+           25 -reserved-   57 -reserved-   89 -reserved-  121 __________
+           26 -reserved-   58 -reserved-   90 -reserved-  122 __________
+           27 -reserved-   59 -reserved-   91 -reserved-  123 __________
+           28 -reserved-   60 -reserved-   92 -reserved-  124 __________
+           29 -reserved-   61 -reserved-   93 -reserved-  125 __________
+           30 -reserved-   62 -reserved-   94 -reserved-  126 __________
+           31 -reserved-   63 -reserved-   95 -reserved-  127 __________
+
+
+          Locations 0 .. 5 are memory-mapped internal processor registers.
+
+               DRR     Serial port data receive register
+               DXR     Serial port data transmit register
+               TIM     Timer register
+               PRD     Period register
+               IMR     Interrupt mask register
+               GREG    Global memory allocation register  (8 LS bits)
+
+          Locations 96 .. 127 are on-chip RAM block B2 (32 words).
+

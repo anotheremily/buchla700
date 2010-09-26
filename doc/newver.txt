@@ -1,0 +1,503 @@
+
+
+          1988-10-28  20:08:06 -- Page 1:  NEWVER.C
+
+
+              1 /*
+              2    =============================================================================
+              3         newver.c -- read and update a GEMDOS version message object file
+              4         Version 1 -- 1988-10-28  -- D.N. Lynx Crowe
+              5         (c) Copyright 1988 -- D.N. Lynx Crowe -- All rights reserved
+              6 
+              7         Compiled and linked with the GEMDOS Alcyon C developer's package.
+              8 
+              9         NOTE:  Because we use the Alcyon GEMDOS object file format,
+             10         which is specific to the Atari,  this code is NON-PORTABLE.
+             11 
+             12         The idea, however, is adaptable to a wide variety of systems
+             13         and object file formats.
+             14 
+             15         Note also that the fopen() function in the Alcyon C library does not
+             16         support the "r+" option,  making it necessary to close the file and
+             17         then open it again before writing.  This is a serious shortcoming of
+             18         the Alcyon C library,  as it makes updating files only possible by a
+             19         series of questionable maneuvers, (e.g. opening, closing, and reopening
+             20         the file, or using open(), then fdopen(), etc.).
+             21    =============================================================================
+             22 */
+             23 
+             24 #include "stdio.h"              /* Atari GEMDOS standard I/O definitions */
+             25 #include "stddefs.h"            /* some usefull standard C definitions */
+             26 #include "objdefs.h"            /* GEMDOS object file definitions */
+             27 
+             28 #define VERFILE         "verdate.o"     /* version message file */
+             29 
+             30 extern  int     errno;  /* system error code */
+             31 
+             32 extern  char    *now(); /* get formatted system date and time */
+             33 
+             34 FILE    *fp;            /* VERFILE file pointer */
+             35 
+             36                         /* 000000000011111111112 */
+             37                         /* 012345678901234567890 */
+             38 char    dtg[22];        /* yyyy-mm-dd  hh:mm:ss  zero terminated string */
+             39 
+             40                         /* 000000000011 */
+             41                         /* 012345678901 */
+             42 char    verstr[12];     /* yyyymmdd.vv   zero terminated string */
+             43 
+             44 struct vb {             /* VERFILE buffer (66 bytes) */
+             45 
+             46         struct EXFILE   hdr;
+             47         char            ver[12];
+             48         struct SYMBOL   sym;
+             49         char            rem[12];
+             50 
+             51 } verbuf;
+             52 
+             53 /*
+
+          1988-10-28  20:08:06 -- Page 2:  NEWVER.C
+
+
+             54 
+             55 */
+             56 
+             57 /*
+             58    =============================================================================
+             59         read and update an Alcyon/GEMDOS format version message object file
+             60    =============================================================================
+             61 */
+             62 
+             63 main()
+             64 {
+             65         short   len, rc, vn, vp1, vp2;
+             66 
+             67         len = sizeof verbuf;
+             68 
+             69         /* first, read the old version message object file */
+             70 
+             71         if ((FILE *)NULL EQ (fp = fopenb(VERFILE, "r"))) {
+             72 
+             73                 printf("ERROR -- Unable to open \"%s\" for reading  (errno = %d)\n",
+             74                         VERFILE, errno);
+             75 
+             76                 exit(1);
+             77         }
+             78 
+             79         rewind(fp);
+             80 
+             81         if (1 NE (rc = fread(&verbuf, len, 1, fp))) {
+             82 
+             83                 printf("ERROR -- Unable to read \"%s\"  (rc = %d, errno = %d)\n",
+             84                         VERFILE, rc, errno);
+             85 
+             86                 if (ferror(fp))
+             87                         printf("  File system ERROR.\n");
+             88                 else if (feof(fp))
+             89                         printf("  Premature EOF.\n");
+             90                 else
+             91                         printf("  Neither ERROR or EOF set -- very odd\n");
+             92 
+             93                 fclose(fp);
+             94                 exit(1);
+             95         }
+             96 
+             97         fclose(fp);
+             98 /*
+
+          1988-10-28  20:08:06 -- Page 3:  NEWVER.C
+
+
+             99 
+            100 */
+            101 
+            102         /* next, set the date and version */
+            103 
+            104         now(dtg);       /* set date and time */
+            105 
+            106         memcpy(&verstr[0], &dtg[0], 4);
+            107         memcpy(&verstr[4], &dtg[5], 2);
+            108         memcpy(&verstr[6], &dtg[8], 2);
+            109         strcpy(&verstr[8], ".01");
+            110 
+            111         if (memcmp(verbuf.ver, verstr, 8)) {    /* if date is different ... */
+            112 
+            113                 strcpy(verbuf.ver, verstr);     /* ... it's today's 1st version */
+            114 
+            115         } else {        /* ... otherwise,  it's today's next version */
+            116 
+            117                 vn = ((verbuf.ver[ 9] - '0') * 10) +
+            118                       (verbuf.ver[10] - '0') + 1;
+            119 
+            120                 if (vn GE 100) {        /* too many versions today ? */
+            121 
+            122                         printf("WARNING -- version number rolled over to 00.\n");
+            123                         vn = 0;
+            124                 }
+            125 
+            126                 vp1 = vn / 10;
+            127                 vp2 = vn - (vp1 * 10);
+            128 
+            129                 verbuf.ver[ 9] = vp1 + '0';
+            130                 verbuf.ver[10] = vp2 + '0';
+            131         }
+            132 
+            133 /*
+
+          1988-10-28  20:08:06 -- Page 4:  NEWVER.C
+
+
+            134 
+            135 */
+            136         /* finally, re-write the version message object file */
+            137 
+            138         if ((FILE *)NULL EQ (fp = fopenb(VERFILE, "w"))) {
+            139 
+            140                 printf("ERROR -- Unable to open \"%s\" for writing  (errno = %d)\n",
+            141                         VERFILE, errno);
+            142 
+            143                 exit(1);
+            144         }
+            145 
+            146         rewind(fp);
+            147 
+            148         if (1 NE (rc = fwrite(&verbuf, len, 1, fp))) {
+            149 
+            150                 printf("ERROR -- Unable to write to \"%s\"  (rc = %d, errno = %d)\n",
+            151                         VERFILE, rc, errno);
+            152 
+            153                 if (ferror(fp))
+            154                         printf("  File system ERROR.\n");
+            155                 else if (feof(fp))
+            156                         printf("  Premature EOF.\n");
+            157                 else
+            158                         printf("  Neither ERROR or EOF set -- very odd\n");
+            159 
+            160                 fclose(fp);
+            161                 exit(1);
+            162         }
+            163 
+            164         fclose(fp);
+            165         printf("Current version:  %s\n", verbuf.ver);
+            166         exit(0);
+            167 }
+
+
+          1988-10-28  20:08:42 -- Page 1:  NOW.C
+
+
+              1 /*
+              2    =============================================================================
+              3         now.c -- return the date and time as a string
+              4         Version 2 -- 1988-10-28 -- D.N. Lynx Crowe
+              5         (c) Copyright 1987, 1988 -- D.N. Lynx Crowe
+              6    =============================================================================
+              7 */
+              8 
+              9 #define TESTER  0               /* define non-zero to get a test program */
+             10 
+             11 #include "osbind.h"
+             12 
+             13 /*
+             14    =============================================================================
+             15         now(p) -- return the date and time as a string in 'p'
+             16 
+             17         Returns a pointer to the string provided, which must be at least
+             18         21 bytes long.  The string will be filled with the date and time
+             19         in the format:
+             20 
+             21                 yyyy-mm-dd  hh:mm:ss
+             22 
+             23         with a trailing zero byte.
+             24    =============================================================================
+             25 */
+             26 
+             27 char *
+             28 now(p)
+             29 char *p;
+             30 {
+             31         register long t;
+             32         short yr, mn, dy, hh, mm, ss;
+             33 
+             34         t = Gettime();
+             35 
+             36         yr = ((short)(t >> 25) & 0x007F) + 1980;
+             37         mn =  (short)(t >> 21) & 0x000F;
+             38         dy =  (short)(t >> 16) & 0x001F;
+             39 
+             40         hh = (short)(t >> 11) & 0x001F;
+             41         mm = (short)(t >>  5) & 0x003F;
+             42         ss = ((short)t & 0x001F) << 1;
+             43 
+             44         sprintf(p, "%4d-%02d-%02d  %02d:%02d:%02d", yr, mn, dy, hh, mm, ss);
+             45 
+             46         return(p);
+             47 }
+             48 
+             49 /*
+
+          1988-10-28  20:08:42 -- Page 2:  NOW.C
+
+
+             50 
+             51 */
+             52 
+             53 #if     TESTER
+             54 
+             55 char    x[22];          /* buffer for the returned string */
+             56 
+             57 /* simple test program for the now() function */
+             58 
+             59 main()
+             60 {
+             61         printf("Date/Time = %s\n", now(x));
+             62         exit(0);
+             63 }
+             64 
+             65 #endif
+
+{c}AS68 -s c:\bin\ -l -p verdate.s 
+
+C P / M   6 8 0 0 0   A s s e m b l e r  Revision 04.03  Page   1
+Source File: VERDATE.S
+
+   1                               * ------------------------------------------------------------------------------
+   2                               * verdate.s -- date and version ID message string
+   3                               * Version 1 -- 1988-10-28 -- D.N. Lynx Crowe
+   4                               * (c) Copyright 1988 -- D.N. Lynx Crowe -- All rights reserved
+   5                               * ------------------------------------------------------------------------------
+   6                               *
+   7                               * Version message string.  Updated by 'newver.c' in object form to:
+   8                               *
+   9                               *       1. Automatically set the correct date and version
+  10                               *       2. Avoid the need for a compile or assembly
+  11                               *
+  12                               *       12 bytes -- 11 ASCII characters and a terminating zero byte
+  13                               *
+  14                               *       char    VerDate = "yyyymmdd.vv";
+  15                               *                                     0 byte
+  16                               *                          0         1
+  17                               *                          012345678901
+  18                               *
+  19                               *       Use &VerDate[2] for yymmdd.vv format.
+  20                               *
+  21 00000000                                      .data
+  22                               *
+  23                                               .xdef   _VerDate
+  24                               *
+  25 00000000 3139383831303237     _VerDate:       dc.b    '19881027.01'           * Date and version number
+  25 00000008 2E3031               
+  26 0000000B 00                                   dc.b    0
+  27                               *
+  28 0000000C                                      .end
+C P / M   6 8 0 0 0   A s s e m b l e r  Revision 04.03  Page   2
+Source File: VERDATE.S
+
+S y m b o l   T a b l e
+
+_VerDate  00000000 DATA  
+
+
+          1988-10-28  20:11:32 -- Page 1:  STDDEFS.H
+
+
+              1 /*
+              2    ============================================================================
+              3         stddefs.h -- Standard definitions for C programs
+              4         Version 12 -- 1987-12-15 -- D.N. Lynx Crowe
+              5 
+              6         Must follow stdio.h if stdio.h is used as both define:
+              7 
+              8                 NULL, EOF.
+              9 
+             10         Must follow define.h on the Atari if define.h is used as both define:
+             11 
+             12                 NULL, EOF, FOREVER, TRUE, FALSE, FAILURE, SUCCESS,
+             13                 YES, NO, EOS, NIL.
+             14 
+             15         Released to Public Domain - 1987-06 - D.N. Lynx Crowe
+             16    ============================================================================
+             17 */
+             18 
+             19 #ifndef STD_DEFS                /* so we only define these once */
+             20 
+             21 #define STD_DEFS        1
+             22 
+             23 /* relational operators */
+             24 
+             25 #define EQ      ==
+             26 #define NE      !=
+             27 #define GE      >=
+             28 #define LE      <=
+             29 #define GT      >
+             30 #define LT      <
+             31 
+             32 /* logical operators */
+             33 
+             34 #define NOT     !
+             35 #define AND     &&
+             36 #define OR      ||
+             37 
+             38 /* infinite loop constructs */
+             39 
+             40 #ifndef FOREVER
+             41 #define FOREVER         for(;;)
+             42 #endif
+             43 
+             44 #ifndef REPEAT
+             45 #define REPEAT          for(;;)
+             46 #endif
+             47 
+             48 /*
+
+          1988-10-28  20:11:32 -- Page 2:  STDDEFS.H
+
+
+             49 
+             50 */
+             51 
+             52 /* various terminators */
+             53 
+             54 #ifndef EOF
+             55 #define EOF             (-1)
+             56 #endif
+             57 
+             58 #ifndef EOS
+             59 #define EOS             '\0'
+             60 #endif
+             61 
+             62 #ifndef NIL
+             63 #define NIL             0
+             64 #endif
+             65 
+             66 /* manifest constants for function return and flag values */
+             67 
+             68 #ifndef NULL
+             69 #define NULL            0
+             70 #endif
+             71 
+             72 #ifndef YES
+             73 #define YES             1
+             74 #endif
+             75 
+             76 #ifndef NO
+             77 #define NO              0
+             78 #endif
+             79 
+             80 #ifndef FALSE
+             81 #define FALSE           0
+             82 #endif
+             83 
+             84 #ifndef TRUE
+             85 #define TRUE            1
+             86 #endif
+             87 
+             88 #ifndef SUCCESS
+             89 #define SUCCESS         0
+             90 #endif
+             91 
+             92 #ifndef FAILURE
+             93 #define FAILURE         (-1)
+             94 #endif
+             95 
+             96 /* BOOL type definition for flag variables */
+             97 
+             98 typedef char    BOOL;
+             99 
+            100 #endif
+
+
+          1988-10-28  20:11:32 -- Page 1:  OBJDEFS.H
+
+
+              1 /*
+              2    ============================================================================
+              3         objdefs.h -- Object file format for as68  (Atari 1040ST TOS objects)
+              4         Version 7 -- 1987-12-30 -- D.N. Lynx Crowe
+              5    ============================================================================
+              6 */
+              7 
+              8 struct EXFILE {                 /* executable file header */
+              9 
+             10         unsigned        F_Magic;        /* File type magic */
+             11         long            F_Text;         /* SIze of text segment */
+             12         long            F_Data;         /* Size of data segment */
+             13         long            F_BSS;          /* Size of BSS segment */
+             14         long            F_Symtab;       /* Size of symbol table */
+             15         long            F_Res1;         /* Reserved area #1 */
+             16         long            F_Res2;         /* Reserved area #2 -- text origin */
+             17         unsigned        F_Res3;         /* Reserved area #3 -- flag word */
+             18 
+             19                                         /* data origin - long */
+             20                                         /* bss origin - long */
+             21 };
+             22 
+             23 #define F_R_C   0x601A          /* Magic for contiguous file */
+             24 #define F_R_D   0x601B          /* Magic for discontiguous file */
+             25 
+             26 struct SYMBOL {                 /* Symbol table entry -- 14 bytes */
+             27 
+             28         char            symname[8];     /* Symbol name  (LJZF) */
+             29         unsigned        symtype;        /* Symbol type flags */
+             30         long            symvalue;       /* Symbol value */
+             31 };
+             32 
+             33 #define S_Def   0x8000          /* Defined */
+             34 #define S_Equ   0x4000          /* Equated */
+             35 #define S_Glb   0x2000          /* Global */
+             36 #define S_Reg   0x1000          /* Equated register */
+             37 #define S_Ext   0x0800          /* External reference */
+             38 #define S_Data  0x0400          /* Data based relocatable */
+             39 #define S_Text  0x0200          /* Text based relocatable */
+             40 #define S_BSS   0x0100          /* BSS based relocatable */
+
+Directory of C:\CPROGS
+
+VERDATE.O      10/28/88  20:10:12  000      66
+Done.
+
+================================================================================
+
+Dump of:  verdate.o
+
+0000 00 (000000):  601A 0000 0000 0000 000C 0000 0000 0000 *`...............*
+0000 10 (000010):  000E 0000 0000 0000 0000 0000 3139 3838 *............1988*
+0000 20 (000020):  3130 3237 2E30 3100 5F56 6572 4461 7465 *1027.01._VerDate*
+0000 30 (000030):  A400 0000 0000 0000 0000 0000 0000 0000 *$...............*
+0000 40 (000040):  0000 0000 0000 0000 0000 0000 0000 0000 *................*
+
+*** E O F ***
+
+================================================================================
+
+Sample C program usage:
+-----------------------
+
+    #define PGMID "test"     /* program name, since argv[0] isn't  */
+
+    extern char now();       /* get system date and time as a string */
+
+    extern char VerDate[];   /* program date and version string */
+
+    char dtg[22];            /* today's date and time */
+
+    main(argc, argv)
+    int argc;
+    char *argv[];
+    {
+        /* identify the program and version */
+
+        printf("%s -- Version %s\n",
+            PGMID, VerDate);
+
+        /* log the run date and time */
+
+        printf("Run date and time:  %s\n",
+            now(dtg));
+
+        /* ***** program goes here ***** */
+
+        exit(0);
+    }
+

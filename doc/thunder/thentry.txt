@@ -1,0 +1,77 @@
+Notes on data entry for Thunder/Storm		Rev 1	1988-12-15
+-------------------------------------		------------------
+
+* Hardware resources:
+
+	* LCD display -- 2 lines of 40 characters
+
+	* 1 "Escape" switch with LED		(status)
+	* 1 "Enter" switch with LED		(status)
+
+	* 8 data entry / edit switches		(status)
+
+	* Long pot				(status, pressure, position)
+
+	* 10 1-element performance pads w/LEDs	(status, pressure ?)
+	* 12 2-element performance pads		(status, pressure, position)
+	*  2 3-element performance pads		(status, pressure, position ?)
+	*  1 4-element performance pad		(status, pressure, position ?)
+
+* "Escape" should always cancel the current operation
+
+* "Enter" should always just enter data
+
+* Soft key labels can be 4 characters long  (plus a space)
+
+* Things we need to display:
+
+	* Configuration number  (MIDI program number ?)
+
+	* Configuration data
+
+		* Assignments:
+
+			* Sensors:
+
+				* Switches
+				* Long pot
+				* Pads
+
+			* LEDs
+
+		* MIDI setup:
+
+			* Basic channel
+			* Enable / disable status
+
+	* Riffs:
+
+		* Status  (record, play)
+		* Length  (clocks, RAM)
+		* Playback rate
+		* Individual entries
+
+	* MIDI performance status:
+
+		* Clock status
+		* Song number
+		* Song position
+
+	* Data card status:
+
+		* Table of contents
+		* Storage allocation  (used, available)
+
+* Menus:
+
+	* Main menu
+	* Configurations
+	* Riffs
+	* MIDI
+
+* Things to go on the lowest level display  (main menu):
+
+	* Current configuration
+	* Riff status  (record, play)
+	* MIDI performance status
+	* Next level menu key labels

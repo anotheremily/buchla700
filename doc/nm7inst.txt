@@ -1,0 +1,33 @@
+What goes into an instrument definition:
+
+	static parameters
+		algorithm selection
+		voice assignment
+		oscillator offsets
+		oscillator modes
+		waveshape selections
+
+	dynamic parameters  (functions)
+		oscillator frequencies (4)
+		filter frequency
+		filter Q
+		algorithm indices (6)
+		dynamic level
+
+What goes into a function:
+
+	controls
+		trigger mode
+		most recent trigger number
+		loop counts
+	points
+		time
+			value
+			source / multiplier
+		parameter
+			value
+			source / multiplier
+		action
+			type
+			value(s)
+

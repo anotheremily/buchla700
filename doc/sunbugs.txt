@@ -1,0 +1,204 @@
+From qantel!dual!lll-crg!gymble!umcp-cs!seismo!harvard!talcott!panda!genrad!decvax!tektronix!reed!nsc-pdc!rgb Fri Jun  7 14:58:02 1985
+Relay-Version: version B 2.10.2 9/18/84; site qvax2.UUCP
+Posting-Version: version B 2.10.2 9/5/84; site nsc-pdc.UUCP
+Path: qvax2!qantel!dual!lll-crg!gymble!umcp-cs!seismo!harvard!talcott!panda!genrad!decvax!tektronix!reed!nsc-pdc!rgb
+From: rgb@nsc-pdc.UUCP (Robert Bond)
+Newsgroups: net.sources.bugs
+Subject: Re: Bug in sunrise/sunset program
+Message-ID: <206@nsc-pdc.UUCP>
+Date: 7 Jun 85 21:58:02 GMT
+Date-Received: 13 Jun 85 10:02:27 GMT
+References: <77@wcom.UUCP> <144@hoqam.UUCP> <146@hoqam.UUCP>
+Reply-To: rgb@nsc-pdc.UUCP (Robert Bond)
+Distribution: net
+Organization: NSC Portland, Orygun
+Lines: 185
+
+Here are the promised fixes for the Volks.. er.. 286 type machines.
+Feed this to patch or try it by hand.
+
+If any Microsoft/ IBM support types are interested in C compiler bugs
+or broken #include files, please drop me a line.
+
+						Bob Bond
+
+*** sun.c.rel	Thu Jun  6 15:58:09 1985
+--- sun.c	Thu Jun  6 15:56:51 1985
+***************
+*** 11,17
+  *        
+  *        All output is to standard io.  
+  *
+! *	 Compile with cc -O  -o sun -lm
+  *	 Non 4.2 systems may have to change <sys/time.h> to <time.h> below.
+  *
+  *	 Note that the latitude, longitude, time zone correction and
+
+--- 11,17 -----
+  *        
+  *        All output is to standard io.  
+  *
+! *	 Compile with cc -O -o sun sun.c -lm
+  *	 Non 4.2 systems may have to change <sys/time.h> to <time.h> below.
+  *
+  *	 Note that the latitude, longitude, time zone correction and
+***************
+*** 51,56
+  double cos_deg();
+  double tan_deg();
+  double gmst();
+  
+  int th;
+  int tm;
+
+--- 51,58 -----
+  double cos_deg();
+  double tan_deg();
+  double gmst();
++ struct tm *localtime();
++ long time();
+  
+  int th;
+  int tm;
+***************
+*** 77,83
+      double lambda1, lambda2;
+      double alt, az, gst, m1;
+      double hsm, ratio;
+!     time_t sec_1970;
+      int h, m;
+      struct tm *pt;
+  
+
+--- 79,85 -----
+      double lambda1, lambda2;
+      double alt, az, gst, m1;
+      double hsm, ratio;
+!     long sec_1970;
+      int h, m;
+      struct tm *pt;
+  
+***************
+*** 139,145
+      da = asin_deg(tan_deg(x)/tan_deg(tri));
+      dt = 240.0 * y / cos_deg(delta) / 3600;
+  
+!     lst_to_hm(trise - dt, jd, &h, &m);
+      printf("Sunrise: %2d:%02d    ", h, m);
+  
+      if (popt) {
+
+--- 145,152 -----
+      da = asin_deg(tan_deg(x)/tan_deg(tri));
+      dt = 240.0 * y / cos_deg(delta) / 3600;
+  
+!     trise -= dt;
+!     lst_to_hm(trise, jd, &h, &m);
+      printf("Sunrise: %2d:%02d    ", h, m);
+  
+      if (popt) {
+***************
+*** 147,153
+          printf("Azimuth: %2d deg %02d min \n", h, m);
+      }
+  
+!     lst_to_hm(tset + dt, jd, &h, &m);
+      printf("Sunset:  %2d:%02d    ", h, m);
+  
+      if (popt) {
+
+--- 154,161 -----
+          printf("Azimuth: %2d deg %02d min \n", h, m);
+      }
+  
+!     tset += dt;
+!     lst_to_hm(tset, jd, &h, &m);
+      printf("Sunset:  %2d:%02d    ", h, m);
+  
+      if (popt) {
+***************
+*** 286,292
+  double 
+  julian_date(m, d, y)
+  {
+!     int a, b;
+      double jd;
+  
+      if (m == 1 || m == 2) {
+
+--- 294,300 -----
+  double 
+  julian_date(m, d, y)
+  {
+!     long a, b;
+      double jd;
+  
+      if (m == 1 || m == 2) {
+***************
+*** 298,306
+  	exit(1);
+      }
+      a = y/100;
+!     b = 2 - a + a/4;
+!     b += (int)((double)y * 365.25);
+!     b += (int)(30.6001 * ((double)m + 1.0));
+      jd = (double)d + (double)b + 1720994.5;
+      return(jd);
+  }
+
+--- 306,314 -----
+  	exit(1);
+      }
+      a = y/100;
+!     b = 2 - a  + a/4;
+!     b += (long)((double)y * 365.25);
+!     b += (long)(30.6001 * ((double)m + 1.0));
+      jd = (double)d + (double)b + 1720994.5;
+  
+      return(jd);
+***************
+*** 439,447
+  	gst -= 24.0;
+      jzjd = julian_date(1,0,yr);
+      ed = jd-jzjd;
+!     t = (jzjd -2415020.0)/36525.0;
+!     r = 6.6460656+2400.05126*t+2.58E-05*t*t;
+!     b = 24-(r-24*(yr-1900));
+      t0 = ed * 0.0657098 - b;
+      if (t0 < 0.0)
+  	t0 += 24;
+
+--- 449,457 -----
+  	gst -= 24.0;
+      jzjd = julian_date(1,0,yr);
+      ed = jd-jzjd;
+!     t = (jzjd -2415020.0) / 36525.0;
+!     r = 6.6460656 + 2400.05126 * t + 2.58E-05 * t * t;
+!     b = 24.0 - ( r - 24.0 * ( yr - 1900.0));
+      t0 = ed * 0.0657098 - b;
+      if (t0 < 0.0)
+  	t0 += 24;
+***************
+*** 448,454
+      gmt = gst-t0;
+      if (gmt<0) 
+  	gmt += 24.0;
+!     gmt = gmt * 0.99727 - tz;;
+      if (gmt < 0)
+  	gmt +=24.0;
+      dh_to_hm(gmt, h, m);
+
+--- 458,464 -----
+      gmt = gst-t0;
+      if (gmt<0) 
+  	gmt += 24.0;
+!     gmt = gmt * 0.99727 - tz;
+      if (gmt < 0)
+  	gmt +=24.0;
+      dh_to_hm(gmt, h, m);
+-- 
+    Robert Bond 			nsc!nsc-pdc!rgb
+    National Semiconductor		tektronix!reed!nsc-pdc!rgb
+
+
+

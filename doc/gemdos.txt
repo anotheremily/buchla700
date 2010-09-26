@@ -1,0 +1,171 @@
+GEMDOS Functions
+----------------
+
+0x12	WORD	Cauxis()			Check status of standard AUX: input
+0x03	WORD	Cauxin()			Read character from standard AUX: input
+
+0x13	WORD	Cauxos()			Check status of standard AUX: output
+0x04	void	Cauxout(c)			Write character to standard AUX: output
+
+0x0B	WORD	Cconis()			Check status of standard input
+0x01	LONG	Cconin()			Read character from standard input
+0x08	LONG	Cnecin()			Read character from standard input, no echo
+0x07	LONG	Crawcin()			Raw input from standard input
+0x0A	void	Cconrs(buf)			Read edited string from standard input
+
+0x10	WORD	Cconos()			Check status of standard output
+0x02	void	Cconout(c)			Write character to standard output
+0x09	void	Cconws(str)			Write string to standard output
+
+0x06	LONG	Crawio(w)			Raw I/O to standard input/output
+
+0x11	WORD	Cprnos()			Check status of standard PRN:
+0x05	void	Cprnout(c)			Write character to standard PRN:
+
+0x19	WORD	Dgetdrv()			Get default drive
+0x0E	LONG	Dsetdrv(drv)			Set default drive
+0x36	void	Dfree(buf, drv)			Get drive free space
+
+0x47	void	Dgetpath(buf, drv)		Get current directory
+0x3B	WORD	Dsetpath(path)			Set current directory
+0x39	WORD	Dcreate(pathname)		Create directory
+0x3A	WORD	Ddelete(pathname)		Delete directory
+0x43	WORD	Fattrib(fname, wf, atr)		Get / set file attributes
+0x57	void	Fdatime(handle, time, wf)	Get / set file timestamp
+
+0x3C	WORD	Fcreate(fname, atr)		Create file
+0x41	WORD	Fdelete(fname)			Delete file
+0x3D	WORD	Fopen(fname, mode)		Open file
+0x3E	WORD	Fclose(handle)			Close file
+0x56	WORD	Frename(0, old, new)		Rename file
+
+0x45	WORD	Fdup(handle)			Duplicate file handle
+0x46	WORD	Fforce(stdh, nostdh)		Force file handle
+
+0x2F	LONG	Fgetdta()			Get disk transfer address
+0x1A	void	Fsetdta(addr)			Set disk transfer address
+0x4E	WORD	Fsfirst(fspec, atr)		Search first
+0x4F	WORD	Fsnext()			Search next
+
+0x42	LONG	Fseek(offset, handle, mode)	Seek file pointer
+0x3F	LONG	Fread(handle, count, buffer)	Read from file
+0x40	LONG	Fwrite(handle, count, buffer)	Write to file
+
+0x48	LONG	Malloc(amount)			Allocate memory
+0x49	WORD	Mfree(saddr)			Release memory
+0x4A	WORD	Mshrink(0, block, newsize)	Shrink size of allocated block
+
+0x4B	WORD	Pexec(mode, ptr1, ptr2, ptr3)	Load / execute process
+0x4C	void	Pterm(retcode)			Terminate process with specified exit code
+0x00	void	Pterm0()			Terminate process with exit code of 0
+0x31	void	Ptermres(keepcnt, retcode)	Terminate and stay resident
+
+0x20	LONG	Super(stack)			Get / set / inquire supervisor mode
+
+0x30	WORD	Sversion()			Get version number
+
+0x2A	WORD	Tgetdate()			Get date
+0x2B	WORD	Tsetdate(date)			Set date
+
+0x2C	WORD	Tgettime()			Get time
+0x2D	WORD	Tsettime()			Set time
+
+BIOS Error Codes  (-1 .. -31)
+-----------------------------
+
+	E_OK		0	No error
+
+	ERROR		-1	Error
+	EDRVNR		-2	Drive not ready
+	EUNCMD		-3	Unknown command
+	E_CRC		-4	CRC error
+	EBADRQ		-5	Bad request
+	E_SEEK		-6	Seek error
+	EMEDIA		-7	Unknown media
+	ESECNF		-8	Sector not found
+	EPAPER		-9	Out of paper
+	EWRITF		-10	Write fault
+	EREADF		-11	Read fault
+			-12	-unused-
+	EWRPRO		-13	Write protect error
+	E_CHNG		-14	Media change detected
+	EUNDEV		-15	Unknown device
+	EBADSF		-16	Bad sectors on format
+	EOTHER		-17	Insert other disk (request)
+
+GEMDOS Error Codes  (-32 .. -127)
+---------------------------------
+
+	EINVFN		-32	Invalid function number
+	EFILNF		-33	File not found
+	EPTHNF		-34	Path not found
+	ENHNDL		-35	Handle pool exhausted
+	EACCDN		-36	Access denied
+	EIHNDL		-37	Invalid handle
+
+	ENSMEM		-39	Insufficient memory
+	EIMBA		-40	Invalid memory block address
+
+	EDRIVE		-46	Invalid drive specification
+	ENMFIL		-47	No more files
+
+	ERANGE		-64	Range error
+	EINTRN		-65	GEMDOS internal error
+	EPLFMT		-66	Invalid executable file format
+	EGSBF		-67	Memory block growth failure
+
+GEMDOS Date Format
+------------------
+
+	15:9	years since 1980
+	8:5	month  (1..12)
+	4:0	day  (1..31)
+
+GEMDOS Time Format
+------------------
+
+	15:11	hour  (0..23)
+	10:5	minute  (0..59)
+	4..0	second / 2  (0..29)
+
+GEMDOS Drive Free Space Format
+------------------------------
+
+	+0	number of free clusters
+	+4	total number of clusters
+	+8	sector size  (in bytes)
+	+12	cluster size  (in sectors)
+
+GEMDOS File Attributes
+----------------------
+
+	0x01	read only
+	0x02	hidden
+	0x04	system
+	0x08	volume label
+	0x10	subdirectory
+	0x20	archive
+
+GEMDOS File Search DTA Format
+-----------------------------
+
+	+0 .. +20	BYTE	reserved
+	+21		BYTE	attribute byte
+	+22 .. +23	WORD	time stamp
+	+24 .. +25	WORD	date stamp
+	+26 .. +29	LONG	file size
+	+30 .. +43	BYTE	file name + extension  (null terminated)
+
+GEMDOS File Open Modes
+----------------------
+
+	0	read only
+	1	write only
+	2	read / write
+
+GEMDOS Seek Modes
+-----------------
+
+	0	from beginning of file
+	1	from current position
+	2	from end of file

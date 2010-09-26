@@ -1,0 +1,593 @@
+Constants and initialized variables
+-----------------------------------
+
+A6PTR	SEDUMP.C: char *A6PTR = 0L;		/* traceback a6 starting address */
+A7PTR	SEDUMP.C: char *A7PTR = 0L;		/* traceback a7 starting address */
+A7TOP	SEDUMP.C: char *A7TOP = 0x000FFFFFL;	/* traceback stack top */
+
+DB_Type	DBENTR.C: char	*DB_Type[] = {			/* debug buffer entry types */
+
+ad_fet	ADFIELD.C: struct fet ad_fet1[] = {		/* field definitions */
+adbox	ADFIELD.C: short adbox[][8] = {		/* display box parameters */
+adboxes	ADSELBX.C: struct selbox adboxes[] = {
+adbxlb	ADFIELD.C: char	*adbxlb[] = {		/* display box labels */
+arpar	LCDLBLS.C: short arpar[] = { 4,  2,  9, 11, 12,  1,  3,  5,  7, 13, 14, 15, 10,  6};
+artitab	LCDLBLS.C: short artitab[] = {		/* articulation pot initialization values */
+asgkbbt	ASGDSP.C: short	asgkbbt[AK_WIDTH] = {		/* keyboard icon bottom lines */
+asgkble	ASGDSP.C: short	asgkble[88] = {		/* key left edge offsets */
+asgkbtp	ASGDSP.C: short	asgkbtp[AK_WIDTH] = {		/* keyboard icon top lines */
+asgpal	ASGDSP.C: short	asgpal[16][3] = {	/* assignment editor color palette */
+asgsrc	ASGDSP.C: char *asgsrc[] = {	/* source labels */
+aslbls	LCDLBLS.C: char	*aslbls[] = {		/* Assignment select key labels */
+
+blakpal	M7MENU.C: short	blakpal[16][3] = {		/* black palette */
+
+clklbl	SCORDSP.C: char	*clklbl[] = {	/* clock control and scource labels */
+cmgtags	CHKSEC.C: char cmgtags[N_ETYPES] = {	/* score event group sensitivity tags */
+cmgtype	CHKSEC.C: char cmgtype[N_ETYPES] = {	/* score event group types for copy / merge */
+cmslens	CHKSEC.C: short	cmslens[N_ETYPES] = {	/* score event sizes for copy / merge */
+crate0	IM700.C: short	crate0[] = {			/* cursor rate table 1 */
+crate1	IM700.C: short	crate1[] = {			/* cursor rate table 1 */
+crate2	IM700.C: short crate2[] = {			/* cursor rate table 2 */
+ctl2src	MSM.C: short ctl2src[] = {SM_VTMW, SM_LPBR, SM_CTL1, SM_PED1};
+
+debugsw	IM700.C: short	debugsw = DEBUGVAL;	/* debug output switch */
+dyntab	ASGDSP.C: short	dyntab[10] = {		/* dynamics translation table */
+
+ehdlist	CHKSEC.C: short	ehdlist[N_ETYPES] = {		/* hplist update type table */
+epxtbl	USLICE.C: short	epxtbl[][16] = {	/* pixel mask table for events */
+eqgaint	PUTEQ.C: char eqgaint[] = {
+evkinds	SEDUMP.C: char *evkinds[N_ETYPES] = {		/* event types (must match score.h) */
+expbit	INSTDSP.C: short expbit[16] = {	/* FPU time exponent bit expansion table */
+
+finival	INSTDSP.C: short finival[NFINST] = {	/* initial function values */
+fnoff	INSTDSP.C: short fnoff[NFINST] = {
+ftypes	LIBDSP.C: char *ftypes[][3] = {	/* file types  (must match libdsp.h) */
+
+gprep	ASGDSP.C: char *gprep[] = {" ", "1", "2", "3", "L"};
+
+hpname	SEDUMP.C: char *hpname[N_TYPES] = {	/* header type names (must match score.h) */
+
+id_fet1	IDFIELD.C: struct fet id_fet1[] = {
+idbox	INSTDSP.C: short idbox[][8] = {	/* display box parameters */
+idboxes	IDSELBX.C: struct selbox idboxes[] = {
+idbxlbl	INSTDSP.C: char	*idbxlbl[] = {	/* display box labels */
+idhlbl	INSTDSP.C: char idhlbl[] =		/* main function time axis label */
+inspal	INSTDSP.C: short inspal[16][3] = {	/* instrument display color palette */
+
+lbrpal	LIBDSP.C: short	lbrpal[16][3] = {	/* librarian color palette */
+lclkmap	LOCALKB.C: short lclkmap[24] = {		/* local key to MIDI key number map table */
+ld_em1	LIBDSP.C: char ld_em1[] = "No files stored on disk";
+ld_em2	LIBDSP.C: char ld_em2[] = " by this operation";
+ld_fet	LDFIELD.C: struct fet ld_fet1[] = {
+ldbox	LDFIELD.C: short ldbox[][8] = {	/* display box parameters */
+ldboxes	LDSELBX.C: struct selbox ldboxes[] = {
+ldbxlb0	LDFIELD.C: char	*ldbxlb0[] = {	/* display box labels */
+lintab	USLICE.C: short	lintab[] = {			/* note top line table */
+loctab	IM700.C: short	loctab[9] = {
+
+m1con	SCWRITE.C: long	m1con = -1L;			/* null score constant */
+m7verms	MIDAS.C: char m7verms[] = M7VERMSG;	/* version message for the main menu */
+mdboxes	M7MENU.C: struct selbox mdboxes[] = {
+menupal	M7MENU.C: short menupal[16][3] = {	/* menu display color palette */
+mpixtab	PIX2MID.C: short mpixtab[52][3] = {	/* pixel to MIDI note for the white keys */
+mpmap	LCDLBLS.C: short mpmap[3]   = {MC1_DEV, MC2_DEV, CON_DEV};
+msmcnxt	LCDLBLS.C: short msmcnxt[8] = {0, 0, 5, 4, 0, 0, 0, 0};
+msmnext	LCDLBLS.C: short msmnext[8] = {2, 2, 2, 2, 1, 1, 2, 0};
+
+nbmasks	SCADV.C: short nbmasks[4] = {	/* nybble masks */
+nedlbl	SCSELBX.C: char	*nedlbl[] = {		/* note edit function labels */
+nlist	SQSCAN.C: char *nlist[]  = { "a", "b", "c", "d", "e", "f", "g", NULL };
+notes	ETIOSC.C: short	notes[]  = {2, 2, 3, 3, 4, 5, 5, 6, 6, 0, 0, 1};
+nsvtab	SCORDSP.C: char	nsvtab[] = {		/* note value modifier (accidental) table */
+nttab1	USLICE.C: short	nttab1[] = {		/* forward code transition table */
+nttab2	USLICE.C: short	nttab2[] = {		/* backward code transition table */
+
+panlkey	LOCALKB.C: short panlkey[24] = {		/* default tunings, in cents, for local keys */
+pat	SHOWCFG.C: short pat[MAXPAT][16] = {
+patctab	SHOWCFG.C: short patctab[MAXPAT] = {	/* pattern colors */
+pitches	ETIOSC.C: short	pitches[] = { 900, 1100,    0,  200,  400,  500,  700};
+potlbls	LCDLBLS.C: char	*potlbls[] = {		/* LCD pot labels */
+pxtbl	USLICE.C: short	pxtbl[][4] = {		/* pixel mask table for notes */
+
+sc_fet1	SCFIELD.C: struct fet sc_fet1[] = {
+scdlim	SEDUMP.C: long scdlim = MAX_SE;	/* score dump limit */
+scorpal	SCORDSP.C: short scorpal[16][3] = {		/* score palette */
+script0	RSCRIPT.C: char	*script0[] = {		/* initialization score selection string */
+script1	RSCRIPT.C: char	*script1[] = {		/* a list of score strings to test with */
+scsizes	SCWRITE.C: short scsizes[N_ETYPES][2] = {	/* score event sizes  (in bytes) */
+sctccon	STCPOS.C: short	sctccon[10][64] = {		/* score background color constants */
+sdboxes	SCSELBX.C: struct selbox sdboxes[] = {
+sdisp	SCORDSP.C: char	*sdisp[] = {	/* score display fixed text strings */
+sdmenus	SCSELBX.C: char	*sdmenus[][3] = {	/* score display menus */
+sdmht	SCSELBX.C: short sdmht[][3] = {		/* score section menu highlight table */
+sdmlim	SCSELBX.C: short sdmlim[][4] = {		/* score display menu cursor limits */
+sdmln3	SCSELBX.C: char	sdmln3[] =
+sdmln4	SCSELBX.C: char	sdmln4[] =
+sfdsp	ETIOSC.C: char sfdsp[]   = {' ', D_FLAT,  D_SHARP};
+sharps	ETIOSC.C: short	sharps[] = {7, 9, 7, 9, 7, 7, 9, 7, 9, 7, 9, 7};
+shrpflt	ETIOSC.C: short	shrpflt[] = {  0, -100,    100};
+simled	SCORDSP.C: short simled[3] = {		/* simulated LED colors for group modes */
+src2var	LCDLBLS.C: short src2var[14] = {		/* source number to analog variable number map */
+srctbl	IDFIELD.C: char	*srctbl[] = {		/* source label table */
+stepfrm	LOCALKB.C: short stepfrm[4][17] = {	/* step mode frame counts */
+swtlbls	LCDLBLS.C: char	*swtlbls[] = {		/* LCD switch labels */
+
+t_eq	LCDLBLS.C: PFS t_eq[] = {	/* switch assignments for LS_EQ */
+t_inst	LCDLBLS.C: PFS t_inst[] = {	/* switch assignments for LS_INST */
+t_other	LCDLBLS.C: PFS t_other[] = {	/* switch assignments for LS_OTHER */
+t_prmtr	LCDLBLS.C: PFS t_prmtr[] = {	/* switch assignments for LS_PRMTR */
+t_voice	LCDLBLS.C: PFS t_voice[] = {	/* switch assignments for LS_VOICE */
+td_fet1	TDFIELD.C: struct fet td_fet1[] = {		/* field definitions */
+tdbox	TDFIELD.C: short tdbox[][8] = {		/* display box parameters */
+tdboxes	TDSELBX.C: struct selbox tdboxes[] = {
+tdbxlb	TDFIELD.C: char	*tdbxlb[] = {		/* display box labels */
+tdlabl	TUNDSP.C: char *tdlabl[] = {
+tmultab	IM700.C: short tmultab[] = {		/* time multiplier table - indexed by voltage */
+tunpal	TUNDSP.C: short	tunpal[16][3] = {	/* color palette */
+
+var2src	SCORDSP.C: short var2src[6] = {		/* analog variable map */
+vmasks	LCDLBLS.C: short vmasks[16] = {		/* variable resolution masks */
+vtlin1	VTYPER.C: char vtlin1[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZ  | ";	/* virtual typewriter */
+vtlin2	VTYPER.C: char vtlin2[] = "abcdefghijklmnopqrstuvwxyz -*-";
+vtlin3	VTYPER.C: char vtlin3[] = " 0123456789+-/#().,:;!?&<>  | ";
+
+wavpal	WSDSP.C: short wavpal[16][3] = {	/* waveshape display color palette */
+wd_fet1	WDFIELD.C: struct fet wd_fet1[] = {
+wdbox	WDFIELD.C: short wdbox[][8] = {	/* display box parameters */
+wdboxes	WDSELBX.C: struct selbox wdboxes[] = {
+wdbxlb0	WDFIELD.C: char	*wdbxlb0[] = {	/* display box labels -- row 0 */
+wdbxlb1	WDFIELD.C: char	*wdbxlb1[] = {	/* display box labels -- row 1 */
+wdcurct	WDFIELD.C: short wdcurct[8][2] = {
+wdcurtb	WDFIELD.C: short wdcurtb[] = {
+
+zoneinc	IDFIELD.C: short zoneinc[9] = {  2,   2,   4,   9,  18,  36,  73, 146, 303};
+zonemax	IDFIELD.C: short zonemax[9] = { 63, 119, 175, 231, 287, 343, 399, 455, 509};
+
+Variables defined in IM700.C
+----------------------------
+
+adoct	IM700.C: struct	octent	*adoct;		/* assignment display object control pointer */
+afi	IM700.C: long	afi;			/* analog processor FIFO value */
+aflag	IM700.C: short	aflag;			/* analog activity flag */
+aform	IM700.C: short	aform;			/* action buffer format */
+amplval	IM700.C: short	amplval;		/* amplitude */
+ancmsw	IM700.C: short	ancmsw;			/* analog variable r/p control source */
+angroup	IM700.C: short	angroup;		/* analog variable group being shown */
+anrs	IM700.C: short	anrs[8][16];		/* analog variable resolution */
+articen	IM700.C: short	articen[12];		/* voice articulation enable status */
+asgfks	IM700.C: short	asgfks;			/* first key selected */
+asghit	IM700.C: short	asghit;			/* row hit / assignment in progress */
+asgmod	IM700.C: short	asgmod;			/* assignment number or table modified */
+asgob	IM700.C: unsigned	*asgob;		/* assignment display object pointer */
+asgtab	IM700.C: struct	asgent	asgtab[NASGS];		/* assignment table library */
+asig	IM700.C: short	asig;			/* analog signal number */
+asmode	IM700.C: short	asmode;			/* panel assignment mode */
+astat	IM700.C: short	astat;			/* analog signal status */
+aswtbl	IM700.C: PFS	aswtbl[14];		/* assignment switch table */
+auxctl	IM700.C: short	auxctl;			/* aux control flag */
+aval	IM700.C: short	aval;			/* analog signal value */
+
+bform	IM700.C: short	bform;			/* oscillator data buffer format */
+bfs	IM700.C: char	bfs[128];		/* display generation buffer */
+
+caname	IM700.C: char	caname[16];		/* current assignment table name */
+cents	IM700.C: short	cents;			/* pitch to cents conversion buffer */
+cfetp	IM700.C: struct	fet	*cfetp;		/* current fet entry pointer */
+cflag	IM700.C: short	cflag;			/* accidental flag */
+chtime	IM700.C: short	chtime;			/* horizontal cursor counter */
+chwait	IM700.C: short	chwait;			/* horizontal cursor wait time */
+clkctl	IM700.C: short	clkctl;			/* clock control */
+clkrun	IM700.C: short	clkrun;			/* clock status */
+clksrc	IM700.C: short	clksrc;			/* clock source */
+cmfirst	IM700.C: short	cmfirst;		/* first cursor motion switch */
+cmtype	IM700.C: short	cmtype;			/* cursor motion type */
+cnote	IM700.C: short	cnote;			/* note value at cursor */
+consl	IM700.C: unsigned	*consl;		/* constant slice pointer */
+crates	IM700.C: short	*crates;		/* cursor rate table pointer */
+csbp	IM700.C: struct	selbox	*csbp;		/* current select box table pointer */
+ctime	IM700.C: long	ctime;			/* time at cursor */
+ctrsw	IM700.C: short	ctrsw;			/* scupd center update switch */
+curasg	IM700.C: short	curasg;			/* current assignment table */
+curboxp	IM700.C: struct	selbox	*curboxp;	/* current select box pointer */
+curfet	IM700.C: struct	fet	*curfet;	/* current fet table pointer */
+curfunc	IM700.C: short	curfunc;		/* current function number */
+curgrp	IM700.C: short	curgrp;			/* current group */
+curinst	IM700.C: short	curinst;		/* current instrument number */
+curmop	IM700.C: short	curmop;			/* current MIDI output port */
+curmove	IM700.C: short	(*curmove)();		/* cursor mover */
+curpnt	IM700.C: short	curpnt;			/* current point number (absolute) */
+curpos	IM700.C: short	curpos;			/* cursor pad position for current axis */
+cursbox	IM700.C: short	cursbox;		/* currently selected box */
+curscor	IM700.C: short	curscor;		/* Current score number */
+cursect	IM700.C: short	cursect;		/* current section */
+cursl	IM700.C: unsigned	*cursl;		/* current (center) slice pointer */
+curslim	IM700.C: short	curslim;		/* cursor type change point */
+curtime	IM700.C: long	curtime;		/* current sqscan time */
+curtun	IM700.C: short	curtun;			/* current tuning table */
+curvce	IM700.C: short	curvce;			/* current voice number */
+curwave	IM700.C: short	curwave;		/* current waveshape library slot */
+curwdth	IM700.C: short	curwdth;		/* current waveshape cursor width */
+curwfnl	IM700.C: short	curwfnl;		/* current waveshape final value */
+curwhrm	IM700.C: short	curwhrm;		/* current waveshape harmonic number */
+curwhrv	IM700.C: short	curwhrv;		/* current waveshape harmonic value */
+curwoff	IM700.C: short	curwoff;		/* current waveshape offset value */
+curwpnt	IM700.C: short	curwpnt;		/* current waveshape point number */
+curwslt	IM700.C: short	curwslt;		/* current waveshape instrument slot */
+cvtime	IM700.C: short	cvtime;			/* vertical cursor counter */
+cvwait	IM700.C: short	cvwait;			/* veritcal cursor wait time */
+cx_key	IM700.C: short	(*cx_key)();		/* x rate calculation */
+cx_upd	IM700.C: short	(*cx_upd)();		/* x update */
+cxrate	IM700.C: short	cxrate;			/* cursor x rate */
+cxval	IM700.C: short	cxval;			/* graphic cursor x value */
+cy_key	IM700.C: short	(*cy_key)();		/* y rate calculation */
+cy_upd	IM700.C: short	(*cy_upd)();		/* y update */
+cyrate	IM700.C: short	cyrate;			/* cursor y rate */
+cyval	IM700.C: short	cyval;			/* graphic cursor y value */
+
+d_key	IM700.C: short	(*d_key)();		/* in-field data key processor */
+debugne	IM700.C: short	debugne;		/* debug flag for note entry */
+defect	IM700.C: short	defect;			/* defect code */
+dfbuf	IM700.C: unsigned	dfbuf[4096];	/* track formatting buffer */
+dferror	IM700.C: short	dferror;		/* error code from BIOS or XBIOS */
+dfsides	IM700.C: short	dfsides;		/* number of sides */
+dftype	IM700.C: short	dftype;			/* disk type code */
+dsp_ok	IM700.C: short	dsp_ok;			/* display update OK this cycle flag */
+dspbuf	IM700.C: char	dspbuf[65];		/* display generation buffer */
+dubsw	IM700.C: short	dubsw;			/* overdub / replace switch */
+dvwork	IM700.C: long	dvwork;			/* divide work area */
+
+e_key	IM700.C: short	(*e_key)();		/* E key processor */
+ebflag	IM700.C: short	ebflag;			/* edit buffer data flag */
+ebuf	IM700.C: char	ebuf[MAXEBUF+1];	/* edit data entry buffer */
+editss	IM700.C: short	editss;			/* edit panel switch state */
+editsw	IM700.C: short	editsw;			/* edit mode switch */
+endflg	IM700.C: short	endflg;			/* !end flag */
+errbuf	IM700.C: char	errbuf[65];		/* error message build area */
+ext_cv1	IM700.C: short	ext_cv1;		/* CV-1 value */
+ext_cv2	IM700.C: short	ext_cv2;		/* CV-2 value */
+ext_cv3	IM700.C: short	ext_cv3;		/* CV-3 value */
+ext_cv4	IM700.C: short	ext_cv4;		/* CV-4 value */
+ext_mod	IM700.C: short	ext_mod;		/* Aux Signal Mod value */
+
+filecat	IM700.C: struct	fcat	filecat[FCMAX];		/* file catalog */
+frags	IM700.C: long	frags;			/* Score storage pool fragment count */
+funcndx	IM700.C: char	*funcndx[256][2];	/* function header pointers */
+
+gdfsep	IM700.C: struct	gdsel	*gdfsep;	/* gdsel freechain pointer */
+gdfsl	IM700.C: struct	gdsel	gdfsl[MAXFSL];		/* gdsel pool */
+gdstbc	IM700.C: struct	gdsel	*gdstbc[NGDSEL];	/* group & event status list heads */
+gdstbn	IM700.C: struct	gdsel	*gdstbn[NGDSEL];	/* group & event status list heads */
+gomode	IM700.C: short	gomode;			/* go to mode */
+grp2prt	IM700.C: short	grp2prt[12][2];		/* group to port and channel table */
+grpdyn	IM700.C: short	grpdyn[12];		/* group dynamics table (0..9) */
+grploc	IM700.C: short	grploc[12];		/* group location table (0..8) */
+grpmode	IM700.C: short	grpmode[12];		/* group mode - 0 = play, 1 = stdby, 2 = rec */
+grpsel	IM700.C: short	grpsel[12];		/* group select status for instrument selection */
+grpstat	IM700.C: short	grpstat[12];		/* group status - 0 = off, non-0 = on */
+gtctab	IM700.C: short	gtctab[12];		/* group to color table */
+
+hitbox	IM700.C: short	hitbox;			/* box we just hit */
+hitcx	IM700.C: short	hitcx;			/* x of cursor when we hit the box */
+hitcy	IM700.C: short	hitcy;			/* y of cursor when we hit the box */
+hplist	IM700.C: struct	s_entry *hplist[N_SCORES][N_TYPES];	/* Score change list pointers */
+
+idbuf	IM700.C: char	idbuf[65];		/* display format conversion work area */
+idcfsw	IM700.C: short	idcfsw;			/* copy / fetch menu switch */
+idefs	IM700.C: struct	instdef	idefs[NINST];		/* current instrument definitions */
+idimsw	IM700.C: short	idimsw;			/* instrument display instrument menu switch */
+idintmp	IM700.C: short	idintmp;		/* temporary for instrument number */
+idnamsw	IM700.C: short	idnamsw;		/* typewriter switch */
+idoct	IM700.C: struct	octent *idoct;		/* instrument display octent pointer */
+idsrcsw	IM700.C: short	idsrcsw;		/* source menu switch */
+infetp	IM700.C: struct	fet	*infetp;	/* in-field fet pointer */
+initcfg	IM700.C: short	initcfg;		/* initial configuration */
+ins2grp	IM700.C: short	ins2grp[12];		/* instrument to group table (00..NINST-1) */
+insmode	IM700.C: short	insmode;		/* score insert mode */
+instmod	IM700.C: short	instmod[12];		/* intrument data modified */
+instob	IM700.C: unsigned	*instob;	/* instrument object pointer */
+ismode	IM700.C: short	ismode;			/* instrument select mode */
+itxput	IM700.C: short	(*itxput)();		/* instrument menu text put function */
+
+key2grp	IM700.C: short	key2grp[88];		/* port 1 key to group assignment table */
+keystat	IM700.C: char	keystat[24];		/* front panel key status */
+
+lampsw	IM700.C: short	lampsw;			/* LCD timeout disable switch */
+lasgsw	IM700.C: short	lasgsw;			/* assignments store switch */
+lastart	IM700.C: short	lastart[16];		/* last articulation values (by parameter) */
+lastvce	IM700.C: short	lastvce[12];		/* last voice assigned in each group */
+lastvel	IM700.C: short	lastvel[12];		/* last velocity sent to group */
+lcdontm	IM700.C: long	lcdontm;		/* LCD backlight on time */
+lcdtime	IM700.C: long	lcdtime;		/* LCD backlight timer */
+lcsum	IM700.C: long	lcsum;			/* library checksum */
+ldcmnt	IM700.C: char	ldcmnt[38];		/* comment field */
+ldelsw	IM700.C: short	ldelsw;			/* delete switch */
+lderrsw	IM700.C: short	lderrsw;		/* error message displayed switch */
+ldfile	IM700.C: char	ldfile[9];		/* file name field */
+ldhead	IM700.C: struct	mlibhdr	ldhead;		/* library header */
+ldidsiz	IM700.C: short	ldidsiz;		/* getcat() did showsiz() switch */
+ldkind	IM700.C: short	ldkind;			/* fetch file type */
+ldmsg1	IM700.C: char	ldmsg1[65];		/* messsage build area 1 */
+ldmsg2	IM700.C: char	ldmsg2[65];		/* messsage build area 2 */
+ldmsg3	IM700.C: char	ldmsg3[65];		/* messsage build area 3 */
+ldoct	IM700.C: struct	octent	*ldoct;		/* librarian object control table pointer */
+ldrow	IM700.C: short	ldrow;			/* fetch select row */
+ldslot	IM700.C: short	ldslot;			/* fetch select slot */
+legato	IM700.C: short	legato;			/* execkey() "legato" mode switch */
+librob	IM700.C: unsigned	*librob;	/* librarian display object pointer */
+libsp	IM700.C: struct	s_entry	*libsp;		/* librarian score pointer */
+lmln22	IM700.C: char	*lmln22;		/* message window line 22 */
+lmln23	IM700.C: char	*lmln23;		/* message window line 23 */
+lmln24	IM700.C: char	*lmln24;		/* message window line 24 */
+lmwtype	IM700.C: short	lmwtype;		/* librarian message window type */
+lorchl	IM700.C: short	lorchl;			/* hi (TRUE) / lo (FALSE) orchestra */
+lorchlw	IM700.C: short	lorchlw;		/* lo (0) / hi (1) orchestra write switch */
+lorchsw	IM700.C: short	lorchsw;		/* hi orchestra (21 - 40) store switch */
+lorclsw	IM700.C: short	lorclsw;		/* lo orchestra (01 - 20) store switch */
+lrasw	IM700.C: short	lrasw;			/* append (TRUE) / replace (FALSE) score */
+lscrsw	IM700.C: short	lscrsw;			/* score store switch */
+lselsw	IM700.C: short	lselsw;			/* fetch select switch */
+lstrsw	IM700.C: short	lstrsw;			/* store state switch */
+lstwoff	IM700.C: short	lstwoff;		/* last waveshape offset value */
+lstwpnt	IM700.C: short	lstwpnt;		/* last waveshape point number */
+ltunsw	IM700.C: short	ltunsw;			/* tunings store switch */
+lwavsw	IM700.C: short	lwavsw;			/* waveshapes store switch */
+
+m_key	IM700.C: short	(*m_key)();		/* M key processor */
+mascntr	IM700.C: short	mascntr;		/* MIDI active sensing timeout counter */
+masens	IM700.C: char	masens[3];		/* MIDI port active sensing flags */
+mctlnum	IM700.C: short	mctlnum[4];		/* MIDI controller number table (-1, 00..99) */
+mctlval	IM700.C: char	mctlval[NCTRLS];	/* MIDI controller values */
+mdb1	IM700.C: short	mdb1;			/* current MIDI data byte 1 */
+mdb2	IM700.C: short	mdb2;			/* current MIDI data byte 2 */
+mdbyte	IM700.C: char	mdbyte[3];		/* MIDI data byte buffers */
+mdoct	IM700.C: struct	octent	*mdoct;		/* menu display object control table pointer */
+menuob	IM700.C: unsigned	*menuob;	/* menu display object pointer */
+michan	IM700.C: short	michan;			/* current MIDI channel */
+midiclk	IM700.C: short	midiclk;		/* MIDI clock state */
+mistat	IM700.C: short	mistat;			/* current MIDI status */
+mpbend	IM700.C: short	mpbend[48];		/* MIDI pitch bend data, by port and channel */
+mphead	IM700.C: struct	EXFILE	mphead;		/* MIDAS-VII program header */
+mpsust	IM700.C: char	mpsust[48];		/* MIDI sustain status, by port and channel */
+mrstat	IM700.C: char	mrstat[3];		/* MIDI running status */
+msmstv	IM700.C: short	msmstv[3];		/* MIDI state machine state variables */
+
+nchwait	IM700.C: short	nchwait;		/* next chwait value */
+ncvwait	IM700.C: short	ncvwait;		/* next cvwait value */
+ndbytes	IM700.C: long	ndbytes;		/* bytes needed for storage */
+ndisp	IM700.C: short	ndisp;			/* current display number */
+nefree	IM700.C: struct	nevent	*nefree;	/* pointer to free note entries */
+nelist	IM700.C: struct	nevent	*nelist;	/* pointer to note entry list */
+nevents	IM700.C: struct	nevent	nevents[NNEVTS];	/* note event list */
+newflag	IM700.C: short	newflag;		/* new data entered while t_cur EQ t_ctr */
+nkdown	IM700.C: short	nkdown;			/* number of keys down */
+nlpersc	IM700.C: long	nlpersc[N_SCORES];	/* number of longs per score */
+not_fld	IM700.C: short	(*not_fld)();		/* not-in-field data key processor */
+notenum	IM700.C: short	notenum;		/* note number */
+noteoff	IM700.C: long	noteoff;		/* note off time */
+noteon	IM700.C: long	noteon;			/* note on time */
+noteop	IM700.C: short	noteop;			/* pending note operation code */
+noteper	IM700.C: long	noteper;		/* note period */
+notepit	IM700.C: short	notepit;		/* note pitch */
+notesel	IM700.C: short	notesel;		/* note selection state */
+noteval	IM700.C: long	noteval;		/* note value */
+npts	IM700.C: short	npts;			/* number of points in function */
+nrest	IM700.C: long	nrest;			/* number of rests */
+nxtsl	IM700.C: unsigned	*nxtsl;		/* next (right edge) slice pointer */
+
+obj0	IM700.C: unsigned	*obj0;		/* object  0 VSDD RAM pointer */
+obj1	IM700.C: unsigned	*obj1;		/* object  1 VSDD RAM pointer */
+obj10	IM700.C: unsigned	*obj10;		/* object 10 VSDD RAM pointer */
+obj11	IM700.C: unsigned	*obj11;		/* object 11 VSDD RAM pointer */
+obj12	IM700.C: unsigned	*obj12;		/* object 12 VSDD RAM pointer */
+obj13	IM700.C: unsigned	*obj13;		/* object 13 VSDD RAM pointer */
+obj14	IM700.C: unsigned	*obj14;		/* object 14 VSDD RAM pointer */
+obj15	IM700.C: unsigned	*obj15;		/* object 15 VSDD RAM pointer */
+obj2	IM700.C: unsigned	*obj2;		/* object  2 VSDD RAM pointer */
+obj3	IM700.C: unsigned	*obj3;		/* object  3 VSDD RAM pointer */
+obj4	IM700.C: unsigned	*obj4;		/* object  4 VSDD RAM pointer */
+obj5	IM700.C: unsigned	*obj5;		/* object  5 VSDD RAM pointer */
+obj6	IM700.C: unsigned	*obj6;		/* object  6 VSDD RAM pointer */
+obj7	IM700.C: unsigned	*obj7;		/* object  7 VSDD RAM pointer */
+obj8	IM700.C: unsigned	*obj8;		/* object  8 VSDD RAM pointer */
+obj9	IM700.C: unsigned	*obj9;		/* object  9 VSDD RAM pointer */
+oldpk	IM700.C: short	oldpk;			/* previous pkctrl state */
+oldsl	IM700.C: short	oldsl;			/* previous sliders state */
+oldsw	IM700.C: PFS	(*oldsw)[];		/* saved swpt value */
+oldtun	IM700.C: short	oldtun[128];		/* previous tuning table for undo */
+
+p_bak	IM700.C: struct	s_entry *p_bak;		/* pointer to entry at left edge of display */
+p_cbgn	IM700.C: struct	s_entry	*p_cbgn;	/* pointer to start of copy */
+p_cend	IM700.C: struct	s_entry	*p_cend;	/* pointer to end of copy */
+p_ctr	IM700.C: struct	s_entry *p_ctr;		/* pointer to entry at center of display */
+p_cur	IM700.C: struct	s_entry *p_cur;		/* pointer to entry at current execution time */
+p_fwd	IM700.C: struct	s_entry *p_fwd;		/* pointer to entry at right edge of display */
+p_nbeg	IM700.C: struct	n_entry	*p_nbeg;	/* pointer to note begin */
+p_nend	IM700.C: struct	n_entry	*p_nend;	/* pointer to note end */
+p_sbgn	IM700.C: struct	s_entry	*p_sbgn;	/* pointer to start of section */
+p_sec1	IM700.C: struct	s_entry	*p_sec1;	/* pointer to start of 1st section */
+p_sec2	IM700.C: struct	s_entry	*p_sec2;	/* pointer to start of 2nd section */
+p_send	IM700.C: struct	s_entry	*p_send;	/* pointer to end of section */
+pchsw	IM700.C: short	pchsw;			/* punch-in enable switch */
+pecase	IM700.C: short	pecase;			/* point edit case variable */
+pkctrl	IM700.C: short	pkctrl;			/* local performance key state */
+pntptr	IM700.C: struct	instpnt	*pntptr;	/* pointer to edited point */
+pntsv	IM700.C: short	pntsv;			/* point selection state variable */
+prgchan	IM700.C: short	prgchan;		/* MIDI program change channel  (port 1) */
+prstab	IM700.C: short	prstab[NTRIGS];		/* pressure */
+prvsl	IM700.C: unsigned	*prvsl;		/* previous (left edge) slice pointer */
+ps_dpth	IM700.C: short	ps_dpth;		/* phase shifter -- depth */
+ps_intn	IM700.C: short	ps_intn;		/* phase shifter -- intensity */
+ps_rate	IM700.C: short	ps_rate;		/* phase shifter -- rate */
+pspool	IM700.C: long	*pspool;		/* Score storage pool pointer */
+pulsclk	IM700.C: short	pulsclk;		/* pulse clock state */
+
+recsw	IM700.C: short	recsw;			/* record / play switch */
+runit	IM700.C: short	runit;			/* run switch for main scan loop */
+
+s_inst	IM700.C: short	s_inst[12];		/* instrument selections */
+s_trns	IM700.C: short	s_trns[12];		/* current transposition values */
+saddr	IM700.C: unsigned	*saddr;		/* score VSDD RAM base pointer */
+sbase	IM700.C: short	sbase;			/* score VSDD RAM scroll offset */
+schksum	IM700.C: long	schksum;		/* Score checksum */
+scname	IM700.C: char	scname[N_SCORES][16];	/* Score names */
+scores	IM700.C: struct	s_entry *scores[N_SCORES];	/* Score pointer table */
+scp	IM700.C: struct	s_entry *scp;		/* current score pointer */
+scrl	IM700.C: unsigned	scrl;		/* score VSDD object scroll register image */
+scrlpot	IM700.C: short	scrlpot;		/* scroll pot state */
+scsums	IM700.C: long	scsums[N_SCORES];	/* score checksums */
+sctctab	IM700.C: short	sctctab[10][64];		/* score background color table */
+sd	IM700.C: short	sd;			/* score scroll direction */
+sdmcol	IM700.C: short	sdmcol;			/* score menu - saved stccol */
+sdmrow	IM700.C: short	sdmrow;			/* score menu - saved stcrow */
+se1_cnt	IM700.C: long	se1_cnt;		/* Score - free list E_SIZE1 entry count */
+se2_cnt	IM700.C: long	se2_cnt;		/* Score - free list E_SIZE2 entry count */
+se3_cnt	IM700.C: long	se3_cnt;		/* Score - free list E_SIZE3 entry count */
+se_chg	IM700.C: BOOL	se_chg;			/* Score free list changed flag */
+seclist	IM700.C: struct	s_entry *seclist[N_SCORES][N_SECTS];	/* Section pointer table */
+secop	IM700.C: short	secop;			/* pending score section operation */
+secopok	IM700.C: short	secopok;		/* section operation OK flag */
+sgcsw	IM700.C: short	sgcsw;			/* graphic cursor display switch */
+sharp	IM700.C: short	sharp;			/* sharp flag */
+sigtab	IM700.C: short	sigtab[128][2];		/* signals:  [0] = value, [1] = switch */
+size1	IM700.C: struct	s_entry	*size1;		/* score E_SIZE1 entry free list pointer */
+size2	IM700.C: struct	s_entry	*size2;		/* score E_SIZE2 entry free list pointer */
+size3	IM700.C: struct	s_entry	*size3;		/* score E_SIZE3 entry free list pointer */
+slices	IM700.C: unsigned	slices[672];	/* score display slices */
+sliders	IM700.C: short	sliders;		/* slider and switch state */
+smdctl	IM700.C: short	sdmctl;			/* score menu - control variable */
+sments	IM700.C: struct	sment	sments[192];		/* source multiplier assignment table */
+snbreq	IM700.C: long	snbreq;			/* Score - disk bytes required */
+snlreq	IM700.C: long	snlreq;			/* Score - score bytes required */
+sntbreq	IM700.C: long	sntbreq;		/* Score - total disk bytes required */
+sntlreq	IM700.C: long	sntlreq;		/* Score - total score bytes required */
+soffset	IM700.C: short	soffset;		/* score scroll offset */
+spcount	IM700.C: long	spcount;		/* Score - storage pool free entry count */
+spool	IM700.C: long	spool[MAX_SE];		/* Score storage pool */
+stccol	IM700.C: short	stccol;			/* score cursor col */
+stcrow	IM700.C: short	stcrow;			/* score cursor row */
+stepclk	IM700.C: short	stepclk;		/* step clock state */
+stepint	IM700.C: short	stepint;		/* note entry - note interval */
+stepwgt	IM700.C: short	stepwgt;		/* note entry - note weight */
+stimes	IM700.C: struct	s_time	stimes[N_SCORES][N_SECTS];	/* score section SMPTE times */
+subj	IM700.C: short	subj;			/* edited point number (relative) */
+swpt	IM700.C: PFS	(*swpt)[];		/* switch dispatch table pointer */
+
+t_bak	IM700.C: long	t_bak;			/* Time at p_bak */
+t_cbgn	IM700.C: long	t_cbgn;			/* time at p_cbgn */
+t_cend	IM700.C: long	t_cend;			/* time at p_cend */
+t_ctr	IM700.C: long	t_ctr;			/* Time at p_ctr */
+t_cur	IM700.C: long	t_cur;			/* Time at p_cur */
+t_fwd	IM700.C: long	t_fwd;			/* Time at p_fwd */
+t_note	IM700.C: long	t_note;			/* note duration between p_nbeg and p_nend */
+t_sbgn	IM700.C: long	t_sbgn;			/* time at p_sbgn */
+t_sec1	IM700.C: long	t_sec1;			/* time at p_sec1 */
+t_sec2	IM700.C: long	t_sec2;			/* time at p_sec2 */
+t_sect	IM700.C: long	t_sect;			/* section time */
+t_send	IM700.C: long	t_send;			/* time at p_send */
+tdnamsw	IM700.C: short	tdnamsw;		/* tuning editor displaying typewriter */
+tdoct	IM700.C: struct	octent	*tdoct;		/* tuning display object control table pointer */
+temax	IM700.C: short	temax;			/* time upper limit */
+temin	IM700.C: short	temin;			/* time lower limit */
+testing	IM700.C: short	testing;		/* test level */
+thescoreIM700.C: short	thescore;		/* score selected from sqscan */
+timemlt	IM700.C: short	timemlt;		/* time scaling */
+tmpomlt	IM700.C: short	tmpomlt;		/* tempo multiplier */
+tmpoval	IM700.C: short	tmpoval;		/* tempo value */
+trgtab	IM700.C: char	trgtab[NTRIGS];		/* trigger status */
+ttcmdsv	IM700.C: short	ttcmdsv;		/* tuning editor edit state variable */
+ttsel1	IM700.C: short	ttsel1;			/* tuning editor key select variable 1 */
+ttsel2	IM700.C: short	ttsel2;			/* tuning editor key select variable 2 */
+ttsel3	IM700.C: short	ttsel3;			/* tuning editor key select variable 3 */
+tuncurn	IM700.C: char	tuncurn[33];		/* current tuning table name */
+tuneval	IM700.C: short	tuneval;		/* fine tuning */
+tunlib	IM700.C: short	tunlib[NTUNS][128];	/* tuning table library */
+tunmod	IM700.C: short	tunmod;			/* tuning table modified */
+tunname	IM700.C: char	tunname[NTUNS][32];	/* tuning table names */
+tunob	IM700.C: unsigned	*tunob;		/* tuning table display object pointer */
+tuntab	IM700.C: short	tuntab[128];		/* current tuning table */
+tunval	IM700.C: short	tunval;			/* tuning editor increment / transpose  value */
+
+valents	IM700.C: struct	valent	valents[NGPSRS];	/* source value table */
+varmode	IM700.C: short	varmode[8][16];		/* analog variable record mode */
+vbufs	IM700.C: struct	instdef	vbufs[12];		/* voice instrument buffers */
+vce2grp	IM700.C: short	vce2grp[12];		/* voice to group table (-1, 1..12)*/
+vce2trg	IM700.C: short	vce2trg[12];		/* voice to trigger map (-1 EQ NULL) */
+velflag	IM700.C: short	velflag;		/* velocity display flag */
+veltab	IM700.C: short	veltab[NTRIGS];		/* velocity */
+verbose	IM700.C: short	verbose;		/* verbose output switch */
+vlbptr	IM700.C: char	*vlbptr[3];		/* variable label pointers */
+vlbtype	IM700.C: short	vlbtype;		/* type of message window display */
+vpsms	IM700.C: struct	sment	*vpsms[192];		/* voice parameter general S/M pointer table */
+vrbw08	IM700.C: short	vrbw08;			/* score display video reset detail word */
+vrbw09	IM700.C: short	vrbw09;			/* score display video reset detail word */
+vrbw10	IM700.C: short	vrbw10;			/* score display video reset detail word */
+vrbw11	IM700.C: short	vrbw11;			/* score display video reset detail word */
+vrbw12	IM700.C: short	vrbw12;			/* score display video reset detail word */
+vrbw13	IM700.C: short	vrbw13;			/* score display video reset detail word */
+vrbw14	IM700.C: short	vrbw14;			/* score display video reset detail word */
+vrcw	IM700.C: short	vrcw;			/* score display video reset control word */
+vt_adv	IM700.C: short	(*vt_adv)();		/* vtyper data cursor advance function */
+vt_bsp	IM700.C: short	(*vt_bsp)();		/* vtyper data cursor backspace function */
+vt_dsp	IM700.C: short	(*vt_dsp)();		/* vtyper display function */
+vt_stop	IM700.C: short	(*vt_stop)();		/* vtyper exit function */
+vtbgval	IM700.C: unsigned	vtbgval;	/* virtual typewriter data background color */
+vtccol	IM700.C: short	vtccol;			/* virtual typewriter cursor column */
+vtcrow	IM700.C: short	vtcrow;			/* virtual typewriter cursor row */
+vtdechr	IM700.C: short	vtdechr;		/* virtual typewriter data entry character */
+vtdecol	IM700.C: short	vtdecol;		/* virtual typewriter data entry column */
+vtdeptr	IM700.C: char	*vtdeptr;		/* virtual typewriter data entry pointer */
+vtfgval	IM700.C: unsigned	vtfgval;	/* virtual typewriter data foreground color */
+vtobj	IM700.C: unsigned	*vtobj;		/* virtual typewriter display object pointer */
+vtpcol	IM700.C: short	vtpcol;			/* virtual typewriter column */
+vtprow	IM700.C: short	vtprow;			/* virtual typewriter row */
+vtwcol	IM700.C: short	vtwcol;			/* virtual typewriter window left column */
+vtwrow	IM700.C: short	vtwrow;			/* virtual typewriter window top row */
+
+waveob	IM700.C: unsigned	*waveob;	/* waveshape display object pointer */
+wdoct	IM700.C: struct	octent	*wdoct;		/* object control table pointer */
+wdupdfl	IM700.C: short	wdupdfl;		/* waveshape display needs updated flag */
+wplast	IM700.C: short	wplast;			/* last point for interpolate operation */
+wpntsv	IM700.C: short	wpntsv;			/* waveshape point selection state variable */
+wslib	IM700.C: struct	wstbl	wslib[NUMWAVS];		/* waveshape library */
+wsnmod	IM700.C: short	wsnmod[12][2];		/* waveshape number / data modified */
+wvlast	IM700.C: short	wvlast;			/* last value for interpolate operation */
+
+x_key	IM700.C: short	(*x_key)();		/* X key processor */
+xk_dn	IM700.C: short	(*xk_dn)();		/* x cursor - finger on (down) */
+xk_up	IM700.C: short	(*xk_up)();		/* x cursor - finger off (up) */
+xkcount	IM700.C: short	xkcount;		/* cursor x key on count */
+xkstat	IM700.C: short	xkstat;			/* cursor x key status */
+xycntr	IM700.C: short	xycntr;			/* xy center for cursor pad */
+
+yk_dn	IM700.C: short	(*yk_dn)();		/* y cursor - finger on (down) */
+yk_up	IM700.C: short	(*yk_up)();		/* y cursor - finger off (up) */
+ykcount	IM700.C: short	ykcount;		/* cursor y key on count */
+ykstat	IM700.C: short	ykstat;			/* cursor y key status */
+
+Variables defined other than in IM700.C
+---------------------------------------
+
+DB_Data	DBENTR.C: struct DB_Data DB_Ents[DB_DEPTH];	/* debug buffer */
+DB_Flag	DBENTR.C: short	DB_Flag;			/* ROMP trap disable flag */
+DB_In	DBENTR.C: short	DB_In;				/* debug buffer 'in' pointer */
+DB_Last	DBENTR.C: char	*DB_Last;			/* last debug string pointer */
+DB_Levl	DBENTR.C: long	DB_Levl;			/* debug function call level */
+DB_Out	DBENTR.C: short	DB_Out;				/* debug buffer 'out' pointer */
+
+QQchr	CMINIT.C: char	QQchr;		/* parser character result */
+QQdig	CMINIT.C: char	QQdig;		/* parser digit result */
+QQin	CMINIT.C: char	*QQin;		/* parser initial input pointer */
+QQip	CMINIT.C: char	*QQip;		/* parser current input pointer */
+QQnum	CMINIT.C: long	QQnum;		/* parser numeric result */
+QQop	CMINIT.C: char	*QQop;		/* parser string output pointer */
+QQstr	CMINIT.C: char QQstr[CM_MXSTR];	/* parser string result */
+
+SL_Flag	SEDUMP.C: short	SL_Flag;		/* ROMP trap disable flag */
+
+cmdline	PUTEQ.C: char cmdline[32];
+
+debugnd	DELNOTE.C: short	debugnd;
+debugpd	DELPNTS.C: short	debugpd;
+
+x_unrec	SEDUMP.C: short	x_unrec;		/* unrecognized event type or size flag */

@@ -1,0 +1,107 @@
+=============================== Score Input Language ===========================
+
+Score input commands consist of a sequence of control commands and notes,
+or rests,  in the form of ASCII strings.
+
+Control Commands:
+-----------------
+
+!score = n		make 'n' the current score and display it
+!clear n		clear score 'n'
+!clear *		clear all scores
+!clear $		clear the current score
+
+!goto n @ m		display score at beat 'n', frame 'm'
+
+!pos = n @ m		position p_cur at beat 'n', relative frame 'm'
+!beat = n		position p_cur at beat 'n', relative frame 0
+!frame = n		position p_cur at absolute frame 'n'
+!find l n		position p_cur at the left of the chain at time 'n' 
+!find r n		position p_cur at the right of the chain at time 'n' 
+
+!weight = n		set the note weight at 'n' percent
+
+,			advance p_cur by current note value
+.			advance p_cur by 1 frame
+;			advance p_cur to next beat
+:			advance p_cur by one beat interval  (192 frames)
+
+!group = n		make 'n' the current group
+!status = on		enable the current group
+!status = off		disable the current group
+!inst = n		select intstrument 'n' for the current group
+!trans = {+|-} n	transpose the current group + or - 'n' cents
+!dyn = n		set the current group dynamics value to 'n'
+!loc = n		set the current group location value to 'n'
+
+!tempo = n		set the tempo to 'n' beats per minute  (4..240)
+!tuning = n		select 'n' as the current tuning table
+!stop			stop the score clock
+
+!wait			wait for a CR
+!verbose		enter verbose mode
+!quiet			leave verbose mode
+!test			enter testing mode
+!normal			leave testing mode
+
+!chase			display the score chain from p_cur to the end
+!show active		display the active score list
+!show names		display the score names
+!show sections		display the sections
+!snap			display the score pointers and times
+
+!end			end of commands
+
+Notes and Rests:
+----------------
+
+Notes are specified as follows:
+
+	val [#] oct [+|-|/n]
+
+	where:
+
+		val	note pitch	a through g
+		oct	note octave	0 through 9
+		#	accidental flag
+		+	note begin at current time
+		-	note end at current time
+		/n	note of length 1/n starting at current time
+
+
+e.g.:	a#0+		start a note of pitch a0
+
+	a#0-		end a note of pitch a0
+
+	c3/4		enter a 1/4 note of pitch c3
+
+	e7		enter a note of pitch e7 with the same value
+			as the previous note
+
+
+Rests are specified as follows:
+
+	r n / m
+
+	where:
+
+		n	number of consecutive rests
+		m	rest interval  (1/m note)
+
+
+e.g.:  r2/1		2 whole note resets
+
+
+Note on/off times are calculated as follows:
+
+	noteval = 192L / QQnum;
+
+	noteon  = t_cur;
+
+	noteoff = t_cur + ((noteper * noteval) / 100L);
+
+where:
+
+	QQNum   = note value	default = 1/4 note  (192/4)	
+
+	noteper = note weight	default = 80 percent

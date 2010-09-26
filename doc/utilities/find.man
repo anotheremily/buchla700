@@ -1,0 +1,62 @@
+
+
+FIND(1)                   USER COMMANDS                   FIND(1)
+
+
+
+NAME
+     find - find files
+
+SYNOPSIS
+     find pathname-list expression
+
+DESCRIPTION
+     Find recursively descends the directory hierarchy  for  each
+     pathname  in  the  pathname-list (that is, one or more path-
+     names) seeking files that match a boolean expression written
+     in  the  primaries  given  below.
+
+     -name filename
+               True if the filename argument matches the  current
+               file  name.   Normal  Shell argument syntax may be
+               used if escaped (watch out for `[', `?' and `*').
+
+     -exec command
+               True if the executed command returns a zero  value
+               as  exit  status.   The end of the command must be
+               punctuated by an  escaped  semicolon.   A  command
+               argument `{}' is replaced by the current pathname.
+
+     -ok command
+               Like -exec except that the  generated  command  is
+               written  on the standard output, then the standard
+               input is read and the command executed  only  upon
+               response y.
+
+     -print    Always true; the current pathname is  printed.
+
+     -newer    True if the current file has  been  modified  more
+               recently than the argument file.
+
+EXAMPLE
+     To find all the files called  readme.doc starting  from  the
+     current directory:
+          % find . -name readme.doc -print
+          .\man\assembler\readme.doc
+          .\man\core\readme.doc
+          .\man\drivers\tut\readme.doc
+          .\man\manager\impl\readme.doc
+          .\suppl\general\unix\readme.doc
+          .\suppl\tools\sccs\readme.doc
+          %
+
+     To recursively print all files names in the  current  direc-
+     tory and below:
+          % find .  -print
+          %
+
+     To remove all files named `*.o':
+          % find \ -name '*.o' -exec rm '{}' ';'
+          %
+
+     The quotes are necessary when using Micro C-Shell.

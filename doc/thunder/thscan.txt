@@ -1,0 +1,229 @@
+Thunder main scan algorithm				Rev 1	1988-12-15
+---------------------------				------------------
+
+* Global variables:
+
+	s22stat		switch 22 status
+	s24stat		switch 24 status
+	s25stat		switch 25 status
+
+	s22pres		switch 22 pressure
+	s24pres		switch 24 pressure
+	s25pres		switch 25 pressure
+
+	pedal1		foot pedal 1 value
+	pedal2		foot pedal 2 value
+
+* Global variable tables:
+
+	eltab[]		raw element value table			64 entries
+			(A/D input, may not need to be a table)
+
+	osube[]		element offset value table		64 entries
+	ksube[]		element pressure table			64 entries
+
+	switch[]	switch status table			20 entries
+			(10 edit and 10 performance switches)
+
+	potstat[]	pot status table			13 entries
+	potpres[]	pot pressure table			13 entries
+	potvals[]	pot value table				13 entries
+
+* Constant tables:
+
+	caplin[]	element linearization table		255 entries
+	ovrnm02[]	2 element pot value multiplier table	512 entries
+	ovrnm08[]	8 element pot value multiplier table	512 entries
+	potamap[]	pot index to sensor element A map	12 entries
+	potbmap[]	pot index to sensor element B map	12 entries
+	swmap[]		switch index to sensor element map	20 entries
+
+
+* Process raw sensor element readings into element pressures
+
+Note that this is shown as a background loop, but could be done on interrupt
+by setting the element index, e, to the element number input from the scanner,
+and replacing references to eltab[] with the element value from the scanner.
+
+	register short e, j, jsube, oldk;
+
+	for (e = 0; e < 64; e++) {		/* for each element ... */
+
+		if ((e EQ FOOT1) OR (e EQ FOOT2)) {	/* pedal inputs ? */
+
+			ksube[e] = eltab[e];	/* pass pedals thru intact */
+
+		} else {				/* elements ? */
+
+			j = 255 - eltab[e];		/* invert A/D input */
+
+			j = j - osube[e];		/* subtract offset */
+
+			if (j < 0)			/* limit at 0 */
+				j = 0;
+
+			jsube = caplin[j];		/* linearize the value */
+
+			oldk = ksube[e];		/* get old pressure */
+
+			if (jsube > oldk + HYST)	/* apply hysteresis */
+				ksube[e] = jsube - HYST;
+			else if (jsube < oldk)
+				ksube[e] = jsube;
+		}
+	}
+
+	pedal1 = ksube[FOOT1];		/* update pedal 1 value */
+	pedal2 = ksube[FOOT2];		/* update pedal 2 value */
+
+* Process 1-element switch pressures into switch closures and releases
+
+	register short sw, elval;
+
+	for (sw = 0; sw < 20; sw++) {		/* for each switch ... */
+
+		elval = ksube[swmap[sw]];	/* get current value */
+
+		if (elval > ONTHR)		/* determine switch status */
+			switch[sw] = TRUE;
+		else if (elval > OFFTHR)
+			switch[sw] = FALSE;
+	}
+
+* Process the 4-element switch  (switch #22)
+
+	register short sum;
+
+	/* sum the elements */
+
+	sum =	ksube[SW22A] +
+		ksube[SW22B] +
+		ksube[SW22C] +
+		ksube[SW22D];
+
+	if (sum > 255)			/* determine switch pressure */
+		s22pres = 255;
+	else
+		s22pres = sum;
+
+	if (s22pres > ONTHR)		/* determine switch status */
+		s22stat = TRUE;
+	else if (s22pres < OFFTHR)
+		s22stat = FALSE;
+
+* Process the 3-element switches  (switch #24 and switch #25)
+
+	register short sum;
+
+	/* sum the elements for switch #24 */
+
+	sum =	ksube[SW24A] +
+		ksube[SW24B] +
+		ksube[SW24C];
+
+	if (sum > 255)		/* determine pressure */
+		s24pres = 255;
+	else
+		s24pres = sum;
+
+	if (s24pres > ONTHR)		/* determine switch status */
+		s24stat = TRUE;
+	else if (sw24pres < OFFTHR)
+		s24stat = FALSE;
+
+	/* sum the elements for switch #25 */
+
+	sum =	ksube[SW25A] +
+		ksube[SW25B] +
+		ksube[SW25C];
+
+	if (sum > 255)		/* determine pressure */
+		s25pres = 255
+	else
+		s25pres = sum;
+
+	if (s25pres > ONTHR)		/* determine switch status */
+		s25stat = TRUE;
+	else if (s25pres < OFFTHR)
+		s25stat = FALSE;
+
+
+* Process Pot 1  (8 elements)
+
+	register short pres, sum;
+	register long temp;
+
+	sum =	ksube[POT1A] +	/* sum the elements */
+		ksube[POT1B] +
+		ksube[POT1C] +
+		ksube[POT1D] +
+		ksube[POT1E] +
+		ksube[POT1F] +
+		ksube[POT1G] +
+		ksube[POT1H];
+
+	if (sum > 255)			/* determine pot pressure */
+		pres = 255;
+	else
+		pres = sum;
+
+	if (pres > ONTHR)		/* determine pot status */
+		potstat[0] = TRUE;
+	else if (pres < OFFTHR)
+		potstat[0] = FALSE;
+
+	if (potstat[0]) {		/* if active,  calculate pot value */
+
+		temp =	pot1b +					/* pot1b * 1 */
+			(pot1c << 1) +				/* pot1c * 2 */
+			(pot1d << 1) +				/* pot1d * 3 */
+			pot1d +
+			(pot1e << 2) +				/* pot1e * 4 */
+			(pot1f << 2) +				/* pot1f * 5 */
+			pot1f +
+			(pot1g << 2) +				/* pot1g * 6 */
+			(pot1g << 1) +
+			(pot1h << 2) +				/* pot1h * 7 */
+			(pot1h << 1) +
+			pot1h;
+
+		if (sum > 511)			/* limt sum to table range */
+			sum = 511;
+
+		potvals[0] = ovrnm08[sum] * temp;
+	}
+
+* Process Pots 2..13  (2 elements each)
+
+	register short elemb, pot, pres, sum;
+
+	for (pot = 1; pot < 13; pot++) {		/* for each pot ... */
+
+		/* sum the elements */
+
+		elemb  = ksube[potbmap[pot]];
+
+		sum    = ksube[potamap[pot]] + elemb;
+
+		if (sum > 255)			/* determine pressure */
+			pres = 255
+		else
+			pres = sum;
+
+		potpres[pot] = pres;
+
+		if (pres > ONTHR)		/* determine status */
+			potstat[pot] = TRUE;
+		else if (pres < OFFTHR)
+			potstat[pot] = FALSE;
+
+		/* if pot is active, calculate pot value */
+
+		if (potstat[pot]) {
+
+			if (sum > 511)		/* limit sum to table range */
+				sum = 511;
+
+			potvals[pot] = ovrnm02[sum] * elemb;
+		}
+	}

@@ -1,0 +1,35 @@
+
+CAL(1)			   TOOLS Programmer's Manual			   CAL(1)
+
+
+NAME
+	 cal - print a calendar
+
+SYNOPSIS
+	 cal [ year ] [ month ]
+
+
+DESCRIPTION
+	 When invoked without arguments, cal prints a calander for
+	 the preceeding, current, and next months of the current year.
+
+	 If a month is given (a value from 1 through 12), it prints
+	 the three months centered on the requested month.	For
+	 example,
+
+		 cal 12
+
+	 Prints November and December for this year, and January for
+	 next year.
+
+	 If a year is given, it prints a calander for the entire
+	 year:
+
+		 cal 1985
+
+	 If both values are given, it prints the three months
+	 centered on the indicated date:
+
+		 cal 1752 9
+		 cal 9 1752
+

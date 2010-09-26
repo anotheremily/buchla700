@@ -1,0 +1,27 @@
+basename.c -- Extract base name from a path
+
+Version 3 -- 1987-02-10 -- D.N. Lynx Crowe
+
+Extracts the base name of a file from a path.
+
+		char *
+		basename(s)
+		char *s;
+
+Can be used with MSDOS, PCDOS, GEMDOS, or Unix(tm) with suitable
+defines for SWITCHAR and DRIVES, as follows:
+
+	For Unix(tm):
+		SWITCHAR	'/'
+		DRIVES		FALSE
+
+	For MSDOS or PCDOS:
+		SWITCHAR	swchar()	function to get DOS SWITCHAR
+		DRIVES		(c == ':')
+
+	For GEMDOS:
+		SWITCHAR	'\\'
+		DRIVES		(c == ':')
+
+	Define TESTER to get a test program and edit the array of test cases
+	for the system you're compiling for.

@@ -1,0 +1,108 @@
+Buchla 700 C Library I/O Functions and Macros		As of 1987-10-11
+---------------------------------------------		----------------
+
+agetc(stream)				FGETS.C		function	[2]
+aputc(c, stream)			FPUTS.C		function	[2]
+
+blkrd(fcb, buff, ns)			BLKRD.C		function	[2]
+
+clearerr(stream)			STDIO.H		macro
+close(fd)				CLOSE.C		function	[3]
+creat(name, mode)			OPEN.C		function	[3]
+
+fclose(stream)				PUTC.C		function
+feof(stream)				STDIO.H		macro
+ferror(stream)				STDIO.H		macro
+fflush(stream)				PUTC.C		function
+fgets(s, nc, stream)			FGETS.C		function
+fileno(stream)				STDIO.H		macro
+flread(buff, llen, stream)		FLREAD.C	function	[2]
+fopen(name, type)			FOPEN.C		function
+fprintf(stream, fmt, args)		FPRINTF.C	function
+fputs(s, stream)			FPUTS.C		function
+fread(buff, size, number, stream)	FREAD.C		function
+fscanf(stream, fmt, args)		FSCANF.C	function
+fseek(stream, lpos, mode)		FSEEK.C		function
+ftell(stream)				FTELL.C		function
+fwrite(buff, size, number, stream)	FWRITE.C	function
+
+getc(stream)				GETC.C		function	[1]
+getchar()				STDIO.H		macro
+getl(stream)				GETL.C		function	[2]
+gets(s)					FGETS.C		function
+getw(stream)				GETW.C		function
+
+lseek(stream, lpos, how)		LSEEK.C		function	[3]
+
+open(name, flag, mode)			OPEN.C		function	[3]
+
+posit(stream, upos)			POSIT.C		function	[2]
+printf(fmt, args)			FPRINTF.C	function
+putc(c, stream)				PUTC.C		function	[1]
+putchar(c)				STDIO.H		macro
+puterr(c)				PUTC.C		function
+putl(l, stream)				PUTL.C		function
+puts(s)					FPUTS.C		function
+putw(w, stream)				PUTW.C		function
+
+read(fd, buff, ulen)			READ.C		function	[3]
+rename(old, new)			RENAME.C	function
+
+scanf(fmt, args)			FSCANF.C	function
+setbuf(stream, buff)			SETBUF.C	function
+sscanf(string, fmt, args)		SCAN.C		function
+
+ungetc(c, stream)			UNGETC.C	function
+unlink(name)				UNLINK.C	function	[3]
+
+write(fd, buff, ulen)			WRITE.C		function	[3]
+
+Notes
+-----
+
+[1]	Usually implemented as a macro in Unix systems.
+
+	The complete list of macros for Unix is:
+
+		clearerr
+		feof
+		ferror
+		fileno
+		getc
+		getchar
+		putc
+		putchar
+
+[2]	Additional function, not in Unix systems.
+
+[3]	System level (unbuffered) I/O functions.
+
+[4]	The following are used as arguments:
+
+		args	arguments  (must match fmt)	(... any ...)
+		buff	buffer pointer			(char *)
+		c	character			(char)
+		fcb	file control block pointer	(struct fcb *)
+		fd	file designator			(int)
+		fmt	format string pointer		(char *)
+		how	file seek type			(int)
+		l	long				(long)
+		len	length				(int)
+		llen	long length			(long)
+		lpos	long file position offset	(long)
+		mode	file mode string pointer	(char *)
+		name	file name pointer		(char *)
+		nc	number of characters		(int)
+		new	new file name pointer		(char *)
+		ns	sector count			(int)
+		nw	number of words			(int)
+		old	old file name pointer		(char *)
+		pos	file position offset		(int)
+		s	string pointer			(char *)
+		size	item size			(int)
+		stream	stream file pointer		(FILE *)
+		type	type string pointer		(char *)
+		ulen	unsigned length			(unsigned)
+		upos	unsigned file position offset	(unsigned)
+		number	item count			(int)
+		w	word				(int)

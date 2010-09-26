@@ -1,0 +1,140 @@
+	long
+	scinit()
+
+		Initializes the score data structures.
+		Returns the number of free storage units.
+
+	struct s_entry *
+	e_clr(e1)
+	struct s_entry *e1;
+
+		Clears the event pointed to by 'e1'.  Returns 'e1'.
+		Preserves e_size field, all others set to zero.
+
+	struct s_entry *
+	e_ins(e1, e2)
+	struct s_entry *e1, *e2;
+
+		Inserts the event pointed to by 'e1' after the event
+		pointed to by 'e2'.  Returns 'e1'.
+
+	struct s_entry *
+	e_rmv(e1)
+	struct s_entry *e1;
+
+		Removes the event pointed to by 'e1' from the list it's in.
+		Returns 'e1'.
+
+	struct s_entry *
+	e_alc(w)
+	int w;
+
+		Allocates a new event entry.
+		Returns the event entry address, or E_NULL
+		if none can be allocated.
+
+	short
+	e_del(e1)
+	struct s_entry *e1;
+
+		Deallocates the event entry pointed to by 'e1'.
+		Returns 0 if successful, 1 if not.
+
+	long
+	evleft()
+
+		Returns total number of longs left for score storage.
+
+	eh_ins(ne, et)
+	struct s_entry *ne;
+	short et;
+
+		Inserts event 'ne' of type 'et' into score header list
+		"hplist[curscor][et]" along the "up" chain.
+
+	eh_rmv(ev, et)
+	struct s_entry *ev;
+	short et;
+
+		Removes event 'ev' of type 'et' from score header list
+		"hplist[curscor][et]" along the "up" chain.
+
+	sc_clr(ns)
+	short ns;
+
+		Clears score 'ns'.
+
+	short
+	selscor(ns)
+	short ns;
+
+		Selects score 'ns' for use.
+
+	struct s_entry *
+	ep_adj(sep, sdir, tval)
+	struct s_entry *sep;
+	int sdir;
+	long tval;
+
+		Returns a pointer to the event chain at the time 'tval'
+		starting from 'sep' in the direction 'sdir'.
+		The right end of the chain is returned when 'sdir' EQ 0,
+		and the left end is returned when 'sdir' NE 0.
+
+	struct s_entry *
+	frfind(tval, sdir)
+	long tval;
+	int sdir;
+
+		Returns a pointer to the event chain at the time 'tval'
+		in the current score in the direction 'sdir', or E_NULL
+		if the current score is empty.
+		The right end of the chain is returned when 'sdir' EQ 0,
+		and the left end is returned when 'sdir' NE 0.
+
+	struct s_entry *
+	findev(ep, te, et, d1, d2)
+	struct s_entry *ep;
+	long te;
+	short et, d1, d2;
+
+		Searches the event chain starting at 'ep' for an event at
+		a time of 'te' with:  a type of 'et', e_data1 EQ 'd1',
+		and e_data2 EQ 'd2'.  The values of 'd1' or 'd2' may be -1,
+		in which case e_data1 or e_data2 will be assumed to match.
+		Returns a pointer to the desired event if it is found, or
+		E_NULL if no event in the chain matches the criteria given.
+
+	struct s_entry *
+	ehfind(et, te, d1, d2)
+	short et;
+	long te;
+	short d1, d2;
+
+		Searches the event header chain starting for an event at
+		a time of 'te' with:  a type of 'et', e_data1 EQ 'd1',
+		and e_data2 EQ 'd2'.  The values of 'd1' or 'd2' may be -1,
+		in which case e_data1 or e_data2 will be assumed to match.
+		Returns a pointer to the desired event if it is found, or
+		E_NULL if no event in the chain matches the criteria given.
+
+e_alc      304 SCINIT.C         e_alc(w)
+e_clr      216 SCINIT.C         e_clr(e1)
+e_del      457 SCINIT.C         e_del(e1)
+e_ins      258 SCINIT.C         e_ins(e1, e2)
+e_rmv      279 SCINIT.C         e_rmv(e1)
+
+eh_ins     503 SCINIT.C         eh_ins(ne, et)
+eh_rmv     558 SCINIT.C         eh_rmv(ev, et)
+ehfind     399 FRFIND.C         ehfind(eh, te, d1, d2)
+
+ep_adj      77 FRFIND.C         ep_adj(sep, sdir, tval)
+
+evleft     144 SCINIT.C         evleft()
+
+findev     356 FRFIND.C         findev(ep, te, et, d1, d2)
+frfind     212 FRFIND.C         frfind(tval, sdir)
+
+sc_clr     583 SCINIT.C         sc_clr(ns)
+scinit     161 SCINIT.C         scinit()
+selscor    625 SCINIT.C         selscor(ns)
