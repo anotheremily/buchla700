@@ -11,35 +11,36 @@
 #include "ctype.h"
 #endif
 
-extern	char __tname[];
+extern char __tname[];
 
-_main(cmdline, cmdlen)
-char cmdline[];
-int cmdlen;
+_main (cmdline, cmdlen)
+     char cmdline[];
+     int cmdlen;
 {
 
 #ifdef	LOWERIT
-	register char c;
-	register char *bp = cmdline;
+  register char c;
+  register char *bp = cmdline;
 #endif
 
-	_chinit();
+  _chinit ();
 
-	open(__tname, 0);
-	open(__tname, 1);
-	open(__tname, 1);
+  open (__tname, 0);
+  open (__tname, 1);
+  open (__tname, 1);
 
-	cmdline[cmdlen] = '\0';
+  cmdline[cmdlen] = '\0';
 
 #ifdef	LOWERIT
-	while (c = *bp) {
+  while (c = *bp)
+    {
 
-		if (isupper(c))
-			*bp = c + 0x20;
+      if (isupper (c))
+	*bp = c + 0x20;
 
-		++bp;
-	}
+      ++bp;
+    }
 #endif
 
-	__main(cmdline, cmdlen);
+  __main (cmdline, cmdlen);
 }

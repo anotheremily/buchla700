@@ -7,22 +7,22 @@
    =============================================================================
 */
 
-#define	SCOROBP	1			/* score object priority */
+#define	SCOROBP	1		/* score object priority */
 
-#define	N_SHARP	4			/* note control code for sharps */
-#define	N_FLAT	1			/* note control code for flats */
+#define	N_SHARP	4		/* note control code for sharps */
+#define	N_FLAT	1		/* note control code for flats */
 
-#define	OBFL_01	(BIT3)			/* cursor - underline */
+#define	OBFL_01	(BIT3)		/* cursor - underline */
 
-#define	OBFL_08	(CHR3)			/* character text */
+#define	OBFL_08	(CHR3)		/* character text */
 
-#define	OBFL_11	(BIT3)			/* window */
+#define	OBFL_11	(BIT3)		/* window */
 
-#define	OBFL_13	(BIT3)			/* keyboard */
-#define	OBFL_14	(BIT3 | V_TDE)		/* score */
-#define	OBFL_15	(BIT3 | V_TDE)		/* lines */
+#define	OBFL_13	(BIT3)		/* keyboard */
+#define	OBFL_14	(BIT3 | V_TDE)	/* score */
+#define	OBFL_15	(BIT3 | V_TDE)	/* lines */
 
-#define	C1X	256			/* initial arrow cursor position */
+#define	C1X	256		/* initial arrow cursor position */
 #define	C1Y	175
 
 /* 
@@ -51,19 +51,19 @@
 
 /* other colors -- Note:  groups are colors 3..14 */
 
-#define	SD_TEXT		1		/* text */
+#define	SD_TEXT		1	/* text */
 
-#define	SD_ENTR		6		/* data entry highlight */
-#define	SD_CHNG		5		/* changed data highlight */
+#define	SD_ENTR		6	/* data entry highlight */
+#define	SD_CHNG		5	/* changed data highlight */
 
-#define	SD_WKEY		1		/* white keys */
+#define	SD_WKEY		1	/* white keys */
 
-#define	LN_VRT		1		/* score cursor - vertical line */
-#define	LN_HOR		4		/* score cursor - ledger lines */
+#define	LN_VRT		1	/* score cursor - vertical line */
+#define	LN_HOR		4	/* score cursor - ledger lines */
 
-#define	NDMC		4		/* new data margin color */
+#define	NDMC		4	/* new data margin color */
 
-#define	SDCURSR		15		/* score cursor - arrow */
+#define	SDCURSR		15	/* score cursor - arrow */
 
 /* 
 */

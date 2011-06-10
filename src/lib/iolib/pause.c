@@ -7,12 +7,12 @@
 
 #include "biosdefs.h"
 
-extern	int	waitcr(), writeln();
+extern int waitcr (), writeln ();
 
-pause(s)
-char *s;
+pause (s)
+     char *s;
 {
-	writeln(CON_DEV, s);
-	writeln(CON_DEV, "\r\n");
-	waitcr();
+  writeln (CON_DEV, s);
+  writeln (CON_DEV, "\r\n");
+  waitcr ();
 }

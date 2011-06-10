@@ -5,7 +5,7 @@
    =============================================================================
 */
 
-#define	M7CAT		1		/* so libdsp.h gets it right */
+#define	M7CAT		1	/* so libdsp.h gets it right */
 
 #include "stdio.h"
 #include "stddefs.h"
@@ -16,16 +16,16 @@
 #include "instdsp.h"
 #include "libdsp.h"
 
-#define	LIBNAME		"m7dflt.orc"		/* library name */
-#define	THEINST		0			/* library offset:  0 = 1 */
+#define	LIBNAME		"m7dflt.orc"	/* library name */
+#define	THEINST		0	/* library offset:  0 = 1 */
 
 #define	DFLTNAME	"dfltins.h"
 #define	MAXPERL		8
 
-extern	int	errno;
+extern int errno;
 
-struct	instdef	idefs[NINORC];
-struct	mlibhdr	ldhead;
+struct instdef idefs[NINORC];
+struct mlibhdr ldhead;
 
 /* 
 */
@@ -37,29 +37,33 @@ struct	mlibhdr	ldhead;
 */
 
 short
-readit(fp, to, len)
-register FILE *fp;
-register char *to;
-register long len;
+readit (fp, to, len)
+     register FILE *fp;
+     register char *to;
+     register long len;
 {
-	register long count;
-	register int c;
+  register long count;
+  register int c;
 
-	for (count = 0; count < len; count++) {
+  for (count = 0; count < len; count++)
+    {
 
-		if (EOF EQ (c = getc(fp))) {
+      if (EOF EQ (c = getc (fp)))
+	{
 
-			printf("ERROR: Unexpected EOF -- errno = %d\n", errno);
-			fclose(fp);
-			return(FAILURE);
+	  printf ("ERROR: Unexpected EOF -- errno = %d\n", errno);
+	  fclose (fp);
+	  return (FAILURE);
 
-		} else {
-
-			*to++ = c;
-		}
 	}
+      else
+	{
 
-	return(SUCCESS);
+	  *to++ = c;
+	}
+    }
+
+  return (SUCCESS);
 }
 
 /*
@@ -68,12 +72,12 @@ register long len;
    =============================================================================
 */
 
-die(fp)
-FILE *fp;
+die (fp)
+     FILE *fp;
 {
-	fclose(fp);
-	printf("Program terminated\n");
-	exit(1);
+  fclose (fp);
+  printf ("Program terminated\n");
+  exit (1);
 }
 
 /* 
@@ -85,85 +89,92 @@ FILE *fp;
    =============================================================================
 */
 
-main()
+main ()
 {
-	register FILE *fp;
-	register unsigned *wp;
-	register struct instdef *ip;
-	register short i, npl, count;
+  register FILE *fp;
+  register unsigned *wp;
+  register struct instdef *ip;
+  register short i, npl, count;
 
-	if ((FILE *)NULL EQ (fp = fopenb(LIBNAME, "r"))) {
+  if ((FILE *) NULL EQ (fp = fopenb (LIBNAME, "r")))
+    {
 
-		printf("Unable to open [%s]\n", LIBNAME);
-		exit(1);
-	}
+      printf ("Unable to open [%s]\n", LIBNAME);
+      exit (1);
+    }
 
-	printf("Reading orchestra from [%s]\n", LIBNAME);
+  printf ("Reading orchestra from [%s]\n", LIBNAME);
 
-	printf("   header\n");
+  printf ("   header\n");
 
-	if (readit(fp, &ldhead, (long)LH_LEN))
-		die(fp);
+  if (readit (fp, &ldhead, (long) LH_LEN))
+    die (fp);
 
-	for (i = 0; i < NINORC; i++) {
+  for (i = 0; i < NINORC; i++)
+    {
 
-		ip = &idefs[i];
+      ip = &idefs[i];
 
-		printf("   instrument %d\n", i + 1);
+      printf ("   instrument %d\n", i + 1);
 
-		if (readit(fp, ip, (long)OR_LEN1))
-			die(fp);
+      if (readit (fp, ip, (long) OR_LEN1))
+	die (fp);
 
-		if (readit(fp, ip->idhwvao, (long)OR_LEN2))
-			die(fp);
+      if (readit (fp, ip->idhwvao, (long) OR_LEN2))
+	die (fp);
 
-		if (readit(fp, ip->idhwvbo, (long)OR_LEN2))
-			die(fp);
+      if (readit (fp, ip->idhwvbo, (long) OR_LEN2))
+	die (fp);
 
-		/* unpack offsets (and eventually harmonics) into finals */
+      /* unpack offsets (and eventually harmonics) into finals */
 
-		memcpyw(ip->idhwvaf, ip->idhwvao, NUMWPNT);
-		memcpyw(ip->idhwvbf, ip->idhwvbo, NUMWPNT);
-	}
+      memcpyw (ip->idhwvaf, ip->idhwvao, NUMWPNT);
+      memcpyw (ip->idhwvbf, ip->idhwvbo, NUMWPNT);
+    }
 
-	fclose(fp);
+  fclose (fp);
 /* 
 */
-	if ((FILE *)NULL EQ (fp = fopena(DFLTNAME, "w"))) {
+  if ((FILE *) NULL EQ (fp = fopena (DFLTNAME, "w")))
+    {
 
-		printf("Unable to open [%s] for output\n", DFLTNAME);
-		exit(1);
+      printf ("Unable to open [%s] for output\n", DFLTNAME);
+      exit (1);
+    }
+
+  printf ("Writing default instrument (%d) to [%s]\n",
+	  (THEINST + 1), DFLTNAME);
+
+  count = sizeof (struct instdef) / 2;
+  wp = (unsigned *) &idefs[THEINST];
+  npl = 0;
+
+  fprintf (fp, "short\tdfltins[] = {\t\t/* default instrument */\n\n\t");
+
+  while (count--)
+    {
+
+      fprintf (fp, "0x%04.4x", *wp++);
+
+      if (++npl EQ MAXPERL)
+	{
+
+	  if (count)
+	    fprintf (fp, ",\n\t");
+
+	  npl = 0;
+
 	}
+      else
+	{
 
-	printf("Writing default instrument (%d) to [%s]\n",
-		(THEINST + 1), DFLTNAME);
-
-	count = sizeof (struct instdef) / 2;
-	wp = (unsigned *)&idefs[THEINST];
-	npl = 0;
-
-	fprintf(fp, "short\tdfltins[] = {\t\t/* default instrument */\n\n\t");
-
-	while (count--) {
-
-		fprintf(fp, "0x%04.4x", *wp++);
-
-		if (++npl EQ MAXPERL) {
-
-			if (count)
-				fprintf(fp, ",\n\t");
-
-			npl = 0;
-
-		} else {
-
-			if (count)
-				fprintf(fp, ", ");
-		}
+	  if (count)
+	    fprintf (fp, ", ");
 	}
+    }
 
-	fprintf(fp, "\n};\n");
-	fclose(fp);
-	printf("Default instrument file written.\n");
-	exit(0);
+  fprintf (fp, "\n};\n");
+  fclose (fp);
+  printf ("Default instrument file written.\n");
+  exit (0);
 }

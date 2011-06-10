@@ -5,29 +5,31 @@
    ============================================================================
 */
 
-struct EXFILE {			/* executable file header */
+struct EXFILE
+{				/* executable file header */
 
-	unsigned	F_Magic;	/* File type magic */
-	long		F_Text;		/* SIze of text segment */
-	long		F_Data;		/* Size of data segment */
-	long		F_BSS;		/* Size of BSS segment */
-	long		F_Symtab;	/* Size of symbol table */
-	long		F_Res1;		/* Reserved area #1 */
-	long		F_Res2;		/* Reserved area #2 -- text origin */
-	unsigned	F_Res3;		/* Reserved area #3 -- flag word */
+  unsigned F_Magic;		/* File type magic */
+  long F_Text;			/* SIze of text segment */
+  long F_Data;			/* Size of data segment */
+  long F_BSS;			/* Size of BSS segment */
+  long F_Symtab;		/* Size of symbol table */
+  long F_Res1;			/* Reserved area #1 */
+  long F_Res2;			/* Reserved area #2 -- text origin */
+  unsigned F_Res3;		/* Reserved area #3 -- flag word */
 
-					/* data origin - long */
-					/* bss origin - long */
+  /* data origin - long */
+  /* bss origin - long */
 };
 
 #define	F_R_C	0x601A		/* Magic for contiguous file */
 #define	F_R_D	0x601B		/* Magic for discontiguous file */
 
-struct SYMBOL {			/* Symbol table entry -- 14 bytes */
+struct SYMBOL
+{				/* Symbol table entry -- 14 bytes */
 
-	char		symname[8];	/* Symbol name  (LJZF) */
-	unsigned	symtype;	/* Symbol type flags */
-	long		symvalue;	/* Symbol value */
+  char symname[8];		/* Symbol name  (LJZF) */
+  unsigned symtype;		/* Symbol type flags */
+  long symvalue;		/* Symbol value */
 };
 
 #define	S_Def	0x8000		/* Defined */

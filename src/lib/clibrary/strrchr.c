@@ -11,19 +11,21 @@
 #define	NULL	(char *)0
 
 char *
-strrchr(sp, c)
-register char *sp, c;
+strrchr (sp, c)
+     register char *sp, c;
 {
-	register char *r;
+  register char *r;
 
-	r = NULL;
+  r = NULL;
 
-	do {
+  do
+    {
 
-	if (*sp == c)
-		r = sp;
+      if (*sp == c)
+	r = sp;
 
-	} while(*sp++);
+    }
+  while (*sp++);
 
-	return(r);
+  return (r);
 }

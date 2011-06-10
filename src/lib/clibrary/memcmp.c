@@ -8,15 +8,15 @@
 */
 
 int
-memcmp(s1, s2, n)
-register char *s1, *s2;
-register int n;
+memcmp (s1, s2, n)
+     register char *s1, *s2;
+     register int n;
 {
-	register int	diff;
+  register int diff;
 
-        if (s1 != s2)
-                while (--n >= 0)
-                        if (diff = *s1++ - *s2++)
-                                return(diff);
-        return(0);
+  if (s1 != s2)
+    while (--n >= 0)
+      if (diff = *s1++ - *s2++)
+	return (diff);
+  return (0);
 }

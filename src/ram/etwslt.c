@@ -18,15 +18,15 @@
 #include "instdsp.h"
 #include "wsdsp.h"
 
-extern	short	advwcur(), wdswin(), newws(), dsnewws();
+extern short advwcur (), wdswin (), newws (), dsnewws ();
 
-extern	unsigned	*waveob;
+extern unsigned *waveob;
 
-extern	short	stcrow, stccol, curwslt;
+extern short stcrow, stccol, curwslt;
 
-extern	short	wdbox[][8];
+extern short wdbox[][8];
 
-extern	char	dspbuf[];
+extern char dspbuf[];
 
 /* 
 */
@@ -38,13 +38,13 @@ extern	char	dspbuf[];
 */
 
 short
-et_wslt(n)
-short n;
+et_wslt (n)
+     short n;
 {
-	sprintf(ebuf, "%c", curwslt + 'A');
-	ebflag = TRUE;
+  sprintf (ebuf, "%c", curwslt + 'A');
+  ebflag = TRUE;
 
-	return(SUCCESS);
+  return (SUCCESS);
 }
 
 /*
@@ -54,21 +54,21 @@ short n;
 */
 
 short
-ef_wslt(n)
-short n;
+ef_wslt (n)
+     short n;
 {
-	ebuf[1] = '\0';			/* terminate the string in ebuf */
-	ebflag = FALSE;
+  ebuf[1] = '\0';		/* terminate the string in ebuf */
+  ebflag = FALSE;
 
-	curwslt = ebuf[0] - 'A';
+  curwslt = ebuf[0] - 'A';
 
 #if DEBUGIT
-	printf("ef_wslt($%04X):  ebuf[%s], curwslt=%d\r\n", n, ebuf, curwslt);
+  printf ("ef_wslt($%04X):  ebuf[%s], curwslt=%d\r\n", n, ebuf, curwslt);
 #endif
 
-	newws();
-	dsnewws();
-	return(SUCCESS);
+  newws ();
+  dsnewws ();
+  return (SUCCESS);
 }
 
 /* 
@@ -81,19 +81,19 @@ short n;
 */
 
 short
-rd_wslt(nn)
-short nn;
+rd_wslt (nn)
+     short nn;
 {
-	register short n;
+  register short n;
 
-	n = nn & 0xFF;
-	sprintf(dspbuf, "%c", curwslt + 'A');
+  n = nn & 0xFF;
+  sprintf (dspbuf, "%c", curwslt + 'A');
 
-	vbank(0);
-	vcputsv(waveob, 64, wdbox[n][4], wdbox[n][5],
-		wdbox[n][6] + 1, wdbox[n][7] + WSLT_OFF, dspbuf, 14);
+  vbank (0);
+  vcputsv (waveob, 64, wdbox[n][4], wdbox[n][5],
+	   wdbox[n][6] + 1, wdbox[n][7] + WSLT_OFF, dspbuf, 14);
 
-	return(SUCCESS);
+  return (SUCCESS);
 }
 
 /*
@@ -103,35 +103,34 @@ short nn;
 */
 
 short
-nd_wslt(nn, k)
-short nn;
-register short  k;
+nd_wslt (nn, k)
+     short nn;
+     register short k;
 {
-	register short n;
+  register short n;
 
-	n = nn & 0xFF;
-
-#if DEBUGIT
-	printf("nd_wslt($%04X, %d)\r\n", nn, k);
-#endif
-
-	if (k GT 1)
-		return(FAILURE);
-
-	ebuf[0] = k + 'A';
-	ebuf[1] = '\0';
-
-	dspbuf[0] = k + 'A';
-	dspbuf[1] = '\0';
+  n = nn & 0xFF;
 
 #if DEBUGIT
-	printf("nd_wslt($%04X, %d):  ebuf[%s]\r\n", nn, k, ebuf);
+  printf ("nd_wslt($%04X, %d)\r\n", nn, k);
 #endif
 
-	vbank(0);
-	vcputsv(waveob, 64, WS_ENTRY, wdbox[n][5],
-		stcrow, stccol, dspbuf, 14);
+  if (k GT 1)
+    return (FAILURE);
 
-	advwcur();
-	return(SUCCESS);
+  ebuf[0] = k + 'A';
+  ebuf[1] = '\0';
+
+  dspbuf[0] = k + 'A';
+  dspbuf[1] = '\0';
+
+#if DEBUGIT
+  printf ("nd_wslt($%04X, %d):  ebuf[%s]\r\n", nn, k, ebuf);
+#endif
+
+  vbank (0);
+  vcputsv (waveob, 64, WS_ENTRY, wdbox[n][5], stcrow, stccol, dspbuf, 14);
+
+  advwcur ();
+  return (SUCCESS);
 }

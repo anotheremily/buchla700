@@ -13,20 +13,19 @@
 */
 
 char *
-strfill(s, c, n)
-register char *s;
-register char c;
-register unsigned n;
+strfill (s, c, n)
+     register char *s;
+     register char c;
+     register unsigned n;
 {
-	register unsigned i;
-	char *p;
+  register unsigned i;
+  char *p;
 
-	p = s;
+  p = s;
 
-	for (i = n; i--; )
-		*s++ = c;
+  for (i = n; i--;)
+    *s++ = c;
 
-	*s = '\0';
-	return(p);
+  *s = '\0';
+  return (p);
 }
-

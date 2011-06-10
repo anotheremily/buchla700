@@ -40,10 +40,10 @@
 */
 
 int
-readbuf(dev, buf)
-int dev;
-char *buf;
+readbuf (dev, buf)
+     int dev;
+     char *buf;
 {
-	xtrap15();
-	return(1);
+  xtrap15 ();
+  return (1);
 }

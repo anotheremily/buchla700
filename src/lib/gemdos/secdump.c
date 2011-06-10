@@ -15,14 +15,14 @@
 #define PERLINE 	16
 #define	SECLEN		512
 
-short	spp;
-short	secnum;
-short	sec_bgn;
-short	sec_end;
-short	drive;
+short spp;
+short secnum;
+short sec_bgn;
+short sec_end;
+short drive;
 
-char	ebuf[128];
-char	secbuf[SECLEN];
+char ebuf[128];
+char secbuf[SECLEN];
 
 /* 
 */
@@ -34,17 +34,17 @@ char	secbuf[SECLEN];
 */
 
 static
-pipc(chars, length)
-char chars[];
-int length;
+pipc (chars, length)
+     char chars[];
+     int length;
 {
-	int	i;
+  int i;
 
-	for (i = 0; i < length; i++)
-		if (isascii(0x00FF & chars[i]) AND (isprint(0x00FF & chars[i])))
-			printf("%c", chars[i]);
-		else
-			printf(".");
+  for (i = 0; i < length; i++)
+    if (isascii (0x00FF & chars[i]) AND (isprint (0x00FF & chars[i])))
+      printf ("%c", chars[i]);
+    else
+      printf (".");
 }
 
 /* 
@@ -56,55 +56,59 @@ int length;
    =============================================================================
 */
 
-mdump(begin, end, start)
-char *begin, *end;
-long start;
+mdump (begin, end, start)
+     char *begin, *end;
+     long start;
 {
-	long	i, ii;
-	int	j, jj, k;
-	char	c, chars[PERLINE];
+  long i, ii;
+  int j, jj, k;
+  char c, chars[PERLINE];
 
-	i = 0L;
-	ii = start;
-	j = 0;
+  i = 0L;
+  ii = start;
+  j = 0;
 
-	if (begin GT end)
-		return;
+  if (begin GT end)
+    return;
 
-	while (begin LE end) {
+  while (begin LE end)
+    {
 
-		c = *begin++;
+      c = *begin++;
 
-		if (! (i % PERLINE)) {
+      if (!(i % PERLINE))
+	{
 
-			if (i) {
+	  if (i)
+	    {
 
-				j=0;
-				printf("  ");
-				pipc(chars, PERLINE);
-			}
-                
-			printf("\n%08lx:", ii);
-		}
+	      j = 0;
+	      printf ("  ");
+	      pipc (chars, PERLINE);
+	    }
 
-		ii++;
-		i++;
-
-		printf(" %02.2x", (c & 0x00FF));
-		chars[j++] = c;
+	  printf ("\n%08lx:", ii);
 	}
 
-	if (k = (i % PERLINE)) {
+      ii++;
+      i++;
 
-		k = PERLINE - k;
+      printf (" %02.2x", (c & 0x00FF));
+      chars[j++] = c;
+    }
 
-		for (jj = 0; jj < (3 * k); ++jj)
-			printf(" ");
-	}
+  if (k = (i % PERLINE))
+    {
 
-	printf("  ");
-	pipc(chars, PERLINE);
-	printf("\n");
+      k = PERLINE - k;
+
+      for (jj = 0; jj < (3 * k); ++jj)
+	printf (" ");
+    }
+
+  printf ("  ");
+  pipc (chars, PERLINE);
+  printf ("\n");
 }
 
 /* 
@@ -116,10 +120,10 @@ long start;
    =============================================================================
 */
 
-errmsg(s)
-char *s;
+errmsg (s)
+     char *s;
 {
-	fprintf(stderr, "%s:  ERROR - %s\n", PROGID, s);
+  fprintf (stderr, "%s:  ERROR - %s\n", PROGID, s);
 }
 
 /*
@@ -128,9 +132,9 @@ char *s;
    =============================================================================
 */
 
-usage()
+usage ()
 {
-	printf("usage:  %s drive first [last]\n", PROGID);
+  printf ("usage:  %s drive first [last]\n", PROGID);
 }
 
 /* 
@@ -143,41 +147,49 @@ usage()
 */
 
 short
-getsnum(from)
-char *from;
+getsnum (from)
+     char *from;
 {
-	short c;
-	long n;
+  short c;
+  long n;
 
-	n = 0;
+  n = 0;
 
-	while (c = *from++) {
+  while (c = *from++)
+    {
 
-		if (isascii(c)) {
+      if (isascii (c))
+	{
 
-			if (isdigit(c)) {
+	  if (isdigit (c))
+	    {
 
-				n = (n * 10) + (c - '0');
+	      n = (n * 10) + (c - '0');
 
-			} else {
+	    }
+	  else
+	    {
 
-				return(FAILURE);
-			}
-
-		} else {
-
-			return(FAILURE);
-		}
-	}
-
-	if (n < 32767L) {
-
-		secnum = (short)n;
-		return(SUCCESS);
+	      return (FAILURE);
+	    }
 
 	}
+      else
+	{
 
-	return(FAILURE);
+	  return (FAILURE);
+	}
+    }
+
+  if (n < 32767L)
+    {
+
+      secnum = (short) n;
+      return (SUCCESS);
+
+    }
+
+  return (FAILURE);
 }
 
 /* 
@@ -190,26 +202,27 @@ char *from;
 */
 
 short
-getdrv(from)
-char *from;
+getdrv (from)
+     char *from;
 {
-	short c;
-	long dmap;
+  short c;
+  long dmap;
 
-	dmap = Drvmap();
+  dmap = Drvmap ();
 
-	c = *from & 0x00FF;
+  c = *from & 0x00FF;
 
-	if (isascii(c))
-		if (isalpha(c)) {
+  if (isascii (c))
+    if (isalpha (c))
+      {
 
-			drive = _toupper(c) - 'A';
+	drive = _toupper (c) - 'A';
 
-			if (dmap & (1L << drive))
-				return(SUCCESS);
-		}
+	if (dmap & (1L << drive))
+	  return (SUCCESS);
+      }
 
-	return(FAILURE);
+  return (FAILURE);
 }
 
 /* 
@@ -221,24 +234,26 @@ char *from;
    =============================================================================
 */
 
-prtsec(sn)
-short sn;
+prtsec (sn)
+     short sn;
 {
-	if (Rwabs(2, secbuf, 1, sn, drive)) {
+  if (Rwabs (2, secbuf, 1, sn, drive))
+    {
 
-		sprintf(ebuf, "Sector %d is unreadable", sn);
-		errmsg(ebuf);
-		exit(1);
-	}
+      sprintf (ebuf, "Sector %d is unreadable", sn);
+      errmsg (ebuf);
+      exit (1);
+    }
 
-	if (NOT spp) {
+  if (NOT spp)
+    {
 
-		spp = TRUE;
-		printf("\f");
-	}
+      spp = TRUE;
+      printf ("\f");
+    }
 
-	printf("\n\nDrive %c: -- Sector %d\n\n", drive + 'A', sn);
-	mdump(secbuf, &secbuf[SECLEN - 1], 0L);
+  printf ("\n\nDrive %c: -- Sector %d\n\n", drive + 'A', sn);
+  mdump (secbuf, &secbuf[SECLEN - 1], 0L);
 }
 
 /* 
@@ -250,84 +265,91 @@ short sn;
    =============================================================================
 */
 
-main(argc, argv)
-int argc;
-char *argv[];
+main (argc, argv)
+     int argc;
+     char *argv[];
 {
-	short isec;
+  short isec;
 
-	/* decode the command line */
+  /* decode the command line */
 
-	switch (argc) {
+  switch (argc)
+    {
 
-	case 1:		/* no arguments -- just give usage message */
+    case 1:			/* no arguments -- just give usage message */
 
-		usage();
-		exit(0);
+      usage ();
+      exit (0);
 
-	case 3:		/* 2 arguments -- expect drive and first sector */
+    case 3:			/* 2 arguments -- expect drive and first sector */
 
-		if (getdrv(argv[1])) {
+      if (getdrv (argv[1]))
+	{
 
-			errmsg("Invalid drive specifier");
-			exit(1);
-		}
-
-		if (getsnum(argv[2])) {
-
-			errmsg("Invalid first sector");
-			exit(1);
-		}
-
-		sec_bgn = secnum;
-		sec_end = sec_bgn;
-		break;
-
-	case 4:		/* 3 arguments -- expect drive and sector range */
-
-		if (getdrv(argv[1])) {
-
-			errmsg("Invalid drive specifier");
-			exit(1);
-		}
-
-		if (getsnum(argv[2])) {
-
-			errmsg("Invalid first sector");
-			exit(1);
-		}
-
-		sec_bgn = secnum;
-
-		if (getsnum(argv[3])) {
-
-			errmsg("Invalid last sector");
-			exit(1);
-		}
-
-		sec_end = secnum;
-
-		if (sec_end < sec_bgn) {
-
-			errmsg("Last sector preceeds first sector");
-			exit(1);
-		}
-
-		break;
-
-	default:	/* wrong argument count -- give an error message */
-
-		errmsg("Wrong number of arguments");
-		usage();
-		exit(1);
+	  errmsg ("Invalid drive specifier");
+	  exit (1);
 	}
 
-	spp = FALSE;
+      if (getsnum (argv[2]))
+	{
 
-	/* get the sectors, and print them */
+	  errmsg ("Invalid first sector");
+	  exit (1);
+	}
 
-	for (isec = sec_bgn; isec LE sec_end; isec++)
-		prtsec(isec);
+      sec_bgn = secnum;
+      sec_end = sec_bgn;
+      break;
 
-	exit(0);
+    case 4:			/* 3 arguments -- expect drive and sector range */
+
+      if (getdrv (argv[1]))
+	{
+
+	  errmsg ("Invalid drive specifier");
+	  exit (1);
+	}
+
+      if (getsnum (argv[2]))
+	{
+
+	  errmsg ("Invalid first sector");
+	  exit (1);
+	}
+
+      sec_bgn = secnum;
+
+      if (getsnum (argv[3]))
+	{
+
+	  errmsg ("Invalid last sector");
+	  exit (1);
+	}
+
+      sec_end = secnum;
+
+      if (sec_end < sec_bgn)
+	{
+
+	  errmsg ("Last sector preceeds first sector");
+	  exit (1);
+	}
+
+      break;
+
+    default:			/* wrong argument count -- give an error message */
+
+      errmsg ("Wrong number of arguments");
+      usage ();
+      exit (1);
+    }
+
+  spp = FALSE;
+
+  /* get the sectors, and print them */
+
+  for (isec = sec_bgn; isec LE sec_end; isec++)
+    prtsec (isec);
+
+  exit (0);
 }

@@ -26,22 +26,22 @@
 #include "secdefs.h"
 
 #if	DEBUGIT
-extern	short	debugsw;
+extern short debugsw;
 #endif
 
-extern	short	chksec(), oktocm(), oktode(), oktodg();
+extern short chksec (), oktocm (), oktode (), oktodg ();
 
-extern	long	sizesec();
+extern long sizesec ();
 
-extern	struct	s_entry	*madjsec();
+extern struct s_entry *madjsec ();
 
-extern	short	grptran;
+extern short grptran;
 
-extern	char	cmgtags[];
-extern	char	cmgtype[];
+extern char cmgtags[];
+extern char cmgtype[];
 
-extern	short	ehdlist[];
-extern	short	grptmap[];
+extern short ehdlist[];
+extern short grptmap[];
 
 /* 
 */
@@ -57,73 +57,77 @@ extern	short	grptmap[];
 */
 
 short
-sec_cpy(ns)
-register short ns;
+sec_cpy (ns)
+     register short ns;
 {
-	register struct s_entry *cp, *lp, *rp;
-	register long newet;
+  register struct s_entry *cp, *lp, *rp;
+  register long newet;
 
-	DB_ENTR("sec_cpy");
+  DB_ENTR ("sec_cpy");
 
-	secopok = TRUE;
+  secopok = TRUE;
 
-	if (chksec(ns)) {		/* check that section is OK */
+  if (chksec (ns))
+    {				/* check that section is OK */
 
-		DB_EXIT("sec_cpy - FAILED chksec");
-		return(FAILURE);
-	}
+      DB_EXIT ("sec_cpy - FAILED chksec");
+      return (FAILURE);
+    }
 
-	/* see if we have enough free event space to make the copy */
+  /* see if we have enough free event space to make the copy */
 
-	if (sizesec() > evleft()) {
+  if (sizesec () > evleft ())
+    {
 
-		DB_EXIT("sec_cpy - FAILED sizesec");
-		return(FAILURE);
-	}
+      DB_EXIT ("sec_cpy - FAILED sizesec");
+      return (FAILURE);
+    }
 
-	/* make sure we won't overflow the time range */
+  /* make sure we won't overflow the time range */
 
-	newet = t_sect + ((scp->e_bak)->e_bak)->e_time;
+  newet = t_sect + ((scp->e_bak)->e_bak)->e_time;
 
-	if ((newet < 0) OR (newet GE 0x00FFFFFFL)) {
+  if ((newet < 0) OR (newet GE 0x00FFFFFFL))
+    {
 
-		DB_EXIT("sec_cpy - FAILED time check");
-		return(FAILURE);
-	}
+      DB_EXIT ("sec_cpy - FAILED time check");
+      return (FAILURE);
+    }
 
 /* 
 */
-	/* make a time adjusted copy of the section */
+  /* make a time adjusted copy of the section */
 
-	if (E_NULL EQ (cp = madjsec(p_sbgn, t_cur))) {
+  if (E_NULL EQ (cp = madjsec (p_sbgn, t_cur)))
+    {
 
-		DB_EXIT("sec_cpy - FAILED madjsec");
-		return(FAILURE);
-	}
+      DB_EXIT ("sec_cpy - FAILED madjsec");
+      return (FAILURE);
+    }
 
-	/* point at the events in the score that will surround the copy */
+  /* point at the events in the score that will surround the copy */
 
-	lp = ep_adj(p_cur, 0, t_cur);		/* events left of the copy */
-	rp = lp->e_fwd;				/* events right of the copy */
-	
-	/* adjust the times in the score past the copy */
+  lp = ep_adj (p_cur, 0, t_cur);	/* events left of the copy */
+  rp = lp->e_fwd;		/* events right of the copy */
 
-	edelta(lp, t_cur, t_sect);
+  /* adjust the times in the score past the copy */
 
-	/* insert the copy into the score */
+  edelta (lp, t_cur, t_sect);
 
-	lp->e_fwd = p_cbgn;	/* link copy to left events */
-	p_cbgn->e_bak = lp;
+  /* insert the copy into the score */
 
-	rp->e_bak = p_cend;	/* link copy to right events */
-	p_cend->e_fwd = rp;
+  lp->e_fwd = p_cbgn;		/* link copy to left events */
+  p_cbgn->e_bak = lp;
 
-	/* fix-up the event headers in the copy */
+  rp->e_bak = p_cend;		/* link copy to right events */
+  p_cend->e_fwd = rp;
 
-	ehfix(p_cbgn, p_cend);
+  /* fix-up the event headers in the copy */
 
-	DB_EXIT("sec_cpy - SUCCESS");
-	return(SUCCESS);
+  ehfix (p_cbgn, p_cend);
+
+  DB_EXIT ("sec_cpy - SUCCESS");
+  return (SUCCESS);
 }
 
 /* 
@@ -140,70 +144,75 @@ register short ns;
 */
 
 short
-sec_mrg(ns)
-register short ns;
+sec_mrg (ns)
+     register short ns;
 {
-	register struct s_entry *cp, *lp, *rp;
-	register long newet;
-	register short et;
+  register struct s_entry *cp, *lp, *rp;
+  register long newet;
+  register short et;
 
-	DB_ENTR("sec_mrg");
+  DB_ENTR ("sec_mrg");
 
-	secopok = TRUE;
+  secopok = TRUE;
 
-	if (chksec(ns)) {		/* check that section is OK */
+  if (chksec (ns))
+    {				/* check that section is OK */
 
-		DB_EXIT("sec_mrg - FAILED chksec");
-		return(FAILURE);
-	}
+      DB_EXIT ("sec_mrg - FAILED chksec");
+      return (FAILURE);
+    }
 
-	/* see if we have enough free event space to make the copy */
+  /* see if we have enough free event space to make the copy */
 
-	if (sizesec() > evleft()) {
+  if (sizesec () > evleft ())
+    {
 
-		DB_EXIT("sec_mrg - FAILED sizesec");
-		return(FAILURE);
-	}
+      DB_EXIT ("sec_mrg - FAILED sizesec");
+      return (FAILURE);
+    }
 
-	/* make sure we won't overflow the time range */
+  /* make sure we won't overflow the time range */
 
-	newet = t_sect + ((scp->e_bak)->e_bak)->e_time;
+  newet = t_sect + ((scp->e_bak)->e_bak)->e_time;
 
-	if ((newet < 0) OR (newet GE 0x00FFFFFFL)) {
+  if ((newet < 0) OR (newet GE 0x00FFFFFFL))
+    {
 
-		DB_EXIT("sec_mrg - FAILED time check");
-		return(FAILURE);
-	}
+      DB_EXIT ("sec_mrg - FAILED time check");
+      return (FAILURE);
+    }
 
 /* 
 */
-	/* make a time adjusted copy of the section */
+  /* make a time adjusted copy of the section */
 
-	if (E_NULL EQ (cp = madjsec(p_sbgn, t_cur))) {
+  if (E_NULL EQ (cp = madjsec (p_sbgn, t_cur)))
+    {
 
-		DB_EXIT("sec_mrg - FAILED madjsec");
-		return(FAILURE);
-	}
+      DB_EXIT ("sec_mrg - FAILED madjsec");
+      return (FAILURE);
+    }
 
-	DB_CMNT("sec_mrg - merging events");
+  DB_CMNT ("sec_mrg - merging events");
 
-	lp = ep_adj(p_cur, 0, t_cur);	/* get merge point */
+  lp = ep_adj (p_cur, 0, t_cur);	/* get merge point */
 
-	while (cp) {		/* merge events into score starting at p_cur */
+  while (cp)
+    {				/* merge events into score starting at p_cur */
 
-		rp = cp->e_fwd;				/* point at next event */
-		lp = ep_adj(lp, 0, cp->e_time);		/* update merge point */
-		lp = e_ins(cp, lp);			/* insert the element */
-		et = cp->e_type & 0x007F;		/* get event type */
+      rp = cp->e_fwd;		/* point at next event */
+      lp = ep_adj (lp, 0, cp->e_time);	/* update merge point */
+      lp = e_ins (cp, lp);	/* insert the element */
+      et = cp->e_type & 0x007F;	/* get event type */
 
-		if (-1 NE ehdlist[et])			/* see if it's a header */
-			eh_ins(cp, ehdlist[et]);	/* update header list */
+      if (-1 NE ehdlist[et])	/* see if it's a header */
+	eh_ins (cp, ehdlist[et]);	/* update header list */
 
-		cp = rp;				/* update copy pointer */
-	}
+      cp = rp;			/* update copy pointer */
+    }
 
-	DB_EXIT("sec_mrg - SUCCESS");
-	return(SUCCESS);
+  DB_EXIT ("sec_mrg - SUCCESS");
+  return (SUCCESS);
 }
 
 /* 
@@ -220,77 +229,80 @@ register short ns;
 */
 
 short
-sec_grp(ns)
-register short ns;
+sec_grp (ns)
+     register short ns;
 {
-	register struct s_entry *cp, *rp;
-	register short et, nv, grp;
+  register struct s_entry *cp, *rp;
+  register short et, nv, grp;
 
-	DB_ENTR("sec_grp");
+  DB_ENTR ("sec_grp");
 
-	secopok = TRUE;
+  secopok = TRUE;
 
-	if (chksec(ns)) {		/* check that section is OK */
+  if (chksec (ns))
+    {				/* check that section is OK */
 
-		DB_EXIT("sec_grp - FAILED chksec");
-		return(FAILURE);
+      DB_EXIT ("sec_grp - FAILED chksec");
+      return (FAILURE);
+    }
+
+  cp = p_sbgn;			/* point at start of section */
+
+  while (cp NE p_send)
+    {				/* regroup events in section */
+
+      rp = cp->e_fwd;		/* point at next event */
+      et = cp->e_type & 0x007F;	/* get event type */
+
+      if (cmgtags[et])
+	{			/* group sensitive ? */
+
+	  grp = 0x000F & (cmgtype[et] ? cp->e_data2 : cp->e_data1);
+
+	  if ((et EQ EV_NBEG) OR (et EQ EV_NEND))
+	    {
+
+	      /* regroup */
+
+	      cp->e_data2 = (cp->e_data2 & 0x00F0) | grptmap[grp];
+
+	      /* transpose */
+
+	      nv = cp->e_data1 + grptran;
+
+	      if (nv > 127)
+		nv = 127;
+	      else if (nv < 0)
+		nv = 0;
+
+	      cp->e_data1 = nv;
+
+	    }
+	  else if ((et EQ EV_ANRS) OR (et EQ EV_ANVL))
+	    {
+
+	      /* regroup */
+
+	      cp->e_data1 = (cp->e_data1 & 0x000F) | (grptmap[grp] << 4);
+
+	    }
+	  else
+	    {
+
+	      /* regroup */
+
+	      if (cmgtype[et])
+		cp->e_data2 = (cp->e_data2 & 0x00F0) | grptmap[grp];
+	      else
+		cp->e_data1 = (cp->e_data1 & 0x00F0) | grptmap[grp];
+	    }
 	}
 
-	cp = p_sbgn;			/* point at start of section */
+      cp = rp;			/* update event pointer */
+    }
 
-	while (cp NE p_send) {		/* regroup events in section */
-
-		rp = cp->e_fwd;			/* point at next event */
-		et = cp->e_type & 0x007F;	/* get event type */
-
-		if (cmgtags[et]) {		/* group sensitive ? */
-
-			grp = 0x000F & (cmgtype[et] ?
-				cp->e_data2 : cp->e_data1);
-
-			if ((et EQ EV_NBEG) OR (et EQ EV_NEND)) {
-
-				/* regroup */
-
-				cp->e_data2 = (cp->e_data2 & 0x00F0) |
-					grptmap[grp];
-
-				/* transpose */
-
-				nv = cp->e_data1 + grptran;
-
-				if (nv > 127)
-					nv = 127;
-				else if (nv < 0)
-					nv = 0;
-
-				cp->e_data1 = nv;
-
-			} else if ((et EQ EV_ANRS) OR (et EQ EV_ANVL)) {
-
-				/* regroup */
-
-				cp->e_data1 = (cp->e_data1 & 0x000F) |
-					(grptmap[grp] << 4);
-
-			} else {
-
-				/* regroup */
-
-				if (cmgtype[et])
-					cp->e_data2 = (cp->e_data2 & 0x00F0) |
-						grptmap[grp];
-				else
-					cp->e_data1 = (cp->e_data1 & 0x00F0) |
-						grptmap[grp];
-			}
-		}
-
-		cp = rp;		/* update event pointer */
-	}
-
-	DB_EXIT("sec_grp - SUCCESS");
-	return(SUCCESS);
+  DB_EXIT ("sec_grp - SUCCESS");
+  return (SUCCESS);
 }
 
 /* 
@@ -307,191 +319,199 @@ register short ns;
 */
 
 short
-sec_mov(ns)
-register short ns;
+sec_mov (ns)
+     register short ns;
 {
-	register struct s_entry *cp, *lp, *rp;
-	register long newet;
-	register short et, grp, nv;
+  register struct s_entry *cp, *lp, *rp;
+  register long newet;
+  register short et, grp, nv;
 
-	DB_ENTR("sec_mov");
+  DB_ENTR ("sec_mov");
 
-	secopok = TRUE;
+  secopok = TRUE;
 
-	if (chksec(ns)) {		/* check that section is OK */
+  if (chksec (ns))
+    {				/* check that section is OK */
 
-		DB_EXIT("sec_mov - FAILED chksec");
-		return(FAILURE);
-	}
+      DB_EXIT ("sec_mov - FAILED chksec");
+      return (FAILURE);
+    }
 
 #if	DEBUGIT
-	if (debugsw) {
+  if (debugsw)
+    {
 
-		printf("sec_mov:  t_cur = %ld, t_sbgn = %ld, t_send = %ld, t_sect = %ld\n",
-			t_cur, t_sbgn, t_send, t_sect);
+      printf
+	("sec_mov:  t_cur = %ld, t_sbgn = %ld, t_send = %ld, t_sect = %ld\n",
+	 t_cur, t_sbgn, t_send, t_sect);
 
-		printf("sec_mov:  p_cur = $%08lX, p_sbgn = $%08lX, p_send = $%08lX\n",
-			p_cur, p_sbgn, p_send);
-	}
+      printf ("sec_mov:  p_cur = $%08lX, p_sbgn = $%08lX, p_send = $%08lX\n",
+	      p_cur, p_sbgn, p_send);
+    }
 #endif
 
-	/* verify that section isn't being moved into itself */
+  /* verify that section isn't being moved into itself */
 
-	if ((t_cur GE t_sbgn) AND (t_cur LE t_send)) {
+  if ((t_cur GE t_sbgn) AND (t_cur LE t_send))
+    {
 
-		DB_EXIT("sec_mov -- bad target");
-		return(FAILURE);
-	}
+      DB_EXIT ("sec_mov -- bad target");
+      return (FAILURE);
+    }
 
 /* 
 */
-	lp = ep_adj(p_cur, 0, t_cur);	/* get left move point */
-	cp = p_send->e_fwd;		/* get adjustment point */
+  lp = ep_adj (p_cur, 0, t_cur);	/* get left move point */
+  cp = p_send->e_fwd;		/* get adjustment point */
 
 #if	DEBUGIT
-	if (debugsw)
-		printf("sec_mov: lp = $%08lX, cp = $%08lX\n", lp, cp);
+  if (debugsw)
+    printf ("sec_mov: lp = $%08lX, cp = $%08lX\n", lp, cp);
 #endif
 
-	/* clip out the section and close up the hole */
+  /* clip out the section and close up the hole */
 
-	(p_sbgn->e_bak)->e_fwd = p_send->e_fwd;
-	(p_send->e_fwd)->e_bak = p_sbgn->e_bak;
-	p_sbgn->e_bak = E_NULL;
-	p_send->e_fwd = E_NULL;
+  (p_sbgn->e_bak)->e_fwd = p_send->e_fwd;
+  (p_send->e_fwd)->e_bak = p_sbgn->e_bak;
+  p_sbgn->e_bak = E_NULL;
+  p_send->e_fwd = E_NULL;
 
-	/* adjust the times above the clip point to end of score */
+  /* adjust the times above the clip point to end of score */
 
-	if (t_cur GE t_send)	/* adjust t_cur if above clip point */
-		t_cur -= t_sect;
+  if (t_cur GE t_send)		/* adjust t_cur if above clip point */
+    t_cur -= t_sect;
 
 #if	DEBUGIT
-	if (debugsw)
-		printf("sec_mov: adjusted t_cur = %ld\n", t_cur);
+  if (debugsw)
+    printf ("sec_mov: adjusted t_cur = %ld\n", t_cur);
 #endif
 
-	while (EV_FINI NE (et = 0x007F & cp->e_type)) {
+  while (EV_FINI NE (et = 0x007F & cp->e_type))
+    {
 
-		cp->e_time -= t_sect;	/* adjust event time */
-		cp = cp->e_fwd;		/* point at next event */
-	}
+      cp->e_time -= t_sect;	/* adjust event time */
+      cp = cp->e_fwd;		/* point at next event */
+    }
 
 /* 
 */
 #if	DEBUGIT
-	if (debugsw)
-		printf("sec_mov: adjusted p_cur->e_time = %ld\n",
-			p_cur->e_time);
+  if (debugsw)
+    printf ("sec_mov: adjusted p_cur->e_time = %ld\n", p_cur->e_time);
 #endif
 
-	/* relativize the section to 0 and unlink event headers from hplist */
+  /* relativize the section to 0 and unlink event headers from hplist */
 
-	rp = p_sbgn;			/* start at the beginning */
-	newet = p_sbgn->e_time;		/* relativize to begin time EQ 0 */
+  rp = p_sbgn;			/* start at the beginning */
+  newet = p_sbgn->e_time;	/* relativize to begin time EQ 0 */
 
-	while (rp) {
+  while (rp)
+    {
 
-		rp->e_time -= newet;		/* relativize the time */
-		et = 0x007F & rp->e_type;	/* get event type */
+      rp->e_time -= newet;	/* relativize the time */
+      et = 0x007F & rp->e_type;	/* get event type */
 
-		if (cmgtags[et]) {	/* group sensitive ? */
+      if (cmgtags[et])
+	{			/* group sensitive ? */
 
-			grp = 0x000F & (cmgtype[et] ?
-				rp->e_data2 : rp->e_data1);
+	  grp = 0x000F & (cmgtype[et] ? rp->e_data2 : rp->e_data1);
 
-			if ((et EQ EV_NBEG) OR (et EQ EV_NEND)) {
+	  if ((et EQ EV_NBEG) OR (et EQ EV_NEND))
+	    {
 
-				/* regroup */
+	      /* regroup */
 
-				rp->e_data2 = (rp->e_data2 & 0x00F0) |
-					grptmap[grp];
+	      rp->e_data2 = (rp->e_data2 & 0x00F0) | grptmap[grp];
 
-				/* transpose */
+	      /* transpose */
 
-				nv = rp->e_data1 + grptran;
+	      nv = rp->e_data1 + grptran;
 
-				if (nv > 127)
-					nv = 127;
-				else if (nv < 0)
-					nv = 0;
+	      if (nv > 127)
+		nv = 127;
+	      else if (nv < 0)
+		nv = 0;
 
-				rp->e_data1 = nv;
+	      rp->e_data1 = nv;
 
-			} else if ((et EQ EV_ANRS) OR (et EQ EV_ANVL)) {
+	    }
+	  else if ((et EQ EV_ANRS) OR (et EQ EV_ANVL))
+	    {
 
-				/* regroup */
+	      /* regroup */
 
-				rp->e_data1 = (rp->e_data1 & 0x000F) |
-					(grptmap[grp] << 4);
+	      rp->e_data1 = (rp->e_data1 & 0x000F) | (grptmap[grp] << 4);
 
-			} else {
+	    }
+	  else
+	    {
 
-				/* regroup */
+	      /* regroup */
 
-				if (cmgtype[et])
-					rp->e_data2 = (rp->e_data2 & 0x00F0) |
-						grptmap[grp];
-				else
-					rp->e_data1 = (rp->e_data1 & 0x00F0) |
-						grptmap[grp];
-			}
-		}
-
-		if (-1 NE ehdlist[et])			/* if it's a header ... */
-			eh_rmv(rp, ehdlist[et]);	/* ... remove it from hplist */
-
-		rp = rp->e_fwd;			/* point at the next event */
+	      if (cmgtype[et])
+		rp->e_data2 = (rp->e_data2 & 0x00F0) | grptmap[grp];
+	      else
+		rp->e_data1 = (rp->e_data1 & 0x00F0) | grptmap[grp];
+	    }
 	}
 
-	rp = lp->e_fwd;				/* get right insert pointer */
+      if (-1 NE ehdlist[et])	/* if it's a header ... */
+	eh_rmv (rp, ehdlist[et]);	/* ... remove it from hplist */
 
-	/* insert the moved section */
+      rp = rp->e_fwd;		/* point at the next event */
+    }
 
-	p_sbgn->e_bak = lp;
-	p_send->e_fwd = rp;
-	lp->e_fwd = p_sbgn;
-	rp->e_bak = p_send;
+  rp = lp->e_fwd;		/* get right insert pointer */
+
+  /* insert the moved section */
+
+  p_sbgn->e_bak = lp;
+  p_send->e_fwd = rp;
+  lp->e_fwd = p_sbgn;
+  rp->e_bak = p_send;
 
 /* 
 */
-	/* derelativize the moved section and put headers back on hplist */
+  /* derelativize the moved section and put headers back on hplist */
 
-	cp = p_sbgn;
-	newet = t_cur;
-
-#if	DEBUGIT
-	if (debugsw)
-		printf("sec_mov:  lp = $%08lX, cp = $%08lX, rp = $%08lX, newet = %ld\n",
-			lp, cp, rp, newet);
-#endif
-
-	while (cp NE rp) {
-
-		et = 0x007F & cp->e_type;	/* get event type */
-		cp->e_time += newet;		/* derelativize the time */
-
-		if (-1 NE ehdlist[et])			/* if event is a header ... */
-			eh_ins(cp, ehdlist[et]);	/* ... put event on hplist */
-
-		cp = cp->e_fwd;			/* point at next event */
-	}
+  cp = p_sbgn;
+  newet = t_cur;
 
 #if	DEBUGIT
-	if (debugsw)
-		printf("sec_mov: adjusting times above $%08lx (%ld) by %ld\n",
-			cp, cp->e_time, t_sect);
+  if (debugsw)
+    printf ("sec_mov:  lp = $%08lX, cp = $%08lX, rp = $%08lX, newet = %ld\n",
+	    lp, cp, rp, newet);
 #endif
 
-	/* adjust times above move point */
+  while (cp NE rp)
+    {
 
-	while (EV_FINI NE (et = 0x007F & cp->e_type)) {
+      et = 0x007F & cp->e_type;	/* get event type */
+      cp->e_time += newet;	/* derelativize the time */
 
-		cp->e_time += t_sect;		/* adjust the time */
-		cp = cp->e_fwd;			/* point at next event */
-	}
+      if (-1 NE ehdlist[et])	/* if event is a header ... */
+	eh_ins (cp, ehdlist[et]);	/* ... put event on hplist */
 
-	DB_EXIT("sec_mov - SUCCESS");
-	return(SUCCESS);
+      cp = cp->e_fwd;		/* point at next event */
+    }
+
+#if	DEBUGIT
+  if (debugsw)
+    printf ("sec_mov: adjusting times above $%08lx (%ld) by %ld\n",
+	    cp, cp->e_time, t_sect);
+#endif
+
+  /* adjust times above move point */
+
+  while (EV_FINI NE (et = 0x007F & cp->e_type))
+    {
+
+      cp->e_time += t_sect;	/* adjust the time */
+      cp = cp->e_fwd;		/* point at next event */
+    }
+
+  DB_EXIT ("sec_mov - SUCCESS");
+  return (SUCCESS);
 }
 
 /* 
@@ -508,100 +528,104 @@ register short ns;
 */
 
 short
-sec_rmv(ns)
-register short ns;
+sec_rmv (ns)
+     register short ns;
 {
-	register struct s_entry *cp, *lp, *rp;
-	register short et;
-	struct s_entry *pp;
+  register struct s_entry *cp, *lp, *rp;
+  register short et;
+  struct s_entry *pp;
 
-	DB_ENTR("sec_rmv");
+  DB_ENTR ("sec_rmv");
 
-	secopok = TRUE;
+  secopok = TRUE;
 
-	if (chksec(ns)) {		/* check that section is OK */
+  if (chksec (ns))
+    {				/* check that section is OK */
 
-		DB_EXIT("sec_rmv - FAILED chksec");
-		return(FAILURE);
-	}
+      DB_EXIT ("sec_rmv - FAILED chksec");
+      return (FAILURE);
+    }
 
-	pp = cp = p_send->e_fwd;	/* get adjustment point */
+  pp = cp = p_send->e_fwd;	/* get adjustment point */
 
 #if	DEBUGIT
-	if (debugsw) {
+  if (debugsw)
+    {
 
-		printf("sec_rmv:  t_cur = %ld, t_sbgn = %ld, t_send = %ld, t_sect = %ld\n",
-			t_cur, t_sbgn, t_send, t_sect);
+      printf
+	("sec_rmv:  t_cur = %ld, t_sbgn = %ld, t_send = %ld, t_sect = %ld\n",
+	 t_cur, t_sbgn, t_send, t_sect);
 
-		printf("sec_rmv:  p_cur = $%08lX, p_sbgn = $%08lX, p_send = $%08lX\n",
-			p_cur, p_sbgn, p_send);
+      printf ("sec_rmv:  p_cur = $%08lX, p_sbgn = $%08lX, p_send = $%08lX\n",
+	      p_cur, p_sbgn, p_send);
 
-		printf("sec_rmv: cp = $%08lX\n", cp);
-	}
+      printf ("sec_rmv: cp = $%08lX\n", cp);
+    }
 #endif
 
 /* 
 */
-	/* clip out the section and close up the hole */
+  /* clip out the section and close up the hole */
 
-	(p_sbgn->e_bak)->e_fwd = p_send->e_fwd;
-	(p_send->e_fwd)->e_bak = p_sbgn->e_bak;
-	p_sbgn->e_bak = E_NULL;
-	p_send->e_fwd = E_NULL;
+  (p_sbgn->e_bak)->e_fwd = p_send->e_fwd;
+  (p_send->e_fwd)->e_bak = p_sbgn->e_bak;
+  p_sbgn->e_bak = E_NULL;
+  p_send->e_fwd = E_NULL;
 
-	/* adjust the times above the clip point to end of score */
+  /* adjust the times above the clip point to end of score */
 
-	if (t_cur GE t_send)	/* adjust t_cur if above clip point */
-		t_cur -= t_sect;
-
-#if	DEBUGIT
-	if (debugsw)
-		printf("sec_rmv: adjusted t_cur = %ld\n", t_cur);
-#endif
-
-	while (EV_FINI NE (et = 0x007F & cp->e_type)) {
-
-		cp->e_time -= t_sect;	/* adjust event time */
-		cp = cp->e_fwd;		/* point at next event */
-	}
+  if (t_cur GE t_send)		/* adjust t_cur if above clip point */
+    t_cur -= t_sect;
 
 #if	DEBUGIT
-	if (debugsw)
-		printf("sec_rmv: adjusted p_cur->e_time = %ld\n",
-			p_cur->e_time);
+  if (debugsw)
+    printf ("sec_rmv: adjusted t_cur = %ld\n", t_cur);
 #endif
 
-	/* unlink event headers from hplist, fix pointers, and delete events */
+  while (EV_FINI NE (et = 0x007F & cp->e_type))
+    {
 
-	rp = p_sbgn;			/* start at the beginning */
+      cp->e_time -= t_sect;	/* adjust event time */
+      cp = cp->e_fwd;		/* point at next event */
+    }
 
-	while (rp) {
+#if	DEBUGIT
+  if (debugsw)
+    printf ("sec_rmv: adjusted p_cur->e_time = %ld\n", p_cur->e_time);
+#endif
 
-		lp = rp->e_fwd;			/* get next event pointer */
-		et = 0x007F & rp->e_type;	/* get event type */
+  /* unlink event headers from hplist, fix pointers, and delete events */
 
-		if (p_bak EQ rp)		/* fix p_bak */
-			p_bak = pp;
+  rp = p_sbgn;			/* start at the beginning */
 
-		if (p_cur EQ rp)		/* fix p_cur */
-			p_cur = pp;
+  while (rp)
+    {
 
-		if (p_ctr EQ rp)		/* fix p_ctr */
-			p_ctr = pp;
+      lp = rp->e_fwd;		/* get next event pointer */
+      et = 0x007F & rp->e_type;	/* get event type */
 
-		if (p_fwd EQ rp)		/* fix p_fwd */
-			p_fwd = pp;
+      if (p_bak EQ rp)		/* fix p_bak */
+	p_bak = pp;
 
-		if (-1 NE ehdlist[et])			/* if it's a header ... */
-			eh_rmv(rp, ehdlist[et]);	/* ... remove it from hplist */
+      if (p_cur EQ rp)		/* fix p_cur */
+	p_cur = pp;
 
-		e_del(e_rmv(rp));		/* delete the event */
-		rp = lp;			/* point at next event */
-	}
+      if (p_ctr EQ rp)		/* fix p_ctr */
+	p_ctr = pp;
 
-	seclist[curscor][ns] = E_NULL;		/* delete section from seclist */
-	DB_EXIT("sec_rmv");
-	return(SUCCESS);
+      if (p_fwd EQ rp)		/* fix p_fwd */
+	p_fwd = pp;
+
+      if (-1 NE ehdlist[et])	/* if it's a header ... */
+	eh_rmv (rp, ehdlist[et]);	/* ... remove it from hplist */
+
+      e_del (e_rmv (rp));	/* delete the event */
+      rp = lp;			/* point at next event */
+    }
+
+  seclist[curscor][ns] = E_NULL;	/* delete section from seclist */
+  DB_EXIT ("sec_rmv");
+  return (SUCCESS);
 }
 
 /* 
@@ -618,66 +642,71 @@ register short ns;
 */
 
 short
-sec_dgr(ns)
-register short ns;
+sec_dgr (ns)
+     register short ns;
 {
-	register struct s_entry *lp, *rp;
+  register struct s_entry *lp, *rp;
 
-	DB_ENTR("sec_dgr");
+  DB_ENTR ("sec_dgr");
 
-	secopok = TRUE;
+  secopok = TRUE;
 
-	if (chksec(ns)) {		/* check that section is OK */
+  if (chksec (ns))
+    {				/* check that section is OK */
 
-		DB_EXIT("sec_dgr - FAILED chksec");
-		return(FAILURE);
-	}
+      DB_EXIT ("sec_dgr - FAILED chksec");
+      return (FAILURE);
+    }
 
 #if	DEBUGIT
-	if (debugsw) {
+  if (debugsw)
+    {
 
-		printf("sec_dgr:  t_cur = %ld, t_sbgn = %ld, t_send = %ld, t_sect = %ld\n",
-			t_cur, t_sbgn, t_send, t_sect);
+      printf
+	("sec_dgr:  t_cur = %ld, t_sbgn = %ld, t_send = %ld, t_sect = %ld\n",
+	 t_cur, t_sbgn, t_send, t_sect);
 
-		printf("sec_dgr:  p_cur = $%08lX, p_sbgn = $%08lX, p_send = $%08lX\n",
-			p_cur, p_sbgn, p_send);
-	}
+      printf ("sec_dgr:  p_cur = $%08lX, p_sbgn = $%08lX, p_send = $%08lX\n",
+	      p_cur, p_sbgn, p_send);
+    }
 #endif
 
 /* 
 */
-	/* delete note events for record enabled groups */
+  /* delete note events for record enabled groups */
 
-	DB_CMNT("sec_dgr - deleting");
+  DB_CMNT ("sec_dgr - deleting");
 
-	rp = p_sbgn->e_fwd;			/* start at the beginning */
+  rp = p_sbgn->e_fwd;		/* start at the beginning */
 
-	while (rp NE p_send) {
+  while (rp NE p_send)
+    {
 
-		lp = rp->e_fwd;			/* get next event pointer */
+      lp = rp->e_fwd;		/* get next event pointer */
 
-		if (oktodg(rp)) {		/* if it's one we want ... */
+      if (oktodg (rp))
+	{			/* if it's one we want ... */
 
-			if (p_bak EQ rp)	/* fix p_bak */
-				p_bak = lp;
+	  if (p_bak EQ rp)	/* fix p_bak */
+	    p_bak = lp;
 
-			if (p_cur EQ rp)	/* fix p_cur */
-				p_cur = lp;
+	  if (p_cur EQ rp)	/* fix p_cur */
+	    p_cur = lp;
 
-			if (p_ctr EQ rp)	/* fix p_ctr */
-				p_ctr = lp;
+	  if (p_ctr EQ rp)	/* fix p_ctr */
+	    p_ctr = lp;
 
-			if (p_fwd EQ rp)	/* fix p_fwd */
-				p_fwd = lp;
+	  if (p_fwd EQ rp)	/* fix p_fwd */
+	    p_fwd = lp;
 
-			e_del(e_rmv(rp));	/* ... delete it */
-		}
-
-		rp = lp;			/* point at next event */
+	  e_del (e_rmv (rp));	/* ... delete it */
 	}
 
-	DB_EXIT("sec_dgr");
-	return(SUCCESS);
+      rp = lp;			/* point at next event */
+    }
+
+  DB_EXIT ("sec_dgr");
+  return (SUCCESS);
 }
 
 /* 
@@ -694,64 +723,69 @@ register short ns;
 */
 
 short
-sec_dev(ns)
-register short ns;
+sec_dev (ns)
+     register short ns;
 {
-	register struct s_entry *lp, *rp;
+  register struct s_entry *lp, *rp;
 
-	DB_ENTR("sec_dev");
+  DB_ENTR ("sec_dev");
 
-	secopok = TRUE;
+  secopok = TRUE;
 
-	if (chksec(ns)) {		/* check that section is OK */
+  if (chksec (ns))
+    {				/* check that section is OK */
 
-		DB_EXIT("sec_dev - FAILED chksec");
-		return(FAILURE);
-	}
+      DB_EXIT ("sec_dev - FAILED chksec");
+      return (FAILURE);
+    }
 
 #if	DEBUGIT
-	if (debugsw) {
+  if (debugsw)
+    {
 
-		printf("sec_dev:  t_cur = %ld, t_sbgn = %ld, t_send = %ld, t_sect = %ld\n",
-			t_cur, t_sbgn, t_send, t_sect);
+      printf
+	("sec_dev:  t_cur = %ld, t_sbgn = %ld, t_send = %ld, t_sect = %ld\n",
+	 t_cur, t_sbgn, t_send, t_sect);
 
-		printf("sec_dev:  p_cur = $%08lX, p_sbgn = $%08lX, p_send = $%08lX\n",
-			p_cur, p_sbgn, p_send);
-	}
+      printf ("sec_dev:  p_cur = $%08lX, p_sbgn = $%08lX, p_send = $%08lX\n",
+	      p_cur, p_sbgn, p_send);
+    }
 #endif
 
 /* 
 */
-	/* delete non-note events for record enabled groups */
+  /* delete non-note events for record enabled groups */
 
-	DB_CMNT("sec_dev - deleting");
+  DB_CMNT ("sec_dev - deleting");
 
-	rp = p_sbgn->e_fwd;			/* start at the beginning */
+  rp = p_sbgn->e_fwd;		/* start at the beginning */
 
-	while (rp NE p_send) {
+  while (rp NE p_send)
+    {
 
-		lp = rp->e_fwd;			/* get next event pointer */
+      lp = rp->e_fwd;		/* get next event pointer */
 
-		if (oktode(rp)) {		/* if it's one we want ... */
+      if (oktode (rp))
+	{			/* if it's one we want ... */
 
-			if (p_bak EQ rp)	/* fix p_bak */
-				p_bak = lp;
+	  if (p_bak EQ rp)	/* fix p_bak */
+	    p_bak = lp;
 
-			if (p_cur EQ rp)	/* fix p_cur */
-				p_cur = lp;
+	  if (p_cur EQ rp)	/* fix p_cur */
+	    p_cur = lp;
 
-			if (p_ctr EQ rp)	/* fix p_ctr */
-				p_ctr = lp;
+	  if (p_ctr EQ rp)	/* fix p_ctr */
+	    p_ctr = lp;
 
-			if (p_fwd EQ rp)	/* fix p_fwd */
-				p_fwd = lp;
+	  if (p_fwd EQ rp)	/* fix p_fwd */
+	    p_fwd = lp;
 
-			e_del(e_rmv(rp));	/* ... delete it */
-		}
-
-		rp = lp;			/* point at next event */
+	  e_del (e_rmv (rp));	/* ... delete it */
 	}
 
-	DB_EXIT("sec_dev");
-	return(SUCCESS);
+      rp = lp;			/* point at next event */
+    }
+
+  DB_EXIT ("sec_dev");
+  return (SUCCESS);
 }

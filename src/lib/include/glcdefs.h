@@ -31,7 +31,7 @@
 #define	G_PLANE1	(unsigned)0x0000
 #define	G_PLANE2	(unsigned)0x2000
 
-#define	G_OFF		0		/* off */
-#define	G_ON		1		/* on */
-#define	G_B2		2		/* blink - FR/32 */
-#define	G_B1		3		/* blink - FR/64 */
+#define	G_OFF		0	/* off */
+#define	G_ON		1	/* on */
+#define	G_B2		2	/* blink - FR/32 */
+#define	G_B1		3	/* blink - FR/64 */

@@ -9,16 +9,16 @@
 */
 
 char *
-strncpy(s1, s2, n)
-register char *s1, *s2;
-register int n;
+strncpy (s1, s2, n)
+     register char *s1, *s2;
+     register int n;
 {
-	register char *os1 = s1;
+  register char *os1 = s1;
 
-	while (--n >= 0)
-		if ((*s1++ = *s2++) == '\0')
-			while (--n >= 0)
-				*s1++ = '\0';
+  while (--n >= 0)
+    if ((*s1++ = *s2++) == '\0')
+      while (--n >= 0)
+	*s1++ = '\0';
 
-	return (os1);
+  return (os1);
 }

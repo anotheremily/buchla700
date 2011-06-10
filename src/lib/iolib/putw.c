@@ -10,12 +10,12 @@
 #include "stdio.h"
 #include "stddefs.h"
 
-putw(w, stream)
-register unsigned w;
-FILE *stream;
+putw (w, stream)
+     register unsigned w;
+     FILE *stream;
 {
-	if (putc(((w >> 8) & 0xFF), stream) < 0 ) 
-		return;
+  if (putc (((w >> 8) & 0xFF), stream) < 0)
+    return;
 
-	putc((w & 0xFF), stream);
+  putc ((w & 0xFF), stream);
 }

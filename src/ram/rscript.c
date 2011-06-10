@@ -5,14 +5,14 @@
    =============================================================================
 */
 
-extern	int	sqscan();
+extern int sqscan ();
 
-extern	int	endflg;
+extern int endflg;
 
-char	*script0[] = {		/* initialization score selection string */
+char *script0[] = {		/* initialization score selection string */
 
-	"!quiet !normal !score=0 !weight=60 !end",
-	(char *)0L
+  "!quiet !normal !score=0 !weight=60 !end",
+  (char *) 0L
 };
 
 /*
@@ -26,28 +26,31 @@ char	*script0[] = {		/* initialization score selection string */
 */
 
 short
-rscript(p)
-register char *p[];
+rscript (p)
+     register char *p[];
 {
-	short rc;
+  short rc;
 
-	sqinit();		/* initialize the score string interpreter */
-	rc = 0;			/* preset rc for end of script return */
+  sqinit ();			/* initialize the score string interpreter */
+  rc = 0;			/* preset rc for end of script return */
 
-	while (*p) {		/* feed the interpreter the score strings */
+  while (*p)
+    {				/* feed the interpreter the score strings */
 
-		if (!sqscan(*p++)) {	/* ... until we have an error ... */
+      if (!sqscan (*p++))
+	{			/* ... until we have an error ... */
 
-			rc = -1;		/* error return */
-			break;
-		}
-
-		if (endflg) {		/* ... or until we hit the !end */
-
-			rc = 1;			/* !end return */
-			break;
-		}
+	  rc = -1;		/* error return */
+	  break;
 	}
 
-	return(rc);
+      if (endflg)
+	{			/* ... or until we hit the !end */
+
+	  rc = 1;		/* !end return */
+	  break;
+	}
+    }
+
+  return (rc);
 }

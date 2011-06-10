@@ -17,17 +17,17 @@
 #include "asgdsp.h"
 
 #if	DEBUGIT
-extern	short	debugsw;
+extern short debugsw;
 #endif
 
-extern	unsigned	*asgob;
+extern unsigned *asgob;
 
-extern	short	stcrow, stccol;
-extern	short	prgchan;
+extern short stcrow, stccol;
+extern short prgchan;
 
-extern	short	adbox[][8];
+extern short adbox[][8];
 
-extern	char	dspbuf[];
+extern char dspbuf[];
 
 /* 
 */
@@ -39,13 +39,13 @@ extern	char	dspbuf[];
 */
 
 short
-et_aprg(n)
-short n;
+et_aprg (n)
+     short n;
 {
-	sprintf(ebuf, "%02d", prgchan);
-	ebflag = TRUE;
+  sprintf (ebuf, "%02d", prgchan);
+  ebflag = TRUE;
 
-	return(SUCCESS);
+  return (SUCCESS);
 }
 
 /*
@@ -55,29 +55,28 @@ short n;
 */
 
 short
-ef_aprg(n)
-short n;
+ef_aprg (n)
+     short n;
 {
-	register short i, tmpval;
+  register short i, tmpval;
 
-	ebuf[2] = '\0';			/* terminate the string in ebuf */
-	ebflag = FALSE;
-	tmpval = 0;
+  ebuf[2] = '\0';		/* terminate the string in ebuf */
+  ebflag = FALSE;
+  tmpval = 0;
 
-	for (i = 0; i < 2; i++)		/* convert from ASCII to binary */
-		tmpval = (tmpval * 10) + (ebuf[i] - '0');
+  for (i = 0; i < 2; i++)	/* convert from ASCII to binary */
+    tmpval = (tmpval * 10) + (ebuf[i] - '0');
 
 #if	DEBUGIT
-	if (debugsw)
-		printf("ef_aprg($%04.4X):  ebuf=[%s], tmpval=%d\n",
-			n, ebuf, tmpval);
+  if (debugsw)
+    printf ("ef_aprg($%04.4X):  ebuf=[%s], tmpval=%d\n", n, ebuf, tmpval);
 #endif
 
-	if ((tmpval EQ 0) OR (tmpval GT 16))
-		return(FAILURE);
+  if ((tmpval EQ 0) OR (tmpval GT 16))
+    return (FAILURE);
 
-	prgchan = tmpval;
-	return(SUCCESS);
+  prgchan = tmpval;
+  return (SUCCESS);
 }
 
 /* 
@@ -90,19 +89,19 @@ short n;
 */
 
 short
-rd_aprg(nn)
-short nn;
+rd_aprg (nn)
+     short nn;
 {
-	register short n;
+  register short n;
 
-	n = nn & 0xFF;
-	sprintf(dspbuf, "%02.2d", prgchan);
+  n = nn & 0xFF;
+  sprintf (dspbuf, "%02.2d", prgchan);
 
-	vbank(0);
-	vcputsv(asgob, 64, adbox[n][4], adbox[n][5],
-		adbox[n][6], adbox[n][7] + 8, dspbuf, 14);
+  vbank (0);
+  vcputsv (asgob, 64, adbox[n][4], adbox[n][5],
+	   adbox[n][6], adbox[n][7] + 8, dspbuf, 14);
 
-	return(SUCCESS);
+  return (SUCCESS);
 }
 
 /*
@@ -112,26 +111,25 @@ short nn;
 */
 
 short
-nd_aprg(nn, k)
-short nn;
-register short  k;
+nd_aprg (nn, k)
+     short nn;
+     register short k;
 {
-	register short ec, n;
+  register short ec, n;
 
-	n = nn & 0xFF;
+  n = nn & 0xFF;
 
-	ec = stccol - cfetp->flcol;	/* setup edit buffer column */
+  ec = stccol - cfetp->flcol;	/* setup edit buffer column */
 
-	ebuf[ec] = k + '0';
-	ebuf[2] = '\0';
+  ebuf[ec] = k + '0';
+  ebuf[2] = '\0';
 
-	dspbuf[0] = k + '0';
-	dspbuf[1] = '\0';
+  dspbuf[0] = k + '0';
+  dspbuf[1] = '\0';
 
-	vbank(0);
-	vcputsv(asgob, 64, AK_ENTRY, adbox[n][5], stcrow, stccol, dspbuf, 14);
+  vbank (0);
+  vcputsv (asgob, 64, AK_ENTRY, adbox[n][5], stcrow, stccol, dspbuf, 14);
 
-	advacur();
-	return(SUCCESS);
+  advacur ();
+  return (SUCCESS);
 }
-

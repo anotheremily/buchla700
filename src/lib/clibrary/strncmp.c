@@ -9,16 +9,16 @@
 */
 
 int
-strncmp(s1, s2, n)
-register char *s1, *s2;
-register int n;
+strncmp (s1, s2, n)
+     register char *s1, *s2;
+     register int n;
 {
-	if (s1 == s2)
-		return(0);
+  if (s1 == s2)
+    return (0);
 
-	while ((--n >= 0) && (*s1 == *s2++))
-		if(*s1++ == '\0')
-			return(0);
+  while ((--n >= 0) && (*s1 == *s2++))
+    if (*s1++ == '\0')
+      return (0);
 
-	return((n < 0) ? 0 : (int)(*s1 - *--s2));
+  return ((n < 0) ? 0 : (int) (*s1 - *--s2));
 }

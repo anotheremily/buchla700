@@ -7,8 +7,8 @@
    =============================================================================
 */
 
-extern	short	noteop, notesel;
+extern short noteop, notesel;
 
-extern	long	t_note;
+extern long t_note;
 
-extern	struct	n_entry	*p_nbeg, *p_nend;
+extern struct n_entry *p_nbeg, *p_nend;

@@ -14,21 +14,24 @@
 */
 
 int
-toupper(c)
-int c;
+toupper (c)
+     int c;
 {
-	int	x;
+  int x;
 
-	if (isascii(c)) {
+  if (isascii (c))
+    {
 
-		if (islower(c))
-			x = _toupper(c);
-		else
-			x = c;
-	} else {
+      if (islower (c))
+	x = _toupper (c);
+      else
+	x = c;
+    }
+  else
+    {
 
-		x = c;
-	}
+      x = c;
+    }
 
-	return(x);
+  return (x);
 }

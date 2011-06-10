@@ -17,12 +17,12 @@
 #include "scdsp.h"
 #include "scfns.h"
 
-extern	short	sd;
-extern	short	se;
+extern short sd;
+extern short se;
 
-extern	struct	gdsel	*gdstbc[];
-extern	struct	gdsel	*gdstbn[];
-extern	struct	gdsel	*gdstbp[];
+extern struct gdsel *gdstbc[];
+extern struct gdsel *gdstbn[];
+extern struct gdsel *gdstbp[];
 
 /* 
 */
@@ -33,31 +33,33 @@ extern	struct	gdsel	*gdstbp[];
    =============================================================================
 */
 
-chgsef()
+chgsef ()
 {
-	register struct s_entry *ep;
-	register long rt;
+  register struct s_entry *ep;
+  register long rt;
 
-	se = D_FWD;
+  se = D_FWD;
 
-	ep = p_cur;
-	rt = t_cur;
+  ep = p_cur;
+  rt = t_cur;
 
-	if (EV_FINI NE ep->e_type) {
+  if (EV_FINI NE ep->e_type)
+    {
 
-		ep = ep->e_fwd;
+      ep = ep->e_fwd;
 
-		while (ep->e_time EQ rt) {
+      while (ep->e_time EQ rt)
+	{
 
-			if (EV_FINI EQ ep->e_type)
-				break;
+	  if (EV_FINI EQ ep->e_type)
+	    break;
 
-			se_exec(ep, se);
-			ep = ep->e_fwd;
-		}
-
-		p_cur = ep;
+	  se_exec (ep, se);
+	  ep = ep->e_fwd;
 	}
+
+      p_cur = ep;
+    }
 }
 
 /*
@@ -66,31 +68,33 @@ chgsef()
    =============================================================================
 */
 
-chgseb()
+chgseb ()
 {
-	register struct s_entry *ep;
-	register long rt;
+  register struct s_entry *ep;
+  register long rt;
 
-	se = D_BAK;
+  se = D_BAK;
 
-	ep = p_cur;
-	rt = t_cur;
+  ep = p_cur;
+  rt = t_cur;
 
-	if (EV_SCORE NE ep->e_type) {
+  if (EV_SCORE NE ep->e_type)
+    {
 
-		ep = ep->e_bak;
+      ep = ep->e_bak;
 
-		while (ep->e_time EQ rt) {
+      while (ep->e_time EQ rt)
+	{
 
-			if (EV_SCORE EQ ep->e_type)
-				break;
+	  if (EV_SCORE EQ ep->e_type)
+	    break;
 
-			se_exec(ep, se);
-			ep = ep->e_bak;
-		}
-
-		p_cur = ep;
+	  se_exec (ep, se);
+	  ep = ep->e_bak;
 	}
+
+      p_cur = ep;
+    }
 }
 
 /*
@@ -99,73 +103,79 @@ chgseb()
    =============================================================================
 */
 
-chgsdf()
+chgsdf ()
 {
-	register struct s_entry *ep;
-	register long rt;
+  register struct s_entry *ep;
+  register long rt;
 
-	sd = D_FWD;
+  sd = D_FWD;
 
-	rslice(gdstbc);
-	rslice(gdstbn);
-	rslice(gdstbp);
+  rslice (gdstbc);
+  rslice (gdstbn);
+  rslice (gdstbp);
 
-	ep = p_ctr;
-	rt = t_ctr;
+  ep = p_ctr;
+  rt = t_ctr;
 
-	if (EV_FINI NE ep->e_type) {
+  if (EV_FINI NE ep->e_type)
+    {
 
-		ep = ep->e_fwd;
+      ep = ep->e_fwd;
 
-		while (ep->e_time EQ rt) {
+      while (ep->e_time EQ rt)
+	{
 
-			if (EV_FINI EQ ep->e_type)
-				break;
+	  if (EV_FINI EQ ep->e_type)
+	    break;
 
-			se_disp(ep, D_FWD, gdstbc, 1);
-			ep = ep->e_fwd;
-		}
-
-		p_ctr = ep;
+	  se_disp (ep, D_FWD, gdstbc, 1);
+	  ep = ep->e_fwd;
 	}
 
-	ep = p_bak;
-	rt = t_bak;
+      p_ctr = ep;
+    }
 
-	if (EV_FINI NE ep->e_type) {
+  ep = p_bak;
+  rt = t_bak;
 
-		ep = ep->e_fwd;
+  if (EV_FINI NE ep->e_type)
+    {
 
-		while (ep->e_time EQ rt) {
+      ep = ep->e_fwd;
 
-			if (EV_FINI EQ ep->e_type)
-				break;
+      while (ep->e_time EQ rt)
+	{
 
-			se_disp(ep, D_FWD, gdstbp, 0);
-			ep = ep->e_fwd;
-		}
+	  if (EV_FINI EQ ep->e_type)
+	    break;
 
-		p_bak = ep;
+	  se_disp (ep, D_FWD, gdstbp, 0);
+	  ep = ep->e_fwd;
 	}
 
-	ep = p_fwd;
-	rt = t_fwd;
+      p_bak = ep;
+    }
 
-	if (EV_FINI NE ep->e_type) {
+  ep = p_fwd;
+  rt = t_fwd;
 
-		ep = ep->e_fwd;
+  if (EV_FINI NE ep->e_type)
+    {
 
-		while (ep->e_time EQ rt) {
+      ep = ep->e_fwd;
 
-			if (EV_FINI EQ ep->e_type)
-				break;
+      while (ep->e_time EQ rt)
+	{
 
-			se_disp(ep, D_FWD, gdstbn, 0);
-			ep = ep->e_fwd;
-		}
+	  if (EV_FINI EQ ep->e_type)
+	    break;
 
-		p_fwd = ep;
+	  se_disp (ep, D_FWD, gdstbn, 0);
+	  ep = ep->e_fwd;
 	}
+
+      p_fwd = ep;
+    }
 }
 
 /*
@@ -174,71 +184,77 @@ chgsdf()
    =============================================================================
 */
 
-chgsdb()
+chgsdb ()
 {
-	register struct s_entry *ep;
-	register long rt;
+  register struct s_entry *ep;
+  register long rt;
 
-	sd = D_BAK;
+  sd = D_BAK;
 
-	rslice(gdstbc);
-	rslice(gdstbn);
-	rslice(gdstbp);
+  rslice (gdstbc);
+  rslice (gdstbn);
+  rslice (gdstbp);
 
-	ep = p_ctr;
-	rt = t_ctr;
+  ep = p_ctr;
+  rt = t_ctr;
 
-	if (EV_SCORE NE ep->e_type) {
+  if (EV_SCORE NE ep->e_type)
+    {
 
-		ep = ep->e_bak;
+      ep = ep->e_bak;
 
-		while (ep->e_time EQ rt) {
+      while (ep->e_time EQ rt)
+	{
 
-			if (EV_SCORE EQ ep->e_type)
-				break;
+	  if (EV_SCORE EQ ep->e_type)
+	    break;
 
-			se_disp(ep, D_BAK, gdstbc, 1);
-			ep = ep->e_bak;
-		}
-
-		p_ctr = ep;
+	  se_disp (ep, D_BAK, gdstbc, 1);
+	  ep = ep->e_bak;
 	}
 
-	ep = p_bak;
-	rt = t_bak;
+      p_ctr = ep;
+    }
 
-	if (EV_SCORE NE ep->e_type) {
+  ep = p_bak;
+  rt = t_bak;
 
-		ep = ep->e_bak;
+  if (EV_SCORE NE ep->e_type)
+    {
 
-		while (ep->e_time EQ rt) {
+      ep = ep->e_bak;
 
-			if (EV_SCORE EQ ep->e_type)
-				break;
+      while (ep->e_time EQ rt)
+	{
 
-			se_disp(ep, D_BAK, gdstbp, 0);
-			ep = ep->e_bak;
-		}
+	  if (EV_SCORE EQ ep->e_type)
+	    break;
 
-		p_bak = ep;
+	  se_disp (ep, D_BAK, gdstbp, 0);
+	  ep = ep->e_bak;
 	}
 
-	ep = p_fwd;
-	rt = t_fwd;
+      p_bak = ep;
+    }
 
-	if (EV_SCORE NE ep->e_type) {
+  ep = p_fwd;
+  rt = t_fwd;
 
-		ep = ep->e_bak;
+  if (EV_SCORE NE ep->e_type)
+    {
 
-		while (ep->e_time EQ rt) {
+      ep = ep->e_bak;
 
-			if (EV_SCORE EQ ep->e_type)
-				break;
+      while (ep->e_time EQ rt)
+	{
 
-			se_disp(ep, D_BAK, gdstbn, 0);
-			ep = ep->e_bak;
-		}
+	  if (EV_SCORE EQ ep->e_type)
+	    break;
 
-		p_fwd = ep;
+	  se_disp (ep, D_BAK, gdstbn, 0);
+	  ep = ep->e_bak;
 	}
+
+      p_fwd = ep;
+    }
 }

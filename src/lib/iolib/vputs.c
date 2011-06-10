@@ -13,9 +13,9 @@
 
 #include <stddefs.h>
 
-typedef	unsigned int	uint;
+typedef unsigned int uint;
 
-extern int	vputc();
+extern int vputc ();
 
 /*
    =============================================================================
@@ -26,24 +26,26 @@ extern int	vputc();
    =============================================================================
 */
 
-vputs(sbase, row, col, str, attrib)
-uint *sbase, row, col, attrib;
-char *str;
+vputs (sbase, row, col, str, attrib)
+     uint *sbase, row, col, attrib;
+     char *str;
 {
-	uint	c;
+  uint c;
 
-	while (c = *str++) {
+  while (c = *str++)
+    {
 
-		vputc(sbase, row, col, c, attrib);
+      vputc (sbase, row, col, c, attrib);
 
-		if (++col GE 64) {
+      if (++col GE 64)
+	{
 
-			col = 0;
+	  col = 0;
 
-			if (++row GE 25)
-				row = 0;
-		}
+	  if (++row GE 25)
+	    row = 0;
 	}
+    }
 }
 
 /*  */
@@ -57,22 +59,24 @@ char *str;
    =============================================================================
 */
 
-vputsa(sbase, row, col, str, attrib)
-uint *sbase, row, col, *attrib;
-char *str;
+vputsa (sbase, row, col, str, attrib)
+     uint *sbase, row, col, *attrib;
+     char *str;
 {
-	uint	c;
+  uint c;
 
-	while (c = *str++) {
+  while (c = *str++)
+    {
 
-		vputc(sbase, row, col, c, *attrib++);
+      vputc (sbase, row, col, c, *attrib++);
 
-		if (++col GE 64) {
+      if (++col GE 64)
+	{
 
-			col = 0;
+	  col = 0;
 
-			if (++row GE 25)
-				row = 0;
-		}
+	  if (++row GE 25)
+	    row = 0;
 	}
+    }
 }

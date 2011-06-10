@@ -51,20 +51,20 @@
 /* 
 */
 
-struct octent {			/* Object control table entry */
+struct octent
+{				/* Object control table entry */
 
-	unsigned int	ysize,	/* Height of object in pixels */
-			xsize;	/* Width of object in pixels */
+  unsigned int ysize,		/* Height of object in pixels */
+    xsize;			/* Width of object in pixels */
 
-	int		objx,	/* Object x location */
-			objy;	/* Object y location */
+  int objx,			/* Object x location */
+    objy;			/* Object y location */
 
-	unsigned int	*obase;	/* Base of object data */
+  unsigned int *obase;		/* Base of object data */
 
-	char		opri,	/* Current object priority */
-			obank;	/* Object bank 0..3 */
+  char opri,			/* Current object priority */
+    obank;			/* Object bank 0..3 */
 
-	unsigned int	odtw0,	/* Object descriptor table word 0 */
-			odtw1;	/* Object descriptor table word 1 */
+  unsigned int odtw0,		/* Object descriptor table word 0 */
+    odtw1;			/* Object descriptor table word 1 */
 };
-

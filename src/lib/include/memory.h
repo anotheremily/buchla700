@@ -5,5 +5,5 @@
    ============================================================================
 */
 
-//extern	char	*memccpy(), *memchr(), *memcpy(), *memset();
-//extern	int	memcmp(), *memsetw(), *memcpyw(), memcmpu();
+//extern        char    *memccpy(), *memchr(), *memcpy(), *memset();
+//extern        int     memcmp(), *memsetw(), *memcpyw(), memcmpu();

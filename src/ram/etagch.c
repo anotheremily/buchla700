@@ -14,17 +14,17 @@
 #include "midas.h"
 #include "asgdsp.h"
 
-extern	char	*numblk();
+extern char *numblk ();
 
-extern	unsigned	*asgob;
+extern unsigned *asgob;
 
-extern	short	stcrow, stccol;
+extern short stcrow, stccol;
 
-extern	short	adbox[][8];
+extern short adbox[][8];
 
-extern	char	dspbuf[];
+extern char dspbuf[];
 
-extern	short	grp2prt[12][2];	/* group to port and channel table */
+extern short grp2prt[12][2];	/* group to port and channel table */
 				/* port [0] = 0..4, channel [1] = -1, 1..16 */
 
 /* 
@@ -37,19 +37,19 @@ extern	short	grp2prt[12][2];	/* group to port and channel table */
 */
 
 short
-et_agch(n)
-short n;
+et_agch (n)
+     short n;
 {
-	register short grp;
+  register short grp;
 
-	char buf[4];
+  char buf[4];
 
-	grp = 0x00FF & (n >> 8);
+  grp = 0x00FF & (n >> 8);
 
-	numblk(ebuf, grp2prt[grp][1]);
-	ebflag = TRUE;
+  numblk (ebuf, grp2prt[grp][1]);
+  ebflag = TRUE;
 
-	return(SUCCESS);
+  return (SUCCESS);
 }
 
 /*
@@ -59,39 +59,43 @@ short n;
 */
 
 short
-ef_agch(n)
-short n;
+ef_agch (n)
+     short n;
 {
-	register short tmpval, grp, i;
+  register short tmpval, grp, i;
 
-	grp = 0x00FF & (n >> 8);
+  grp = 0x00FF & (n >> 8);
 
-	ebuf[2] = '\0';			/* terminate the string in ebuf */
-	ebflag = FALSE;
-	tmpval = 0;
+  ebuf[2] = '\0';		/* terminate the string in ebuf */
+  ebflag = FALSE;
+  tmpval = 0;
 
-	if ((ebuf[0] EQ ' ') AND (ebuf[1] EQ ' ')) {
+  if ((ebuf[0] EQ ' ') AND (ebuf[1] EQ ' '))
+    {
 
-		tmpval = -1;
+      tmpval = -1;
 
-	} else {
+    }
+  else
+    {
 
-		for (i = 0; i < 2; i++) {
+      for (i = 0; i < 2; i++)
+	{
 
-			if (ebuf[i] EQ ' ')
-				ebuf[i] = '0';
+	  if (ebuf[i] EQ ' ')
+	    ebuf[i] = '0';
 
-			tmpval = (tmpval * 10) + (ebuf[i] - '0');
-		}
-
-		if ((tmpval EQ 0) OR (tmpval GT 16))
-			return(FAILURE);
+	  tmpval = (tmpval * 10) + (ebuf[i] - '0');
 	}
 
-	grp2prt[grp][1] = tmpval;
+      if ((tmpval EQ 0) OR (tmpval GT 16))
+	return (FAILURE);
+    }
 
-	modasg();
-	return(SUCCESS);
+  grp2prt[grp][1] = tmpval;
+
+  modasg ();
+  return (SUCCESS);
 }
 
 /* 
@@ -104,20 +108,20 @@ short n;
 */
 
 short
-rd_agch(nn)
-short nn;
+rd_agch (nn)
+     short nn;
 {
-	register short n, grp;
-	char buf[4];
+  register short n, grp;
+  char buf[4];
 
-	n = 0x00FF & nn;
-	grp = 0x00FF & (nn >> 8);
+  n = 0x00FF & nn;
+  grp = 0x00FF & (nn >> 8);
 
-	vbank(0);
-	vcputsv(asgob, 64, adbox[n][4], adbox[n][5],
-		cfetp->frow, cfetp->flcol, numblk(buf, grp2prt[grp][1]), 14);
+  vbank (0);
+  vcputsv (asgob, 64, adbox[n][4], adbox[n][5],
+	   cfetp->frow, cfetp->flcol, numblk (buf, grp2prt[grp][1]), 14);
 
-	return(SUCCESS);
+  return (SUCCESS);
 }
 
 /*
@@ -127,24 +131,22 @@ short nn;
 */
 
 short
-nd_agch(nn, k)
-short nn;
-register short  k;
+nd_agch (nn, k)
+     short nn;
+     register short k;
 {
-	register short n;
+  register short n;
 
-	n = nn & 0xFF;
-	ebuf[stccol - cfetp->flcol] = k + '0';
-	ebuf[2] = '\0';
+  n = nn & 0xFF;
+  ebuf[stccol - cfetp->flcol] = k + '0';
+  ebuf[2] = '\0';
 
-	dspbuf[0] = k + '0';
-	dspbuf[1] = '\0';
+  dspbuf[0] = k + '0';
+  dspbuf[1] = '\0';
 
-	vbank(0);
-	vcputsv(asgob, 64, AK_ENTRY, adbox[n][5],
-		stcrow, stccol, dspbuf, 14);
+  vbank (0);
+  vcputsv (asgob, 64, AK_ENTRY, adbox[n][5], stcrow, stccol, dspbuf, 14);
 
-	advacur();
-	return(SUCCESS);
+  advacur ();
+  return (SUCCESS);
 }
-

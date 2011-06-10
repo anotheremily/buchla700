@@ -15,13 +15,13 @@
 #include "midas.h"
 #include "tundsp.h"
 
-extern	unsigned	*tunob;
+extern unsigned *tunob;
 
-extern	short	stcrow, stccol, tunval, tunmod;
+extern short stcrow, stccol, tunval, tunmod;
 
-extern	short	tdbox[][8];
+extern short tdbox[][8];
 
-extern	char	dspbuf[];
+extern char dspbuf[];
 
 /* 
 */
@@ -32,13 +32,14 @@ extern	char	dspbuf[];
    =============================================================================
 */
 
-modtun()
+modtun ()
 {
-	if (NOT tunmod) {
+  if (NOT tunmod)
+    {
 
-		tunmod = TRUE;
-		tdswin(6);
-	}
+      tunmod = TRUE;
+      tdswin (6);
+    }
 }
 
 /* 
@@ -51,19 +52,19 @@ modtun()
 */
 
 short
-et_tval(n)
-short n;
+et_tval (n)
+     short n;
 {
-	register short tv;
-	register char ts;
+  register short tv;
+  register char ts;
 
-	tv = (tunval < 0 ? -tunval : tunval) >> 1;
-	ts = tunval < 0 ? '-' : '+';
+  tv = (tunval < 0 ? -tunval : tunval) >> 1;
+  ts = tunval < 0 ? '-' : '+';
 
-	sprintf(ebuf, "%c%04d", ts, tv);
-	ebflag = TRUE;
+  sprintf (ebuf, "%c%04d", ts, tv);
+  ebflag = TRUE;
 
-	return(SUCCESS);
+  return (SUCCESS);
 }
 
 /* 
@@ -76,35 +77,35 @@ short n;
 */
 
 short
-ef_tval(n)
-short n;
+ef_tval (n)
+     short n;
 {
-	register short *ov;
-	register short i, tmpval, tv;
-	register char ts;
+  register short *ov;
+  register short i, tmpval, tv;
+  register char ts;
 
-	ebuf[5] = '\0';			/* terminate the string in ebuf */
-	ebflag = FALSE;
+  ebuf[5] = '\0';		/* terminate the string in ebuf */
+  ebflag = FALSE;
 
-	tmpval = 0;
+  tmpval = 0;
 
-	for (i = 1; i < 5; i++)		/* convert from ASCII to binary */
-		tmpval = (tmpval * 10) + (ebuf[i] - '0');
+  for (i = 1; i < 5; i++)	/* convert from ASCII to binary */
+    tmpval = (tmpval * 10) + (ebuf[i] - '0');
 
-	if (ebuf[0] EQ '-')
-		tunval = -tmpval << 1;
-	else
-		tunval = tmpval << 1;
+  if (ebuf[0] EQ '-')
+    tunval = -tmpval << 1;
+  else
+    tunval = tmpval << 1;
 
-	tv = (tunval < 0 ? -tunval : tunval) >> 1;
-	ts = tunval < 0 ? '-' : '+';
-	sprintf(dspbuf, "Val %c%04d", ts, tv);
+  tv = (tunval < 0 ? -tunval : tunval) >> 1;
+  ts = tunval < 0 ? '-' : '+';
+  sprintf (dspbuf, "Val %c%04d", ts, tv);
 
-	vbank(0);
-	vcputsv(tunob, 64, tdbox[n][4], tdbox[n][5], 18, 54, dspbuf, 14);
+  vbank (0);
+  vcputsv (tunob, 64, tdbox[n][4], tdbox[n][5], 18, 54, dspbuf, 14);
 
-	modtun();
-	return(SUCCESS);
+  modtun ();
+  return (SUCCESS);
 }
 
 /* 
@@ -117,22 +118,22 @@ short n;
 */
 
 short
-rd_tval(nn)
-short nn;
+rd_tval (nn)
+     short nn;
 {
-	register short tv, n;
-	register char ts;
+  register short tv, n;
+  register char ts;
 
-	n = nn & 0xFF;
+  n = nn & 0xFF;
 
-	tv = (tunval < 0 ? -tunval : tunval) >> 1;
-	ts = tunval < 0 ? '-' : '+';
+  tv = (tunval < 0 ? -tunval : tunval) >> 1;
+  ts = tunval < 0 ? '-' : '+';
 
-	sprintf(dspbuf, "Val %c%04d", ts, tv);
+  sprintf (dspbuf, "Val %c%04d", ts, tv);
 
-	vbank(0);
-	vcputsv(tunob, 64, tdbox[n][4], tdbox[n][5], 18, 54, dspbuf, 14);
-	return(SUCCESS);
+  vbank (0);
+  vcputsv (tunob, 64, tdbox[n][4], tdbox[n][5], 18, 54, dspbuf, 14);
+  return (SUCCESS);
 }
 
 /* 
@@ -145,52 +146,59 @@ short nn;
 */
 
 short
-nd_tval(nn, k)
-short nn;
-register short  k;
+nd_tval (nn, k)
+     short nn;
+     register short k;
 {
-	register short ec, n;
+  register short ec, n;
 
-	n = nn & 0xFF;
-	ec = stccol - cfetp->flcol;	/* setup edit buffer column */
+  n = nn & 0xFF;
+  ec = stccol - cfetp->flcol;	/* setup edit buffer column */
 
-	if (ec EQ 0) {
+  if (ec EQ 0)
+    {
 
-		if (k EQ 8) {
+      if (k EQ 8)
+	{
 
-			ebuf[0] = '-';
-			ebuf[5] = '\0';
+	  ebuf[0] = '-';
+	  ebuf[5] = '\0';
 
-			dspbuf[0] = '-';
-			dspbuf[1] = '\0';
+	  dspbuf[0] = '-';
+	  dspbuf[1] = '\0';
 
-		} else if (k EQ 9) {
+	}
+      else if (k EQ 9)
+	{
 
-			ebuf[0] = '+';
-			ebuf[5] = '\0';
+	  ebuf[0] = '+';
+	  ebuf[5] = '\0';
 
-			dspbuf[0] = '+';
-			dspbuf[1] = '\0';
+	  dspbuf[0] = '+';
+	  dspbuf[1] = '\0';
 
-		} else {
+	}
+      else
+	{
 
-			return(FAILURE);
-		}
+	  return (FAILURE);
+	}
 /* 
 */
-	} else {
+    }
+  else
+    {
 
-		ebuf[ec] = k + '0';
-		ebuf[5] = '\0';
+      ebuf[ec] = k + '0';
+      ebuf[5] = '\0';
 
-		dspbuf[0] = k + '0';
-		dspbuf[1] = '\0';
-	}
+      dspbuf[0] = k + '0';
+      dspbuf[1] = '\0';
+    }
 
-	vbank(0);
-	vcputsv(tunob, 64, TDENTRY, tdbox[n][5], stcrow, stccol, dspbuf, 14);
+  vbank (0);
+  vcputsv (tunob, 64, TDENTRY, tdbox[n][5], stcrow, stccol, dspbuf, 14);
 
-	advtcur();
-	return(SUCCESS);
+  advtcur ();
+  return (SUCCESS);
 }
-

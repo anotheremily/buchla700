@@ -10,4 +10,3 @@
 #define	MTOP	3		/* default top margin */
 #define	MBOT	3		/* default bottom margin */
 #define	MINLEFT	8		/* default minimum lines at bottom of page */
-

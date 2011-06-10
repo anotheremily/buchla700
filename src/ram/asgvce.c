@@ -5,7 +5,7 @@
    =============================================================================
 */
 
-#undef	DEBUGGER 		/* define to enable debug trace */
+#undef	DEBUGGER		/* define to enable debug trace */
 
 #define	DEBUGIT		0
 
@@ -26,51 +26,51 @@
 #include "scdsp.h"
 
 #if	DEBUGIT
-extern	short	debugsw;
+extern short debugsw;
 #endif
 
 /* 
 */
 
-extern	short	clksrc;		/* clock source */
-extern	short	curasg;		/* current assignment table */
-extern	short	legato;		/* "legato" mode flag */
-extern	short	lstbgnc;	/* last note begin entry count */
-extern	short	lstendc;	/* last note end entry count */
-extern	short	lstflag;	/* last note list end flag */
-extern	short	ndisp;		/* current display number */
-extern	short	newflag;	/* new data entered while t_ctr EQ t_cur */
-extern	short	nkdown;		/* number of keys down */
-extern	short	recsw;		/* record/play switch */
-extern	short	sd;		/* score display direction */
-extern	short	se;		/* score execution direction */
-extern	short	stepenb;	/* step enable */
-extern	short	stepint;	/* note interval */
-extern	short	stepwgt;	/* note weight */
-extern	short	velflag;	/* velocity display enable flag */
+extern short clksrc;		/* clock source */
+extern short curasg;		/* current assignment table */
+extern short legato;		/* "legato" mode flag */
+extern short lstbgnc;		/* last note begin entry count */
+extern short lstendc;		/* last note end entry count */
+extern short lstflag;		/* last note list end flag */
+extern short ndisp;		/* current display number */
+extern short newflag;		/* new data entered while t_ctr EQ t_cur */
+extern short nkdown;		/* number of keys down */
+extern short recsw;		/* record/play switch */
+extern short sd;		/* score display direction */
+extern short se;		/* score execution direction */
+extern short stepenb;		/* step enable */
+extern short stepint;		/* note interval */
+extern short stepwgt;		/* note weight */
+extern short velflag;		/* velocity display enable flag */
 
-extern	short	grpmode[];	/* group mode table */
-extern	short	grpstat[];	/* group status table */
-extern	short	ins2grp[];	/* instrument to group assigments */
-extern	short	vce2grp[];	/* voice to group map */
-extern	short	lastvce[];	/* last voice assigned in each group */
-extern	short	lastvel[];	/* last velocity seen by each group */
-extern	short	tuntab[];	/* current tuning table */
-extern	short	vce2trg[];	/* voice to trigger map (-1 EQ NULL) */
+extern short grpmode[];		/* group mode table */
+extern short grpstat[];		/* group status table */
+extern short ins2grp[];		/* instrument to group assigments */
+extern short vce2grp[];		/* voice to group map */
+extern short lastvce[];		/* last voice assigned in each group */
+extern short lastvel[];		/* last velocity seen by each group */
+extern short tuntab[];		/* current tuning table */
+extern short vce2trg[];		/* voice to trigger map (-1 EQ NULL) */
 
-extern	short	stepfrm[][17];	/* steps per frame table */
+extern short stepfrm[][17];	/* steps per frame table */
 
-extern	unsigned	*obj8;	/* score display object pointer */
+extern unsigned *obj8;		/* score display object pointer */
 
-extern	struct	gdsel	*gdstbc[];	/* group status table - center slice */
+extern struct gdsel *gdstbc[];	/* group status table - center slice */
 
-extern	struct	n_entry	*lstbgns[NLSTENTS];	/* note begin pointers */
-extern	struct	n_entry	*lstends[NLSTENTS];	/* note end pointers */
+extern struct n_entry *lstbgns[NLSTENTS];	/* note begin pointers */
+extern struct n_entry *lstends[NLSTENTS];	/* note end pointers */
 
-extern	struct	nevent	*nefree;	/* pointer to free note entries */
-extern	struct	nevent	*nelist;	/* pointer to note entry list */
+extern struct nevent *nefree;	/* pointer to free note entries */
+extern struct nevent *nelist;	/* pointer to note entry list */
 
-extern	struct	nevent	nevents[NNEVTS];	/* note event list */
+extern struct nevent nevents[NNEVTS];	/* note event list */
 
 /* 
 */
@@ -81,26 +81,27 @@ extern	struct	nevent	nevents[NNEVTS];	/* note event list */
    =============================================================================
 */
 
-clrnl()
+clrnl ()
 {
-	register short i;
+  register short i;
 
-	DB_ENTR("clrnl");
+  DB_ENTR ("clrnl");
 
-	for (i = 0; i < NNEVTS - 1; i++) {
+  for (i = 0; i < NNEVTS - 1; i++)
+    {
 
-		nevents[i].nxt   = &nevents[i + 1];
-		nevents[i].note  = 0;
-		nevents[i].group = 0;
-	}
+      nevents[i].nxt = &nevents[i + 1];
+      nevents[i].note = 0;
+      nevents[i].group = 0;
+    }
 
-	nevents[NNEVTS - 1].nxt = (struct nevent *)0L;
+  nevents[NNEVTS - 1].nxt = (struct nevent *) 0L;
 
-	nelist = (struct nevent *)0L;
-	nefree = &nevents[0];
-	nkdown = 0;
+  nelist = (struct nevent *) 0L;
+  nefree = &nevents[0];
+  nkdown = 0;
 
-	DB_EXIT("clrnl");
+  DB_EXIT ("clrnl");
 }
 
 /* 
@@ -112,147 +113,164 @@ clrnl()
    =============================================================================
 */
 
-ne_end(trg, grp)
-short trg;
-register short grp;
+ne_end (trg, grp)
+     short trg;
+     register short grp;
 {
-	register short nn;
-	register long fcend;
-	register struct nevent *nx;
-	register struct n_entry *ep;
+  register short nn;
+  register long fcend;
+  register struct nevent *nx;
+  register struct n_entry *ep;
 
-	DB_ENTR("ne_end");
+  DB_ENTR ("ne_end");
 
-	/* must be recording into a voice in record mode ... */
+  /* must be recording into a voice in record mode ... */
 
-	if ((recsw EQ 0) OR (grpmode[grp] NE 2)) {
+  if ((recsw EQ 0) OR (grpmode[grp] NE 2))
+    {
 
-		DB_EXIT("ne_end");
-		return;			/* ... or, we're done */
+      DB_EXIT ("ne_end");
+      return;			/* ... or, we're done */
+    }
+
+  DB_CMNT ("ne_end - recording");
+
+  /* make pointers point in the forward direction */
+
+  if (sd EQ D_BAK)
+    chgsdf ();
+
+  if (se EQ D_BAK)
+    chgsef ();
+/* 
+*/
+  nn = trg & 0x007F;		/* note number */
+
+  if (clksrc NE CK_STEP)
+    {				/* not in step mode */
+
+      DB_CMNT ("ne_end - non-step");
+
+      if (E_NULL NE (ep = (struct n_entry *) e_alc (E_SIZE1)))
+	{
+
+	  DB_CMNT ("ne_end - enter note end");
+	  ep->e_time = t_cur;
+	  ep->e_type = EV_NEND | 0x80;
+	  ep->e_note = nn;
+	  ep->e_group = grp;
+	  ep->e_vel = SM_SCALE (64);
+
+	  p_cur = e_ins ((struct s_entry *) ep,
+			 ep_adj (p_cur, 0, t_cur))->e_fwd;
+
+	  if (t_cur EQ t_ctr)
+	    newflag = TRUE;
+
+	  se_disp (ep, D_FWD, gdstbc, 1);
+
+	}
+      else
+	{
+
+	  DB_CMNT ("ne_end - no space");
 	}
 
-	DB_CMNT("ne_end - recording");
-
-	/* make pointers point in the forward direction */
-
-	if (sd EQ D_BAK)
-		chgsdf();
-
-	if (se EQ D_BAK)
-		chgsef();
+      DB_EXIT ("ne_end");
+      return;
 /* 
 */
-	nn = trg & 0x007F;		/* note number */
+    }
+  else if (nkdown GE 1)
+    {				/* process note entry in step mode */
 
-	if (clksrc NE CK_STEP) {	/* not in step mode */
+      DB_CMNT ("ne_end - log key up");
 
-		DB_CMNT("ne_end - non-step");
+      if (0 EQ-- nkdown)
+	{			/* if all keys are up ... */
 
-		if (E_NULL NE (ep = (struct n_entry *)e_alc(E_SIZE1))) {
+	  if (stepenb)
+	    {
 
-			DB_CMNT("ne_end - enter note end");
-			ep->e_time  = t_cur;
-			ep->e_type  = EV_NEND | 0x80;
-			ep->e_note  = nn;
-			ep->e_group = grp;
-			ep->e_vel   = SM_SCALE(64);
+	      /* advance by the note weight */
 
-			p_cur = e_ins((struct s_entry *)ep,
-				      ep_adj(p_cur, 0, t_cur))->e_fwd;
+	      DB_CMNT ("ne_end - advance weight");
+	      fcend = fc_val + stepfrm[3][stepint];
+	      fc_val += stepfrm[stepwgt][stepint];
+	      sc_trek (fc_val);
+	      sc_trak (fc_val);
+	      DB_CMNT ("ne_end - doing note ends");
+	    }
 
-			if (t_cur EQ t_ctr)
-				newflag = TRUE;
+	  while (nelist)
+	    {
 
-			se_disp(ep, D_FWD, gdstbc, 1);
+	      nn = nelist->note;	/* get note */
+	      grp = nelist->group;	/* get group */
 
-		} else {
+	      if (E_NULL NE (ep = (struct n_entry *) e_alc (E_SIZE1)))
+		{
 
-			DB_CMNT("ne_end - no space");
+		  DB_CMNT ("ne_end - enter note end");
+		  ep->e_time = t_cur;
+		  ep->e_type = EV_NEND | 0x80;
+		  ep->e_note = nn;
+		  ep->e_group = grp;
+		  ep->e_vel = SM_SCALE (64);
+
+		  p_cur = e_ins ((struct s_entry *) ep,
+				 ep_adj (p_cur, 0, t_cur))->e_fwd;
+
+		  se_disp (ep, D_FWD, gdstbc, 1);
+
+		  if (lstendc < NLSTENTS)
+		    lstends[lstendc++] = ep;
+
 		}
+	      else
+		{
 
-		DB_EXIT("ne_end");
-		return;
-/* 
-*/
-	} else if (nkdown GE 1) {	/* process note entry in step mode */
-
-		DB_CMNT("ne_end - log key up");
-
-		if (0 EQ --nkdown) {	/* if all keys are up ... */
-
-			if (stepenb) {
-
-				/* advance by the note weight */
-
-				DB_CMNT("ne_end - advance weight");
-				fcend = fc_val + stepfrm[3][stepint];
-				fc_val += stepfrm[stepwgt][stepint];
-				sc_trek(fc_val);
-				sc_trak(fc_val);
-				DB_CMNT("ne_end - doing note ends");
-			}
-
-			while (nelist) {
-
-				nn = nelist->note;	/* get note */
-				grp = nelist->group;	/* get group */
-
-				if (E_NULL NE (ep = (struct n_entry *)e_alc(E_SIZE1))) {
-
-					DB_CMNT("ne_end - enter note end");
-					ep->e_time  = t_cur;
-					ep->e_type  = EV_NEND | 0x80;
-					ep->e_note  = nn;
-					ep->e_group = grp;
-					ep->e_vel   = SM_SCALE(64);
-
-					p_cur = e_ins((struct s_entry *)ep,
-						      ep_adj(p_cur, 0, t_cur))->e_fwd;
-
-					se_disp(ep, D_FWD, gdstbc, 1);
-
-					if (lstendc < NLSTENTS)
-						lstends[lstendc++] = ep;
-
-				} else {
-
-					DB_CMNT("ne_end - no space");
-				}
-/* 
-*/
-				DB_CMNT("ne_end - freeing nevent");
-				nx = nelist->nxt;	/* get next nelist ptr */
-				nelist->nxt = nefree;	/* free nelist entry */
-				nefree = nelist;	/* ... */
-				nelist = nx;		/* update nelist */
-			}
-
-			lstflag = TRUE;		/* indicate end of list */
-
-			DB_CMNT("ne_end - note ends done");
-
-			if (stepenb) {
-
-				if (fc_val LT fcend) {	/* advance to the interval */
-
-					DB_CMNT("ne_end - advance interval");
-					fc_val = fcend;
-					sc_trek(fc_val);
-					sc_trak(fc_val);
-				}
-			}
+		  DB_CMNT ("ne_end - no space");
 		}
+/* 
+*/
+	      DB_CMNT ("ne_end - freeing nevent");
+	      nx = nelist->nxt;	/* get next nelist ptr */
+	      nelist->nxt = nefree;	/* free nelist entry */
+	      nefree = nelist;	/* ... */
+	      nelist = nx;	/* update nelist */
+	    }
 
-	} else {
+	  lstflag = TRUE;	/* indicate end of list */
 
-		nkdown  = 0;		/* no keys down */
+	  DB_CMNT ("ne_end - note ends done");
 
-		lstendc = 0;		/* no step entries to delete */
-		lstbgnc = 0;
-		lstflag = FALSE;
+	  if (stepenb)
+	    {
+
+	      if (fc_val LT fcend)
+		{		/* advance to the interval */
+
+		  DB_CMNT ("ne_end - advance interval");
+		  fc_val = fcend;
+		  sc_trek (fc_val);
+		  sc_trak (fc_val);
+		}
+	    }
 	}
 
-	DB_EXIT("ne_end");
+    }
+  else
+    {
+
+      nkdown = 0;		/* no keys down */
+
+      lstendc = 0;		/* no step entries to delete */
+      lstbgnc = 0;
+      lstflag = FALSE;
+    }
+
+  DB_EXIT ("ne_end");
 }
 
 /* 
@@ -264,84 +282,93 @@ register short grp;
    =============================================================================
 */
 
-ne_bgn(grp, key, vel)
-register short grp, key, vel;
+ne_bgn (grp, key, vel)
+     register short grp, key, vel;
 {
-	register struct n_entry *ep;
-	register struct nevent *np;
+  register struct n_entry *ep;
+  register struct nevent *np;
 
-	DB_ENTR("ne_bgn");
+  DB_ENTR ("ne_bgn");
 
-	/* must be recording into a group in record mode ... */
+  /* must be recording into a group in record mode ... */
 
-	if ((recsw NE 0) AND (grpmode[grp] EQ 2)) {
+  if ((recsw NE 0) AND (grpmode[grp] EQ 2))
+    {
 
-		DB_CMNT("ne_bgn - recording");
+      DB_CMNT ("ne_bgn - recording");
 
-		/* make pointers point in the forward direction */
+      /* make pointers point in the forward direction */
 
-		if (sd EQ D_BAK)
-			chgsdf();
+      if (sd EQ D_BAK)
+	chgsdf ();
 
-		if (se EQ D_BAK)
-			chgsef();
+      if (se EQ D_BAK)
+	chgsef ();
 
-		if (lstflag) {			/* cancel old list of notes */
+      if (lstflag)
+	{			/* cancel old list of notes */
 
-			lstbgnc = 0;
-			lstendc = 0;
-			lstflag = FALSE;
-		}
-
-		if (clksrc EQ CK_STEP) {	/* step mode */
-
-			DB_CMNT("ne_bgn - step");
-			++nkdown;		/* count keys down */
-
-			if (nefree) {		/* log a key closure */
-
-				np        = nefree;
-				nefree    = np->nxt;
-				np->note  = key;
-				np->group = grp;
-				np->nxt   = nelist;
-				nelist    = np;
-				DB_CMNT("ne_bgn - key logged");
-
-			} else {
-
-				DB_CMNT("ne_bgn - nefree empty");
-			}
-		}
-/* 
-*/
-		if (E_NULL NE (ep = (struct n_entry *)e_alc(E_SIZE1))) {
-
-			DB_CMNT("ne_bgn - enter note begin");
-			ep->e_time  = t_cur;
-			ep->e_type  = EV_NBEG | 0x80;
-			ep->e_note  = key;
-			ep->e_group = grp;
-			ep->e_vel   = (clksrc EQ CK_STEP) ? SM_SCALE(64) : vel;
-
-			p_cur = e_ins((struct s_entry *)ep,
-				      ep_adj(p_cur, 0, t_cur))->e_fwd;
-
-			se_disp(ep, D_FWD, gdstbc, 1);
-
-			if (t_cur EQ t_ctr)
-				newflag = TRUE;
-
-			if ((clksrc EQ CK_STEP) AND (lstbgnc < NLSTENTS))
-				lstbgns[lstbgnc++] = ep;
-
-		} else {
-
-			DB_CMNT("ne_bgn - no space");
-		}
+	  lstbgnc = 0;
+	  lstendc = 0;
+	  lstflag = FALSE;
 	}
 
-	DB_EXIT("ne_bgn");
+      if (clksrc EQ CK_STEP)
+	{			/* step mode */
+
+	  DB_CMNT ("ne_bgn - step");
+	  ++nkdown;		/* count keys down */
+
+	  if (nefree)
+	    {			/* log a key closure */
+
+	      np = nefree;
+	      nefree = np->nxt;
+	      np->note = key;
+	      np->group = grp;
+	      np->nxt = nelist;
+	      nelist = np;
+	      DB_CMNT ("ne_bgn - key logged");
+
+	    }
+	  else
+	    {
+
+	      DB_CMNT ("ne_bgn - nefree empty");
+	    }
+	}
+/* 
+*/
+      if (E_NULL NE (ep = (struct n_entry *) e_alc (E_SIZE1)))
+	{
+
+	  DB_CMNT ("ne_bgn - enter note begin");
+	  ep->e_time = t_cur;
+	  ep->e_type = EV_NBEG | 0x80;
+	  ep->e_note = key;
+	  ep->e_group = grp;
+	  ep->e_vel = (clksrc EQ CK_STEP) ? SM_SCALE (64) : vel;
+
+	  p_cur = e_ins ((struct s_entry *) ep,
+			 ep_adj (p_cur, 0, t_cur))->e_fwd;
+
+	  se_disp (ep, D_FWD, gdstbc, 1);
+
+	  if (t_cur EQ t_ctr)
+	    newflag = TRUE;
+
+	  if ((clksrc EQ CK_STEP) AND (lstbgnc < NLSTENTS))
+	    lstbgns[lstbgnc++] = ep;
+
+	}
+      else
+	{
+
+	  DB_CMNT ("ne_bgn - no space");
+	}
+    }
+
+  DB_EXIT ("ne_bgn");
 }
 
 /* 
@@ -353,19 +380,19 @@ register short grp, key, vel;
    =============================================================================
 */
 
-showvel(g, v)
-short g, v;
+showvel (g, v)
+     short g, v;
 {
-	char buf[6];
+  char buf[6];
 
-	if (v_regs[5] & 0x0180)
-		vbank(0);
+  if (v_regs[5] & 0x0180)
+    vbank (0);
 
-	lastvel[g] = v;
+  lastvel[g] = v;
 
-	sprintf(buf, "%03d", (v / 252));
+  sprintf (buf, "%03d", (v / 252));
 
-	vputs(obj8, 5, (g * 5) + 6, buf, SDW11ATR);
+  vputs (obj8, 5, (g * 5) + 6, buf, SDW11ATR);
 }
 
 /* 
@@ -377,76 +404,79 @@ short g, v;
    =============================================================================
 */
 
-asgvce(grp, port, chan, key, vel)
-short grp, port, chan, key, vel;
+asgvce (grp, port, chan, key, vel)
+     short grp, port, chan, key, vel;
 {
-	register short i;
-	register short tv;
-	register short vp;
-	register short trg;
-	register short aflag;
-	register struct nevent *np;
-	register struct n_entry *ep;
+  register short i;
+  register short tv;
+  register short vp;
+  register short trg;
+  register short aflag;
+  register struct nevent *np;
+  register struct n_entry *ep;
 
-	DB_ENTR("asgvce");
+  DB_ENTR ("asgvce");
 
-	trg = (port << 11) + (chan << 7) + key;	/* trigger number */
-	vp  = lastvce[grp] + 1;			/* voice to start with */
-	vp  = (vp > 11) ? 0 : vp;		/* ... (adjust into range) */
+  trg = (port << 11) + (chan << 7) + key;	/* trigger number */
+  vp = lastvce[grp] + 1;	/* voice to start with */
+  vp = (vp > 11) ? 0 : vp;	/* ... (adjust into range) */
 
 /* 
 */
 
-	DB_CMNT("asgvce - search unassgined");
+  DB_CMNT ("asgvce - search unassgined");
 
-	for (i = 12; i--; ) {	/* search for unassigned voice */
+  for (i = 12; i--;)
+    {				/* search for unassigned voice */
 
-		if ((vce2trg[vp] EQ -1) AND (vce2grp[vp] EQ (grp + 1))) {
+      if ((vce2trg[vp] EQ - 1) AND (vce2grp[vp] EQ (grp + 1)))
+	{
 
-			if ((ndisp EQ 2) AND velflag AND (NOT recsw))
-				showvel(grp, vel);
+	  if ((ndisp EQ 2) AND velflag AND (NOT recsw))
+	    showvel (grp, vel);
 
-			lastvce[grp] = vp;
-			execkey(trg, tuntab[key], vp, 0);
-			DB_EXIT("asgvce - free voice");
-			return;
-		}
-
-		if (++vp > 11)
-			vp = 0;
+	  lastvce[grp] = vp;
+	  execkey (trg, tuntab[key], vp, 0);
+	  DB_EXIT ("asgvce - free voice");
+	  return;
 	}
 
-	DB_CMNT("asgvce - seach non-held");
+      if (++vp > 11)
+	vp = 0;
+    }
 
-	for (i = 12; i--; ) {	/* search for non-held voice */
+  DB_CMNT ("asgvce - seach non-held");
 
-		tv = vce2trg[vp];
+  for (i = 12; i--;)
+    {				/* search for non-held voice */
 
-		if (tv EQ -1)
-			aflag = TRUE;		/* OK - unassigned */
-		else if (0 EQ (tv & (MKEYHELD << 8)))
-			aflag = TRUE;		/* OK - not held */
-		else
-			aflag = FALSE;		/* NO - held */
+      tv = vce2trg[vp];
 
-		if (aflag AND (vce2grp[vp] EQ (grp + 1))) {
+      if (tv EQ - 1)
+	aflag = TRUE;		/* OK - unassigned */
+      else if (0 EQ (tv & (MKEYHELD << 8)))
+	aflag = TRUE;		/* OK - not held */
+      else
+	aflag = FALSE;		/* NO - held */
 
-			if ((ins2grp[grp] & GTAG1) AND
-			    (tv NE trg) AND (tv NE -1))
-				legato = 1;
+      if (aflag AND (vce2grp[vp] EQ (grp + 1)))
+	{
 
-			if ((ndisp EQ 2) AND velflag AND (NOT recsw))
-				showvel(grp, vel);
+	  if ((ins2grp[grp] & GTAG1) AND (tv NE trg) AND (tv NE - 1))
+	    legato = 1;
 
-			lastvce[grp] = vp;
-			execkey(trg, tuntab[key], vp, 0);
- 			DB_EXIT("asgvce - stolen voice");
-			return;
-		}
+	  if ((ndisp EQ 2) AND velflag AND (NOT recsw))
+	    showvel (grp, vel);
 
-		if (++vp > 11)
-			vp = 0;
+	  lastvce[grp] = vp;
+	  execkey (trg, tuntab[key], vp, 0);
+	  DB_EXIT ("asgvce - stolen voice");
+	  return;
 	}
 
- 	DB_EXIT("asgvce - no voice");
+      if (++vp > 11)
+	vp = 0;
+    }
+
+  DB_EXIT ("asgvce - no voice");
 }

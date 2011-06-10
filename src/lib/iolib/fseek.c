@@ -16,36 +16,38 @@
    =============================================================================
 */
 
-fseek(fp, pos, mode)
-register FILE *fp;
-long pos;
-int mode;
+fseek (fp, pos, mode)
+     register FILE *fp;
+     long pos;
+     int mode;
 {
-	register int i, lr;
-	long curpos, lseek();
+  register int i, lr;
+  long curpos, lseek ();
 
-	if (fp->_flags & _DIRTY) {
+  if (fp->_flags & _DIRTY)
+    {
 
-		if (flush_(fp, -1))
-			return(EOF);
+      if (flush_ (fp, -1))
+	return (EOF);
 
-	} else {
+    }
+  else
+    {
 
-		if (mode EQ 1 AND fp->_bp)
-			pos -= (long)fp->_bend - (long)fp->_bp;
-	}
+      if (mode EQ 1 AND fp->_bp)
+	pos -= (long) fp->_bend - (long) fp->_bp;
+    }
 
-	fp->_bp = fp->_bend = NULL;
-	fp->_flags &= ~_EOF;
+  fp->_bp = fp->_bend = NULL;
+  fp->_flags &= ~_EOF;
 
-	lr = lseek(fp->_unit, pos, mode);
+  lr = lseek (fp->_unit, pos, mode);
 
-	if (chantab[fp->_unit].c_arg->modefl & FC_EOF)
-		fp->_flags |= _EOF;
+  if (chantab[fp->_unit].c_arg->modefl & FC_EOF)
+    fp->_flags |= _EOF;
 
-	if (lr < 0)
-		return(EOF);
+  if (lr < 0)
+    return (EOF);
 
-	return(0);
+  return (0);
 }
-

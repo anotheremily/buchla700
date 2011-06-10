@@ -15,7 +15,7 @@
 
 #define	DFLTFILE	"mcapture.out"
 
-#define	MIDI 2				/* device number */
+#define	MIDI 2			/* device number */
 
 #define	MAXNOL	2
 
@@ -23,35 +23,36 @@
 #define	FORMAT2		"  %02.2xH %3u %-10.10s"
 #define	FORMAT3		"\n%5u                       "
 
-extern char	*malloc();
+extern char *malloc ();
 
-void	cleanbf();
+void cleanbf ();
 
-int	SetMBuf(), midi_in(), m_stat();
+int SetMBuf (), midi_in (), m_stat ();
 
-struct iorec {		/* structure for MIDI buffer description */
+struct iorec
+{				/* structure for MIDI buffer description */
 
-	char *ibuf;
-        short ibufsz;
-        short ibufhd;
-        short ibuftl;
-        short ibuflo;
-        short ibufhi;
+  char *ibuf;
+  short ibufsz;
+  short ibufhd;
+  short ibuftl;
+  short ibuflo;
+  short ibufhi;
 };
 
-unsigned int	index;		/* MIDI input byte number */
+unsigned int index;		/* MIDI input byte number */
 
-int	nol;			/* number of MIDI data bytes on the line */
+int nol;			/* number of MIDI data bytes on the line */
 
-FILE	*ofp;			/* output file pointer */
+FILE *ofp;			/* output file pointer */
 
-char	*newbuf;
-char	*oldbuf;		/* old MIDI buffer pointer */
-short	oldbsz;
-short	oldbhi;
-short	oldblo;
+char *newbuf;
+char *oldbuf;			/* old MIDI buffer pointer */
+short oldbsz;
+short oldbhi;
+short oldblo;
 
-struct iorec	*m_buff;	/* MIDI iorec pointer */
+struct iorec *m_buff;		/* MIDI iorec pointer */
 
 /* 
 */
@@ -61,89 +62,91 @@ struct iorec	*m_buff;	/* MIDI iorec pointer */
 /* set up MIDI buffer */
 
 int
-SetMBuf()
+SetMBuf ()
 {
-        unsigned short size;
+  unsigned short size;
 
-        size = 16384;	/* 16K MIDI buffer */
+  size = 16384;			/* 16K MIDI buffer */
 
-        m_buff = (struct iorec *)Iorec(MIDI); /* pointer to buffer descriptor */
+  m_buff = (struct iorec *) Iorec (MIDI);	/* pointer to buffer descriptor */
 
-	oldbuf = m_buff->ibuf;
-	oldbsz = m_buff->ibufsz;
-	oldbhi = m_buff->ibufhi;
-	oldblo = m_buff->ibuflo;
+  oldbuf = m_buff->ibuf;
+  oldbsz = m_buff->ibufsz;
+  oldbhi = m_buff->ibufhi;
+  oldblo = m_buff->ibuflo;
 
-	if ((char *)NULL EQ (newbuf = (char *)malloc(size))) {
+  if ((char *) NULL EQ (newbuf = (char *) malloc (size)))
+    {
 
-		printf ("ERROR -- unable to allocate MIDI buffer.\n");
-		return(FAILURE);
-	}
+      printf ("ERROR -- unable to allocate MIDI buffer.\n");
+      return (FAILURE);
+    }
 
-	/* clear out the buffer */
+  /* clear out the buffer */
 
-	m_buff->ibufhd = 0;		/* reset the head index */
-	m_buff->ibuftl = 0;		/* reset the tail index */
+  m_buff->ibufhd = 0;		/* reset the head index */
+  m_buff->ibuftl = 0;		/* reset the tail index */
 
-	/* we do this twice because we aren't disabling interrupts ... */
+  /* we do this twice because we aren't disabling interrupts ... */
 
-	m_buff->ibufhd = 0;		/* reset the head index */
-	m_buff->ibuftl = 0;		/* reset the tail index */
+  m_buff->ibufhd = 0;		/* reset the head index */
+  m_buff->ibuftl = 0;		/* reset the tail index */
 
-        m_buff->ibuf   = newbuf;	/* change address of buffer */
-        m_buff->ibufsz = size;		/* change size of buffer */
+  m_buff->ibuf = newbuf;	/* change address of buffer */
+  m_buff->ibufsz = size;	/* change size of buffer */
 
-	index = 0;			/* reset the byte index */
+  index = 0;			/* reset the byte index */
 
-	return(SUCCESS);
+  return (SUCCESS);
 }
 
 /* get MIDI byte */
 
 int
-midi_in()
+midi_in ()
 {
-        return((int)Bconin(3) & 0x00ff);
+  return ((int) Bconin (3) & 0x00ff);
 }
 
 /* check midi status */
 
 int
-m_stat()
+m_stat ()
 {
-        return((int)Bconstat(3) ? TRUE : FALSE);
+  return ((int) Bconstat (3) ? TRUE : FALSE);
 }
 
 /* clean out MIDI buffer */
 
 void
-cleanbf()
+cleanbf ()
 {
-	int mstat;
+  int mstat;
 
-	printf("Clearing MIDI input buffer ...\n");
+  printf ("Clearing MIDI input buffer ...\n");
 
-	/* clear out the buffer by resetting the head and tail indices */
+  /* clear out the buffer by resetting the head and tail indices */
 
-	m_buff->ibufhd = 0;		/* reset the head index */
-	m_buff->ibuftl = 0;		/* reset the tail index */
+  m_buff->ibufhd = 0;		/* reset the head index */
+  m_buff->ibuftl = 0;		/* reset the tail index */
 
-	/* we do this twice because we aren't disabling interrupts ... */
+  /* we do this twice because we aren't disabling interrupts ... */
 
-	m_buff->ibufhd = 0;		/* reset the head index */
-	m_buff->ibuftl = 0;		/* reset the tail index */
+  m_buff->ibufhd = 0;		/* reset the head index */
+  m_buff->ibuftl = 0;		/* reset the tail index */
 
-	/* make sure it's really drained */
+  /* make sure it's really drained */
 
-	mstat = m_stat();
+  mstat = m_stat ();
 
-        while (mstat) {
+  while (mstat)
+    {
 
-		midi_in();
-		mstat = m_stat();
-	}
+      midi_in ();
+      mstat = m_stat ();
+    }
 
-	index = 0;
+  index = 0;
 }
 
 /* 
@@ -151,100 +154,110 @@ cleanbf()
 
 /*            MAIN PROGRAM LOOP      */
 
-main(argc, argv)
-int argc;
-char *argv[];
+main (argc, argv)
+     int argc;
+     char *argv[];
 {
-	int ch, runtag;
+  int ch, runtag;
 
-	ofp = (FILE *)NULL;
+  ofp = (FILE *) NULL;
 
-	printf("\033E%s\n\n", VERMSG);
-	printf("Hit / to clear buffer, ESC to finish.\n\n");
+  printf ("\033E%s\n\n", VERMSG);
+  printf ("Hit / to clear buffer, ESC to finish.\n\n");
 
-	if (SetMBuf())		/* move MIDI buffer & increase size */
-		exit(2);
+  if (SetMBuf ())		/* move MIDI buffer & increase size */
+    exit (2);
 
-        cleanbf();		/* clear out MIDI buffer */
+  cleanbf ();			/* clear out MIDI buffer */
 
-	if (argc EQ 2) {
+  if (argc EQ 2)
+    {
 
-		if ((FILE *)NULL EQ (ofp = fopen(argv[1], "w"))) {
+      if ((FILE *) NULL EQ (ofp = fopen (argv[1], "w")))
+	{
 
-			printf("ERROR -- Unable to open \"%s\" for output.\n",
-				argv[1]);
+	  printf ("ERROR -- Unable to open \"%s\" for output.\n", argv[1]);
 
-			exit(2);
+	  exit (2);
 
-		} else {
+	}
+      else
+	{
 
-			printf("Program will output to file \"%s\".\n", argv[1]);
-		}
-
-	} else {
-
-		if ((FILE *)NULL EQ (ofp = fopen(DFLTFILE, "w"))) {
-
-			printf("ERROR -- Unable to open \"%s\" for output.\n",
-				DFLTFILE);
-
-			exit(2);
-
-		} else {
-
-			printf("Program will output to file \"%s\".\n", DFLTFILE);
-		}
+	  printf ("Program will output to file \"%s\".\n", argv[1]);
 	}
 
-        printf("Ready for MIDI data.\n");
+    }
+  else
+    {
 
-	runtag = TRUE;
+      if ((FILE *) NULL EQ (ofp = fopen (DFLTFILE, "w")))
+	{
 
-        while (runtag) {
+	  printf ("ERROR -- Unable to open \"%s\" for output.\n", DFLTFILE);
 
-		if (Bconstat(2)) {
+	  exit (2);
 
-			ch = 0x00FF & Bconin(2);
+	}
+      else
+	{
 
-			switch (ch) {
+	  printf ("Program will output to file \"%s\".\n", DFLTFILE);
+	}
+    }
 
-			case '\033':	/* escape */
+  printf ("Ready for MIDI data.\n");
 
-				runtag = FALSE;
-				break;
+  runtag = TRUE;
 
-			case '/':	/* / = clear buffer and screen */
+  while (runtag)
+    {
 
-				cleanbf();
-				printf("\033E");
-			        printf("Ready for MIDI data.\n");
-				break;
-			}
-		}
+      if (Bconstat (2))
+	{
 
-                if (m_stat())
-                        ProcMIDI(midi_in());
-        } 
+	  ch = 0x00FF & Bconin (2);
 
-	fflush(ofp);
-	fclose(ofp);
+	  switch (ch)
+	    {
 
-	/* clear out the buffer */
+	    case '\033':	/* escape */
 
-	m_buff->ibufhd = 0;		/* reset the head index */
-	m_buff->ibuftl = 0;		/* reset the tail index */
+	      runtag = FALSE;
+	      break;
 
-	/* we do this twice because we aren't disabling interrupts ... */
+	    case '/':		/* / = clear buffer and screen */
 
-	m_buff->ibufhd = 0;		/* reset the head index */
-	m_buff->ibuftl = 0;		/* reset the tail index */
+	      cleanbf ();
+	      printf ("\033E");
+	      printf ("Ready for MIDI data.\n");
+	      break;
+	    }
+	}
 
-	m_buff->ibufsz = oldbsz;	/* restore the old buffer size */
-	m_buff->ibuf   = oldbuf;	/* restore the old buffer address */
+      if (m_stat ())
+	ProcMIDI (midi_in ());
+    }
 
-	free(newbuf);			/* give back the big MIDI buffer */
+  fflush (ofp);
+  fclose (ofp);
 
-	printf("\n");
-	fflush(stdout);
-	exit(0);
+  /* clear out the buffer */
+
+  m_buff->ibufhd = 0;		/* reset the head index */
+  m_buff->ibuftl = 0;		/* reset the tail index */
+
+  /* we do this twice because we aren't disabling interrupts ... */
+
+  m_buff->ibufhd = 0;		/* reset the head index */
+  m_buff->ibuftl = 0;		/* reset the tail index */
+
+  m_buff->ibufsz = oldbsz;	/* restore the old buffer size */
+  m_buff->ibuf = oldbuf;	/* restore the old buffer address */
+
+  free (newbuf);		/* give back the big MIDI buffer */
+
+  printf ("\n");
+  fflush (stdout);
+  exit (0);
 }

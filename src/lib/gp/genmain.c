@@ -21,40 +21,40 @@
 
 #define	PGMNAME		"genmain"	/* program name to use in messages */
 
-#define	NULLFILE	"stdin"		/* null input file default */
+#define	NULLFILE	"stdin"	/* null input file default */
 
-#define	A_DFLTN		-1		/* default value for a_argn */
-#define	A_ALTN		1		/* alternate default for a_argn */
-#define	C_DFLTC		'C'		/* default character for c_argc */
-#define	C_DFLTN		-1		/* default value for c_argn */
-#define	C_ALTN		1		/* alternate default for c_argn */
+#define	A_DFLTN		-1	/* default value for a_argn */
+#define	A_ALTN		1	/* alternate default for a_argn */
+#define	C_DFLTC		'C'	/* default character for c_argc */
+#define	C_DFLTN		-1	/* default value for c_argn */
+#define	C_ALTN		1	/* alternate default for c_argn */
 #define	H_DFLTS		"h default"	/* defalut value for h_args */
-#define	L_DFLTN		-1		/* default value for l_argn */
-#define	S_ALTC		's'		/* alternate default for s_argc */
-#define	S_DFLTC		'S'		/* default character for s_argc */
+#define	L_DFLTN		-1	/* default value for l_argn */
+#define	S_ALTC		's'	/* alternate default for s_argc */
+#define	S_DFLTC		'S'	/* default character for s_argc */
 
-#define	NUM_DFLT	-1		/* default value for num_arg */
+#define	NUM_DFLT	-1	/* default value for num_arg */
 
-int	a_argn  = A_DFLTN;		/* switch a numeric argument */
-int	c_argn  = C_DFLTN;		/* switch c numeric argument */
-int	l_argn  = L_DFLTN;		/* switch l numeric argument */
-int	num_arg = NUM_DFLT;		/* general numeric argument */
+int a_argn = A_DFLTN;		/* switch a numeric argument */
+int c_argn = C_DFLTN;		/* switch c numeric argument */
+int l_argn = L_DFLTN;		/* switch l numeric argument */
+int num_arg = NUM_DFLT;		/* general numeric argument */
 
-int	x_argf  = FALSE;		/* switch x value */
+int x_argf = FALSE;		/* switch x value */
 
-char	*h_args  = H_DFLTS;		/* switch h string argument */
+char *h_args = H_DFLTS;		/* switch h string argument */
 
-char	c_argc  = C_DFLTC;		/* switch c character argument */
-char	s_argc  = S_DFLTC;		/* switch s character argument */
+char c_argc = C_DFLTC;		/* switch c character argument */
+char s_argc = S_DFLTC;		/* switch s character argument */
 
 /* 
 */
 
 /* Standard stuff,  unlikely to change much,  if at all */
 
-int	nfdone  = 0;		/* number of file arguments processed */
-int	exitarg = 0;		/* exit() argument */
-int	nerrors = 0;		/* number of errors encountered */
+int nfdone = 0;			/* number of file arguments processed */
+int exitarg = 0;		/* exit() argument */
+int nerrors = 0;		/* number of errors encountered */
 
 #define	L_PLURAL(N)	((N) ? ((N) GT 1 ? "s" : "") : "")
 #define	U_PLURAL(N)	((N) ? ((N) GT 1 ? "S" : "") : "")
@@ -89,15 +89,15 @@ int	nerrors = 0;		/* number of errors encountered */
    =============================================================================
 */
 
-Die(s)
-char *s;	/* message string */
+Die (s)
+     char *s;			/* message string */
 {
-	++nerrors;
-        PGM_ERR(s);
-	fprintf(stderr, "\n%s:  Terminated with %d error%s.\n",
-		PGMNAME, nerrors, L_PLURAL(nerrors));
+  ++nerrors;
+  PGM_ERR (s);
+  fprintf (stderr, "\n%s:  Terminated with %d error%s.\n",
+	   PGMNAME, nerrors, L_PLURAL (nerrors));
 
-        exit(1);
+  exit (1);
 }
 
 /*
@@ -113,20 +113,22 @@ char *s;	/* message string */
 */
 
 char *
-n_errs(n)
-int n;		/* number of errors */
+n_errs (n)
+     int n;			/* number of errors */
 {
-	static char buf[100];
+  static char buf[100];
 
-	if (n GT 1) {
+  if (n GT 1)
+    {
 
-		sprintf(buf, "%d errors were", n);
-		return(buf);
+      sprintf (buf, "%d errors were", n);
+      return (buf);
 
-	} else if (n EQ 1)
-		return("One error was");
-	else
-		return("No errors were");
+    }
+  else if (n EQ 1)
+    return ("One error was");
+  else
+    return ("No errors were");
 }
 
 /* 
@@ -139,13 +141,13 @@ int n;		/* number of errors */
 */
 
 char *
-ffiler(s)
-char *s;	/* file name string pointer */
+ffiler (s)
+     char *s;			/* file name string pointer */
 {
-        static char buf[100];
+  static char buf[100];
 
-        sprintf(buf, "Can't open %s", s);
-        return (buf);
+  sprintf (buf, "Can't open %s", s);
+  return (buf);
 }
 
 /*
@@ -155,13 +157,13 @@ char *s;	/* file name string pointer */
 */
 
 char *
-badopt(c)
-char c;		/* character to complain about */
+badopt (c)
+     char c;			/* character to complain about */
 {
-        static char buf[100];
+  static char buf[100];
 
-        sprintf(buf, "Invalid option \047%c\047", c);
-        return (buf);
+  sprintf (buf, "Invalid option \047%c\047", c);
+  return (buf);
 }
 
 /* 
@@ -175,26 +177,22 @@ char c;		/* character to complain about */
    =============================================================================
 */
 
-Usage()
+Usage ()
 {
-	fprintf(stderr, "\n%s usage:\n\n", PGMNAME);
+  fprintf (stderr, "\n%s usage:\n\n", PGMNAME);
 
-	fprintf(stderr, "   %s -an -ccn -h string -ln -sc -x\n\n", PGMNAME);
+  fprintf (stderr, "   %s -an -ccn -h string -ln -sc -x\n\n", PGMNAME);
 
-	fprintf(stderr, "     -an        argument a (%d)\n",
-		A_ALTN);
-	fprintf(stderr, "     -ccn       argument c (\047%c\047, %d)\n",
-		C_DFLTC, C_DFLTN);
-	fprintf(stderr, "     -h string  argument h (\042%s\042)\n",
-		h_args);
-	fprintf(stderr, "     -ln        argument l (%d)\n",
-		0);
-	fprintf(stderr, "     -sc        argument s (\047%c\047)\n",
-		S_DFLTC);
-	fprintf(stderr, "     -x         argument x \042%s\042\n",
-		TF_MSGM(x_argf));
+  fprintf (stderr, "     -an        argument a (%d)\n", A_ALTN);
+  fprintf (stderr, "     -ccn       argument c (\047%c\047, %d)\n",
+	   C_DFLTC, C_DFLTN);
+  fprintf (stderr, "     -h string  argument h (\042%s\042)\n", h_args);
+  fprintf (stderr, "     -ln        argument l (%d)\n", 0);
+  fprintf (stderr, "     -sc        argument s (\047%c\047)\n", S_DFLTC);
+  fprintf (stderr, "     -x         argument x \042%s\042\n",
+	   TF_MSGM (x_argf));
 
-	fprintf(stderr, "\n");
+  fprintf (stderr, "\n");
 }
 
 /* 
@@ -208,24 +206,24 @@ Usage()
    =============================================================================
 */
 
-Done()
+Done ()
 {
-	printf("\n%s:  Final values were -\n\n", PGMNAME);
+  printf ("\n%s:  Final values were -\n\n", PGMNAME);
 
-	printf("   a_argn  = %d\n", a_argn);
-	printf("   c_argn  = %d\n", c_argn);
-	printf("   c_argc  = \047%c\047\n", c_argc);
-	printf("   h_args  = \042%s\042\n", h_args);
-	printf("   l_argn  = %d\n", l_argn);
-	printf("   num_arg = %d\n", num_arg);
-	printf("   s_argc  = \047%c\047\n", s_argc);
-	printf("   x_argf  = %s\n", TF_MSGM(x_argf));
+  printf ("   a_argn  = %d\n", a_argn);
+  printf ("   c_argn  = %d\n", c_argn);
+  printf ("   c_argc  = \047%c\047\n", c_argc);
+  printf ("   h_args  = \042%s\042\n", h_args);
+  printf ("   l_argn  = %d\n", l_argn);
+  printf ("   num_arg = %d\n", num_arg);
+  printf ("   s_argc  = \047%c\047\n", s_argc);
+  printf ("   x_argf  = %s\n", TF_MSGM (x_argf));
 
-	if (nerrors)		/* if any errors, exit with an error value */
-		exitarg = 1;
+  if (nerrors)			/* if any errors, exit with an error value */
+    exitarg = 1;
 
-	printf("\n%s:  Processing complete.  %s encountered\n",
-		PGMNAME, n_errs(nerrors));
+  printf ("\n%s:  Processing complete.  %s encountered\n",
+	  PGMNAME, n_errs (nerrors));
 }
 
 /* 
@@ -239,17 +237,20 @@ Done()
    =============================================================================
 */
 
-Process(s)
-char *s;		/* file name string pointer */
+Process (s)
+     char *s;			/* file name string pointer */
 {
-	if (*s) {	/* process a file */
+  if (*s)
+    {				/* process a file */
 
-		printf("%s processed\n", s);
+      printf ("%s processed\n", s);
 
-	} else {	/* process a null file (usually means use stdin) */
+    }
+  else
+    {				/* process a null file (usually means use stdin) */
 
-		printf("null file (%s) processed\n", NULLFILE);
-	}
+      printf ("null file (%s) processed\n", NULLFILE);
+    }
 }
 
 /* 
@@ -261,18 +262,18 @@ char *s;		/* file name string pointer */
    =============================================================================
 */
 
-atoix(p)
-register char **p;	/* pointer to the string pointer */
+atoix (p)
+     register char **p;		/* pointer to the string pointer */
 {
-        register int n, c;
+  register int n, c;
 
-	n = 0;
+  n = 0;
 
-        while (isdigit(c = *++*p))
-		n = 10 * n + c - '0';
+  while (isdigit (c = *++*p))
+    n = 10 * n + c - '0';
 
-        --*p;
-        return (n);
+  --*p;
+  return (n);
 }
 
 /*
@@ -286,18 +287,19 @@ register char **p;	/* pointer to the string pointer */
    =============================================================================
 */
 
-intopt(argv, optp)
-char *argv[]; 		/* argv pointer */
-char *optp;		/* pointer to the character variable to be set */
+intopt (argv, optp)
+     char *argv[];		/* argv pointer */
+     char *optp;		/* pointer to the character variable to be set */
 {
-        int c;
+  int c;
 
-        if ((c = (*argv)[1]) NE '\0' && !isdigit(c)) {
-		*optp = c;
-		++*argv;
-	}
+  if ((c = (*argv)[1]) NE '\0' && !isdigit (c))
+    {
+      *optp = c;
+      ++*argv;
+    }
 
-        return ((c = atoix(argv)) NE 0 ? c : -1);
+  return ((c = atoix (argv)) NE 0 ? c : -1);
 }
 
 /* 
@@ -310,104 +312,113 @@ char *optp;		/* pointer to the character variable to be set */
 */
 
 int
-findopt(argc, argv)
-int argc;		/* argument count */
-char *argv[];		/* argument pointer array pointer */
+findopt (argc, argv)
+     int argc;			/* argument count */
+     char *argv[];		/* argument pointer array pointer */
 {
-        char	**eargv;	/* pointer to argument pointer */
-        int	eargc;		/* remaining arguments after options */
-	int	c;		/* current character being processed */
-	int	strsw;		/* string argument grabbed switch */
+  char **eargv;			/* pointer to argument pointer */
+  int eargc;			/* remaining arguments after options */
+  int c;			/* current character being processed */
+  int strsw;			/* string argument grabbed switch */
 
-	eargv = argv;		/* start with first argument */
-	eargc = 0;		/* set file count to zero */
-	strsw = FALSE;		/* indicate no string grabbed */
+  eargv = argv;			/* start with first argument */
+  eargc = 0;			/* set file count to zero */
+  strsw = FALSE;		/* indicate no string grabbed */
 
-        while (--argc > 0) {
+  while (--argc > 0)
+    {
 
-                switch (c = **++argv) {
+      switch (c = **++argv)
+	{
 
-                case '-':	/* options start with '-' ... */
+	case '-':		/* options start with '-' ... */
 
-                case '+':	/* ... or they can start with '+' */
+	case '+':		/* ... or they can start with '+' */
 
-                        if ((c = *++*argv) EQ '\0')	/* just '-' is end */
-				break;
+	  if ((c = *++*argv) EQ '\0')	/* just '-' is end */
+	    break;
 /* 
 */
-                        do {
-				if (isdigit(c)) {	/* general numeric arg */
+	  do
+	    {
+	      if (isdigit (c))
+		{		/* general numeric arg */
 
-					--*argv;
-					num_arg = atoix(argv);
+		  --*argv;
+		  num_arg = atoix (argv);
 
-				} else
+		}
+	      else
 
-				switch (c) {	/* switch on option letter */
+		switch (c)
+		  {		/* switch on option letter */
 
-                                case 'a':	/* -an */
+		  case 'a':	/* -an */
 
-					GETARG(a_argn, A_ALTN);
-                                        continue;
+		    GETARG (a_argn, A_ALTN);
+		    continue;
 
-				case 'c':	/* -ccn */
+		  case 'c':	/* -ccn */
 
-					GETCARG(c_argn, c_argc, C_ALTN);
-					continue;
+		    GETCARG (c_argn, c_argc, C_ALTN);
+		    continue;
 
-                                case 'h':	/* -h string */
+		  case 'h':	/* -h string */
 
-					if (--argc > 0) {
+		    if (--argc > 0)
+		      {
 
-						strsw = TRUE;
-						h_args = argv[1];
-					}
+			strsw = TRUE;
+			h_args = argv[1];
+		      }
 
-                                        continue;
+		    continue;
 
-                                case 'l':	/* -ln */
+		  case 'l':	/* -ln */
 
-					l_argn = atoix(argv);
-					continue;
+		    l_argn = atoix (argv);
+		    continue;
 
-                                case 's':	/* -sc */
+		  case 's':	/* -sc */
 
-					if ((s_argc = (*argv)[1]) NE '\0')
-						++*argv;
-                                        else
-						s_argc = S_ALTC;
+		    if ((s_argc = (*argv)[1]) NE '\0')
+		      ++ * argv;
+		    else
+		      s_argc = S_ALTC;
 
-                                        continue;
+		    continue;
 /* 
 */
 
-				case 'x':	/* -x */
+		  case 'x':	/* -x */
 
-					x_argf = NOT x_argf;
-					continue;
+		    x_argf = NOT x_argf;
+		    continue;
 
-                                default :	/* unrecognized option */
+		  default:	/* unrecognized option */
 
-					Usage();
-					Die(badopt(c));
-                                }
+		    Usage ();
+		    Die (badopt (c));
+		  }
 
-                        } while ((c = *++*argv) NE '\0');
+	    }
+	  while ((c = *++*argv) NE '\0');
 
-                        if (strsw) {	/* if we've eaten an argument */
+	  if (strsw)
+	    {			/* if we've eaten an argument */
 
-				strsw = FALSE;
-				++argv;
-			}
+	      strsw = FALSE;
+	      ++argv;
+	    }
 
-                        continue;
-                }
+	  continue;
+	}
 
-                *eargv++ = *argv;	/* update the argv list */
-                ++eargc;		/* update the argument count */
-        }
+      *eargv++ = *argv;		/* update the argv list */
+      ++eargc;			/* update the argument count */
+    }
 
-        return (eargc);
+  return (eargc);
 }
 
 /* 
@@ -419,22 +430,23 @@ char *argv[];		/* argument pointer array pointer */
    =============================================================================
 */
 
-main(argc, argv)
-int argc;
-char *argv[];
+main (argc, argv)
+     int argc;
+     char *argv[];
 {
-	nfdone = 0;
+  nfdone = 0;
 
-	for (argc = findopt(argc, argv); argc > 0; --argc, ++argv) {
+  for (argc = findopt (argc, argv); argc > 0; --argc, ++argv)
+    {
 
-		Process(*argv);
-		++nfdone;
-	}
+      Process (*argv);
+      ++nfdone;
+    }
 
-        if (!nfdone)		/* no files named, use NOFILE as argument */
-                Process(NOFILE);
+  if (!nfdone)			/* no files named, use NOFILE as argument */
+    Process (NOFILE);
 
-	Done();			/* final processing */
+  Done ();			/* final processing */
 
-        exit(exitarg);
+  exit (exitarg);
 }

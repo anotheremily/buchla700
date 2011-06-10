@@ -38,7 +38,7 @@
 
 #include "stdio.h"
 
-static int csum;				/* checsum for current record */
+static int csum;		/* checsum for current record */
 static char hexdig[] = "0123456789ABCDEF";	/* hex table */
 
 #define	RECLEN	32		/* 32 bytes per S-record */
@@ -57,13 +57,13 @@ static char hexdig[] = "0123456789ABCDEF";	/* hex table */
 */
 
 VOID
-outhex(fp, val)
-FILE *fp;		/* file pointer for output */
-unsigned int val;	/* byte to be output */
+outhex (fp, val)
+     FILE *fp;			/* file pointer for output */
+     unsigned int val;		/* byte to be output */
 {
-	fputc(hexdig[(val >> 4) & 0x0F], fp);
-	fputc(hexdig[val & 0x0F], fp);
-	csum += (val & 0x0FF);
+  fputc (hexdig[(val >> 4) & 0x0F], fp);
+  fputc (hexdig[val & 0x0F], fp);
+  csum += (val & 0x0FF);
 }
 
 /* 
@@ -79,31 +79,31 @@ unsigned int val;	/* byte to be output */
 */
 
 VOID
-outrec(fp, adr, len, buf)
-FILE *fp;		/* file pointer for output */
-long adr;		/* beginning address for S-record */
-register int len;	/* length of data in record */
-register char *buf;	/* buffer address of record */
+outrec (fp, adr, len, buf)
+     FILE *fp;			/* file pointer for output */
+     long adr;			/* beginning address for S-record */
+     register int len;		/* length of data in record */
+     register char *buf;	/* buffer address of record */
 {
-	register int i;
+  register int i;
 
-	csum = 0;				/* zero the checksum */
-	fprintf(fp, "S2");			/* record header */
-	outhex(fp, (unsigned int)(len+4));	/* record length */
+  csum = 0;			/* zero the checksum */
+  fprintf (fp, "S2");		/* record header */
+  outhex (fp, (unsigned int) (len + 4));	/* record length */
 
-	/* record address */
+  /* record address */
 
-	outhex(fp, (unsigned int)((adr >> 16) & 0x0FFL));
-	outhex(fp, (unsigned int)((adr >> 8) & 0x0FFL));
-	outhex(fp, (unsigned int)(adr & 0x0FFL));
+  outhex (fp, (unsigned int) ((adr >> 16) & 0x0FFL));
+  outhex (fp, (unsigned int) ((adr >> 8) & 0x0FFL));
+  outhex (fp, (unsigned int) (adr & 0x0FFL));
 
-	/* data */
+  /* data */
 
-	for (i = 0; i < len; i++)
-		outhex(fp, (unsigned int)*buf++);
+  for (i = 0; i < len; i++)
+    outhex (fp, (unsigned int) *buf++);
 
-	outhex(fp, (~csum) & 0x0FFL);		/* checksum */
-	fprintf(fp, "\n");			/* CR/LF */
+  outhex (fp, (~csum) & 0x0FFL);	/* checksum */
+  fprintf (fp, "\n");		/* CR/LF */
 }
 
 /*  */
@@ -118,33 +118,37 @@ register char *buf;	/* buffer address of record */
 */
 
 VOID
-msrec(fp, recadr, len, rp)
-FILE *fp;		/* file pointer for output */
-register long recadr;	/* beginning address for S-records */
-register long len;	/* length of data in buffer */
-register char *rp;	/* buffer address */
+msrec (fp, recadr, len, rp)
+     FILE *fp;			/* file pointer for output */
+     register long recadr;	/* beginning address for S-records */
+     register long len;		/* length of data in buffer */
+     register char *rp;		/* buffer address */
 {
-	register int ilen;
+  register int ilen;
 
-	while (len) {	/* while there's data ... */
+  while (len)
+    {				/* while there's data ... */
 
-		if (len GE RECLEN) {	/* full record */
+      if (len GE RECLEN)
+	{			/* full record */
 
-			outrec(fp, recadr, RECLEN, rp);
-			len -= RECLEN;
-			rp += RECLEN;
-			recadr += RECLEN;
+	  outrec (fp, recadr, RECLEN, rp);
+	  len -= RECLEN;
+	  rp += RECLEN;
+	  recadr += RECLEN;
 
-		} else {		/* final short record */
-
-			ilen = len;
-			outrec(fp, recadr, ilen ,rp);
-			len = 0;
-
-		}
 	}
+      else
+	{			/* final short record */
 
-	fprintf(fp, "S904000000FB\n");	/* end of S-records */
+	  ilen = len;
+	  outrec (fp, recadr, ilen, rp);
+	  len = 0;
+
+	}
+    }
+
+  fprintf (fp, "S904000000FB\n");	/* end of S-records */
 }
 
 /*  */
@@ -157,21 +161,21 @@ register char *rp;	/* buffer address */
    ============================================================================
 */
 
-main()
+main ()
 {
-	printf("Test of msrec\nShort record of 16 bytes\n\n");
-	msrec(stdout, 0L, 16L, &hexdig);
+  printf ("Test of msrec\nShort record of 16 bytes\n\n");
+  msrec (stdout, 0L, 16L, &hexdig);
 
-	printf("\nRecord of 256 bytes\n\n");
-	msrec(stdout, 0x0FC0000L, 256L, (char *)0x0FC0000L);
+  printf ("\nRecord of 256 bytes\n\n");
+  msrec (stdout, 0x0FC0000L, 256L, (char *) 0x0FC0000L);
 
-	printf("\nRecord of 45 bytes\n\n");
-	msrec(stdout, 0x0FC0000L,  45L, (char *)0x0FC0000L);
+  printf ("\nRecord of 45 bytes\n\n");
+  msrec (stdout, 0x0FC0000L, 45L, (char *) 0x0FC0000L);
 
-	printf("\nEnd of test\n");
-	fclose(stdout);
+  printf ("\nEnd of test\n");
+  fclose (stdout);
 
-	exit(0);
+  exit (0);
 }
 
 #endif

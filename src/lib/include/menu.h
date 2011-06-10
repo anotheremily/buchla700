@@ -21,4 +21,3 @@
 #define	MENUPRI		8
 
 #define	MENUFL		(V_RES3)
-

@@ -7,9 +7,9 @@
 
 #include "varargs.h"
 
-extern long	dofmt_();
+extern long dofmt_ ();
 
-static char	*buff;
+static char *buff;
 
 /*
    =============================================================================
@@ -18,20 +18,20 @@ static char	*buff;
 */
 
 long
-sprintf(str, fmt, va_alist)
-char *str, *fmt;
-va_dcl
+sprintf (str, fmt, va_alist)
+     char *str, *fmt;
+     va_dcl
 {
-	int spsub();
+  int spsub ();
 
-	register long count;
-	va_list aptr;
+  register long count;
+  va_list aptr;
 
-	va_start(aptr);
-	buff = str;
-	count = dofmt_(spsub, fmt, aptr);
-	*buff = '\0';
-	return(count);
+  va_start (aptr);
+  buff = str;
+  count = dofmt_ (spsub, fmt, aptr);
+  *buff = '\0';
+  return (count);
 }
 
 /*
@@ -40,9 +40,8 @@ va_dcl
    =============================================================================
 */
 
-static
-int
-spsub(c)
+static int
+spsub (c)
 {
-	return((*buff++ = c) & 0xFF);
+  return ((*buff++ = c) & 0xFF);
 }

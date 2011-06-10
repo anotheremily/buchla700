@@ -31,19 +31,19 @@ typedef unsigned long ULONG;
 #define DOUBLE  double
 
 #define BOOL    int
-#define SUCC_FAIL   int 
+#define SUCC_FAIL   int
 
 #ifndef VOID
 #define VOID
 #endif
 
-#define STATIC  static      /* Names not needed outside this src module  */
+#define STATIC  static		/* Names not needed outside this src module  */
 
-#define LOCAL               /* Names not needed outside this software module */
-#define LCL_XTRN extern     /* Names defined within this software module */
+#define LOCAL			/* Names not needed outside this software module */
+#define LCL_XTRN extern		/* Names defined within this software module */
 
-#define PUBLIC              /* Names needed outside this software module */
-#define EXTERN  extern      /* Names defined outside this software module */
+#define PUBLIC			/* Names needed outside this software module */
+#define EXTERN  extern		/* Names defined outside this software module */
 
 #define TRUE    1
 #define FALSE   0
@@ -51,4 +51,4 @@ typedef unsigned long ULONG;
 #define SUCCESS 0
 #define FAIL    (-1)
 
-#endif PORTA_H
+#endif	/* PORTA_H */

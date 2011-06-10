@@ -82,51 +82,61 @@ static VOID list_parse ();
  *
  */
 
-static BOOLEAN match (string, pattern)
-register char *string;
-register char *pattern;
+static BOOLEAN
+match (string, pattern)
+     register char *string;
+     register char *pattern;
 {
-    register BOOLEAN ismatch;
+  register BOOLEAN ismatch;
 
-    ismatch = FALSE;
-    switch (*pattern) {
+  ismatch = FALSE;
+  switch (*pattern)
+    {
 
-	case ASTERISK:
-	    pattern++;
-	    do {
-		ismatch = match (string, pattern);
-	    } while (!ismatch && *string++ != EOS);
-	    break;
+    case ASTERISK:
+      pattern++;
+      do
+	{
+	  ismatch = match (string, pattern);
+	}
+      while (!ismatch && *string++ != EOS);
+      break;
 
-	case QUESTION:
-	    if (*string != EOS) {
-		ismatch = match (++string, ++pattern);
-	    }
-	    break;
+    case QUESTION:
+      if (*string != EOS)
+	{
+	  ismatch = match (++string, ++pattern);
+	}
+      break;
 
-	case EOS:
-	    if (*string == EOS) {
-		ismatch = TRUE;
-	    }
-	    break;
+    case EOS:
+      if (*string == EOS)
+	{
+	  ismatch = TRUE;
+	}
+      break;
 
-	case LEFT_BR:
-	    if (*string != EOS) {
-		ismatch = do_list (string, pattern);
-	    }
-	    break;
+    case LEFT_BR:
+      if (*string != EOS)
+	{
+	  ismatch = do_list (string, pattern);
+	}
+      break;
 
-	default:
-	    if (tolower(*string) == tolower(*pattern)) {
-	    	string++;
-	    	pattern++;
-		ismatch = match (string, pattern);
-	    } else {
-		ismatch = FALSE;
-	    }
-	    break;
+    default:
+      if (tolower (*string) == tolower (*pattern))
+	{
+	  string++;
+	  pattern++;
+	  ismatch = match (string, pattern);
+	}
+      else
+	{
+	  ismatch = FALSE;
+	}
+      break;
     }
-    return (ismatch);
+  return (ismatch);
 }
 
 /*  */
@@ -208,49 +218,62 @@ register char *pattern;
  *
  */
 
-static BOOLEAN do_list (string, pattern)
-register char *string;
-char *pattern;
+static BOOLEAN
+do_list (string, pattern)
+     register char *string;
+     char *pattern;
 {
-    register BOOLEAN ismatch;
-    register BOOLEAN if_found;
-    register BOOLEAN if_not_found;
-    auto char lower;
-    auto char upper;
+  register BOOLEAN ismatch;
+  register BOOLEAN if_found;
+  register BOOLEAN if_not_found;
+  auto char lower;
+  auto char upper;
 
-    pattern++;
+  pattern++;
 
-    if (*pattern == '!') {
-	if_found = FALSE;
-	if_not_found = TRUE;
-	pattern++;
-    } else {
-	if_found = TRUE;
-	if_not_found = FALSE;
+  if (*pattern == '!')
+    {
+      if_found = FALSE;
+      if_not_found = TRUE;
+      pattern++;
+    }
+  else
+    {
+      if_found = TRUE;
+      if_not_found = FALSE;
     }
 
-    ismatch = if_not_found;
+  ismatch = if_not_found;
 
-    while (*pattern != ']' && *pattern != EOS) {
-	list_parse (&pattern, &lower, &upper);
+  while (*pattern != ']' && *pattern != EOS)
+    {
+      list_parse (&pattern, &lower, &upper);
 
-	if (*string >= lower && *string <= upper) {
-	    ismatch = if_found;
+      if (*string >= lower && *string <= upper)
+	{
+	  ismatch = if_found;
 
-	    while (*pattern != ']' && *pattern != EOS) {pattern++;}
+	  while (*pattern != ']' && *pattern != EOS)
+	    {
+	      pattern++;
+	    }
 	}
     }
 
-    if (*pattern++ != ']') {
-	fprintf (stderr, "warning - character class error\n");
-    } else {
+  if (*pattern++ != ']')
+    {
+      fprintf (stderr, "warning - character class error\n");
+    }
+  else
+    {
 
-	if (ismatch) {
-	    ismatch = match (++string, pattern);
+      if (ismatch)
+	{
+	  ismatch = match (++string, pattern);
 	}
     }
 
-    return (ismatch);
+  return (ismatch);
 }
 
 /*  */
@@ -279,17 +302,21 @@ char *pattern;
  *
  */
 
-static VOID list_parse (patp, lowp, highp)
-char **patp;
-char *lowp;
-char *highp;
+static VOID
+list_parse (patp, lowp, highp)
+     char **patp;
+     char *lowp;
+     char *highp;
 {
-    *lowp = nextch (patp);
-    if (**patp == '-') {
-	(*patp)++;
-	*highp = nextch (patp);
-    } else {
-	*highp = *lowp;
+  *lowp = nextch (patp);
+  if (**patp == '-')
+    {
+      (*patp)++;
+      *highp = nextch (patp);
+    }
+  else
+    {
+      *highp = *lowp;
     }
 }
 
@@ -317,41 +344,46 @@ char *highp;
  *
  */
 
-static char nextch (patp)
-char **patp;
+static char
+nextch (patp)
+     char **patp;
 {
-    register char ch;
-    register char chsum;
-    register int count;
+  register char ch;
+  register char chsum;
+  register int count;
 
-    ch = *(*patp)++;
-    if (ch == '\\') {
-	ch = *(*patp)++;
-	if (IS_OCTAL (ch)) {
-	    chsum = 0;
-	    for (count = 0; count < 3 && IS_OCTAL (ch); count++) {
-		chsum *= 8;
-		chsum += ch - '0';
-		ch = *(*patp)++;
+  ch = *(*patp)++;
+  if (ch == '\\')
+    {
+      ch = *(*patp)++;
+      if (IS_OCTAL (ch))
+	{
+	  chsum = 0;
+	  for (count = 0; count < 3 && IS_OCTAL (ch); count++)
+	    {
+	      chsum *= 8;
+	      chsum += ch - '0';
+	      ch = *(*patp)++;
 	    }
-	    (*patp)--;
-	    ch = chsum;
+	  (*patp)--;
+	  ch = chsum;
 	}
     }
-    return (ch);
+  return (ch);
 }
 
 /*
  *	Filename match - here, *.* matches everything
  */
 
-BOOLEAN fmatch (string, pattern)
-char *string;
-char *pattern;
+BOOLEAN
+fmatch (string, pattern)
+     char *string;
+     char *pattern;
 {
-    char *ptr;
+  char *ptr;
 
-    if(*string && !strcmp(pattern, "*.*"))
-    	return(TRUE);
-    return(match(string, pattern));
+  if (*string && !strcmp (pattern, "*.*"))
+    return (TRUE);
+  return (match (string, pattern));
 }

@@ -9,12 +9,12 @@
 */
 
 char *
-memchr(sp, c, n)
-register char *sp, c;
-register int n;
+memchr (sp, c, n)
+     register char *sp, c;
+     register int n;
 {
-        while (--n >= 0)
-                if (*sp++ == c)
-                        return(--sp);
-        return((char *)0);
+  while (--n >= 0)
+    if (*sp++ == c)
+      return (--sp);
+  return ((char *) 0);
 }

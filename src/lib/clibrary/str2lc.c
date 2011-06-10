@@ -6,14 +6,14 @@
 */
 
 char *
-str2lc(s)
-register char *s;
+str2lc (s)
+     register char *s;
 {
-	register char c;
-	register char *r = s;
+  register char c;
+  register char *r = s;
 
-	while (c = *s)
-		*s++ = tolower(c);
+  while (c = *s)
+    *s++ = tolower (c);
 
-	return(r);
+  return (r);
 }

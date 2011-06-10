@@ -5,70 +5,74 @@
 #define TRUE	1
 #define FALSE	0
 
-struct basepage {
+struct basepage
+{
 
-	char *ltpa;
-	char *htpa;
-	char *lcode;
-	long codelen;
-	char *ldata;
-	long datalen;
-	char *lbss;
-	long bsslen;
-	char *dta;
-	char *parent;
-	long rsvd;
-	char *env;
+  char *ltpa;
+  char *htpa;
+  char *lcode;
+  long codelen;
+  char *ldata;
+  long datalen;
+  char *lbss;
+  long bsslen;
+  char *dta;
+  char *parent;
+  long rsvd;
+  char *env;
 };
 
 extern struct basepage *_BasePag;
 
 /* locate variable name in environment string */
 
-static
-char *
-findenv(s)
-char *s;
+static char *
+findenv (s)
+     char *s;
 {
-	char name[20];
-	char *p;
+  char name[20];
+  char *p;
 
-	if (s) {
+  if (s)
+    {
 
-		strcpy(name, s);
-		strcat(name, "=");
+      strcpy (name, s);
+      strcat (name, "=");
+    }
+
+  for (p = _BasePag->env; *p; p++)
+    {
+
+      if (s)
+	{
+
+	  if (strcmp (p, name) == 0)
+	    break;
 	}
 
-	for (p = _BasePag->env; *p; p++) {
+      while (*p)
+	p++;
+    }
 
-		if (s) {
-
-			if (strcmp(p, name) == 0)
-				break;
-		}
-
-		while (*p)
-			p++;
-	}
-
-	return(p);
+  return (p);
 }
 
 char *
-getenv(name)
-char *name;
+getenv (name)
+     char *name;
 {
-	char *p;
+  char *p;
 
-	p = findenv(name);
+  p = findenv (name);
 
-	if (*p) {
+  if (*p)
+    {
 
-		while (*p)
-			p++;
+      while (*p)
+	p++;
 
-		return(++p);
-	}
+      return (++p);
+    }
 
-	return(NULL);
+  return (NULL);
 }

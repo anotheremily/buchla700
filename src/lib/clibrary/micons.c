@@ -23,7 +23,7 @@
    =============================================================================
 */
 
-#define	TESTER	0	/* define non-zero for a test program */
+#define	TESTER	0		/* define non-zero for a test program */
 
 /*  */
 
@@ -34,10 +34,10 @@
 */
 
 short
-micons(wi)
-short wi;
+micons (wi)
+     short wi;
 {
-	return((short)( ((wi << 8) & 0xFF00) | ((wi >> 8) & 0x00FF) ) );
+  return ((short) (((wi << 8) & 0xFF00) | ((wi >> 8) & 0x00FF)));
 }
 
 /*
@@ -47,14 +47,14 @@ short wi;
 */
 
 int
-miconi(wi)
-int wi;
+miconi (wi)
+     int wi;
 {
-	if (sizeof (int) == 4)
-		return( ((wi << 24) & 0xFF000000L) | ((wi << 8) & 0x00FF0000L) |
-			((wi >> 8) & 0x0000FF00L) | ((wi >> 24) & 0x000000FFL) );
-	else
-		return(((wi << 8) & 0xFF00) | ((wi >> 8) & 0x00FF));
+  if (sizeof (int) == 4)
+    return (((wi << 24) & 0xFF000000L) | ((wi << 8) & 0x00FF0000L) |
+	    ((wi >> 8) & 0x0000FF00L) | ((wi >> 24) & 0x000000FFL));
+  else
+    return (((wi << 8) & 0xFF00) | ((wi >> 8) & 0x00FF));
 }
 
 /*
@@ -64,11 +64,11 @@ int wi;
 */
 
 long
-miconl(wi)
-long wi;
+miconl (wi)
+     long wi;
 {
-	return( ((wi << 24) & 0xFF000000L) | ((wi << 8) & 0x00FF0000L) |
-		((wi >> 8) & 0x0000FF00L) | ((wi >> 24) & 0x000000FFL) );
+  return (((wi << 24) & 0xFF000000L) | ((wi << 8) & 0x00FF0000L) |
+	  ((wi >> 8) & 0x0000FF00L) | ((wi >> 24) & 0x000000FFL));
 }
 
 /*  */
@@ -83,18 +83,16 @@ long wi;
    =============================================================================
 */
 
-main()
+main ()
 {
-	printf("micons(0x1234) returned 0x%04x\n", micons(0x1234));
+  printf ("micons(0x1234) returned 0x%04x\n", micons (0x1234));
 
-	if (sizeof (int) == 4)
-		printf("miconi(0x1234) returned 0x%04x\n", miconi(0x1234));
-	else
-		printf("miconi(0x12345678L) returned 0x%08lx\n",
-			miconi(0x12345678L));
+  if (sizeof (int) == 4)
+    printf ("miconi(0x1234) returned 0x%04x\n", miconi (0x1234));
+  else
+    printf ("miconi(0x12345678L) returned 0x%08lx\n", miconi (0x12345678L));
 
-	printf("miconl(0x12345678L) returned 0x%08lx\n",
-		miconl(0x12345678L));
+  printf ("miconl(0x12345678L) returned 0x%08lx\n", miconl (0x12345678L));
 }
 
 #endif

@@ -13,15 +13,16 @@
 
 extern int errno;		/* most recent error code */
 
-struct channel {
+struct channel
+{
 
-	char c_read;
-	char c_write;
-	char c_ioctl;
-	char c_seek;
-	int (*c_close)();
-	arg c_arg;
-} ;
+  char c_read;
+  char c_write;
+  char c_ioctl;
+  char c_seek;
+  int (*c_close) ();
+  arg c_arg;
+};
 
 struct channel chantab[MAXCHAN];
 
@@ -34,22 +35,23 @@ struct channel chantab[MAXCHAN];
 #define _EOF	0x08
 #define _IOERR	0x10
 
-typedef struct {
+typedef struct
+{
 
-	char	*_bp;		/* current position in buffer */
-	char	*_bend;		/* last character in buffer + 1 */
-	char	*_buff;		/* address of buffer */
-	char	_flags;		/* {_BUSY, _ALLBUF, _DIRTY, _EOF, _IOERR} */
-	char	_unit;		/* fd token returned by open */
-	char	_bytbuf;	/* single byte buffer for unbuffered streams */
-	char	_pad;		/* pad for alignment -- possibly use later */
-	int	_buflen;	/* length of buffer */
+  char *_bp;			/* current position in buffer */
+  char *_bend;			/* last character in buffer + 1 */
+  char *_buff;			/* address of buffer */
+  char _flags;			/* {_BUSY, _ALLBUF, _DIRTY, _EOF, _IOERR} */
+  char _unit;			/* fd token returned by open */
+  char _bytbuf;			/* single byte buffer for unbuffered streams */
+  char _pad;			/* pad for alignment -- possibly use later */
+  int _buflen;			/* length of buffer */
 
 } FILE;
 
-extern	FILE Cbuffs[NSTREAMS];		/* table of FILE structures */
-extern	char *Stdbufs;			/* free list of buffers */
-extern	long ftell();
+extern FILE Cbuffs[NSTREAMS];	/* table of FILE structures */
+extern char *Stdbufs;		/* free list of buffers */
+extern long ftell ();
 
 #define stdin (&Cbuffs[0])
 #define stdout (&Cbuffs[1])

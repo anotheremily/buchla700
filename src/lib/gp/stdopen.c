@@ -10,11 +10,11 @@
 #include "stdio.h"		/* standard I/O definitions */
 #include "stddefs.h"		/* standard C utility definitions */
 
-extern	char	*pgmname;	/* program name string pointer */
+extern char *pgmname;		/* program name string pointer */
 
-extern	short	(*errterm)();	/* program error termination exit function */
+extern short (*errterm) ();	/* program error termination exit function */
 
-extern	FILE	*(*opnfail)();	/* file open error function */
+extern FILE *(*opnfail) ();	/* file open error function */
 
 /*
    =============================================================================
@@ -23,28 +23,29 @@ extern	FILE	*(*opnfail)();	/* file open error function */
 */
 
 FILE *
-stdopen(name, mode)
-char *name, *mode;
+stdopen (name, mode)
+     char *name, *mode;
 {
-	FILE *fp;
+  FILE *fp;
 
-	if ((FILE *)NULL EQ (fp = fopen(name, mode))) {
+  if ((FILE *) NULL EQ (fp = fopen (name, mode)))
+    {
 
-		if (opnfail)
-			if ((FILE *)NULL NE (fp = (*opnfail)(name, mode)))
-				return(fp);
+      if (opnfail)
+	if ((FILE *) NULL NE (fp = (*opnfail) (name, mode)))
+	  return (fp);
 
-		fprintf(stderr, "%s: ERROR - Unable to open \"%s\" in mode \"%s\".\n",
-			name, mode);
+      fprintf (stderr, "%s: ERROR - Unable to open \"%s\" in mode \"%s\".\n",
+	       name, mode);
 
-		if (errterm)
-			(*errterm)();
+      if (errterm)
+	(*errterm) ();
 
-		fprintf(stderr, "%s: Program terminated due to I/O error.\n");
-		exit(1);
-	}
+      fprintf (stderr, "%s: Program terminated due to I/O error.\n");
+      exit (1);
+    }
 
-	return(fp);
+  return (fp);
 }
 
 /* 
@@ -59,28 +60,29 @@ char *name, *mode;
 */
 
 FILE *
-stdopna(name, mode)
-char *name, *mode;
+stdopna (name, mode)
+     char *name, *mode;
 {
-	FILE *fp;
+  FILE *fp;
 
-	if ((FILE *)NULL EQ (fp = fopena(name, mode))) {
+  if ((FILE *) NULL EQ (fp = fopena (name, mode)))
+    {
 
-		if (opnfail)
-			if ((FILE *)NULL NE (fp = (*opnfail)(name, mode)))
-				return(fp);
+      if (opnfail)
+	if ((FILE *) NULL NE (fp = (*opnfail) (name, mode)))
+	  return (fp);
 
-		fprintf(stderr, "%s: ERROR - Unable to open \"%s\" in mode \"%s\".\n",
-			name, mode);
+      fprintf (stderr, "%s: ERROR - Unable to open \"%s\" in mode \"%s\".\n",
+	       name, mode);
 
-		if (errterm)
-			(*errterm)();
+      if (errterm)
+	(*errterm) ();
 
-		fprintf(stderr, "%s: Program terminated due to I/O error.\n");
-		exit(1);
-	}
+      fprintf (stderr, "%s: Program terminated due to I/O error.\n");
+      exit (1);
+    }
 
-	return(fp);
+  return (fp);
 }
 
 #endif
@@ -97,28 +99,29 @@ char *name, *mode;
 */
 
 FILE *
-stdopnb(name, mode)
-char *name, *mode;
+stdopnb (name, mode)
+     char *name, *mode;
 {
-	FILE *fp;
+  FILE *fp;
 
-	if ((FILE *)NULL EQ (fp = fopenb(name, mode))) {
+  if ((FILE *) NULL EQ (fp = fopenb (name, mode)))
+    {
 
-		if (opnfail)
-			if ((FILE *)NULL NE (fp = (*opnfail)(name, mode)))
-				return(fp);
+      if (opnfail)
+	if ((FILE *) NULL NE (fp = (*opnfail) (name, mode)))
+	  return (fp);
 
-		fprintf(stderr, "%s: ERROR - Unable to open \"%s\" in mode \"%s\".\n",
-			name, mode);
+      fprintf (stderr, "%s: ERROR - Unable to open \"%s\" in mode \"%s\".\n",
+	       name, mode);
 
-		if (errterm)
-			(*errterm)();
+      if (errterm)
+	(*errterm) ();
 
-		fprintf(stderr, "%s: Program terminated due to I/O error.\n");
-		exit(1);
-	}
+      fprintf (stderr, "%s: Program terminated due to I/O error.\n");
+      exit (1);
+    }
 
-	return(fp);
+  return (fp);
 }
 
 #endif

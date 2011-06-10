@@ -5,7 +5,7 @@
    ============================================================================
 */
 
-extern	char	*rindex();
+extern char *rindex ();
 
 /*
    ============================================================================
@@ -19,17 +19,17 @@ extern	char	*rindex();
    ============================================================================
 */
 
-makefnm(dest, src, ext)
-char *dest, *src, *ext;
+makefnm (dest, src, ext)
+     char *dest, *src, *ext;
 {
-	register char *cp;
+  register char *cp;
 
-	strcpy(dest, src);		/* copy the root name string */
+  strcpy (dest, src);		/* copy the root name string */
 
-	cp = rindex(dest, '.');		/* search for '.' */
+  cp = rindex (dest, '.');	/* search for '.' */
 
-	if (cp != (char *)0L)		/* if it's got a '.' ... */
-		strcpy(cp, ext);	/* ... copy ext string over the '.' */
-	else
-		strcat(dest, ext);	/* ... otherwise, append ext string */
+  if (cp != (char *) 0L)	/* if it's got a '.' ... */
+    strcpy (cp, ext);		/* ... copy ext string over the '.' */
+  else
+    strcat (dest, ext);		/* ... otherwise, append ext string */
 }

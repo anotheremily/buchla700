@@ -15,7 +15,7 @@
    =============================================================================
 */
 
-extern	int	vputc();
+extern int vputc ();
 
 /*
    =============================================================================
@@ -23,12 +23,12 @@ extern	int	vputc();
    =============================================================================
 */
 
-vclrs(obase, row, col, nc, ch, atr)
-register unsigned int obase[];
-int row, col;
-register int nc;
-int ch, atr;
+vclrs (obase, row, col, nc, ch, atr)
+     register unsigned int obase[];
+     int row, col;
+     register int nc;
+     int ch, atr;
 {
-	while (nc--)
-		vputc(obase, row, col++, ch, atr);
+  while (nc--)
+    vputc (obase, row, col++, ch, atr);
 }

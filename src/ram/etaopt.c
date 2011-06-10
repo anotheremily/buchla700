@@ -14,16 +14,16 @@
 #include "midas.h"
 #include "asgdsp.h"
 
-extern	unsigned	*asgob;
+extern unsigned *asgob;
 
-extern	short	stcrow, stccol;
-extern	short	curmop;
+extern short stcrow, stccol;
+extern short curmop;
 
-extern	short	adbox[][8];
+extern short adbox[][8];
 
-extern	char	dspbuf[];
+extern char dspbuf[];
 
-extern	char	*gprep[];
+extern char *gprep[];
 
 /* 
 */
@@ -35,13 +35,13 @@ extern	char	*gprep[];
 */
 
 short
-et_aopt(n)
-short n;
+et_aopt (n)
+     short n;
 {
-	sprintf(ebuf, "%01.1d", curmop);
-	ebflag = TRUE;
+  sprintf (ebuf, "%01.1d", curmop);
+  ebflag = TRUE;
 
-	return(SUCCESS);
+  return (SUCCESS);
 }
 
 /*
@@ -51,22 +51,22 @@ short n;
 */
 
 short
-ef_aopt(n)
-short n;
+ef_aopt (n)
+     short n;
 {
-	register short tmpval;
+  register short tmpval;
 
-	ebuf[1] = '\0';			/* terminate the string in ebuf */
-	ebflag = FALSE;
+  ebuf[1] = '\0';		/* terminate the string in ebuf */
+  ebflag = FALSE;
 
-	tmpval = ebuf[0] - '0';
+  tmpval = ebuf[0] - '0';
 
-	if (tmpval GT 3)
-		return(FAILURE);
+  if (tmpval GT 3)
+    return (FAILURE);
 
-	curmop = tmpval;
-	modasg();
-	return(SUCCESS);
+  curmop = tmpval;
+  modasg ();
+  return (SUCCESS);
 }
 
 /* 
@@ -79,18 +79,18 @@ short n;
 */
 
 short
-rd_aopt(nn)
-short nn;
+rd_aopt (nn)
+     short nn;
 {
-	register short n;
+  register short n;
 
-	n = nn & 0xFF;
+  n = nn & 0xFF;
 
-	vbank(0);
-	vcputsv(asgob, 64, adbox[n][4], adbox[n][5],
-		adbox[n][6], adbox[n][7] + 9, gprep[curmop], 14);
+  vbank (0);
+  vcputsv (asgob, 64, adbox[n][4], adbox[n][5],
+	   adbox[n][6], adbox[n][7] + 9, gprep[curmop], 14);
 
-	return(SUCCESS);
+  return (SUCCESS);
 }
 
 /*
@@ -100,25 +100,24 @@ short nn;
 */
 
 short
-nd_aopt(nn, k)
-short nn;
-register short  k;
+nd_aopt (nn, k)
+     short nn;
+     register short k;
 {
-	register short n;
+  register short n;
 
-	if ((k < 1) OR (k > 2))
-		return(FAILURE);
+  if ((k < 1) OR (k > 2))
+    return (FAILURE);
 
-	n = nn & 0xFF;
-	ebuf[0] = k + '0';
-	ebuf[1] = '\0';
+  n = nn & 0xFF;
+  ebuf[0] = k + '0';
+  ebuf[1] = '\0';
 
-	dspbuf[0] = k + '0';
-	dspbuf[1] = '\0';
+  dspbuf[0] = k + '0';
+  dspbuf[1] = '\0';
 
-	vbank(0);
-	vcputsv(asgob, 64, AK_ENTRY, adbox[n][5], stcrow, stccol, dspbuf, 14);
+  vbank (0);
+  vcputsv (asgob, 64, AK_ENTRY, adbox[n][5], stcrow, stccol, dspbuf, 14);
 
-	return(SUCCESS);
+  return (SUCCESS);
 }
-

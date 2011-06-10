@@ -5,16 +5,17 @@
    =============================================================================
 */
 
-struct	Dirent	{
+struct Dirent
+{
 
-	char	name[8];
-	char	ext[3];
-	char	atrib;
-	char	res[10];
-	char	crtime[2];
-	char	crdate[2];
-	char	clus[2];
-	char	fsize[4];
+  char name[8];
+  char ext[3];
+  char atrib;
+  char res[10];
+  char crtime[2];
+  char crdate[2];
+  char clus[2];
+  char fsize[4];
 };
 
 /* attribute byte flags */

@@ -5,25 +5,25 @@
    =============================================================================
 */
 
-extern	int	CMinit(), CMstat();
-extern	int	CMchr(), CMuchr();
-extern	int	CMstr(), CMustr();
-extern	int	CMlong(), CMdig();
-extern	int	CMlist(), CMulist();
+extern int CMinit (), CMstat ();
+extern int CMchr (), CMuchr ();
+extern int CMstr (), CMustr ();
+extern int CMlong (), CMdig ();
+extern int CMlist (), CMulist ();
 
-extern	int	QQsw;
-extern	int	QQanch;
+extern int QQsw;
+extern int QQanch;
 
-extern	char	*QQin;
-extern	char	*QQip;
-extern	char	*QQop;
+extern char *QQin;
+extern char *QQip;
+extern char *QQop;
 
-extern	long	QQnum;
-extern	int	QQlnum;
-extern	char	QQchr;
-extern	char	QQdig;
+extern long QQnum;
+extern int QQlnum;
+extern char QQchr;
+extern char QQdig;
 
-extern	char	QQstr[];
+extern char QQstr[];
 
 #define	CM_CHR(c)	CMchr(c)
 #define	CM_UCHR(c)	CMuchr(c)

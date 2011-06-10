@@ -13,7 +13,7 @@
 #define MAXCHAN		11	/* maximum number of I/O channel fd's */
 #define MAXDFILE	8	/* maximum number of open DISK files */
 
-#define	BUFSIZL	256				/* buffer length -- longs */
+#define	BUFSIZL	256		/* buffer length -- longs */
 #define BUFSIZ	(sizeof (long) * BUFSIZL)	/* buffer length -- chars */
 
 #define	BPSEC		512	/* bytes per disk sector */
@@ -23,6 +23,6 @@
 #define	WDPSEC		256	/* words per sector */
 #define	MAXDIRNT	224	/* maximum number of directory entries */
 
-typedef	char	*io_arg;	/* must be big enough to contain a pointer */
+typedef char *io_arg;		/* must be big enough to contain a pointer */
 
 #endif

@@ -14,14 +14,14 @@
 #include "midas.h"
 #include "tundsp.h"
 
-extern	unsigned	*tunob;
+extern unsigned *tunob;
 
-extern	short	stcrow, stccol;
-extern	short	curtun, tunmod;
+extern short stcrow, stccol;
+extern short curtun, tunmod;
 
-extern	short	tdbox[][8];
+extern short tdbox[][8];
 
-extern	char	dspbuf[];
+extern char dspbuf[];
 
 /* 
 */
@@ -33,13 +33,13 @@ extern	char	dspbuf[];
 */
 
 short
-et_ttab(n)
-short n;
+et_ttab (n)
+     short n;
 {
-	sprintf(ebuf, "%d", curtun);
-	ebflag = TRUE;
+  sprintf (ebuf, "%d", curtun);
+  ebflag = TRUE;
 
-	return(SUCCESS);
+  return (SUCCESS);
 }
 
 /*
@@ -49,18 +49,18 @@ short n;
 */
 
 short
-ef_ttab(n)
-short n;
+ef_ttab (n)
+     short n;
 {
-	register short i, tmpval;
+  register short i, tmpval;
 
-	ebuf[1] = '\0';			/* terminate the string in ebuf */
-	ebflag = FALSE;
+  ebuf[1] = '\0';		/* terminate the string in ebuf */
+  ebflag = FALSE;
 
-	curtun = ebuf[0] - '0';
-	modtun();
-	settc(22, 54);
-	return(SUCCESS);
+  curtun = ebuf[0] - '0';
+  modtun ();
+  settc (22, 54);
+  return (SUCCESS);
 }
 
 /* 
@@ -73,19 +73,19 @@ short n;
 */
 
 short
-rd_ttab(nn)
-short nn;
+rd_ttab (nn)
+     short nn;
 {
-	register short n;
+  register short n;
 
-	n = nn & 0xFF;
-	sprintf(dspbuf, "%d", curtun);
+  n = nn & 0xFF;
+  sprintf (dspbuf, "%d", curtun);
 
-	vbank(0);
-	vcputsv(tunob, 64, (tunmod ? TDCHGD : tdbox[n][4]), tdbox[n][5],
-		24, 61, dspbuf, 14);
+  vbank (0);
+  vcputsv (tunob, 64, (tunmod ? TDCHGD : tdbox[n][4]), tdbox[n][5],
+	   24, 61, dspbuf, 14);
 
-	return(SUCCESS);
+  return (SUCCESS);
 }
 
 /*
@@ -95,22 +95,22 @@ short nn;
 */
 
 short
-nd_ttab(nn, k)
-short nn;
-register short  k;
+nd_ttab (nn, k)
+     short nn;
+     register short k;
 {
-	register short n;
+  register short n;
 
-	n = nn & 0xFF;
+  n = nn & 0xFF;
 
-	ebuf[0] = k + '0';
-	ebuf[1] = '\0';
+  ebuf[0] = k + '0';
+  ebuf[1] = '\0';
 
-	dspbuf[0] = k + '0';
-	dspbuf[1] = '\0';
+  dspbuf[0] = k + '0';
+  dspbuf[1] = '\0';
 
-	vbank(0);
-	vcputsv(tunob, 64, TDENTRY, tdbox[n][5], stcrow, stccol, dspbuf, 14);
+  vbank (0);
+  vcputsv (tunob, 64, TDENTRY, tdbox[n][5], stcrow, stccol, dspbuf, 14);
 
-	return(SUCCESS);
+  return (SUCCESS);
 }

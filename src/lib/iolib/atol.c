@@ -9,27 +9,30 @@
 #include "ctype.h"
 
 long
-atol(cp)
-register char *cp;
+atol (cp)
+     register char *cp;
 {
-	register long n;
-	register short sign;
+  register long n;
+  register short sign;
 
-	sign = 0;
+  sign = 0;
 
-	if (*cp EQ '-') {
+  if (*cp EQ '-')
+    {
 
-		++cp;
-		sign = 1;
+      ++cp;
+      sign = 1;
 
-	} else {
+    }
+  else
+    {
 
-		if (*cp EQ '+')
-		++cp;
-	}
+      if (*cp EQ '+')
+	++cp;
+    }
 
-	for (n = 0; isdigit(*cp); )
-		n = n * 10 + *cp++ - '0';
+  for (n = 0; isdigit (*cp);)
+    n = n * 10 + *cp++ - '0';
 
-	return(sign ? -n : n);
+  return (sign ? -n : n);
 }

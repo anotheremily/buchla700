@@ -9,17 +9,17 @@
 #include "stdio.h"
 #include "objdefs.h"
 
-#define	PROGID	"midas.abs"		/* MIDAS-VII program file name */
+#define	PROGID	"midas.abs"	/* MIDAS-VII program file name */
 
-extern	short	defect;			/* error code */
+extern short defect;		/* error code */
 
-extern	char	end, edata, etext;	/* loader symbols */
+extern char end, edata, etext;	/* loader symbols */
 
-extern	long	p_dlen;			/* size of data (from basepage) */
+extern long p_dlen;		/* size of data (from basepage) */
 
-extern	Lo_RAM();			/* lowest address loaded (lowram.s) */
+extern Lo_RAM ();		/* lowest address loaded (lowram.s) */
 
-extern	struct	EXFILE	mphead;		/* MIDAS-VII program header */
+extern struct EXFILE mphead;	/* MIDAS-VII program header */
 
 /* 
 */
@@ -31,75 +31,78 @@ extern	struct	EXFILE	mphead;		/* MIDAS-VII program header */
 */
 
 short
-dcopy()
+dcopy ()
 {
-	register FILE *fp;
-	register char *from;
-	register long wrtlen, loadlen, bsslen, txtlen;
+  register FILE *fp;
+  register char *from;
+  register long wrtlen, loadlen, bsslen, txtlen;
 
-	defect  = 0;				/* reset error word */
+  defect = 0;			/* reset error word */
 
-	txtlen  = (long)&etext - (long)&Lo_RAM;	/* calculate text length */
-	bsslen  = (long)&end   - (long)&edata;	/* calculate BSS length */
+  txtlen = (long) &etext - (long) &Lo_RAM;	/* calculate text length */
+  bsslen = (long) &end - (long) &edata;	/* calculate BSS length */
 
-	loadlen = (long)&edata - (long)&Lo_RAM;	/* calculate write length */
+  loadlen = (long) &edata - (long) &Lo_RAM;	/* calculate write length */
 
-	/* create the object file header */
+  /* create the object file header */
 
-	mphead.F_Magic  = F_R_C;		/* magic = contiguous file */
-	mphead.F_Text   = txtlen;		/* text length */
-	mphead.F_Data   = p_dlen;		/* data length */
-	mphead.F_BSS    = bsslen;		/* BSS length */
-	mphead.F_Symtab = 0L;			/* symbol table length */
-	mphead.F_Res1   = 0L;			/* reserved area #1 */
-	mphead.F_Res2   = &Lo_RAM;		/* text base */
-	mphead.F_Res3   = 0xFFFF;		/* flag word */
+  mphead.F_Magic = F_R_C;	/* magic = contiguous file */
+  mphead.F_Text = txtlen;	/* text length */
+  mphead.F_Data = p_dlen;	/* data length */
+  mphead.F_BSS = bsslen;	/* BSS length */
+  mphead.F_Symtab = 0L;		/* symbol table length */
+  mphead.F_Res1 = 0L;		/* reserved area #1 */
+  mphead.F_Res2 = &Lo_RAM;	/* text base */
+  mphead.F_Res3 = 0xFFFF;	/* flag word */
 
-	/* ***** initialize for a (possibly) new disk here ***** */
+  /* ***** initialize for a (possibly) new disk here ***** */
 
-	/* open MIDAS-VII object file for writing */
+  /* open MIDAS-VII object file for writing */
 
-	preio();	/* kill the LCD backlight */
+  preio ();			/* kill the LCD backlight */
 
-	if ((FILE *)NULL EQ (fp = fopenb(PROGID, "w"))) {
+  if ((FILE *) NULL EQ (fp = fopenb (PROGID, "w")))
+    {
 
-		defect = 1;		/* couldn't open file */
-		postio();		/* restore LCD backlight */
-		return(FAILURE);
-	}
+      defect = 1;		/* couldn't open file */
+      postio ();		/* restore LCD backlight */
+      return (FAILURE);
+    }
 
 /* 
 */
-	/* write program header to disk */
+  /* write program header to disk */
 
-	from = &mphead;
+  from = &mphead;
 
-	for (wrtlen = sizeof mphead; wrtlen--; )
-		if (EOF EQ putc(*from++, fp)) {
+  for (wrtlen = sizeof mphead; wrtlen--;)
+    if (EOF EQ putc (*from++, fp))
+      {
 
-			defect = 2;	/* couldn't write program header */
-			fclose(fp);
-			postio();	/* restore LCD backlight */
-			return(FAILURE);
-		}
+	defect = 2;		/* couldn't write program header */
+	fclose (fp);
+	postio ();		/* restore LCD backlight */
+	return (FAILURE);
+      }
 
-	/* write MIDAS-VII to disk */
+  /* write MIDAS-VII to disk */
 
-	from = &Lo_RAM;
+  from = &Lo_RAM;
 
-	for (wrtlen = loadlen; wrtlen--; )
-		if (EOF EQ putc(*from++, fp)) {
+  for (wrtlen = loadlen; wrtlen--;)
+    if (EOF EQ putc (*from++, fp))
+      {
 
-			defect = 3;	/* couldn't write program */
-			fclose(fp);
-			postio();	/* restore LCD backlight */
-			return(FAILURE);
-		}
+	defect = 3;		/* couldn't write program */
+	fclose (fp);
+	postio ();		/* restore LCD backlight */
+	return (FAILURE);
+      }
 
-	/* flush and close file */
+  /* flush and close file */
 
-	fflush(fp);
-	fclose(fp);
-	postio();	/* restore LCD backlight */
-	return(SUCCESS);
+  fflush (fp);
+  fclose (fp);
+  postio ();			/* restore LCD backlight */
+  return (SUCCESS);
 }

@@ -20,27 +20,27 @@
 #include "instdsp.h"
 
 #if	DEBUGIT
-extern	short	debugsw;
+extern short debugsw;
 #endif
 
-extern	short	advicur(), dec2fr(), dswin(), idvlbld(), ttcpos();
+extern short advicur (), dec2fr (), dswin (), idvlbld (), ttcpos ();
 
-extern	char	*fr2dec();
+extern char *fr2dec ();
 
-extern	unsigned	*instob;
+extern unsigned *instob;
 
-extern	short	stcrow, stccol, curvce, curfunc, idsrcsw;
-extern	short	vtcrow, vtccol, submenu;
+extern short stcrow, stccol, curvce, curfunc, idsrcsw;
+extern short vtcrow, vtccol, submenu;
 
-extern	short	idbox[][8];
+extern short idbox[][8];
 
-extern	char	dspbuf[];
+extern char dspbuf[];
 
-extern	char	*srctbl[];
+extern char *srctbl[];
 
-extern	struct	instpnt	*pntptr;
+extern struct instpnt *pntptr;
 
-extern	struct	instdef	vbufs[];
+extern struct instdef vbufs[];
 
 /* 
 */
@@ -52,35 +52,34 @@ extern	struct	instdef	vbufs[];
 */
 
 char *
-dsimlt(buf, src, mltval)
-char *buf;
-short src;
-register short mltval;
+dsimlt (buf, src, mltval)
+     char *buf;
+     short src;
+     register short mltval;
 {
-	char mltstr[5], mlttmp[5];
+  char mltstr[5], mlttmp[5];
 
-	fr2dec(mltval, mlttmp);		/* convert to ASCII from binary */
+  fr2dec (mltval, mlttmp);	/* convert to ASCII from binary */
 
-	mltstr[0] = mlttmp[3];		/* sign */
+  mltstr[0] = mlttmp[3];	/* sign */
 
-	if (mlttmp[0] EQ '0')		/* 1st digit & decimal point */
-		mltstr[1] = '.';
-	else
-		mltstr[1] = SP_1P;
+  if (mlttmp[0] EQ '0')		/* 1st digit & decimal point */
+    mltstr[1] = '.';
+  else
+    mltstr[1] = SP_1P;
 
-	mltstr[2] = mlttmp[1];		/* 2nd digit */
-	mltstr[3] = mlttmp[2];		/* 3rd digit */
-	mltstr[4] = '\0';		/* terminate the string */
+  mltstr[2] = mlttmp[1];	/* 2nd digit */
+  mltstr[3] = mlttmp[2];	/* 3rd digit */
+  mltstr[4] = '\0';		/* terminate the string */
 
-	sprintf(buf, "%7.7s %s", srctbl[src], mltstr);
+  sprintf (buf, "%7.7s %s", srctbl[src], mltstr);
 
 #if	DEBUGIT
-	if (debugsw)
-		printf("dsimlt($%08.8lX, %d, $%04.4X):  [%s]\n",
-			buf, src, mltval, buf);
+  if (debugsw)
+    printf ("dsimlt($%08.8lX, %d, $%04.4X):  [%s]\n", buf, src, mltval, buf);
 #endif
 
-	return(buf);
+  return (buf);
 }
 
 /* 
@@ -93,27 +92,27 @@ register short mltval;
 */
 
 short
-et_imlt(n)
-short n;
+et_imlt (n)
+     short n;
 {
-	register struct instdef *ip;
-	register struct idfnhdr *fp;
+  register struct instdef *ip;
+  register struct idfnhdr *fp;
 
-	ip = &vbufs[curvce];
-	fp = &ip->idhfnc[curfunc];
+  ip = &vbufs[curvce];
+  fp = &ip->idhfnc[curfunc];
 
-	ebuf[0] = '0' + fp->idfsrc;
-	fr2dec(fp->idfmlt, &ebuf[1]);
-	ebuf[5] = '\0';
+  ebuf[0] = '0' + fp->idfsrc;
+  fr2dec (fp->idfmlt, &ebuf[1]);
+  ebuf[5] = '\0';
 
-	ebflag = TRUE;
+  ebflag = TRUE;
 
 #if DEBUGIT
-	if (debugsw)
-		printf("et_imlt():  ebuf=[%s]\n", ebuf);
+  if (debugsw)
+    printf ("et_imlt():  ebuf=[%s]\n", ebuf);
 #endif
 
-	return(SUCCESS);
+  return (SUCCESS);
 }
 
 /* 
@@ -126,107 +125,118 @@ short n;
 */
 
 short
-ef_imlt(n)
-short n;
+ef_imlt (n)
+     short n;
 {
-	register short i, tmpval, srctmp;
-	register struct instdef *ip;
-	register struct idfnhdr *fp;
+  register short i, tmpval, srctmp;
+  register struct instdef *ip;
+  register struct idfnhdr *fp;
 
-	ip = &vbufs[curvce];
-	fp = &ip->idhfnc[curfunc];
+  ip = &vbufs[curvce];
+  fp = &ip->idhfnc[curfunc];
 
-	ebuf[5] = '\0';			/* terminate the string in ebuf */
-	ebflag = FALSE;
+  ebuf[5] = '\0';		/* terminate the string in ebuf */
+  ebflag = FALSE;
 
 #if DEBUGIT
-	if (debugsw)
-		printf("ef_imlt():  ebuf=[%s]\n", ebuf);
+  if (debugsw)
+    printf ("ef_imlt():  ebuf=[%s]\n", ebuf);
 #endif
 
 /* 
 */
-	if (idsrcsw) {			/* entering the source */
+  if (idsrcsw)
+    {				/* entering the source */
 
-		idsrcsw = FALSE;
-		submenu = FALSE;
+      idsrcsw = FALSE;
+      submenu = FALSE;
 
-		if (vtcrow EQ 22) {
+      if (vtcrow EQ 22)
+	{
 
-			/*  'PchW/HT', 'Pitch', 'Random', 'GPC/CV1' */
+	  /*  'PchW/HT', 'Pitch', 'Random', 'GPC/CV1' */
 
-			if (vtccol LT 24)
-				srctmp = SM_HTPW;
-			else if ((vtccol GT 24) AND (vtccol LT 28))
-				srctmp = SM_PTCH;
-			else if ((vtccol GT 28) AND (vtccol LT 32))
-				srctmp = SM_FREQ;
-			else if ((vtccol GT 32) AND (vtccol LT 40))
-				srctmp = SM_RAND;
-			else
-				srctmp = SM_CTL1;
+	  if (vtccol LT 24)
+	    srctmp = SM_HTPW;
+	  else if ((vtccol GT 24) AND (vtccol LT 28))
+	    srctmp = SM_PTCH;
+	  else if ((vtccol GT 28) AND (vtccol LT 32))
+	    srctmp = SM_FREQ;
+	  else if ((vtccol GT 32) AND (vtccol LT 40))
+	    srctmp = SM_RAND;
+	  else
+	    srctmp = SM_CTL1;
 
-		} else if (vtcrow EQ 23) {
+	}
+      else if (vtcrow EQ 23)
+	{
 
-			/* 'ModW/VT', 'Key Vel', 'Pedal 1' */
+	  /* 'ModW/VT', 'Key Vel', 'Pedal 1' */
 
-			if (vtccol LT 24)
-				srctmp = SM_VTMW;
-			else if ((vtccol GT 24) AND (vtccol LT 32)) 
-				srctmp = SM_KVEL;
-			else if ((vtccol GT 32) AND (vtccol LT 40))
-				srctmp = SM_PED1;
-			else
-				srctmp = SM_NONE;
+	  if (vtccol LT 24)
+	    srctmp = SM_VTMW;
+	  else if ((vtccol GT 24) AND (vtccol LT 32))
+	    srctmp = SM_KVEL;
+	  else if ((vtccol GT 32) AND (vtccol LT 40))
+	    srctmp = SM_PED1;
+	  else
+	    srctmp = SM_NONE;
 
-		} else {	/* must be row 24 */
+	}
+      else
+	{			/* must be row 24 */
 
-			/* 'PchW/LP', 'Key Prs' */
+	  /* 'PchW/LP', 'Key Prs' */
 
-			if (vtccol LT 24)
-				srctmp = SM_LPBR;
-			else if ((vtccol GT 24) AND (vtccol LT 32))
-				srctmp = SM_KPRS;
-			else
-				srctmp = SM_NONE;
-		}
+	  if (vtccol LT 24)
+	    srctmp = SM_LPBR;
+	  else if ((vtccol GT 24) AND (vtccol LT 32))
+	    srctmp = SM_KPRS;
+	  else
+	    srctmp = SM_NONE;
+	}
 
-		fp->idfsrc = srctmp;	/* set the source */
-		objclr(TTCPRI);		/* turn off the menu cursor */
-		idvlblc();		/* blank the menu area */
-		modinst();
-		dswin(22);		/* refresh the screen */
+      fp->idfsrc = srctmp;	/* set the source */
+      objclr (TTCPRI);		/* turn off the menu cursor */
+      idvlblc ();		/* blank the menu area */
+      modinst ();
+      dswin (22);		/* refresh the screen */
 /* 
 */
-	} else if (stccol LT 8) {	/* selecting the source */
+    }
+  else if (stccol LT 8)
+    {				/* selecting the source */
 
-		idsrcsw = TRUE;		/* set the select switch */
-		submenu = TRUE;
-		idvlbld();		/* load the menu area */
-		dswin(22);		/* refresh the screen */
-		SetPri(TTCURS, TTCPRI);	/* turn on the typewriter cursor */
-		ttcpos(22, 17);		/* position the typewriter cusor */
+      idsrcsw = TRUE;		/* set the select switch */
+      submenu = TRUE;
+      idvlbld ();		/* load the menu area */
+      dswin (22);		/* refresh the screen */
+      SetPri (TTCURS, TTCPRI);	/* turn on the typewriter cursor */
+      ttcpos (22, 17);		/* position the typewriter cusor */
 
-	} else if (stccol GT 8) {	/* entering the multiplier */
+    }
+  else if (stccol GT 8)
+    {				/* entering the multiplier */
 
-		tmpval = dec2fr(&ebuf[1]);
+      tmpval = dec2fr (&ebuf[1]);
 
-		if (tmpval EQ 0xFFFF)
-			return(FAILURE);
-		else
-			fp->idfmlt = tmpval;
+      if (tmpval EQ 0xFFFF)
+	return (FAILURE);
+      else
+	fp->idfmlt = tmpval;
 
-		modinst();
+      modinst ();
 
-	} else
-		return(FAILURE);
+    }
+  else
+    return (FAILURE);
 
 #if DEBUGIT
-	if (debugsw)
-		printf("ef_imlt():  SUCCESS\n");
+  if (debugsw)
+    printf ("ef_imlt():  SUCCESS\n");
 #endif
 
-	return(SUCCESS);
+  return (SUCCESS);
 }
 
 /* 
@@ -239,21 +249,21 @@ short n;
 */
 
 short
-rd_imlt(n)
-short n;
+rd_imlt (n)
+     short n;
 {
-	register struct instdef *ip;
-	register struct idfnhdr *fp;
+  register struct instdef *ip;
+  register struct idfnhdr *fp;
 
-	ip = &vbufs[curvce];
-	fp = &ip->idhfnc[curfunc];
+  ip = &vbufs[curvce];
+  fp = &ip->idhfnc[curfunc];
 
-	dsimlt(dspbuf, fp->idfsrc, fp->idfmlt);
+  dsimlt (dspbuf, fp->idfsrc, fp->idfmlt);
 
-	vcputsv(instob, 64, idbox[n][4], idbox[n][5],
-		idbox[n][6] + 1, idbox[n][7], dspbuf, 14);
+  vcputsv (instob, 64, idbox[n][4], idbox[n][5],
+	   idbox[n][6] + 1, idbox[n][7], dspbuf, 14);
 
-	return(SUCCESS);
+  return (SUCCESS);
 }
 
 /* 
@@ -266,84 +276,93 @@ short n;
 */
 
 short
-nd_imlt(n, k)
-short n;
-register short  k;
+nd_imlt (n, k)
+     short n;
+     register short k;
 {
-	register short ec;
+  register short ec;
 
-	if (idsrcsw)			/* not if the source menu is up */
-		return(FAILURE);
+  if (idsrcsw)			/* not if the source menu is up */
+    return (FAILURE);
 
-	if (stccol LT 9)		/* only in the multiplier field */
-		return(FAILURE);
+  if (stccol LT 9)		/* only in the multiplier field */
+    return (FAILURE);
 
-	ec = stccol - 9;		/* calculate edit buffer column */
+  ec = stccol - 9;		/* calculate edit buffer column */
 
-	switch (ec) {
+  switch (ec)
+    {
 
-	case 0:		/* sign position */
+    case 0:			/* sign position */
 
-		if (k EQ 8) {		/* - */
+      if (k EQ 8)
+	{			/* - */
 
-			ebuf[4] = '-';
-			dspbuf[0] = '-';	/* setup display buffer */
+	  ebuf[4] = '-';
+	  dspbuf[0] = '-';	/* setup display buffer */
 
-		} else if (k EQ 9) {	/* + */
-
-			ebuf[4] = '+';
-			dspbuf[0] = '+';	/* setup display buffer */
-
-		} else
-			return(FAILURE);
-
-		break;
-
-	case 1:		/* 1st digit position  (0 or 1) */
-
-		if (k EQ 0) {		/* '0' -> '.' */
-
-			ebuf[1] = '0';
-			dspbuf[0] = '.';	/* setup display buffer */
-
-		} else if (k EQ 1) {	/* '1' -> '1.' */
-
-			ebuf[1] = '1';
-			dspbuf[0] = SP_1P;	/* setup display buffer */
-
-		} else
-			return(FAILURE);
-
-		break;
-
-	case 2:		/* 2nd digit position */
-	case 3:		/* 3rd digit position */
-
-		ebuf[ec] = k + '0';
-		dspbuf[0] = k + '0';		/* setup display buffer */
-		break;
-
-	default:
-		return(FAILURE);
 	}
+      else if (k EQ 9)
+	{			/* + */
 
-	ebuf[5] = '\0';
-	dspbuf[1] = '\0';
+	  ebuf[4] = '+';
+	  dspbuf[0] = '+';	/* setup display buffer */
+
+	}
+      else
+	return (FAILURE);
+
+      break;
+
+    case 1:			/* 1st digit position  (0 or 1) */
+
+      if (k EQ 0)
+	{			/* '0' -> '.' */
+
+	  ebuf[1] = '0';
+	  dspbuf[0] = '.';	/* setup display buffer */
+
+	}
+      else if (k EQ 1)
+	{			/* '1' -> '1.' */
+
+	  ebuf[1] = '1';
+	  dspbuf[0] = SP_1P;	/* setup display buffer */
+
+	}
+      else
+	return (FAILURE);
+
+      break;
+
+    case 2:			/* 2nd digit position */
+    case 3:			/* 3rd digit position */
+
+      ebuf[ec] = k + '0';
+      dspbuf[0] = k + '0';	/* setup display buffer */
+      break;
+
+    default:
+      return (FAILURE);
+    }
+
+  ebuf[5] = '\0';
+  dspbuf[1] = '\0';
 
 #if	DEBUGIT
-	if (debugsw)
-		printf("nd_imlt(): OK - k=%d, ec=%d, ebuf=[%s]\n", k, ec, ebuf);
+  if (debugsw)
+    printf ("nd_imlt(): OK - k=%d, ec=%d, ebuf=[%s]\n", k, ec, ebuf);
 #endif
 
-	vbank(0);
+  vbank (0);
 
-	vcputsv(instob, 64, ID_ENTRY, idbox[n][5],
-		idbox[n][6] + 1, stccol, dspbuf, 14);
+  vcputsv (instob, 64, ID_ENTRY, idbox[n][5],
+	   idbox[n][6] + 1, stccol, dspbuf, 14);
 
-	if (ec EQ 4)
-		return(SUCCESS);
+  if (ec EQ 4)
+    return (SUCCESS);
 
-	advicur();
+  advicur ();
 
-	return(SUCCESS);
+  return (SUCCESS);
 }

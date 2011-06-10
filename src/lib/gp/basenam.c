@@ -31,7 +31,7 @@
 
 #define	FALSE		0
 
-#define	SWITCHAR	'\\'		/* TOS definition */
+#define	SWITCHAR	'\\'	/* TOS definition */
 #define	DRIVES		(c == ':')	/* TOS / MSDOS / PCDOS definition */
 
 /*  */
@@ -43,21 +43,22 @@
 */
 
 char *
-basenam(s)
-char *s;
+basenam (s)
+     char *s;
 {
-	register char *cp = s;
-	register char c;
+  register char *cp = s;
+  register char c;
 
-	while ('\0' != *s) {
+  while ('\0' != *s)
+    {
 
-		c = *s++;
+      c = *s++;
 
-		if ((c == SWITCHAR) || DRIVES)
-			cp = s;
-	}
+      if ((c == SWITCHAR) || DRIVES)
+	cp = s;
+    }
 
-	return(cp);
+  return (cp);
 }
 
 /*  */
@@ -66,27 +67,27 @@ char *s;
 
 #include "stdio.h"
 
-char *t[] = {		/* test cases for GEMDOS */
+char *t[] = {			/* test cases for GEMDOS */
 
-	"simple.one",
-	"c:more.doc",
-	"c:\\more",
-	"\\yet\\more.doc",
-	"another.1\\yet.more\\complex\\",
-	"and\\still.one\\more",
-	NULL
+  "simple.one",
+  "c:more.doc",
+  "c:\\more",
+  "\\yet\\more.doc",
+  "another.1\\yet.more\\complex\\",
+  "and\\still.one\\more",
+  NULL
 };
 
-main()
+main ()
 {
-	register int n = 0;
-	register char *p;
+  register int n = 0;
+  register char *p;
 
-	while (NULL != (p = t[n++]) )
-		printf("%s returned %s\n", p, basenam(p));
+  while (NULL != (p = t[n++]))
+    printf ("%s returned %s\n", p, basenam (p));
 
-	printf("Done.\n");
-	exit(0);
+  printf ("Done.\n");
+  exit (0);
 }
 
 #endif

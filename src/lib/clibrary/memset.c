@@ -9,14 +9,14 @@
 */
 
 char *
-memset(sp, c, n)
-register char *sp, c;
-register int n;
+memset (sp, c, n)
+     register char *sp, c;
+     register int n;
 {
-        register char *sp0 = sp;
+  register char *sp0 = sp;
 
-        while (--n >= 0)
-                *sp++ = c;
-		
-        return(sp0);
+  while (--n >= 0)
+    *sp++ = c;
+
+  return (sp0);
 }

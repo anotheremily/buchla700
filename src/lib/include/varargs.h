@@ -11,7 +11,7 @@
    =============================================================================
 */
 
-typedef	char	*va_list;
+typedef char *va_list;
 
 #define	va_dcl	int	va_alist;
 #define	va_start(list)	list = (char *) &va_alist

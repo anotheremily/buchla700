@@ -6,9 +6,8 @@
    =============================================================================
 */
 
-extern	struct	octent	v_obtab[];	/* object control table */
+extern struct octent v_obtab[];	/* object control table */
 
-extern	struct	octent	*v_curob;	/* working object control pointer */
-extern	int	v_nobj;			/* working object number */
-extern	int	v_obpri;		/* working object priority */
-
+extern struct octent *v_curob;	/* working object control pointer */
+extern int v_nobj;		/* working object number */
+extern int v_obpri;		/* working object priority */

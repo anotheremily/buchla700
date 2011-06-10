@@ -5,10 +5,10 @@
    =============================================================================
 */
 
-rename(old, new)
-char *old, *new;
+rename (old, new)
+     char *old, *new;
 {
-	char buff[60];
+  char buff[60];
 
-	return(-1);		/* return an error for now */
+  return (-1);			/* return an error for now */
 }

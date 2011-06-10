@@ -8,15 +8,15 @@
 */
 
 int
-strcmp(s1, s2)
-register char *s1, *s2;
+strcmp (s1, s2)
+     register char *s1, *s2;
 {
-	if(s1 == s2)
-		return(0);
+  if (s1 == s2)
+    return (0);
 
-	while(*s1 == *s2++)
-		if(*s1++ == '\0')
-			 return(0);
+  while (*s1 == *s2++)
+    if (*s1++ == '\0')
+      return (0);
 
-	return((int)*s1 - (int)*--s2);
+  return ((int) *s1 - (int) *--s2);
 }

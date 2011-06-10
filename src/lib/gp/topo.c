@@ -51,39 +51,41 @@
 */
 
 short
-topo(n, T, order)
-register short n;		/* input: number of tasks */
-register char *T;		/* input: precedence array, char T[n][n] */
-register short order[];		/* output: task order array*/
+topo (n, T, order)
+     register short n;		/* input: number of tasks */
+     register char *T;		/* input: precedence array, char T[n][n] */
+     register short order[];	/* output: task order array */
 {
-	register short count, j, k;
+  register short count, j, k;
 
-	count = 0;	/* initialize count of number of tasks done */
+  count = 0;			/* initialize count of number of tasks done */
 
 look:
-	k = 0;
+  k = 0;
 
-	do {
+  do
+    {
 
-		/* look for an unconstrained task */
+      /* look for an unconstrained task */
 
-		for (j = 0; j < n; j++)
-			if (T[(j * n) + k])	/* if any bit is set */
-				goto haspred;	/* ... it's constrained */
+      for (j = 0; j < n; j++)
+	if (T[(j * n) + k])	/* if any bit is set */
+	  goto haspred;		/* ... it's constrained */
 
-		order[count++] = k;		/* log the task */
-		T[(k * n) + k]   = 1;		/* mark the task complete */
+      order[count++] = k;	/* log the task */
+      T[(k * n) + k] = 1;	/* mark the task complete */
 
-		for (j = 0; j < n; j++)		/* trigger its successors */
-			T[(k * n) + j] = 0;
+      for (j = 0; j < n; j++)	/* trigger its successors */
+	T[(k * n) + j] = 0;
 
-		goto look;			/* look for another task */
+      goto look;		/* look for another task */
 
-haspred:
-	} while (++k LE n);
+    haspred:
+    }
+  while (++k LE n);
 
-	if (count EQ n)				/* see if all are done */
-		return(SUCCESS);
-	else
-		return(FAILURE);
+  if (count EQ n)		/* see if all are done */
+    return (SUCCESS);
+  else
+    return (FAILURE);
 }

@@ -5,7 +5,7 @@
    ============================================================================
 */
 
-#define	_FS_DEF_	/* define so that stdio.h and io.h get things right */
+#define	_FS_DEF_		/* define so that stdio.h and io.h get things right */
 
 #include "biosdefs.h"
 #include "errno.h"
@@ -13,32 +13,32 @@
 #include "stdio.h"
 #include "stddefs.h"
 
-extern	int	_bpbin, _dirin, _fatin, _dirmod, _fatmod;
+extern int _bpbin, _dirin, _fatin, _dirmod, _fatmod;
 
-int	_badfd(), _noper();
+int _badfd (), _noper ();
 
-char	*Stdbufs;			/* buffer chain pointer */
+char *Stdbufs;			/* buffer chain pointer */
 
-char	Wrkbuf[BPSEC];			/* sector work buffer */
+char Wrkbuf[BPSEC];		/* sector work buffer */
 
-long	Stdbuf[MAXDFILE][BUFSIZL];	/* standard buffers */
+long Stdbuf[MAXDFILE][BUFSIZL];	/* standard buffers */
 
-FILE Cbuffs[NSTREAMS];			/* stream file control table */
+FILE Cbuffs[NSTREAMS];		/* stream file control table */
 
-struct fcb _fcbtab[MAXDFILE];		/* fcb table */
+struct fcb _fcbtab[MAXDFILE];	/* fcb table */
 
-struct channel  chantab[MAXCHAN];	/* channel table:  relates fd's to devices */
+struct channel chantab[MAXCHAN];	/* channel table:  relates fd's to devices */
 
 #if	TBUFFER
 
 /* WARNING:  this ONLY works for 512 byte sectors, 9 sectors per track */
 
-short	_b_tbuf[9][256];	/* the track buffer */
+short _b_tbuf[9][256];		/* the track buffer */
 
-short	_b_trak;		/* current track */
-short	_b_side;		/* current side */
-short	_b_sect;		/* current sector */
-short	_b_tsec;		/* current base sector of current track */
+short _b_trak;			/* current track */
+short _b_side;			/* current side */
+short _b_sect;			/* current sector */
+short _b_tsec;			/* current base sector of current track */
 
 #endif
 
@@ -52,10 +52,10 @@ short	_b_tsec;		/* current base sector of current track */
 */
 
 int
-_badfd()
+_badfd ()
 {
-	errno = EBADF;		/* set bad fd code */
-	return(FAILURE);	/* return with an error indication */
+  errno = EBADF;		/* set bad fd code */
+  return (FAILURE);		/* return with an error indication */
 }
 
 /*
@@ -65,9 +65,9 @@ _badfd()
 */
 
 int
-_noper()
+_noper ()
 {
-	return(SUCCESS);	/* return with a non-error indication */
+  return (SUCCESS);		/* return with a non-error indication */
 }
 
 /* 
@@ -79,18 +79,18 @@ _noper()
    ============================================================================
 */
 
-InitCH(cp, rdi, wri, ioi, ski, cfp, charg)
-register struct channel *cp;
-char rdi, wri, ioi, ski;
-int (*cfp)();
-io_arg charg;
+InitCH (cp, rdi, wri, ioi, ski, cfp, charg)
+     register struct channel *cp;
+     char rdi, wri, ioi, ski;
+     int (*cfp) ();
+     io_arg charg;
 {
-	cp->c_read  = rdi;
-	cp->c_write = wri;
-	cp->c_ioctl = ioi;
-	cp->c_seek  = ski;
-	cp->c_close = cfp;
-	cp->c_arg   = charg;
+  cp->c_read = rdi;
+  cp->c_write = wri;
+  cp->c_ioctl = ioi;
+  cp->c_seek = ski;
+  cp->c_close = cfp;
+  cp->c_arg = charg;
 }
 
 /*
@@ -99,19 +99,19 @@ io_arg charg;
    ============================================================================
 */
 
-Init_CB(fp, flags, unit, bufad, bufsize)
-register FILE *fp;
-char unit, flags;
-long *bufad;
-int bufsize;
+Init_CB (fp, flags, unit, bufad, bufsize)
+     register FILE *fp;
+     char unit, flags;
+     long *bufad;
+     int bufsize;
 {
-	fp->_bp     = (char *)0L;
-	fp->_bend   = (char *)0L;
-	fp->_buff   = (char *)bufad;
-	fp->_flags  = flags;
-	fp->_unit   = unit;
-	fp->_bytbuf = 0;
-	fp->_buflen = bufsize;
+  fp->_bp = (char *) 0L;
+  fp->_bend = (char *) 0L;
+  fp->_buff = (char *) bufad;
+  fp->_flags = flags;
+  fp->_unit = unit;
+  fp->_bytbuf = 0;
+  fp->_buflen = bufsize;
 };
 
 /* 
@@ -123,42 +123,42 @@ int bufsize;
    ============================================================================
 */
 
-InitFS()
+InitFS ()
 {
-	register int i;
+  register int i;
 
-	memset(_fcbtab, 0, sizeof _fcbtab);		/* clear fcb table */
-	memsetw(Stdbuf, 0, sizeof Stdbuf / 2);		/* clear buffers */
+  memset (_fcbtab, 0, sizeof _fcbtab);	/* clear fcb table */
+  memsetw (Stdbuf, 0, sizeof Stdbuf / 2);	/* clear buffers */
 
-	Init_CB(stdin,  _BUSY, 0, (char *)0L, BUFSIZ);	/* stdin */
-	Init_CB(stdout, _BUSY, 1, (char *)0L, 1);	/* stdout */ 
-	Init_CB(stderr, _BUSY, 2, (char *)0L, 1);	/* stderr */
+  Init_CB (stdin, _BUSY, 0, (char *) 0L, BUFSIZ);	/* stdin */
+  Init_CB (stdout, _BUSY, 1, (char *) 0L, 1);	/* stdout */
+  Init_CB (stderr, _BUSY, 2, (char *) 0L, 1);	/* stderr */
 
-	for (i = 3; i < NSTREAMS; i++)
-		Init_CB(&Cbuffs[i], 0, 0, (char *)0L, 0);
+  for (i = 3; i < NSTREAMS; i++)
+    Init_CB (&Cbuffs[i], 0, 0, (char *) 0L, 0);
 
-	Stdbuf[0][0] = 0L;		/* initialize the buffer list */
+  Stdbuf[0][0] = 0L;		/* initialize the buffer list */
 
-	for (i = 1; i < MAXDFILE; i++)
-		Stdbuf[i][0] = (long)Stdbuf[i-1];
+  for (i = 1; i < MAXDFILE; i++)
+    Stdbuf[i][0] = (long) Stdbuf[i - 1];
 
-	Stdbufs = Stdbuf[MAXDFILE-1];
+  Stdbufs = Stdbuf[MAXDFILE - 1];
 
-	InitCH(&chantab[0], 2, 0, 1, 0, _noper, (io_arg)CON_DEV );	/*  0 - stdin  */
-	InitCH(&chantab[1], 0, 2, 1, 0, _noper, (io_arg)CON_DEV );	/*  1 - stdout */
-	InitCH(&chantab[2], 0, 2, 1, 0, _noper, (io_arg)CON_DEV );	/*  2 - stderr */
+  InitCH (&chantab[0], 2, 0, 1, 0, _noper, (io_arg) CON_DEV);	/*  0 - stdin  */
+  InitCH (&chantab[1], 0, 2, 1, 0, _noper, (io_arg) CON_DEV);	/*  1 - stdout */
+  InitCH (&chantab[2], 0, 2, 1, 0, _noper, (io_arg) CON_DEV);	/*  2 - stderr */
 
-	for (i = 3; i < MAXCHAN; i++)	/*  3..MAXCHAN-1 - not preassigned */
-		InitCH(&chantab[i], 0, 0, 0, 0, _badfd, (io_arg)0L );
+  for (i = 3; i < MAXCHAN; i++)	/*  3..MAXCHAN-1 - not preassigned */
+    InitCH (&chantab[i], 0, 0, 0, 0, _badfd, (io_arg) 0L);
 
-	_bpbin  = FALSE;	/* BPB isn't in memory */
-	_dirin  = FALSE;	/* directory isn't in memory */
-	_fatin  = FALSE;	/* FAT isn't in memory */
-	_fatmod = FALSE;	/* FAT hasn't been changed */
-	_dirmod = FALSE;	/* directory hasn't been changed */
+  _bpbin = FALSE;		/* BPB isn't in memory */
+  _dirin = FALSE;		/* directory isn't in memory */
+  _fatin = FALSE;		/* FAT isn't in memory */
+  _fatmod = FALSE;		/* FAT hasn't been changed */
+  _dirmod = FALSE;		/* directory hasn't been changed */
 
 #if	TBUFFER
-	_b_trak = -1;		/* no track in the buffer */
-	_b_side = -1;		/* ... */
+  _b_trak = -1;			/* no track in the buffer */
+  _b_side = -1;			/* ... */
 #endif
 }

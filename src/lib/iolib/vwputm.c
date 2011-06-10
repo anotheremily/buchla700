@@ -17,7 +17,7 @@
 
 #include <vsdd.h>
 
-extern	int	vwputs();
+extern int vwputs ();
 
 /*
    =============================================================================
@@ -25,14 +25,14 @@ extern	int	vwputs();
    =============================================================================
 */
 
-vwputm(obase, nw, fg, bg, row, col, ml)
-unsigned int *obase;
-int nw, fg, bg, row, col;
-register char *ml[];
+vwputm (obase, nw, fg, bg, row, col, ml)
+     unsigned int *obase;
+     int nw, fg, bg, row, col;
+     register char *ml[];
 {
-	while (*ml) {
+  while (*ml)
+    {
 
-		vwputs(obase, nw, fg, bg, row++, col, *ml++);
-	}
+      vwputs (obase, nw, fg, bg, row++, col, *ml++);
+    }
 }
-	

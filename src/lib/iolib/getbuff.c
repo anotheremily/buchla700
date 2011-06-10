@@ -8,30 +8,34 @@
 #include "stdio.h"
 #include "stddefs.h"
 
-getbuff(ptr)
-register FILE *ptr;
+getbuff (ptr)
+     register FILE *ptr;
 {
-	char *buffer;
+  char *buffer;
 
-	if (ptr->_buflen EQ 1) {	/* see if we want the small buffer */
+  if (ptr->_buflen EQ 1)
+    {				/* see if we want the small buffer */
 
-		ptr->_buff = &ptr->_bytbuf;
-		return;
-	}
+      ptr->_buff = &ptr->_bytbuf;
+      return;
+    }
 
-	if (Stdbufs) {		/* see if we have any standard buffers left */
+  if (Stdbufs)
+    {				/* see if we have any standard buffers left */
 
-		buffer = (char *)Stdbufs;
-		Stdbufs = *(long **)Stdbufs;
+      buffer = (char *) Stdbufs;
+      Stdbufs = *(long **) Stdbufs;
 
-	} else {		/* ... if not, use the small one */
+    }
+  else
+    {				/* ... if not, use the small one */
 
-		ptr->_buff = &ptr->_bytbuf;
-		ptr->_buflen = 1;
-		return;
-	}
+      ptr->_buff = &ptr->_bytbuf;
+      ptr->_buflen = 1;
+      return;
+    }
 
-	ptr->_flags |= _ALLBUF;		/* say we allocated a standard buffer */
-	ptr->_buff = buffer;
-	return;
+  ptr->_flags |= _ALLBUF;	/* say we allocated a standard buffer */
+  ptr->_buff = buffer;
+  return;
 }

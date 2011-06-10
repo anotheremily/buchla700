@@ -11,9 +11,9 @@
 #include "mtdefs.h"
 #include "debug.h"
 
-extern	short	setipl();		/* set processor IPL function */
+extern short setipl ();		/* set processor IPL function */
 
-extern	struct _mt_def	*_MT_;
+extern struct _mt_def *_MT_;
 
 /*
    =============================================================================
@@ -21,17 +21,17 @@ extern	struct _mt_def	*_MT_;
    =============================================================================
 */
 
-SMInit(psem, n)
-SEM *psem;
-long n;
+SMInit (psem, n)
+     SEM *psem;
+     long n;
 {
-	register short oldipl;
+  register short oldipl;
 
-	oldipl = setipl(7);		/* DISABLE INTERRUPTS */
+  oldipl = setipl (7);		/* DISABLE INTERRUPTS */
 
-	*psem = (SEM)((n << 1) | 1L);	/* set the semaphore counter */
+  *psem = (SEM) ((n << 1) | 1L);	/* set the semaphore counter */
 
-	setipl(oldipl);			/* RESTORE INTERRUPTS */
+  setipl (oldipl);		/* RESTORE INTERRUPTS */
 }
 
 /* 
@@ -48,34 +48,37 @@ long n;
 */
 
 short
-SMStat(psem)
-SEM *psem;
+SMStat (psem)
+     SEM *psem;
 {
-	register short oldipl, rv;
-	register long semval;
+  register short oldipl, rv;
+  register long semval;
 
-	oldipl = setipl(7);		/* DISABLE INTERRUPTS */
+  oldipl = setipl (7);		/* DISABLE INTERRUPTS */
 
-	semval = (long)*psem;		/* get semaphore value */
+  semval = (long) *psem;	/* get semaphore value */
 
-	setipl(oldipl);			/* RESTORE INTERRUPTS */
+  setipl (oldipl);		/* RESTORE INTERRUPTS */
 
-	if (semval & 1L) {		/* in use as a counter ? */
+  if (semval & 1L)
+    {				/* in use as a counter ? */
 
-		if (semval & ~1L)
-			rv = 1;		/* signalled */
-		else
-			rv = 0;		/* not signalled */
+      if (semval & ~1L)
+	rv = 1;			/* signalled */
+      else
+	rv = 0;			/* not signalled */
 
-	} else {			/* ... used as a pointer */
+    }
+  else
+    {				/* ... used as a pointer */
 
-		if (semval & ~1L)
-			rv = -1;	/* awaited */
-		else
-			rv = 0;		/* not signalled */
-	}
+      if (semval & ~1L)
+	rv = -1;		/* awaited */
+      else
+	rv = 0;			/* not signalled */
+    }
 
-	return(rv);			/* return semaphore status */
+  return (rv);			/* return semaphore status */
 }
 
 /* 
@@ -87,75 +90,83 @@ SEM *psem;
    =============================================================================
 */
 
-SMSig(psem)
-SEM *psem;
+SMSig (psem)
+     SEM *psem;
 {
-	register TCB *rcur, *rprv, *tcp;
-	register short oldipl;
-	register long semval;
-	register unsigned rpri;
+  register TCB *rcur, *rprv, *tcp;
+  register short oldipl;
+  register long semval;
+  register unsigned rpri;
 
-	DB_ENTR("SMSig");
+  DB_ENTR ("SMSig");
 
-	if ((struct _mt_def *)NIL EQ _MT_)
-		_MT_ = (struct _mt_def *)XBIOS(X_MTDEFS);
+  if ((struct _mt_def *) NIL EQ _MT_)
+    _MT_ = (struct _mt_def *) XBIOS (X_MTDEFS);
 
-	oldipl = setipl(7);		/* DISABLE INTERRUPTS */
+  oldipl = setipl (7);		/* DISABLE INTERRUPTS */
 
-	semval = (long)*psem;		/* get semaphore value */
+  semval = (long) *psem;	/* get semaphore value */
 
-	if (semval & 1L) {		/* is it a count ?  (LSB EQ 1) */
+  if (semval & 1L)
+    {				/* is it a count ?  (LSB EQ 1) */
 
-		if (~1L NE (semval & ~1L))	/* check for overflow */
-			semval += 2L;		/* update the counter */
+      if (~1L NE (semval & ~1L))	/* check for overflow */
+	semval += 2L;		/* update the counter */
 
-	} else {			/* ... it may be a queue  (LSB EQ 0) */
+    }
+  else
+    {				/* ... it may be a queue  (LSB EQ 0) */
 
 /* 
 */
-chksem:
-		if (semval) {		/* is there something in the queue ? */
+    chksem:
+      if (semval)
+	{			/* is there something in the queue ? */
 
-			tcp = (TCB *)semval;	/* extract TCB address */
-			semval = tcp->next;	/* point to next TCB in queue */
-			tcp->next = (TCB *)0L;	/* clear NEXT of TCB */
-			tcp->flags &= ~MTF_SWT;	/* turn off 'wait' bit */
+	  tcp = (TCB *) semval;	/* extract TCB address */
+	  semval = tcp->next;	/* point to next TCB in queue */
+	  tcp->next = (TCB *) 0L;	/* clear NEXT of TCB */
+	  tcp->flags &= ~MTF_SWT;	/* turn off 'wait' bit */
 
-			if (tcp->flags & MTF_STP) {	/* 'stop' bit set ? */
+	  if (tcp->flags & MTF_STP)
+	    {			/* 'stop' bit set ? */
 
-				tcp->flags &= ~MTF_STP;	/* clear 'stop' bit */
-				goto chksem;	/* try for another task */
-			}
+	      tcp->flags &= ~MTF_STP;	/* clear 'stop' bit */
+	      goto chksem;	/* try for another task */
+	    }
 
-			rpri = tcp->pri;	/* get priority of task to be enqueued */
-			rcur = (TCB *)&_MT_->mtp->RdyQ;	/* point at ready queue */
+	  rpri = tcp->pri;	/* get priority of task to be enqueued */
+	  rcur = (TCB *) & _MT_->mtp->RdyQ;	/* point at ready queue */
 
-			while (TRUE) {
+	  while (TRUE)
+	    {
 
-				rprv = rcur;		/* previous TCB = current TCB */
-				rcur = rprv->next;	/* current TCB = next TCB */
+	      rprv = rcur;	/* previous TCB = current TCB */
+	      rcur = rprv->next;	/* current TCB = next TCB */
 
-				if (rcur EQ (TCB *)NIL)	/* enqueue here if next was NIL */
-					break;
+	      if (rcur EQ (TCB *) NIL)	/* enqueue here if next was NIL */
+		break;
 
-				if (rpri > rcur->pri)	/* enqueue here if priority is greater */
-					break;
-			}
+	      if (rpri > rcur->pri)	/* enqueue here if priority is greater */
+		break;
+	    }
 
-			rprv->next = tcp;		/* set next of previous TCB to new TCB */
-			tcp->next = rcur;		/* set next of new TCB to old next */
-			tcp->flags |= MTF_RDY;		/* set the ready flag in the new TCB */
+	  rprv->next = tcp;	/* set next of previous TCB to new TCB */
+	  tcp->next = rcur;	/* set next of new TCB to old next */
+	  tcp->flags |= MTF_RDY;	/* set the ready flag in the new TCB */
 
-		} else {		/* ... queue empty, treat as a counter */
-
-			semval = 3L;	/* set the counter to 1 */
-		}
 	}
+      else
+	{			/* ... queue empty, treat as a counter */
 
-	*psem = (SEM)semval;		/* update the semaphore */
+	  semval = 3L;		/* set the counter to 1 */
+	}
+    }
 
-	setipl(oldipl);			/* RESTORE INTERRUPTS */
-	DB_EXIT("SMSig");
+  *psem = (SEM) semval;		/* update the semaphore */
+
+  setipl (oldipl);		/* RESTORE INTERRUPTS */
+  DB_EXIT ("SMSig");
 }
 
 /* 
@@ -167,52 +178,54 @@ chksem:
    =============================================================================
 */
 
-SMWait(psem)
-register SEM *psem;
+SMWait (psem)
+     register SEM *psem;
 {
-	register short oldipl;
-	register long semval;
-	register TCB *ptcb, *tcp;
+  register short oldipl;
+  register long semval;
+  register TCB *ptcb, *tcp;
 
-	DB_ENTR("SMWait");
+  DB_ENTR ("SMWait");
 
-	if ((struct _mt_def *)NIL EQ _MT_)
-		_MT_ = (struct _mt_def *)XBIOS(X_MTDEFS);
+  if ((struct _mt_def *) NIL EQ _MT_)
+    _MT_ = (struct _mt_def *) XBIOS (X_MTDEFS);
 
-	oldipl = setipl(7);			/* DISABLE INTERRUPTS */
+  oldipl = setipl (7);		/* DISABLE INTERRUPTS */
 
-	semval = (long)*psem;			/* get semaphore value */
+  semval = (long) *psem;	/* get semaphore value */
 
-	if (semval & 1L) {			/* is it a count ?  (LSB EQ 1) */
+  if (semval & 1L)
+    {				/* is it a count ?  (LSB EQ 1) */
 
-		if (semval & ~1L) {		/* is count non-zero ? */
+      if (semval & ~1L)
+	{			/* is count non-zero ? */
 
-			semval -= 2L;		/* decrement count */
-			*psem = (SEM)semval;	/* update semaphore */
+	  semval -= 2L;		/* decrement count */
+	  *psem = (SEM) semval;	/* update semaphore */
 
-			setipl(oldipl);		/* RESTORE INTERRUPTS */
+	  setipl (oldipl);	/* RESTORE INTERRUPTS */
 
-			DB_EXIT("SMWait - semaphore non-zero");
-			return;			/* return -- we got a signal */
+	  DB_EXIT ("SMWait - semaphore non-zero");
+	  return;		/* return -- we got a signal */
 
-		}
-
-		*psem  = 0L;			/* clear the semaphore */
 	}
-	
-	ptcb = _MT_->mtp->CurP;			/* point at current tcb */
-	tcp  = (TCB *)*psem;			/* point at head of SEM queue */
 
-	while (tcp->next)			/* find end of queue */
-		tcp = tcp->next;
+      *psem = 0L;		/* clear the semaphore */
+    }
 
-	tcp->next = ptcb;			/* add TCB to queue */
-	ptcb->next = (TCB *)0L;			/* ... */
-	ptcb->flags |= MTF_SWT;			/* indicate TCB is waiting */
-	MTNext();				/* swap tasks */
-	setipl(oldipl);				/* RESTORE INTERRUPTS */
-	DB_EXIT("SMWait - signalled - 1");
-	return;					/* return  (we got a signal) */
+  ptcb = _MT_->mtp->CurP;	/* point at current tcb */
+  tcp = (TCB *) * psem;		/* point at head of SEM queue */
+
+  while (tcp->next)		/* find end of queue */
+    tcp = tcp->next;
+
+  tcp->next = ptcb;		/* add TCB to queue */
+  ptcb->next = (TCB *) 0L;	/* ... */
+  ptcb->flags |= MTF_SWT;	/* indicate TCB is waiting */
+  MTNext ();			/* swap tasks */
+  setipl (oldipl);		/* RESTORE INTERRUPTS */
+  DB_EXIT ("SMWait - signalled - 1");
+  return;			/* return  (we got a signal) */
 }
 
 /* 
@@ -229,69 +242,75 @@ register SEM *psem;
 */
 
 short
-SMCSig(psem)
-SEM *psem;
+SMCSig (psem)
+     SEM *psem;
 {
-	register TCB *rcur, *rprv, *tcp;
-	register short oldipl;
-	register long semval;
-	register unsigned rpri;
+  register TCB *rcur, *rprv, *tcp;
+  register short oldipl;
+  register long semval;
+  register unsigned rpri;
 
-	oldipl = setipl(7);		/* DISABLE INTERRUPTS */
+  oldipl = setipl (7);		/* DISABLE INTERRUPTS */
 
-	if ((struct _mt_def *)NIL EQ _MT_)
-		_MT_ = (struct _mt_def *)XBIOS(X_MTDEFS);
+  if ((struct _mt_def *) NIL EQ _MT_)
+    _MT_ = (struct _mt_def *) XBIOS (X_MTDEFS);
 
-	semval = (long)*psem;		/* get semaphore value */
+  semval = (long) *psem;	/* get semaphore value */
 
-	if (semval & 1L) {		/* is it a count ? */
+  if (semval & 1L)
+    {				/* is it a count ? */
 
-		setipl(oldipl);		/* RESTORE INTERRUPTS */
+      setipl (oldipl);		/* RESTORE INTERRUPTS */
 
-		return(0);		/* return -- nothing signalled */
+      return (0);		/* return -- nothing signalled */
 
-	} else {
+    }
+  else
+    {
 
 /* 
 */
-		if (semval & ~1L) {	/* is there a waiting task ? */
+      if (semval & ~1L)
+	{			/* is there a waiting task ? */
 
-			tcp = (TCB *)semval;	/* get TCB pointer */
-			tcp->flags &= ~MTF_SWT;	/* clear the wait bit */
-			tcp->next = (TCB *)0L;	/* clear NEXT of TCB */
-			semval = tcp->next;	/* get next in queue */
+	  tcp = (TCB *) semval;	/* get TCB pointer */
+	  tcp->flags &= ~MTF_SWT;	/* clear the wait bit */
+	  tcp->next = (TCB *) 0L;	/* clear NEXT of TCB */
+	  semval = tcp->next;	/* get next in queue */
 
-			if (tcp->flags & MTF_STP) {	/* 'stop' bit set ? */
+	  if (tcp->flags & MTF_STP)
+	    {			/* 'stop' bit set ? */
 
-				tcp->flags &= ~MTF_STP;	/* clear 'stop' bit */
-				setipl(oldipl);		/* RESTORE INTERRUPTS */
-				return(-1);		/* return -- stopped task signalled */
-			}
+	      tcp->flags &= ~MTF_STP;	/* clear 'stop' bit */
+	      setipl (oldipl);	/* RESTORE INTERRUPTS */
+	      return (-1);	/* return -- stopped task signalled */
+	    }
 
-			rpri = tcp->pri;	/* get priority of task to be enqueued */
-			rcur = (TCB *)&_MT_->mtp->RdyQ;	/* point at the head of the queue */
+	  rpri = tcp->pri;	/* get priority of task to be enqueued */
+	  rcur = (TCB *) & _MT_->mtp->RdyQ;	/* point at the head of the queue */
 
-			while (TRUE) {
+	  while (TRUE)
+	    {
 
-				rprv = rcur;		/* previous TCB = current TCB */
-				rcur = rprv->next;	/* current TCB = next TCB */
+	      rprv = rcur;	/* previous TCB = current TCB */
+	      rcur = rprv->next;	/* current TCB = next TCB */
 
-				if (rcur EQ (TCB *)NIL)	/* enqueue here if next was NIL */
-					break;
+	      if (rcur EQ (TCB *) NIL)	/* enqueue here if next was NIL */
+		break;
 
-				if (rpri > rcur->pri)	/* enqueue here if priority is greater */
-					break;
-			}
+	      if (rpri > rcur->pri)	/* enqueue here if priority is greater */
+		break;
+	    }
 
-			rprv->next = tcp;		/* set next of previous TCB to new TCB */
-			tcp->next = rcur;		/* set next of new TCB to old next */
-			tcp->flags |= MTF_RDY;		/* set the ready flag in the new TCB */
+	  rprv->next = tcp;	/* set next of previous TCB to new TCB */
+	  tcp->next = rcur;	/* set next of new TCB to old next */
+	  tcp->flags |= MTF_RDY;	/* set the ready flag in the new TCB */
 
-			setipl(oldipl);	/* RESTORE INTERRUPTS */
+	  setipl (oldipl);	/* RESTORE INTERRUPTS */
 
-			return(1);	/* return -- waiting task signalled */
-		}
+	  return (1);		/* return -- waiting task signalled */
 	}
+    }
 }
 
 /* 
@@ -307,31 +326,33 @@ SEM *psem;
 */
 
 short
-SMCWait(psem)
-register SEM *psem;
+SMCWait (psem)
+     register SEM *psem;
 {
-	register short oldipl, rv;
-	register long semval;
+  register short oldipl, rv;
+  register long semval;
 
-	DB_ENTR("SMCWait");
-	rv = FALSE;			/* preset return value */
+  DB_ENTR ("SMCWait");
+  rv = FALSE;			/* preset return value */
 
-	oldipl = setipl(7);		/* DISABLE INTERRUPTS */
+  oldipl = setipl (7);		/* DISABLE INTERRUPTS */
 
-	semval = (long)*psem;		/* get semaphore value */
+  semval = (long) *psem;	/* get semaphore value */
 
-	if (semval & 1L) {		/* is it a count ? */
+  if (semval & 1L)
+    {				/* is it a count ? */
 
-		if (semval & ~1L) {	/* is count non-zero ? */
+      if (semval & ~1L)
+	{			/* is count non-zero ? */
 
-			semval -= 2L;		/* decrement counter */
-			*psem = (SEM)semval;	/* update semaphore */
-			rv = TRUE;		/* set return value */
-			DB_CMNT("SMCWait - got signal");
-		}
+	  semval -= 2L;		/* decrement counter */
+	  *psem = (SEM) semval;	/* update semaphore */
+	  rv = TRUE;		/* set return value */
+	  DB_CMNT ("SMCWait - got signal");
 	}
+    }
 
-	setipl(oldipl);			/* RESTORE INTERRUPTS */
-	DB_EXIT("SMCWait");
-	return(rv);			/* return semaphore state */
+  setipl (oldipl);		/* RESTORE INTERRUPTS */
+  DB_EXIT ("SMCWait");
+  return (rv);			/* return semaphore state */
 }

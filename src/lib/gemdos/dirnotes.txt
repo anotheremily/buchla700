@@ -38,4 +38,3 @@ If you have any comments or bug reports, send them to:
 Bill Marsh, Naval Ocean Systems Center, San Diego, CA
 {arpa,mil}net: bmarsh@nosc
 uucp: {ihnp4,akgua,decvax,dcdwest,ucbvax}!sdcsvax!noscvax!bmarsh
-

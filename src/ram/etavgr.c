@@ -17,21 +17,21 @@
 #include "asgdsp.h"
 
 #if	DEBUGIT
-extern	short	debugsw;
+extern short debugsw;
 #endif
 
-extern	char	*numblk();
+extern char *numblk ();
 
-extern	unsigned	*asgob;
+extern unsigned *asgob;
 
-extern	short	stcrow, stccol;
+extern short stcrow, stccol;
 
-extern	short	adbox[][8];
+extern short adbox[][8];
 
-extern	char	dspbuf[];
+extern char dspbuf[];
 
-extern	short	vce2grp[12];		/* voice to group table */
-extern	short	ins2grp[12];
+extern short vce2grp[12];	/* voice to group table */
+extern short ins2grp[12];
 
 /* 
 */
@@ -43,23 +43,23 @@ extern	short	ins2grp[12];
 */
 
 short
-et_avgr(nn)
-short nn;
+et_avgr (nn)
+     short nn;
 {
-	register short grp;
-	char buf[4];
+  register short grp;
+  char buf[4];
 
-	grp = 0x00FF & (nn >> 8);
+  grp = 0x00FF & (nn >> 8);
 
-	sprintf(ebuf, "%s", numblk(buf, vce2grp[grp]));
-	ebflag = TRUE;
+  sprintf (ebuf, "%s", numblk (buf, vce2grp[grp]));
+  ebflag = TRUE;
 
 #if	DEBUGIT
-	if (debugsw)
-		printf("et_avgr($%04.4X):  ebuf=[%s]\n", nn, ebuf);
+  if (debugsw)
+    printf ("et_avgr($%04.4X):  ebuf=[%s]\n", nn, ebuf);
 #endif
 
-	return(SUCCESS);
+  return (SUCCESS);
 }
 
 /* 
@@ -72,47 +72,51 @@ short nn;
 */
 
 short
-ef_avgr(nn)
-short nn;
+ef_avgr (nn)
+     short nn;
 {
-	register short tmpval, vce, i;
+  register short tmpval, vce, i;
 
-	vce = 0x00FF & (nn >> 8);
+  vce = 0x00FF & (nn >> 8);
 
-	ebuf[2] = '\0';			/* terminate the string in ebuf */
-	ebflag = FALSE;
-	tmpval = 0;
+  ebuf[2] = '\0';		/* terminate the string in ebuf */
+  ebflag = FALSE;
+  tmpval = 0;
 
 #if	DEBUGIT
-	if (debugsw)
-		printf("ef_avgr($%04.4X):  ebuf=[%s]\n", nn, ebuf);
+  if (debugsw)
+    printf ("ef_avgr($%04.4X):  ebuf=[%s]\n", nn, ebuf);
 #endif
 
-	if ((ebuf[0] EQ ' ') AND (ebuf[1] EQ ' ')) {
+  if ((ebuf[0] EQ ' ') AND (ebuf[1] EQ ' '))
+    {
 
-		tmpval = -1;
+      tmpval = -1;
 
-	} else {
+    }
+  else
+    {
 
-		for (i = 0; i < 2; i++) {
+      for (i = 0; i < 2; i++)
+	{
 
-			if (ebuf[i] EQ ' ')
-				ebuf[i] = '0';
+	  if (ebuf[i] EQ ' ')
+	    ebuf[i] = '0';
 
-			tmpval = (tmpval * 10) + (ebuf[i] - '0');
-		}
-
-		if ((tmpval EQ 0) OR (tmpval GT 12))
-			return(FAILURE);
+	  tmpval = (tmpval * 10) + (ebuf[i] - '0');
 	}
 
-	vce2grp[vce] = tmpval;
+      if ((tmpval EQ 0) OR (tmpval GT 12))
+	return (FAILURE);
+    }
 
-	if (tmpval > 0)
-		execinst(vce, (ins2grp[tmpval - 1] & 0x00FF), 1);
+  vce2grp[vce] = tmpval;
 
-	modasg();
-	return(SUCCESS);
+  if (tmpval > 0)
+    execinst (vce, (ins2grp[tmpval - 1] & 0x00FF), 1);
+
+  modasg ();
+  return (SUCCESS);
 }
 
 /* 
@@ -125,20 +129,20 @@ short nn;
 */
 
 short
-rd_avgr(nn)
-short nn;
+rd_avgr (nn)
+     short nn;
 {
-	register short n, grp;
-	char buf[4];
+  register short n, grp;
+  char buf[4];
 
-	n = 0x00FF & nn;
-	grp = 0x00FF & (nn >> 8);
+  n = 0x00FF & nn;
+  grp = 0x00FF & (nn >> 8);
 
-	vbank(0);
-	vcputsv(asgob, 64, adbox[n][4], adbox[n][5],
-		cfetp->frow, cfetp->flcol, numblk(buf, vce2grp[grp]), 14);
+  vbank (0);
+  vcputsv (asgob, 64, adbox[n][4], adbox[n][5],
+	   cfetp->frow, cfetp->flcol, numblk (buf, vce2grp[grp]), 14);
 
-	return(SUCCESS);
+  return (SUCCESS);
 }
 
 /* 
@@ -151,31 +155,30 @@ short nn;
 */
 
 short
-nd_avgr(nn, k)
-short nn;
-register short  k;
+nd_avgr (nn, k)
+     short nn;
+     register short k;
 {
-	register short n, col;
+  register short n, col;
 
-	n = nn & 0xFF;
-	col = stccol - cfetp->flcol;
+  n = nn & 0xFF;
+  col = stccol - cfetp->flcol;
 
-	ebuf[col] = k + '0';
-	ebuf[2] = '\0';
+  ebuf[col] = k + '0';
+  ebuf[2] = '\0';
 
 #if	DEBUGIT
-	if (debugsw)
-		printf("nd_avgr($%04.4X, %d):  cfetp=$%08.8lX, col=%d, ebuf=[%s]\n",
-			nn, k, cfetp, col, ebuf);
+  if (debugsw)
+    printf ("nd_avgr($%04.4X, %d):  cfetp=$%08.8lX, col=%d, ebuf=[%s]\n",
+	    nn, k, cfetp, col, ebuf);
 #endif
 
-	dspbuf[0] = k + '0';
-	dspbuf[1] = '\0';
+  dspbuf[0] = k + '0';
+  dspbuf[1] = '\0';
 
-	vbank(0);
-	vcputsv(asgob, 64, AK_ENTRY, adbox[n][5], stcrow, stccol, dspbuf, 14);
+  vbank (0);
+  vcputsv (asgob, 64, AK_ENTRY, adbox[n][5], stcrow, stccol, dspbuf, 14);
 
-	advacur();
-	return(SUCCESS);
+  advacur ();
+  return (SUCCESS);
 }
-

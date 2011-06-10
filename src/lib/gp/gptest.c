@@ -17,18 +17,18 @@
 */
 
 int
-tp_clin(argc, argv)
-int argc;
-char *argv[];
+tp_clin (argc, argv)
+     int argc;
+     char *argv[];
 {
-	register int i;
+  register int i;
 
-	printf("tp_clin(%d, $%08lx) executed\n", argc, argv);
+  printf ("tp_clin(%d, $%08lx) executed\n", argc, argv);
 
-	for (i = 0; i < argc; i++)
-		printf("   argv[%d] = \042%s\042\n", i, argv[i]);
+  for (i = 0; i < argc; i++)
+    printf ("   argv[%d] = \042%s\042\n", i, argv[i]);
 
-	return(argc GT 1);
+  return (argc GT 1);
 }
 
 /*
@@ -38,12 +38,12 @@ char *argv[];
 */
 
 int
-tp_btch(argc, argv)
-int argc;
-char *argv[];
+tp_btch (argc, argv)
+     int argc;
+     char *argv[];
 {
-	printf("tp_btch(%d, $%08lx) executed\n", argc, argv);
-	return(SUCCESS);
+  printf ("tp_btch(%d, $%08lx) executed\n", argc, argv);
+  return (SUCCESS);
 }
 
 /* 
@@ -56,12 +56,12 @@ char *argv[];
 */
 
 int
-tp_intr(argc, argv)
-int argc;
-char *argv[];
+tp_intr (argc, argv)
+     int argc;
+     char *argv[];
 {
-	printf("tp_intr(%d, $%08lx) executed\n", argc, argv);
-	return(SUCCESS);
+  printf ("tp_intr(%d, $%08lx) executed\n", argc, argv);
+  return (SUCCESS);
 }
 
 /*
@@ -71,11 +71,11 @@ char *argv[];
 */
 
 int
-tp_exit(arg)
-int arg;
+tp_exit (arg)
+     int arg;
 {
-	printf("tp_exit(%d) executed\n", arg);
-	return(arg);
+  printf ("tp_exit(%d) executed\n", arg);
+  return (arg);
 }
 
 /* 
@@ -88,19 +88,18 @@ int arg;
 */
 
 int
-gp_init(argc, argv)
-int argc;
-char *argv[];
+gp_init (argc, argv)
+     int argc;
+     char *argv[];
 {
-	gp_clin = tp_clin;
-	gp_btch = tp_btch;
-	gp_intr = tp_intr;
-	gp_exit = tp_exit;
+  gp_clin = tp_clin;
+  gp_btch = tp_btch;
+  gp_intr = tp_intr;
+  gp_exit = tp_exit;
 
-	printf("gp_init(%d, $%08lx):  Application initialized.\n",
-		argc, argv);
+  printf ("gp_init(%d, $%08lx):  Application initialized.\n", argc, argv);
 
-	return(SUCCESS);
+  return (SUCCESS);
 }
 
 /*
@@ -109,15 +108,15 @@ char *argv[];
    =============================================================================
 */
 
-main(argc, argv)
-int argc;
-char *argv[];
+main (argc, argv)
+     int argc;
+     char *argv[];
 {
-	printf("main(%d, $%08lx) executed.\n", argc, argv);
+  printf ("main(%d, $%08lx) executed.\n", argc, argv);
 
-	gp_main(argc, argv);	/* run gp_main */
+  gp_main (argc, argv);		/* run gp_main */
 
-	printf("main():  ERROR -- gp_main() returned.\n");
+  printf ("main():  ERROR -- gp_main() returned.\n");
 
-	exit(1);		/* it should never return */
+  exit (1);			/* it should never return */
 }

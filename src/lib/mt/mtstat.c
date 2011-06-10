@@ -10,9 +10,9 @@
 #include "biosdefs.h"
 #include "mtdefs.h"
 
-extern	short		setipl();	/* set processor IPL function */
+extern short setipl ();		/* set processor IPL function */
 
-extern	struct _mt_def	*_MT_;
+extern struct _mt_def *_MT_;
 
 /* 
 */
@@ -31,63 +31,68 @@ extern	struct _mt_def	*_MT_;
 */
 
 short
-MTStat(tid)
-unsigned tid;
+MTStat (tid)
+     unsigned tid;
 {
-	register TCB *tcp;
-	register short oldipl, rv;
+  register TCB *tcp;
+  register short oldipl, rv;
 
 /* 
 */
-	if ((struct _mt_def *)NIL EQ _MT_)
-		_MT_ = (struct _nt_def *)XBIOS(X_MTDEFS);
+  if ((struct _mt_def *) NIL EQ _MT_)
+    _MT_ = (struct _nt_def *) XBIOS (X_MTDEFS);
 
-	tcp = _MT_->mtp->TCBs;		/* point at start of  TCB list */
-	rv = -1;			/* preset return value */
+  tcp = _MT_->mtp->TCBs;	/* point at start of  TCB list */
+  rv = -1;			/* preset return value */
 
-	oldipl= setipl(7);		/* DISABLE INTERRUPTS */
+  oldipl = setipl (7);		/* DISABLE INTERRUPTS */
 
-	while (tcp) {			/* check each TCB */
+  while (tcp)
+    {				/* check each TCB */
 
-		if (tcp->flags & MTF_OCC) {		/* occupied ? */
+      if (tcp->flags & MTF_OCC)
+	{			/* occupied ? */
 
-			if (tcp->tid NE tid)		/* continue if not tid */
-				goto nexttcb;
+	  if (tcp->tid NE tid)	/* continue if not tid */
+	    goto nexttcb;
 
-			if (tcp->flags & MTF_RUN) {	/* running ? */
+	  if (tcp->flags & MTF_RUN)
+	    {			/* running ? */
 
-				rv = 0;
-				break;
-			}
+	      rv = 0;
+	      break;
+	    }
 
-			if (tcp->flags & MTF_RDY) {	/* ready to run ? */
+	  if (tcp->flags & MTF_RDY)
+	    {			/* ready to run ? */
 
-				rv = 1;
-				break;
-			}
+	      rv = 1;
+	      break;
+	    }
 
-			if (tcp->flags & MTF_STP) {	/* to be stopped ? */
+	  if (tcp->flags & MTF_STP)
+	    {			/* to be stopped ? */
 
-				rv = -3;
-				break;
-			}
+	      rv = -3;
+	      break;
+	    }
 
-			if (tcp->flags & MTF_SWT) {	/* waiting ? */
+	  if (tcp->flags & MTF_SWT)
+	    {			/* waiting ? */
 
-				rv = 2;
-				break;
-			}
+	      rv = 2;
+	      break;
+	    }
 
-			rv = -2;			/* stopped */
-			break;
-		}
-
-nexttcb:
-		tcp = tcp->fwd;					/* look at next TCB */
+	  rv = -2;		/* stopped */
+	  break;
 	}
 
-	setipl(oldipl);				/* RESTORE INTERRUPTS */
+    nexttcb:
+      tcp = tcp->fwd;		/* look at next TCB */
+    }
 
-	return(rv);				/* return status of task */
+  setipl (oldipl);		/* RESTORE INTERRUPTS */
+
+  return (rv);			/* return status of task */
 }
-

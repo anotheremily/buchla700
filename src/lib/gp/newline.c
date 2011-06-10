@@ -13,26 +13,26 @@
 #define	VERSION	"0.00 (Experimental)"
 #endif
 
-int	pgmhdr();		/* forward declaration */
+int pgmhdr ();			/* forward declaration */
 
 /* variables for pagination functions */
 
-int 	npage    = 1; 		/* current page number */
-int	nline    = NLPAGE; 	/* current line number */
-int	nlpage   = NLPAGE; 	/* number of lines per page */
-int	martop   = MTOP;	/* top margin size -- lines */
-int	marbot   = MBOT;	/* bottom margin size -- lines */
-int	marsize  = MARGIN;	/* left margin size -- characters */
-int	newsub   = 1;		/* flag for new sub-heading */
-int	minleft  = MINLEFT;	/* minimum remaining lines on the page */
+int npage = 1;			/* current page number */
+int nline = NLPAGE;		/* current line number */
+int nlpage = NLPAGE;		/* number of lines per page */
+int martop = MTOP;		/* top margin size -- lines */
+int marbot = MBOT;		/* bottom margin size -- lines */
+int marsize = MARGIN;		/* left margin size -- characters */
+int newsub = 1;			/* flag for new sub-heading */
+int minleft = MINLEFT;		/* minimum remaining lines on the page */
 
-int (*prhead)()  = pgmhdr;	/* pointer to page heading routine */
+int (*prhead) () = pgmhdr;	/* pointer to page heading routine */
 
-char	*hdr     = "?????";	/* pointer to program header (for pgmhdr) */
-char	*subhdg  = "";		/* pointer to subheading */
-char	*verstr  = VERSION;	/* pointer to version string */
+char *hdr = "?????";		/* pointer to program header (for pgmhdr) */
+char *subhdg = "";		/* pointer to subheading */
+char *verstr = VERSION;		/* pointer to version string */
 
-FILE	*printer;		/* printer file pointer */
+FILE *printer;			/* printer file pointer */
 
 /*  */
 
@@ -58,16 +58,17 @@ FILE	*printer;		/* printer file pointer */
    ============================================================================
 */
 
-newline(fp)
-FILE *fp;
+newline (fp)
+     FILE *fp;
 {
-	if (nline++ GE (nlpage - (martop + marbot))) {
+  if (nline++ GE (nlpage - (martop + marbot)))
+    {
 
-		nline = 1;		/* set current line number = 1 */
-		fprintf(fp, "\f");	/* force new page */
-		(*prhead)(fp);		/* call page heading routine */
-		npage++;		/* update page number */
-	}
+      nline = 1;		/* set current line number = 1 */
+      fprintf (fp, "\f");	/* force new page */
+      (*prhead) (fp);		/* call page heading routine */
+      npage++;			/* update page number */
+    }
 }
 
 
@@ -81,13 +82,13 @@ FILE *fp;
    ============================================================================
 */
 
-margin(fp)
-FILE *fp;
+margin (fp)
+     FILE *fp;
 {
-	int n;
+  int n;
 
-	for (n = 0; n < marsize; n++)
-		putc(' ', fp);
+  for (n = 0; n < marsize; n++)
+    putc (' ', fp);
 }
 
 /*  */
@@ -103,25 +104,26 @@ FILE *fp;
    ============================================================================
 */
 
-pgmhdr(fp)
-FILE *fp;
+pgmhdr (fp)
+     FILE *fp;
 {
-	int	n;
+  int n;
 
-	for (n = 0; n < martop; n++) {
-		fprintf(fp, "\n");
-		nline++;
-	}
+  for (n = 0; n < martop; n++)
+    {
+      fprintf (fp, "\n");
+      nline++;
+    }
 
-	margin(fp);
-	fprintf(fp, "%s\n", hdr);
-	nline++;
+  margin (fp);
+  fprintf (fp, "%s\n", hdr);
+  nline++;
 
-	margin(fp);
-	fprintf(fp, "Version %s                                Page %4.4d\n\n", 
-		verstr, npage);
-	nline++;
-	nline++;
+  margin (fp);
+  fprintf (fp, "Version %s                                Page %4.4d\n\n",
+	   verstr, npage);
+  nline++;
+  nline++;
 }
 
 
@@ -133,20 +135,21 @@ FILE *fp;
    ============================================================================
 */
 
-skipnl(fp, n)
-FILE *fp;
-int n;
+skipnl (fp, n)
+     FILE *fp;
+     int n;
 {
-	int	j;
+  int j;
 
-	if (n LE 0)
-		return;
+  if (n LE 0)
+    return;
 
-	for (j = 0; j < n; j++) {
+  for (j = 0; j < n; j++)
+    {
 
-		newline(fp);
-		fprintf(fp, "\n");
-	}
+      newline (fp);
+      fprintf (fp, "\n");
+    }
 }
 
 /*  */
@@ -157,24 +160,27 @@ int n;
    ============================================================================
 */
 
-subhdr(fp)
-FILE *fp;
+subhdr (fp)
+     FILE *fp;
 {
-	if (newsub) {		/* new sub-heading */
+  if (newsub)
+    {				/* new sub-heading */
 
-		newsub = FALSE;
-		newline(fp);
-		newline(fp);
-		margin(fp);
-		fprintf(fp, "%s\n\n", subhdg);
+      newsub = FALSE;
+      newline (fp);
+      newline (fp);
+      margin (fp);
+      fprintf (fp, "%s\n\n", subhdg);
 
-	} else {		/* continuation of old sub heading */
+    }
+  else
+    {				/* continuation of old sub heading */
 
-		newline(fp);
-		newline(fp);
-		margin(fp);
-		fprintf(fp, "%s -- Continued\n\n", subhdg);
-	}
+      newline (fp);
+      newline (fp);
+      margin (fp);
+      fprintf (fp, "%s -- Continued\n\n", subhdg);
+    }
 }
 
 /*  */
@@ -185,12 +191,12 @@ FILE *fp;
    ============================================================================
 */
 
-heading(fp)
-FILE *fp;
+heading (fp)
+     FILE *fp;
 {
-	newline(fp);
-	pgmhdr(fp);
-	subhdr(fp);
+  newline (fp);
+  pgmhdr (fp);
+  subhdr (fp);
 }
 
 /*  */
@@ -212,16 +218,17 @@ FILE *fp;
    ============================================================================
 */
 
-newsect(fp)
-FILE *fp;
+newsect (fp)
+     FILE *fp;
 {
-	newsub = TRUE;
+  newsub = TRUE;
 
-	if (nline NE nlpage) {
+  if (nline NE nlpage)
+    {
 
-		if (nline > (nlpage - minleft))
-			nline = nlpage;
-		else
-			subhdr(fp);
-	}
+      if (nline > (nlpage - minleft))
+	nline = nlpage;
+      else
+	subhdr (fp);
+    }
 }

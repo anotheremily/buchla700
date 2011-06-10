@@ -18,17 +18,17 @@
 #include "scdsp.h"
 #include "instdsp.h"
 
-extern	unsigned	*obj8;
+extern unsigned *obj8;
 
-extern	short	ctrsw;
-extern	short	recsw;
-extern	short	stccol;
+extern short ctrsw;
+extern short recsw;
+extern short stccol;
 
-extern	short	grpmode[];
-extern	short	grpstat[];
-extern	short	ins2grp[];
+extern short grpmode[];
+extern short grpstat[];
+extern short ins2grp[];
 
-extern	struct	gdsel	*gdstbc[];
+extern struct gdsel *gdstbc[];
 
 /*
    =============================================================================
@@ -37,13 +37,13 @@ extern	struct	gdsel	*gdstbc[];
 */
 
 short
-et_inst(n)
-short n;
+et_inst (n)
+     short n;
 {
-	sprintf(ebuf, "%02.2d", ins2grp[n] & 0x00FF);
-	ebflag = TRUE;
+  sprintf (ebuf, "%02.2d", ins2grp[n] & 0x00FF);
+  ebflag = TRUE;
 
-	return(SUCCESS);
+  return (SUCCESS);
 }
 
 /* 
@@ -56,44 +56,48 @@ short n;
 */
 
 short
-ef_inst(n)
-short n;
+ef_inst (n)
+     short n;
 {
-	register short ival;
-	register struct s_entry *ep;
+  register short ival;
+  register struct s_entry *ep;
 
-	ebuf[2] = '\0';
-	ival = ((ebuf[0] - '0') * 10) + (ebuf[1] - '0');
-	ebflag = FALSE;
+  ebuf[2] = '\0';
+  ival = ((ebuf[0] - '0') * 10) + (ebuf[1] - '0');
+  ebflag = FALSE;
 
-	if (ival GE NINST)
-		return(FAILURE);
+  if (ival GE NINST)
+    return (FAILURE);
 
-	ins2grp[n] = ival | (ins2grp[n] & 0xFF00);
-	setv2gi(n);
-	setinst();
+  ins2grp[n] = ival | (ins2grp[n] & 0xFF00);
+  setv2gi (n);
+  setinst ();
 
-	if (recsw AND grpstat[n] AND (2 EQ grpmode[n])) {
+  if (recsw AND grpstat[n] AND (2 EQ grpmode[n]))
+    {
 
-		if (E_NULL NE (ep = findev(p_cur, t_cur, EV_INST, n, -1))) {
+      if (E_NULL NE (ep = findev (p_cur, t_cur, EV_INST, n, -1)))
+	{
 
-			ep->e_data2 = ival;
+	  ep->e_data2 = ival;
 
-		} else if (E_NULL NE (ep = e_alc(E_SIZE2))) {
-
-			ep->e_type  = EV_INST;
-			ep->e_data1 = n;
-			ep->e_data2 = ival;
-			ep->e_time  = t_cur;
-			p_cur = e_ins(ep, ep_adj(p_cur, 0, t_cur))->e_fwd;
-			eh_ins(ep, EH_INST);
-			ctrsw = TRUE;
-			se_disp(ep, D_FWD, gdstbc, 1);
-			scupd();
-		}
 	}
+      else if (E_NULL NE (ep = e_alc (E_SIZE2)))
+	{
 
-	return(SUCCESS);
+	  ep->e_type = EV_INST;
+	  ep->e_data1 = n;
+	  ep->e_data2 = ival;
+	  ep->e_time = t_cur;
+	  p_cur = e_ins (ep, ep_adj (p_cur, 0, t_cur))->e_fwd;
+	  eh_ins (ep, EH_INST);
+	  ctrsw = TRUE;
+	  se_disp (ep, D_FWD, gdstbc, 1);
+	  scupd ();
+	}
+    }
+
+  return (SUCCESS);
 }
 
 /* 
@@ -106,19 +110,19 @@ short n;
 */
 
 short
-rd_inst(n)
-short n;
+rd_inst (n)
+     short n;
 {
-	char	buf[4];
+  char buf[4];
 
-	sprintf(buf, "%02.2d", ins2grp[n] & 0x00FF);
+  sprintf (buf, "%02.2d", ins2grp[n] & 0x00FF);
 
-	if (v_regs[5] & 0x0180)
-		vbank(0);
+  if (v_regs[5] & 0x0180)
+    vbank (0);
 
-	vputs(obj8, 2, 7+(n*5), buf, SDW11ATR);
+  vputs (obj8, 2, 7 + (n * 5), buf, SDW11ATR);
 
-	return(SUCCESS);
+  return (SUCCESS);
 }
 
 /*
@@ -127,12 +131,12 @@ short n;
    =============================================================================
 */
 
-ds_inst()
+ds_inst ()
 {
-	register short i;
+  register short i;
 
-	for (i = 0; i < 12; i++)
-		rd_inst(i);
+  for (i = 0; i < 12; i++)
+    rd_inst (i);
 }
 
 /* 
@@ -145,19 +149,19 @@ ds_inst()
 */
 
 short
-nd_inst(n, k)
-register short n, k;
+nd_inst (n, k)
+     register short n, k;
 {
-	register short ec;
+  register short ec;
 
-	ec = stccol - cfetp->flcol;
-	ebuf[ec]  = k + '0';
+  ec = stccol - cfetp->flcol;
+  ebuf[ec] = k + '0';
 
-	if (v_regs[5] & 0x0180)
-		vbank(0);
+  if (v_regs[5] & 0x0180)
+    vbank (0);
 
-	vputc(obj8, 2, stccol, k + '0', SDW11DEA);
-	advscur();
+  vputc (obj8, 2, stccol, k + '0', SDW11DEA);
+  advscur ();
 
-	return(SUCCESS);
+  return (SUCCESS);
 }

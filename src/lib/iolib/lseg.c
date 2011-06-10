@@ -6,7 +6,7 @@
    ===========================================================================
 */
 
-short	(*point)();
+short (*point) ();
 
 #define	ABS(x)	((x) < 0 ? (-(x)) : (x))
 #define	SIGN(x)	((x) < 0 ? (-1) : ((x) ? 1 : 0))
@@ -39,54 +39,61 @@ short	(*point)();
 /* 
 */
 
-lseg(x1, y1, x2, y2, t)
-short x1, y1, x2, y2, t;
+lseg (x1, y1, x2, y2, t)
+     short x1, y1, x2, y2, t;
 {
-	register short dx, dy, ptx, pty, p;
-	short i, px, py;
+  register short dx, dy, ptx, pty, p;
+  short i, px, py;
 
-	p = x2 - (ptx = x1);
-	dx = SIGN(p);
-	py = ABS(p);
+  p = x2 - (ptx = x1);
+  dx = SIGN (p);
+  py = ABS (p);
 
-	p = y2 - (pty = y1);
-	dy = SIGN(p);
-	px = ABS(p);
+  p = y2 - (pty = y1);
+  dy = SIGN (p);
+  px = ABS (p);
 
-	(*point)(ptx, pty, t);
+  (*point) (ptx, pty, t);
 
-	if (py > px) {
+  if (py > px)
+    {
 
-		p = py >> 1;
+      p = py >> 1;
 
-		for (i = 1; i < py; i++) {
+      for (i = 1; i < py; i++)
+	{
 
-			ptx += dx;
+	  ptx += dx;
 
-			if ( (p -= px) < 0) {
+	  if ((p -= px) < 0)
+	    {
 
-				pty += dy;
-				p += py;
-			}
+	      pty += dy;
+	      p += py;
+	    }
 
-			(*point)(ptx, pty, t);
-		}
-
-	} else {
-
-		p = px >> 1;
-
-		for (i = 1; i LE px; i++) {
-
-			pty += dy;
-
-			if ( (p -= py) < 0) {
-
-				ptx += dx;
-				p += px;
-			}
-
-			(*point)(ptx, pty, t);
-		}
+	  (*point) (ptx, pty, t);
 	}
+
+    }
+  else
+    {
+
+      p = px >> 1;
+
+      for (i = 1; i LE px; i++)
+	{
+
+	  pty += dy;
+
+	  if ((p -= py) < 0)
+	    {
+
+	      ptx += dx;
+	      p += px;
+	    }
+
+	  (*point) (ptx, pty, t);
+	}
+    }
 }

@@ -5,6 +5,6 @@
    =============================================================================
 */
 
-extern	int	(*gp_clin)(), (*gp_btch)(), (*gp_intr)(), (*gp_exit)();
+extern int (*gp_clin) (), (*gp_btch) (), (*gp_intr) (), (*gp_exit) ();
 
-extern	int	gp_null();
+extern int gp_null ();

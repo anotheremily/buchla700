@@ -6,18 +6,18 @@
 */
 
 char *
-index(str, c)
-register char *str;
-register char c;
+index (str, c)
+     register char *str;
+     register char c;
 {
-	while (*str) {
+  while (*str)
+    {
 
-		if (*str == c)
-			return(str);
+      if (*str == c)
+	return (str);
 
-		++str;
-	}
+      ++str;
+    }
 
-	return((char *)0);
+  return ((char *) 0);
 }
-

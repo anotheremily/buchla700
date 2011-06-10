@@ -6,14 +6,14 @@
 */
 
 char *
-str2uc(s)
-register char *s;
+str2uc (s)
+     register char *s;
 {
-	register char c;
-	register char *r = s;
+  register char c;
+  register char *r = s;
 
-	while (c = *s)
-		*s++ = toupper(c);
+  while (c = *s)
+    *s++ = toupper (c);
 
-	return(r);
+  return (r);
 }

@@ -14,17 +14,17 @@
 #include "midas.h"
 #include "asgdsp.h"
 
-extern	char	*numblk();
+extern char *numblk ();
 
-extern	unsigned	*asgob;
+extern unsigned *asgob;
 
-extern	short	stcrow, stccol;
+extern short stcrow, stccol;
 
-extern	short	adbox[][8];
+extern short adbox[][8];
 
-extern	char	dspbuf[];
+extern char dspbuf[];
 
-extern	short	mctlnum[4];	/* MIDI controller number table (-1, 00..99) */
+extern short mctlnum[4];	/* MIDI controller number table (-1, 00..99) */
 
 /* 
 */
@@ -36,19 +36,19 @@ extern	short	mctlnum[4];	/* MIDI controller number table (-1, 00..99) */
 */
 
 short
-et_accn(n)
-short n;
+et_accn (n)
+     short n;
 {
-	register short ctl;
+  register short ctl;
 
-	char buf[4];
+  char buf[4];
 
-	ctl = 0x00FF & (n >> 8);
+  ctl = 0x00FF & (n >> 8);
 
-	numblk(ebuf, (mctlnum[ctl] & 0x00FF));
-	ebflag = TRUE;
+  numblk (ebuf, (mctlnum[ctl] & 0x00FF));
+  ebflag = TRUE;
 
-	return(SUCCESS);
+  return (SUCCESS);
 }
 
 /*
@@ -58,39 +58,43 @@ short n;
 */
 
 short
-ef_accn(n)
-short n;
+ef_accn (n)
+     short n;
 {
-	register short tmpval, ctl, i;
+  register short tmpval, ctl, i;
 
-	ctl = 0x00FF & (n >> 8);
+  ctl = 0x00FF & (n >> 8);
 
-	ebuf[2] = '\0';			/* terminate the string in ebuf */
-	ebflag = FALSE;
-	tmpval = 0;
+  ebuf[2] = '\0';		/* terminate the string in ebuf */
+  ebflag = FALSE;
+  tmpval = 0;
 
-	if ((ebuf[0] EQ ' ') AND (ebuf[1] EQ ' ')) {
+  if ((ebuf[0] EQ ' ') AND (ebuf[1] EQ ' '))
+    {
 
-		tmpval = -1;
+      tmpval = -1;
 
-	} else {
+    }
+  else
+    {
 
-		for (i = 0; i < 2; i++) {
+      for (i = 0; i < 2; i++)
+	{
 
-			if (ebuf[i] EQ ' ')
-				ebuf[i] = '0';
+	  if (ebuf[i] EQ ' ')
+	    ebuf[i] = '0';
 
-			tmpval = (tmpval * 10) + (ebuf[i] - '0');
-		}
+	  tmpval = (tmpval * 10) + (ebuf[i] - '0');
 	}
+    }
 
-	if (mctlnum[ctl] EQ -1)
-		mctlnum[ctl] = tmpval;
-	else
-		mctlnum[ctl] = (mctlnum[ctl] & 0xFF00) | tmpval;
+  if (mctlnum[ctl] EQ - 1)
+    mctlnum[ctl] = tmpval;
+  else
+    mctlnum[ctl] = (mctlnum[ctl] & 0xFF00) | tmpval;
 
-	modasg();
-	return(SUCCESS);
+  modasg ();
+  return (SUCCESS);
 }
 
 /* 
@@ -103,21 +107,21 @@ short n;
 */
 
 short
-rd_accn(nn)
-short nn;
+rd_accn (nn)
+     short nn;
 {
-	register short n, ctl;
-	char buf[4];
+  register short n, ctl;
+  char buf[4];
 
-	n = 0x00FF & nn;
-	ctl = 0x00FF & (nn >> 8);
+  n = 0x00FF & nn;
+  ctl = 0x00FF & (nn >> 8);
 
-	vbank(0);
-	vcputsv(asgob, 64, adbox[n][4], adbox[n][5],
-		cfetp->frow, cfetp->flcol,
-		numblk(buf, (mctlnum[ctl] & 0x00FF)), 14);
+  vbank (0);
+  vcputsv (asgob, 64, adbox[n][4], adbox[n][5],
+	   cfetp->frow, cfetp->flcol,
+	   numblk (buf, (mctlnum[ctl] & 0x00FF)), 14);
 
-	return(SUCCESS);
+  return (SUCCESS);
 }
 
 /* 
@@ -130,24 +134,22 @@ short nn;
 */
 
 short
-nd_accn(nn, k)
-short nn;
-register short  k;
+nd_accn (nn, k)
+     short nn;
+     register short k;
 {
-	register short n;
+  register short n;
 
-	n = nn & 0xFF;
-	ebuf[stccol - cfetp->flcol] = k + '0';
-	ebuf[2] = '\0';
+  n = nn & 0xFF;
+  ebuf[stccol - cfetp->flcol] = k + '0';
+  ebuf[2] = '\0';
 
-	dspbuf[0] = k + '0';
-	dspbuf[1] = '\0';
+  dspbuf[0] = k + '0';
+  dspbuf[1] = '\0';
 
-	vbank(0);
-	vcputsv(asgob, 64, AK_ENTRY, adbox[n][5],
-		stcrow, stccol, dspbuf, 14);
+  vbank (0);
+  vcputsv (asgob, 64, AK_ENTRY, adbox[n][5], stcrow, stccol, dspbuf, 14);
 
-	advacur();
-	return(SUCCESS);
+  advacur ();
+  return (SUCCESS);
 }
-

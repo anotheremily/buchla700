@@ -12,7 +12,7 @@
 #include "dir.h"
 
 extern int errno;
-extern char *calloc();
+extern char *calloc ();
 
 /* 
 */
@@ -25,32 +25,34 @@ extern char *calloc();
 */
 
 DIR *
-opendir(dirname)
-char *dirname;
+opendir (dirname)
+     char *dirname;
 {
-	struct direct **namelist;
-	DIR *dirptr;
+  struct direct **namelist;
+  DIR *dirptr;
 
-	dirptr = (DIR *)calloc(1, sizeof(DIR));
+  dirptr = (DIR *) calloc (1, sizeof (DIR));
 
-	if(dirptr == (DIR *)0) {
+  if (dirptr == (DIR *) 0)
+    {
 
-		errno = ENOMEM;
-		return((DIR *)0);
-	}
+      errno = ENOMEM;
+      return ((DIR *) 0);
+    }
 
-	dirptr->d_magic = DMAGIC;
-	dirptr->d_pos = 0;
-	dirptr->d_length = scandir(dirname, &(dirptr->namelist),
-		(int (*)())0, (int (*)())0);
+  dirptr->d_magic = DMAGIC;
+  dirptr->d_pos = 0;
+  dirptr->d_length = scandir (dirname, &(dirptr->namelist),
+			      (int (*)()) 0, (int (*)()) 0);
 
-	if(dirptr->d_length < 0) {
+  if (dirptr->d_length < 0)
+    {
 
-		free((char *)dirptr);
-		return((DIR *)0);
-	}
+      free ((char *) dirptr);
+      return ((DIR *) 0);
+    }
 
-	return(dirptr);
+  return (dirptr);
 }
 
 /* 
@@ -64,22 +66,24 @@ char *dirname;
 */
 
 struct direct *
-readdir(dirptr)
-DIR *dirptr;
+readdir (dirptr)
+     DIR *dirptr;
 {
-	if(dirptr->d_magic != DMAGIC) {
+  if (dirptr->d_magic != DMAGIC)
+    {
 
-		errno = ENOTDIR;
-		return((struct direct *)0);
-	}
+      errno = ENOTDIR;
+      return ((struct direct *) 0);
+    }
 
-	if(dirptr->d_pos >= dirptr->d_length) {
+  if (dirptr->d_pos >= dirptr->d_length)
+    {
 
-		errno = ENFILE;
-		return((struct direct *)0);
-	}
+      errno = ENFILE;
+      return ((struct direct *) 0);
+    }
 
-	return(dirptr->namelist[dirptr->d_pos++]);
+  return (dirptr->namelist[dirptr->d_pos++]);
 }
 
 /* 
@@ -92,16 +96,17 @@ DIR *dirptr;
 */
 
 long
-telldir(dirptr)
-DIR *dirptr;
+telldir (dirptr)
+     DIR *dirptr;
 {
-	if(dirptr->d_magic != DMAGIC) {
+  if (dirptr->d_magic != DMAGIC)
+    {
 
-		errno = ENOTDIR;
-		return(-1L);
-	}
+      errno = ENOTDIR;
+      return (-1L);
+    }
 
-	return((long)dirptr->d_pos);
+  return ((long) dirptr->d_pos);
 }
 
 /* 
@@ -113,24 +118,26 @@ DIR *dirptr;
    =============================================================================
 */
 
-seekdir(dirptr, loc)
-DIR *dirptr;
-long loc;
+seekdir (dirptr, loc)
+     DIR *dirptr;
+     long loc;
 {
-	if(dirptr->d_magic != DMAGIC) {
+  if (dirptr->d_magic != DMAGIC)
+    {
 
-		errno = ENOTDIR;
-		return(-1);
-	}
+      errno = ENOTDIR;
+      return (-1);
+    }
 
-	if(loc > (long)dirptr->d_length) {
+  if (loc > (long) dirptr->d_length)
+    {
 
-		errno = EINVAL;
-		return(-1);
-	}
+      errno = EINVAL;
+      return (-1);
+    }
 
-	dirptr->d_pos = (int)loc;
-	return(0);
+  dirptr->d_pos = (int) loc;
+  return (0);
 }
 
 /* 
@@ -142,17 +149,18 @@ long loc;
    =============================================================================
 */
 
-rewinddir(dirptr)
-DIR *dirptr;
+rewinddir (dirptr)
+     DIR *dirptr;
 {
-	if(dirptr->d_magic != DMAGIC) {
+  if (dirptr->d_magic != DMAGIC)
+    {
 
-		errno = ENOTDIR;
-		return(-1);
-	}
+      errno = ENOTDIR;
+      return (-1);
+    }
 
-	dirptr->d_pos = 0;
-	return(0);
+  dirptr->d_pos = 0;
+  return (0);
 }
 
 /* 
@@ -165,17 +173,18 @@ DIR *dirptr;
    =============================================================================
 */
 
-closedir(dirptr)
-DIR *dirptr;
+closedir (dirptr)
+     DIR *dirptr;
 {
-	if(dirptr->d_magic != DMAGIC) {
+  if (dirptr->d_magic != DMAGIC)
+    {
 
-		errno = ENOTDIR;
-		return(-1);
-	}
+      errno = ENOTDIR;
+      return (-1);
+    }
 
-	dirptr->d_magic = ~DMAGIC;	/* mess it up a little */
-	freedir(dirptr->namelist);
-	free(dirptr);
-	return(0);
+  dirptr->d_magic = ~DMAGIC;	/* mess it up a little */
+  freedir (dirptr->namelist);
+  free (dirptr);
+  return (0);
 }

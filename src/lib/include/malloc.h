@@ -40,7 +40,7 @@
 
 /* the following items may need to be configured for a particular machine */
 
-#define	void	int	/* Aztec C doesn't have voids */
+#define	void	int		/* Aztec C doesn't have voids */
 
 /* alignment requirement for machine (in bytes) */
 
@@ -48,7 +48,7 @@
 
 /* size of an integer large enough to hold a character pointer */
 
-typedef	long	Size;
+typedef long Size;
 
 /*
  * CURBRK returns the value of the current system break, i.e., the system's
@@ -60,15 +60,15 @@ typedef	long	Size;
 #ifndef CURBRK
 
 #define CURBRK	sbrk(0)
-extern char *sbrk();
+extern char *sbrk ();
 
-#else  CURBRK
+#else	/* CURBRK */
 
 #if	CURBRK == curbrk
 extern Size curbrk;
 #endif
 
-#endif CURBRK
+#endif	/* CURBRK */
 
 /*
  * note that it is assumed that CURBRK remembers the last requested break to
@@ -80,9 +80,9 @@ extern Size curbrk;
 #ifndef BRK
 
 #define BRK(x)	brk(x)
-extern char *brk();
+extern char *brk ();
 
-#endif  BRK
+#endif	/* BRK */
 
 /*
 	define NBUCKETS as 18 for big machines, 10 for small ones
@@ -93,18 +93,20 @@ extern char *brk();
 
 /* ***************** END of machine dependent portion ******************* */
 
-struct qelem {
+struct qelem
+{
 
-	struct qelem *q_forw;
-	struct qelem *q_back;
+  struct qelem *q_forw;
+  struct qelem *q_back;
 };
 
-struct overhead {
+struct overhead
+{
 
-	struct qelem	ov_adj;		/* adjacency chain pointers */ 
-	struct qelem	ov_buk;		/* bucket chain pointers */
-	long		ov_magic;	/* MAGIC number */
-	Size		ov_len;		/* length of the area in bytes */
+  struct qelem ov_adj;		/* adjacency chain pointers */
+  struct qelem ov_buk;		/* bucket chain pointers */
+  long ov_magic;		/* MAGIC number */
+  Size ov_len;			/* length of the area in bytes */
 };
 
 /*
@@ -116,8 +118,8 @@ struct overhead {
 #define FROMBUK(p)	((struct overhead *)( (char *)p - sizeof(struct qelem)))
 #define TOBUK(p)	((struct qelem *)( (char *)p + sizeof(struct qelem)))
 
-#define	XM_FREE	0x548A934CL		/* MAGIC for free blocks */
-#define	XM_BUSY	0xC139569AL		/* MAGIC for busy blocks */
+#define	XM_FREE	0x548A934CL	/* MAGIC for free blocks */
+#define	XM_BUSY	0xC139569AL	/* MAGIC for busy blocks */
 
 #define	M_FREE	m_free
 #define	M_BUSY	m_busy
@@ -148,56 +150,59 @@ struct qelem adjhead = { &adjhead, &adjhead };
 /* sizes of buckets currently proportional to log 2() */
 /* must match NBUCKETS, above */
 
-Size mlsizes[] = {0, 64, 128, 256, 512, 1024, 2048, 4096, 8192, 16384,
+Size mlsizes[] = { 0, 64, 128, 256, 512, 1024, 2048, 4096, 8192, 16384,
 
-	/* trim here if on a small machine */
+  /* trim here if on a small machine */
 
-	32768, 65536, 131072, 262144, 524288, 1048576, 2097152, 4194304};
+  32768, 65536, 131072, 262144, 524288, 1048576, 2097152, 4194304
+};
 
 /* head of bucket chains */
 /* must match NBUCKETS, above */
 
 struct qelem buckets[NBUCKETS] = {
 
-	&buckets[0],  &buckets[0],	&buckets[1],  &buckets[1],
-	&buckets[2],  &buckets[2],	&buckets[3],  &buckets[3],
-	&buckets[4],  &buckets[4],	&buckets[5],  &buckets[5],
-	&buckets[6],  &buckets[6],	&buckets[7],  &buckets[7],
-	&buckets[8],  &buckets[8],	&buckets[9],  &buckets[9],
+  &buckets[0], &buckets[0], &buckets[1], &buckets[1],
+  &buckets[2], &buckets[2], &buckets[3], &buckets[3],
+  &buckets[4], &buckets[4], &buckets[5], &buckets[5],
+  &buckets[6], &buckets[6], &buckets[7], &buckets[7],
+  &buckets[8], &buckets[8], &buckets[9], &buckets[9],
 
-	/* trim here if on a small machine */
+  /* trim here if on a small machine */
 
-	&buckets[10], &buckets[10],	&buckets[11], &buckets[11],
-	&buckets[12], &buckets[12],	&buckets[13], &buckets[13],
-	&buckets[14], &buckets[14],	&buckets[15], &buckets[15],
-	&buckets[16], &buckets[16],	&buckets[17], &buckets[17]
+  &buckets[10], &buckets[10], &buckets[11], &buckets[11],
+  &buckets[12], &buckets[12], &buckets[13], &buckets[13],
+  &buckets[14], &buckets[14], &buckets[15], &buckets[15],
+  &buckets[16], &buckets[16], &buckets[17], &buckets[17]
 };
 
 /* ********************* End of Machine Dependencies ********************* */
 
-void (*mlabort)() = {0};
+void (*mlabort) () =
+{
+0};
 
 #else
 
 extern char endfree;
 extern struct qelem adjhead, buckets[NBUCKETS];
 extern Size mlsizes[NBUCKETS];
-extern void (*mlabort)();
+extern void (*mlabort) ();
 extern long m_free, m_busy;
 
 #endif
 
-extern void insque(), remque();
-extern void free(), mllcerr();
-extern char *malloc(), *realloc();
+extern void insque (), remque ();
+extern void free (), mllcerr ();
+extern char *malloc (), *realloc ();
 
 #ifdef debug
 
-# define ASSERT(p,q)	if (!(p)) mllcerr(q)
+#define ASSERT(p,q)	if (!(p)) mllcerr(q)
 
 #else
 
-# define ASSERT(p,q)
+#define ASSERT(p,q)
 
 #endif
 

@@ -9,25 +9,25 @@
 #include "stddefs.h"
 
 short
-et_rel()
+et_rel ()
 {
-	return(FAILURE);
+  return (FAILURE);
 }
 
 short
-ef_rel()
+ef_rel ()
 {
-	return(FAILURE);
+  return (FAILURE);
 }
 
 short
-rd_rel()
+rd_rel ()
 {
-	return(FAILURE);
+  return (FAILURE);
 }
 
 short
-nd_rel()
+nd_rel ()
 {
-	return(FAILURE);
+  return (FAILURE);
 }

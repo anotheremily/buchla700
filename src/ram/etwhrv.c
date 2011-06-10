@@ -16,21 +16,21 @@
 #include "instdsp.h"
 #include "wsdsp.h"
 
-extern	short	advwcur(), wdswin();
+extern short advwcur (), wdswin ();
 
-extern	unsigned	*waveob;
+extern unsigned *waveob;
 
-extern	short	stcrow, stccol, curwhrv, curvce, curwslt, curwhrm;
+extern short stcrow, stccol, curwhrv, curvce, curwslt, curwhrm;
 
-extern	short	wdbox[][8];
+extern short wdbox[][8];
 
-extern	char	dspbuf[];
+extern char dspbuf[];
 
-extern	struct	instdef	vbufs[];
+extern struct instdef vbufs[];
 
-extern	short	wsnmod[12][2];
+extern short wsnmod[12][2];
 
-extern	short	vmtab[NUMHARM];
+extern short vmtab[NUMHARM];
 
 /* 
 */
@@ -42,27 +42,30 @@ extern	short	vmtab[NUMHARM];
 */
 
 short
-et_whrv(n)
-short n;
+et_whrv (n)
+     short n;
 {
-	register short harv;
-	register char hvsgn;
+  register short harv;
+  register char hvsgn;
 
-	if (curwhrv LT 0) {
+  if (curwhrv LT 0)
+    {
 
-		hvsgn = '-';
-		harv = -curwhrv;
+      hvsgn = '-';
+      harv = -curwhrv;
 
-	} else {
+    }
+  else
+    {
 
-		hvsgn = '+';
-		harv = curwhrv;
-	}
+      hvsgn = '+';
+      harv = curwhrv;
+    }
 
-	sprintf(ebuf, "%c%03d", hvsgn, harv);
-	ebflag = TRUE;
+  sprintf (ebuf, "%c%03d", hvsgn, harv);
+  ebflag = TRUE;
 
-	return(SUCCESS);
+  return (SUCCESS);
 }
 
 /* 
@@ -75,39 +78,39 @@ short n;
 */
 
 short
-ef_whrv(n)
-short n;
+ef_whrv (n)
+     short n;
 {
-	register short *hv;
-	register short i, tmpval;
+  register short *hv;
+  register short i, tmpval;
 
-	ebuf[4] = '\0';			/* terminate the string in ebuf */
-	ebflag = FALSE;
+  ebuf[4] = '\0';		/* terminate the string in ebuf */
+  ebflag = FALSE;
 
-	tmpval = 0;
+  tmpval = 0;
 
-	for (i = 1; i < 4; i++)		/* convert from ASCII to binary */
-		tmpval = (tmpval * 10) + (ebuf[i] - '0');
+  for (i = 1; i < 4; i++)	/* convert from ASCII to binary */
+    tmpval = (tmpval * 10) + (ebuf[i] - '0');
 
-	if (tmpval GT 100)
-		return(FAILURE);
+  if (tmpval GT 100)
+    return (FAILURE);
 
-	if (ebuf[0] EQ '-')
-		curwhrv = -tmpval;
-	else
-		curwhrv = tmpval;
+  if (ebuf[0] EQ '-')
+    curwhrv = -tmpval;
+  else
+    curwhrv = tmpval;
 
-	hv = curwslt ? vbufs[curvce].idhwvbh : vbufs[curvce].idhwvah;
-	hv[curwhrm] = curwhrv;
-	vmtab[curwhrm] = curwhrv;
-	adj(curwhrm);
-	wscalc();
-	whupd();
-	wsnmod[curvce][curwslt] = TRUE;
-	wdswin(0);
-	wdswin(2);
-	wdswin(4);
-	return(SUCCESS);
+  hv = curwslt ? vbufs[curvce].idhwvbh : vbufs[curvce].idhwvah;
+  hv[curwhrm] = curwhrv;
+  vmtab[curwhrm] = curwhrv;
+  adj (curwhrm);
+  wscalc ();
+  whupd ();
+  wsnmod[curvce][curwslt] = TRUE;
+  wdswin (0);
+  wdswin (2);
+  wdswin (4);
+  return (SUCCESS);
 }
 
 /* 
@@ -120,32 +123,35 @@ short n;
 */
 
 short
-rd_whrv(nn)
-short nn;
+rd_whrv (nn)
+     short nn;
 {
-	register short harv, n;
-	register char hvsgn;
+  register short harv, n;
+  register char hvsgn;
 
-	n = nn & 0x00FF;
+  n = nn & 0x00FF;
 
-	if (curwhrv LT 0) {
+  if (curwhrv LT 0)
+    {
 
-		hvsgn = '-';
-		harv = -curwhrv;
+      hvsgn = '-';
+      harv = -curwhrv;
 
-	} else {
+    }
+  else
+    {
 
-		hvsgn = '+';
-		harv = curwhrv;
-	}
+      hvsgn = '+';
+      harv = curwhrv;
+    }
 
-	sprintf(dspbuf, "%c%03d", hvsgn, harv);
+  sprintf (dspbuf, "%c%03d", hvsgn, harv);
 
-	vbank(0);			/* display the value */
-	vcputsv(waveob, 64, wdbox[n][4], wdbox[n][5],
-		wdbox[n][6] + 1, wdbox[n][7] + WHRV_OFF, dspbuf, 14);
+  vbank (0);			/* display the value */
+  vcputsv (waveob, 64, wdbox[n][4], wdbox[n][5],
+	   wdbox[n][6] + 1, wdbox[n][7] + WHRV_OFF, dspbuf, 14);
 
-	return(SUCCESS);
+  return (SUCCESS);
 }
 
 /* 
@@ -158,42 +164,49 @@ short nn;
 */
 
 short
-nd_whrv(nn, k)
-short nn;
-register short  k;
+nd_whrv (nn, k)
+     short nn;
+     register short k;
 {
-	register short ec, n;
+  register short ec, n;
 
-	n  = nn & 0x00FF;
-	ec = stccol - cfetp->flcol;	/* setup edit buffer column */
+  n = nn & 0x00FF;
+  ec = stccol - cfetp->flcol;	/* setup edit buffer column */
 
-	if (ec EQ 0) {
+  if (ec EQ 0)
+    {
 
-		if (k EQ 8) {
+      if (k EQ 8)
+	{
 
-			ebuf[0] = dspbuf[0] = '-';
-			ebuf[4] = dspbuf[1] = '\0';
+	  ebuf[0] = dspbuf[0] = '-';
+	  ebuf[4] = dspbuf[1] = '\0';
 
-		} else if (k EQ 9) {
+	}
+      else if (k EQ 9)
+	{
 
-			ebuf[0] = dspbuf[0] = '+';
-			ebuf[4] = dspbuf[1] = '\0';
+	  ebuf[0] = dspbuf[0] = '+';
+	  ebuf[4] = dspbuf[1] = '\0';
 
-		} else {
+	}
+      else
+	{
 
-			return(FAILURE);
-		}
-
-	} else {
-
-		ebuf[ec] = dspbuf[0] = k + '0';
-		ebuf[4]  = dspbuf[1] = '\0';
+	  return (FAILURE);
 	}
 
-	vbank(0);
-	vcputsv(waveob, 64, WS_ENTRY, wdbox[n][5],
-		stcrow, stccol, dspbuf, 14);
+    }
+  else
+    {
 
-	advwcur();
-	return(SUCCESS);
+      ebuf[ec] = dspbuf[0] = k + '0';
+      ebuf[4] = dspbuf[1] = '\0';
+    }
+
+  vbank (0);
+  vcputsv (waveob, 64, WS_ENTRY, wdbox[n][5], stcrow, stccol, dspbuf, 14);
+
+  advwcur ();
+  return (SUCCESS);
 }

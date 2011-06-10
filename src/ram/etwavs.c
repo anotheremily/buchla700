@@ -14,17 +14,17 @@
 #include "midas.h"
 #include "wsdsp.h"
 
-extern	short	advwcur();
+extern short advwcur ();
 
-extern	unsigned	*waveob;
+extern unsigned *waveob;
 
-extern	short	stccol, curwave, curvce, curwslt;
+extern short stccol, curwave, curvce, curwslt;
 
-extern	short	wsnmod[12][2];
+extern short wsnmod[12][2];
 
-extern	short	wdbox[][8];
+extern short wdbox[][8];
 
-extern	char	dspbuf[];
+extern char dspbuf[];
 
 /* 
 */
@@ -36,13 +36,13 @@ extern	char	dspbuf[];
 */
 
 short
-et_wavs(n)
-short n;
+et_wavs (n)
+     short n;
 {
-	sprintf(ebuf, "%02d", curwave + 1);
-	ebflag = TRUE;
+  sprintf (ebuf, "%02d", curwave + 1);
+  ebflag = TRUE;
 
-	return(SUCCESS);
+  return (SUCCESS);
 }
 
 /*
@@ -52,25 +52,25 @@ short n;
 */
 
 short
-ef_wavs(n)
-short n;
+ef_wavs (n)
+     short n;
 {
-	register short i, tmpval;
+  register short i, tmpval;
 
-	ebuf[2] = '\0';			/* terminate the string in ebuf */
-	ebflag = FALSE;
+  ebuf[2] = '\0';		/* terminate the string in ebuf */
+  ebflag = FALSE;
 
-	tmpval = 0;
+  tmpval = 0;
 
-	for (i = 0; i < 2; i++)		/* convert from ASCII to binary */
-		tmpval = (tmpval * 10) + (ebuf[i] - '0');
+  for (i = 0; i < 2; i++)	/* convert from ASCII to binary */
+    tmpval = (tmpval * 10) + (ebuf[i] - '0');
 
-	if ((tmpval GT NUMWAVS) OR (tmpval EQ 0))
-		return(FAILURE);
+  if ((tmpval GT NUMWAVS) OR (tmpval EQ 0))
+    return (FAILURE);
 
-	wsnmod[curvce][curwslt] = TRUE;
-	curwave = tmpval - 1;
-	return(SUCCESS);
+  wsnmod[curvce][curwslt] = TRUE;
+  curwave = tmpval - 1;
+  return (SUCCESS);
 }
 
 /* 
@@ -83,22 +83,22 @@ short n;
 */
 
 short
-rd_wavs(nn)
-short nn;
+rd_wavs (nn)
+     short nn;
 {
-	register short n;
-	register unsigned cx;
+  register short n;
+  register unsigned cx;
 
-	cx = exp_c(wsnmod[curvce][curwslt] ? WS_CHGC : wdbox[n][4]);
-	n = nn & 0x00FF;
+  cx = exp_c (wsnmod[curvce][curwslt] ? WS_CHGC : wdbox[n][4]);
+  n = nn & 0x00FF;
 
-	sprintf(dspbuf, "%02d", curwave + 1);
+  sprintf (dspbuf, "%02d", curwave + 1);
 
-	vbank(0);
-	vcputsv(waveob, 64, cx, wdbox[n][5],
-		wdbox[n][6], wdbox[n][7] + WAVE_OFF, dspbuf, 14);
+  vbank (0);
+  vcputsv (waveob, 64, cx, wdbox[n][5],
+	   wdbox[n][6], wdbox[n][7] + WAVE_OFF, dspbuf, 14);
 
-	return(SUCCESS);
+  return (SUCCESS);
 }
 
 /*
@@ -108,25 +108,24 @@ short nn;
 */
 
 short
-nd_wavs(nn, k)
-short nn;
-register short  k;
+nd_wavs (nn, k)
+     short nn;
+     register short k;
 {
-	register short ec, n;
+  register short ec, n;
 
-	n = nn & 0xFF;
-	ec = stccol - cfetp->flcol;	/* setup edit buffer column */
-	ebuf[ec] = k + '0';
-	ebuf[2] = '\0';
+  n = nn & 0xFF;
+  ec = stccol - cfetp->flcol;	/* setup edit buffer column */
+  ebuf[ec] = k + '0';
+  ebuf[2] = '\0';
 
-	dspbuf[0] = k + '0';
-	dspbuf[1] = '\0';
+  dspbuf[0] = k + '0';
+  dspbuf[1] = '\0';
 
-	vbank(0);
-	vcputsv(waveob, 64, WS_ENTRY, wdbox[n][5],
-		wdbox[n][6], stccol, dspbuf, 14);
+  vbank (0);
+  vcputsv (waveob, 64, WS_ENTRY, wdbox[n][5],
+	   wdbox[n][6], stccol, dspbuf, 14);
 
-	advwcur();
-	return(SUCCESS);
+  advwcur ();
+  return (SUCCESS);
 }
-

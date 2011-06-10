@@ -34,27 +34,27 @@
 */
 
 unsigned int
-vbank(b)
-unsigned int b;
+vbank (b)
+     unsigned int b;
 {
-	register unsigned int	newb, oldb;
+  register unsigned int newb, oldb;
 
-	oldb = v_regs[5] >> 6;			/* get old bank value */
-	oldb = (oldb & 2) | ((oldb >> 2) & 1);
+  oldb = v_regs[5] >> 6;	/* get old bank value */
+  oldb = (oldb & 2) | ((oldb >> 2) & 1);
 
-	if (oldb EQ b)				/* done if same as b */
-		return(b);
+  if (oldb EQ b)		/* done if same as b */
+    return (b);
 
-	newb = b << 6;				/* calculate new bank value */
-	newb = (newb & 0x0080) | ((newb << 2) & 0x0100);
+  newb = b << 6;		/* calculate new bank value */
+  newb = (newb & 0x0080) | ((newb << 2) & 0x0100);
 
-	v_regs[5] = newb;			/* set new bank value */
+  v_regs[5] = newb;		/* set new bank value */
 
-	while (v_regs[11] GT 300)  ;		/* wait for FRAMESTOP */
-	while (v_regs[11] LT 175)  ;
-	while (v_regs[11] GE 175)  ;
+  while (v_regs[11] GT 300);	/* wait for FRAMESTOP */
+  while (v_regs[11] LT 175);
+  while (v_regs[11] GE 175);
 
-	return(oldb);				/* return old bank value */
+  return (oldb);		/* return old bank value */
 }
 
 /* 
@@ -66,9 +66,9 @@ unsigned int b;
    =============================================================================
 */
 
-vfwait()
+vfwait ()
 {
-	while (v_regs[11] GT 300) ;		/* wait for FRAMESTOP */
-	while (v_regs[11] LT 175) ;
-	while (v_regs[11] GE 175) ;
+  while (v_regs[11] GT 300);	/* wait for FRAMESTOP */
+  while (v_regs[11] LT 175);
+  while (v_regs[11] GE 175);
 }

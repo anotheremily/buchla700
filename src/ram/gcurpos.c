@@ -13,10 +13,10 @@
 
 #include "midas.h"
 
-#define	YOFF	15	/* y pixel offset */
-#define	XOFF	14	/* x pixel offset */
+#define	YOFF	15		/* y pixel offset */
+#define	XOFF	14		/* x pixel offset */
 
-extern	short	sgcsw;
+extern short sgcsw;
 
 /* 4 bit pixel patterns */
 
@@ -37,200 +37,200 @@ extern	short	sgcsw;
 #define	AW_E	0x0FFF
 #define	AW_F	0xFFFF
 
-extern	int	objclr(), SetPri(), vbank();
+extern int objclr (), SetPri (), vbank ();
 
-extern	unsigned	exp_c();
+extern unsigned exp_c ();
 
-extern	short	stcrow, stccol;
-
-/* 
-*/
-
-static	int	ar_ule[] = {		/* upper left even pixel arrow */
-
-	AW_F, AW_0, AW_0, AW_0,		/* 0 */
-	AW_C, AW_0, AW_0, AW_0,		/* 1 */
-	AW_A, AW_0, AW_0, AW_0,		/* 2 */
-	AW_9, AW_0, AW_0, AW_0,		/* 3 */
-	AW_0, AW_8, AW_0, AW_0,		/* 4 */
-	AW_0, AW_4, AW_0, AW_0,		/* 5 */
-	AW_0, AW_2, AW_0, AW_0,		/* 6 */
-	AW_0, AW_1, AW_0, AW_0,		/* 7 */
-	AW_0, AW_0, AW_8, AW_0,		/* 8 */
-	AW_0, AW_0, AW_7, AW_8,		/* 9 */
-	AW_0, AW_0, AW_6, AW_0,		/* 10 */
-	AW_0, AW_0, AW_5, AW_E,		/* 11 */
-	AW_0, AW_0, AW_5, AW_8,		/* 12 */
-	AW_0, AW_0, AW_1, AW_4,		/* 13 */
-	AW_0, AW_0, AW_1, AW_2,		/* 14 */
-	AW_0, AW_0, AW_0, AW_0		/* 15 */
-};
-
-static	int	ar_ulo[] = {		/* upper left odd pixel arrow */
-
-	AW_7, AW_8, AW_0, AW_0,		/* 0 */
-	AW_6, AW_0, AW_0, AW_0,		/* 1 */
-	AW_5, AW_0, AW_0, AW_0,		/* 2 */
-	AW_4, AW_8, AW_0, AW_0,		/* 3 */
-	AW_0, AW_4, AW_0, AW_0,		/* 4 */
-	AW_0, AW_2, AW_0, AW_0,		/* 5 */
-	AW_0, AW_1, AW_0, AW_0,		/* 6 */
-	AW_0, AW_0, AW_8, AW_0,		/* 7 */
-	AW_0, AW_0, AW_4, AW_0,		/* 8 */
-	AW_0, AW_0, AW_3, AW_C,		/* 9 */
-	AW_0, AW_0, AW_3, AW_0,		/* 10 */
-	AW_0, AW_0, AW_2, AW_F,		/* 11 */
-	AW_0, AW_0, AW_2, AW_C,		/* 12 */
-	AW_0, AW_0, AW_0, AW_A,		/* 13 */
-	AW_0, AW_0, AW_0, AW_9,		/* 14 */
-	AW_0, AW_0, AW_0, AW_0		/* 15 */
-};
+extern short stcrow, stccol;
 
 /* 
 */
 
-static	int	ar_ure[] = {		/* upper right even pixel arrow */
+static int ar_ule[] = {		/* upper left even pixel arrow */
 
-	AW_0, AW_0, AW_1, AW_E,		/* 0 */
-	AW_0, AW_0, AW_0, AW_6,		/* 1 */
-	AW_0, AW_0, AW_0, AW_A,		/* 2 */
-	AW_0, AW_0, AW_1, AW_2,		/* 3 */
-	AW_0, AW_0, AW_2, AW_0,		/* 4 */
-	AW_0, AW_0, AW_4, AW_0,		/* 5 */
-	AW_0, AW_0, AW_8, AW_0,		/* 6 */
-	AW_0, AW_1, AW_0, AW_0,		/* 7 */
-	AW_0, AW_2, AW_0, AW_0,		/* 8 */
-	AW_3, AW_C, AW_0, AW_0,		/* 9 */
-	AW_0, AW_C, AW_0, AW_0,		/* 10 */
-	AW_F, AW_4, AW_0, AW_0,		/* 11 */
-	AW_3, AW_4, AW_0, AW_0,		/* 12 */
-	AW_5, AW_0, AW_0, AW_0,		/* 13 */
-	AW_9, AW_0, AW_0, AW_0,		/* 14 */
-	AW_0, AW_0, AW_0, AW_0		/* 15 */
+  AW_F, AW_0, AW_0, AW_0,	/* 0 */
+  AW_C, AW_0, AW_0, AW_0,	/* 1 */
+  AW_A, AW_0, AW_0, AW_0,	/* 2 */
+  AW_9, AW_0, AW_0, AW_0,	/* 3 */
+  AW_0, AW_8, AW_0, AW_0,	/* 4 */
+  AW_0, AW_4, AW_0, AW_0,	/* 5 */
+  AW_0, AW_2, AW_0, AW_0,	/* 6 */
+  AW_0, AW_1, AW_0, AW_0,	/* 7 */
+  AW_0, AW_0, AW_8, AW_0,	/* 8 */
+  AW_0, AW_0, AW_7, AW_8,	/* 9 */
+  AW_0, AW_0, AW_6, AW_0,	/* 10 */
+  AW_0, AW_0, AW_5, AW_E,	/* 11 */
+  AW_0, AW_0, AW_5, AW_8,	/* 12 */
+  AW_0, AW_0, AW_1, AW_4,	/* 13 */
+  AW_0, AW_0, AW_1, AW_2,	/* 14 */
+  AW_0, AW_0, AW_0, AW_0	/* 15 */
 };
 
-static	int	ar_uro[] = {		/* upper right odd pixel arrow */
+static int ar_ulo[] = {		/* upper left odd pixel arrow */
 
-	AW_0, AW_0, AW_0, AW_F,		/* 0 */
-	AW_0, AW_0, AW_0, AW_3,		/* 1 */
-	AW_0, AW_0, AW_0, AW_5,		/* 2 */
-	AW_0, AW_0, AW_0, AW_9,		/* 3 */
-	AW_0, AW_0, AW_1, AW_0,		/* 4 */
-	AW_0, AW_0, AW_2, AW_0,		/* 5 */
-	AW_0, AW_0, AW_4, AW_0,		/* 6 */
-	AW_0, AW_0, AW_8, AW_0,		/* 7 */
-	AW_0, AW_1, AW_0, AW_0,		/* 8 */
-	AW_1, AW_E, AW_0, AW_0,		/* 9 */
-	AW_0, AW_6, AW_0, AW_0,		/* 10 */
-	AW_7, AW_A, AW_0, AW_0,		/* 11 */
-	AW_1, AW_A, AW_0, AW_0,		/* 12 */
-	AW_2, AW_8, AW_0, AW_0,		/* 13 */
-	AW_4, AW_8, AW_0, AW_0,		/* 14 */
-	AW_0, AW_0, AW_0, AW_0		/* 15 */
+  AW_7, AW_8, AW_0, AW_0,	/* 0 */
+  AW_6, AW_0, AW_0, AW_0,	/* 1 */
+  AW_5, AW_0, AW_0, AW_0,	/* 2 */
+  AW_4, AW_8, AW_0, AW_0,	/* 3 */
+  AW_0, AW_4, AW_0, AW_0,	/* 4 */
+  AW_0, AW_2, AW_0, AW_0,	/* 5 */
+  AW_0, AW_1, AW_0, AW_0,	/* 6 */
+  AW_0, AW_0, AW_8, AW_0,	/* 7 */
+  AW_0, AW_0, AW_4, AW_0,	/* 8 */
+  AW_0, AW_0, AW_3, AW_C,	/* 9 */
+  AW_0, AW_0, AW_3, AW_0,	/* 10 */
+  AW_0, AW_0, AW_2, AW_F,	/* 11 */
+  AW_0, AW_0, AW_2, AW_C,	/* 12 */
+  AW_0, AW_0, AW_0, AW_A,	/* 13 */
+  AW_0, AW_0, AW_0, AW_9,	/* 14 */
+  AW_0, AW_0, AW_0, AW_0	/* 15 */
 };
 
 /* 
 */
 
-static	int	ar_lle[] = {		/* lower left even pixel arrow */
+static int ar_ure[] = {		/* upper right even pixel arrow */
 
-	AW_0, AW_0, AW_0, AW_0,		/* 0 */
-	AW_0, AW_0, AW_1, AW_2,		/* 1 */
-	AW_0, AW_0, AW_1, AW_4,		/* 2 */
-	AW_0, AW_0, AW_5, AW_8,		/* 3 */
-	AW_0, AW_0, AW_5, AW_E,		/* 4 */
-	AW_0, AW_0, AW_6, AW_0,		/* 5 */
-	AW_0, AW_0, AW_7, AW_8,		/* 6 */
-	AW_0, AW_0, AW_8, AW_0,		/* 7 */
-	AW_0, AW_1, AW_0, AW_0,		/* 8 */
-	AW_0, AW_2, AW_0, AW_0,		/* 9 */
-	AW_0, AW_4, AW_0, AW_0,		/* 10 */
-	AW_0, AW_8, AW_0, AW_0,		/* 11 */
-	AW_9, AW_0, AW_0, AW_0,		/* 12 */
-	AW_A, AW_0, AW_0, AW_0,		/* 13 */
-	AW_C, AW_0, AW_0, AW_0,		/* 14 */
-	AW_F, AW_0, AW_0, AW_0		/* 15 */
+  AW_0, AW_0, AW_1, AW_E,	/* 0 */
+  AW_0, AW_0, AW_0, AW_6,	/* 1 */
+  AW_0, AW_0, AW_0, AW_A,	/* 2 */
+  AW_0, AW_0, AW_1, AW_2,	/* 3 */
+  AW_0, AW_0, AW_2, AW_0,	/* 4 */
+  AW_0, AW_0, AW_4, AW_0,	/* 5 */
+  AW_0, AW_0, AW_8, AW_0,	/* 6 */
+  AW_0, AW_1, AW_0, AW_0,	/* 7 */
+  AW_0, AW_2, AW_0, AW_0,	/* 8 */
+  AW_3, AW_C, AW_0, AW_0,	/* 9 */
+  AW_0, AW_C, AW_0, AW_0,	/* 10 */
+  AW_F, AW_4, AW_0, AW_0,	/* 11 */
+  AW_3, AW_4, AW_0, AW_0,	/* 12 */
+  AW_5, AW_0, AW_0, AW_0,	/* 13 */
+  AW_9, AW_0, AW_0, AW_0,	/* 14 */
+  AW_0, AW_0, AW_0, AW_0	/* 15 */
 };
 
-static	int	ar_llo[] = {		/* lower left odd pixel arrow */
+static int ar_uro[] = {		/* upper right odd pixel arrow */
 
-	AW_0, AW_0, AW_0, AW_0,		/* 0 */
-	AW_0, AW_0, AW_0, AW_9,		/* 1 */
-	AW_0, AW_0, AW_0, AW_A,		/* 2 */
-	AW_0, AW_0, AW_2, AW_C,		/* 3 */
-	AW_0, AW_0, AW_2, AW_F,		/* 4 */
-	AW_0, AW_0, AW_3, AW_0,		/* 5 */
-	AW_0, AW_0, AW_3, AW_C,		/* 6 */
-	AW_0, AW_0, AW_4, AW_0,		/* 7 */
-	AW_0, AW_0, AW_8, AW_0,		/* 8 */
-	AW_0, AW_1, AW_0, AW_0,		/* 9 */
-	AW_0, AW_2, AW_0, AW_0,		/* 10 */
-	AW_0, AW_4, AW_0, AW_0,		/* 11 */
-	AW_4, AW_8, AW_0, AW_0,		/* 12 */
-	AW_5, AW_0, AW_0, AW_0,		/* 13 */
-	AW_6, AW_0, AW_0, AW_0,		/* 14 */
-	AW_7, AW_8, AW_0, AW_0		/* 15 */
-};
-
-/* 
-*/
-
-static	int	ar_lre[] = {		/* lower right even pixel arrow */
-
-	AW_0, AW_0, AW_0, AW_0,		/* 0 */
-	AW_9, AW_0, AW_0, AW_0,		/* 1 */
-	AW_5, AW_0, AW_0, AW_0,		/* 2 */
-	AW_3, AW_4, AW_0, AW_0,		/* 3 */
-	AW_F, AW_4, AW_0, AW_0,		/* 4 */
-	AW_0, AW_C, AW_0, AW_0,		/* 5 */
-	AW_3, AW_C, AW_0, AW_0,		/* 6 */
-	AW_0, AW_2, AW_0, AW_0,		/* 7 */
-	AW_0, AW_1, AW_0, AW_0,		/* 8 */
-	AW_0, AW_0, AW_8, AW_0,		/* 9 */
-	AW_0, AW_0, AW_4, AW_0,		/* 10 */
-	AW_0, AW_0, AW_2, AW_0,		/* 11 */
-	AW_0, AW_0, AW_1, AW_2,		/* 12 */
-	AW_0, AW_0, AW_0, AW_A,		/* 13 */
-	AW_0, AW_0, AW_0, AW_6,		/* 14 */
-	AW_0, AW_0, AW_1, AW_E		/* 15 */
-};
-
-static	int	ar_lro[] = {		/* lower right odd pixel arrow */
-
-	AW_0, AW_0, AW_0, AW_0,		/* 0 */
-	AW_4, AW_8, AW_0, AW_0,		/* 1 */
-	AW_2, AW_8, AW_0, AW_0,		/* 2 */
-	AW_1, AW_A, AW_0, AW_0,		/* 3 */
-	AW_7, AW_A, AW_0, AW_0,		/* 4 */
-	AW_0, AW_6, AW_0, AW_0,		/* 5 */
-	AW_1, AW_E, AW_0, AW_0,		/* 6 */
-	AW_0, AW_1, AW_0, AW_0,		/* 7 */
-	AW_0, AW_0, AW_8, AW_0,		/* 8 */
-	AW_0, AW_0, AW_4, AW_0,		/* 9 */
-	AW_0, AW_0, AW_2, AW_0,		/* 10 */
-	AW_0, AW_0, AW_1, AW_0,		/* 11 */
-	AW_0, AW_0, AW_0, AW_9,		/* 12 */
-	AW_0, AW_0, AW_0, AW_5,		/* 13 */
-	AW_0, AW_0, AW_0, AW_3,		/* 14 */
-	AW_0, AW_0, AW_0, AW_F		/* 15 */
+  AW_0, AW_0, AW_0, AW_F,	/* 0 */
+  AW_0, AW_0, AW_0, AW_3,	/* 1 */
+  AW_0, AW_0, AW_0, AW_5,	/* 2 */
+  AW_0, AW_0, AW_0, AW_9,	/* 3 */
+  AW_0, AW_0, AW_1, AW_0,	/* 4 */
+  AW_0, AW_0, AW_2, AW_0,	/* 5 */
+  AW_0, AW_0, AW_4, AW_0,	/* 6 */
+  AW_0, AW_0, AW_8, AW_0,	/* 7 */
+  AW_0, AW_1, AW_0, AW_0,	/* 8 */
+  AW_1, AW_E, AW_0, AW_0,	/* 9 */
+  AW_0, AW_6, AW_0, AW_0,	/* 10 */
+  AW_7, AW_A, AW_0, AW_0,	/* 11 */
+  AW_1, AW_A, AW_0, AW_0,	/* 12 */
+  AW_2, AW_8, AW_0, AW_0,	/* 13 */
+  AW_4, AW_8, AW_0, AW_0,	/* 14 */
+  AW_0, AW_0, AW_0, AW_0	/* 15 */
 };
 
 /* 
 */
 
-static	int	*arrows[] = {	/* arrow pointer table */
+static int ar_lle[] = {		/* lower left even pixel arrow */
 
-	v_curs0,	/* 0 - upper left, even pixel */
-	v_curs1,	/* 1 - upper left, odd pixel */
+  AW_0, AW_0, AW_0, AW_0,	/* 0 */
+  AW_0, AW_0, AW_1, AW_2,	/* 1 */
+  AW_0, AW_0, AW_1, AW_4,	/* 2 */
+  AW_0, AW_0, AW_5, AW_8,	/* 3 */
+  AW_0, AW_0, AW_5, AW_E,	/* 4 */
+  AW_0, AW_0, AW_6, AW_0,	/* 5 */
+  AW_0, AW_0, AW_7, AW_8,	/* 6 */
+  AW_0, AW_0, AW_8, AW_0,	/* 7 */
+  AW_0, AW_1, AW_0, AW_0,	/* 8 */
+  AW_0, AW_2, AW_0, AW_0,	/* 9 */
+  AW_0, AW_4, AW_0, AW_0,	/* 10 */
+  AW_0, AW_8, AW_0, AW_0,	/* 11 */
+  AW_9, AW_0, AW_0, AW_0,	/* 12 */
+  AW_A, AW_0, AW_0, AW_0,	/* 13 */
+  AW_C, AW_0, AW_0, AW_0,	/* 14 */
+  AW_F, AW_0, AW_0, AW_0	/* 15 */
+};
 
-	v_curs2,	/* 2 - upper right, even pixel */
-	v_curs3,	/* 3 - upper right, odd pixel */
+static int ar_llo[] = {		/* lower left odd pixel arrow */
 
-	v_curs4,	/* 4 - lower left, even pixel */
-	v_curs5,	/* 5 - lower left, odd pixel */
+  AW_0, AW_0, AW_0, AW_0,	/* 0 */
+  AW_0, AW_0, AW_0, AW_9,	/* 1 */
+  AW_0, AW_0, AW_0, AW_A,	/* 2 */
+  AW_0, AW_0, AW_2, AW_C,	/* 3 */
+  AW_0, AW_0, AW_2, AW_F,	/* 4 */
+  AW_0, AW_0, AW_3, AW_0,	/* 5 */
+  AW_0, AW_0, AW_3, AW_C,	/* 6 */
+  AW_0, AW_0, AW_4, AW_0,	/* 7 */
+  AW_0, AW_0, AW_8, AW_0,	/* 8 */
+  AW_0, AW_1, AW_0, AW_0,	/* 9 */
+  AW_0, AW_2, AW_0, AW_0,	/* 10 */
+  AW_0, AW_4, AW_0, AW_0,	/* 11 */
+  AW_4, AW_8, AW_0, AW_0,	/* 12 */
+  AW_5, AW_0, AW_0, AW_0,	/* 13 */
+  AW_6, AW_0, AW_0, AW_0,	/* 14 */
+  AW_7, AW_8, AW_0, AW_0	/* 15 */
+};
 
-	v_curs6,	/* 6 - lower right, even pixel */
-	v_curs7		/* 7 - lower right, odd pixel */
+/* 
+*/
+
+static int ar_lre[] = {		/* lower right even pixel arrow */
+
+  AW_0, AW_0, AW_0, AW_0,	/* 0 */
+  AW_9, AW_0, AW_0, AW_0,	/* 1 */
+  AW_5, AW_0, AW_0, AW_0,	/* 2 */
+  AW_3, AW_4, AW_0, AW_0,	/* 3 */
+  AW_F, AW_4, AW_0, AW_0,	/* 4 */
+  AW_0, AW_C, AW_0, AW_0,	/* 5 */
+  AW_3, AW_C, AW_0, AW_0,	/* 6 */
+  AW_0, AW_2, AW_0, AW_0,	/* 7 */
+  AW_0, AW_1, AW_0, AW_0,	/* 8 */
+  AW_0, AW_0, AW_8, AW_0,	/* 9 */
+  AW_0, AW_0, AW_4, AW_0,	/* 10 */
+  AW_0, AW_0, AW_2, AW_0,	/* 11 */
+  AW_0, AW_0, AW_1, AW_2,	/* 12 */
+  AW_0, AW_0, AW_0, AW_A,	/* 13 */
+  AW_0, AW_0, AW_0, AW_6,	/* 14 */
+  AW_0, AW_0, AW_1, AW_E	/* 15 */
+};
+
+static int ar_lro[] = {		/* lower right odd pixel arrow */
+
+  AW_0, AW_0, AW_0, AW_0,	/* 0 */
+  AW_4, AW_8, AW_0, AW_0,	/* 1 */
+  AW_2, AW_8, AW_0, AW_0,	/* 2 */
+  AW_1, AW_A, AW_0, AW_0,	/* 3 */
+  AW_7, AW_A, AW_0, AW_0,	/* 4 */
+  AW_0, AW_6, AW_0, AW_0,	/* 5 */
+  AW_1, AW_E, AW_0, AW_0,	/* 6 */
+  AW_0, AW_1, AW_0, AW_0,	/* 7 */
+  AW_0, AW_0, AW_8, AW_0,	/* 8 */
+  AW_0, AW_0, AW_4, AW_0,	/* 9 */
+  AW_0, AW_0, AW_2, AW_0,	/* 10 */
+  AW_0, AW_0, AW_1, AW_0,	/* 11 */
+  AW_0, AW_0, AW_0, AW_9,	/* 12 */
+  AW_0, AW_0, AW_0, AW_5,	/* 13 */
+  AW_0, AW_0, AW_0, AW_3,	/* 14 */
+  AW_0, AW_0, AW_0, AW_F	/* 15 */
+};
+
+/* 
+*/
+
+static int *arrows[] = {	/* arrow pointer table */
+
+  v_curs0,			/* 0 - upper left, even pixel */
+  v_curs1,			/* 1 - upper left, odd pixel */
+
+  v_curs2,			/* 2 - upper right, even pixel */
+  v_curs3,			/* 3 - upper right, odd pixel */
+
+  v_curs4,			/* 4 - lower left, even pixel */
+  v_curs5,			/* 5 - lower left, odd pixel */
+
+  v_curs6,			/* 6 - lower right, even pixel */
+  v_curs7			/* 7 - lower right, odd pixel */
 };
 
 /* 
@@ -245,48 +245,63 @@ static	int	*arrows[] = {	/* arrow pointer table */
 */
 
 int
-gcurpos(xloc, yloc)
-register int xloc, yloc;
+gcurpos (xloc, yloc)
+     register int xloc, yloc;
 {
-	register int ab, xo, yo;
-	register struct octent *op;
+  register int ab, xo, yo;
+  register struct octent *op;
 
-	if (xloc LT XCTR) {
+  if (xloc LT XCTR)
+    {
 
-		xo = 0;		/* arrow points left */
+      xo = 0;			/* arrow points left */
 
-		if (yloc LT YCTR)
-			{ab = 0;	yo = 0;}	/* arrow points up */
-		else
-			{ab = 4;	yo = -YOFF;}	/* arrow points down */
+      if (yloc LT YCTR)
+	{
+	  ab = 0;
+	  yo = 0;
+	}			/* arrow points up */
+      else
+	{
+	  ab = 4;
+	  yo = -YOFF;
+	}			/* arrow points down */
 
-	} else {
+    }
+  else
+    {
 
-		xo = -XOFF;	/* arrow points right */
+      xo = -XOFF;		/* arrow points right */
 
-		if (yloc LT YCTR)
-			{ab = 2;	yo = 0;}	/* arrow points up */
-		else
-			{ab = 6;	yo = -YOFF;}	/* arrow points down */
-	}
+      if (yloc LT YCTR)
+	{
+	  ab = 2;
+	  yo = 0;
+	}			/* arrow points up */
+      else
+	{
+	  ab = 6;
+	  yo = -YOFF;
+	}			/* arrow points down */
+    }
 
-	if (v_regs[5] & 0x0180)
-		vbank(0);
+  if (v_regs[5] & 0x0180)
+    vbank (0);
 
-	v_odtab[GCPRI][0] |= V_BLA;
-	objclr(GCPRI);
+  v_odtab[GCPRI][0] |= V_BLA;
+  objclr (GCPRI);
 
-	op = &v_obtab[GCURS];
-	op->objx = xloc + xo;
-	op->objy = yloc + yo;
-	op->obase = arrows[ab + (xloc & 0x0001)];
-	op->odtw1 = 0x0400 | (0x03FF & (op->objx >> 1));
+  op = &v_obtab[GCURS];
+  op->objx = xloc + xo;
+  op->objy = yloc + yo;
+  op->obase = arrows[ab + (xloc & 0x0001)];
+  op->odtw1 = 0x0400 | (0x03FF & (op->objx >> 1));
 
-	SetPri(GCURS, GCPRI);
+  SetPri (GCURS, GCPRI);
 
-	stcrow = yloc / 14;
-	stccol = xloc >> 3;
-	return(ab + (xloc & 0x0001));
+  stcrow = yloc / 14;
+  stccol = xloc >> 3;
+  return (ab + (xloc & 0x0001));
 }
 
 /* 
@@ -298,14 +313,14 @@ register int xloc, yloc;
    =============================================================================
 */
 
-andcopy(to, from, with, len)
-register unsigned *to, *from, with;
-short len;
+andcopy (to, from, with, len)
+     register unsigned *to, *from, with;
+     short len;
 {
-	register short i;
+  register short i;
 
-	for (i = len; i--; )
-		*to++ = *from++ & with;
+  for (i = len; i--;)
+    *to++ = *from++ & with;
 }
 
 /*
@@ -314,24 +329,24 @@ short len;
    =============================================================================
 */
 
-arcurs(icolor)
-unsigned icolor;
+arcurs (icolor)
+     unsigned icolor;
 {
-	register short color;
+  register short color;
 
-	color = exp_c(icolor);
+  color = exp_c (icolor);
 
-	if ((v_regs[5] & 0x0180) NE 0x0100)
-		vbank(1);
+  if ((v_regs[5] & 0x0180) NE 0x0100)
+    vbank (1);
 
-	andcopy(v_curs0, ar_ule, color, 64);	/* setup arrow cursor */
-	andcopy(v_curs1, ar_ulo, color, 64);
-	andcopy(v_curs2, ar_ure, color, 64);
-	andcopy(v_curs3, ar_uro, color, 64);
-	andcopy(v_curs4, ar_lle, color, 64);
-	andcopy(v_curs5, ar_llo, color, 64);
-	andcopy(v_curs6, ar_lre, color, 64);
-	andcopy(v_curs7, ar_lro, color, 64);
+  andcopy (v_curs0, ar_ule, color, 64);	/* setup arrow cursor */
+  andcopy (v_curs1, ar_ulo, color, 64);
+  andcopy (v_curs2, ar_ure, color, 64);
+  andcopy (v_curs3, ar_uro, color, 64);
+  andcopy (v_curs4, ar_lle, color, 64);
+  andcopy (v_curs5, ar_llo, color, 64);
+  andcopy (v_curs6, ar_lre, color, 64);
+  andcopy (v_curs7, ar_lro, color, 64);
 }
 
 /* 
@@ -343,16 +358,16 @@ unsigned icolor;
    =============================================================================
 */
 
-sgcon()
+sgcon ()
 {
-	if (sgcsw)
-		return;
+  if (sgcsw)
+    return;
 
-	if (v_regs[5] & 0x0180)
-		vbank(0);
+  if (v_regs[5] & 0x0180)
+    vbank (0);
 
-	v_odtab[GCPRI][0] &= ~V_BLA;
-	sgcsw = TRUE;
+  v_odtab[GCPRI][0] &= ~V_BLA;
+  sgcsw = TRUE;
 }
 
 /*
@@ -361,14 +376,14 @@ sgcon()
    =============================================================================
 */
 
-sgcoff()
+sgcoff ()
 {
-	if (!sgcsw)
-		return;
+  if (!sgcsw)
+    return;
 
-	if (v_regs[5] & 0x0180)
-		vbank(0);
+  if (v_regs[5] & 0x0180)
+    vbank (0);
 
-	v_odtab[GCPRI][0] |= V_BLA;
-	sgcsw = FALSE;
+  v_odtab[GCPRI][0] |= V_BLA;
+  sgcsw = FALSE;
 }

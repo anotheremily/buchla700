@@ -16,15 +16,15 @@
 
 #define	VCE_OFF		6
 
-extern	short	advicur(), newvce();
+extern short advicur (), newvce ();
 
-extern	unsigned	*instob;
+extern unsigned *instob;
 
-extern	short	stccol, curvce;
+extern short stccol, curvce;
 
-extern	short	idbox[][8];
+extern short idbox[][8];
 
-extern	char	dspbuf[];
+extern char dspbuf[];
 
 /* 
 */
@@ -36,13 +36,13 @@ extern	char	dspbuf[];
 */
 
 short
-et_ivce(n)
-short n;
+et_ivce (n)
+     short n;
 {
-	sprintf(ebuf, "%02d", curvce + 1);
-	ebflag = TRUE;
+  sprintf (ebuf, "%02d", curvce + 1);
+  ebflag = TRUE;
 
-	return(SUCCESS);
+  return (SUCCESS);
 }
 
 /* 
@@ -55,25 +55,25 @@ short n;
 */
 
 short
-ef_ivce(n)
-short n;
+ef_ivce (n)
+     short n;
 {
-	register short i, tmpval;
+  register short i, tmpval;
 
-	ebuf[2] = '\0';			/* terminate the string in ebuf */
-	ebflag = FALSE;
+  ebuf[2] = '\0';		/* terminate the string in ebuf */
+  ebflag = FALSE;
 
-	tmpval = 0;
+  tmpval = 0;
 
-	for (i = 0; i < 2; i++)		/* convert from ASCII to binary */
-		tmpval = (tmpval * 10) + (ebuf[i] - '0');
+  for (i = 0; i < 2; i++)	/* convert from ASCII to binary */
+    tmpval = (tmpval * 10) + (ebuf[i] - '0');
 
-	if ((tmpval EQ 0) OR (tmpval GT 12))
-		return(FAILURE);
+  if ((tmpval EQ 0) OR (tmpval GT 12))
+    return (FAILURE);
 
-	newvce(tmpval - 1);
-	allwins();
-	return(SUCCESS);
+  newvce (tmpval - 1);
+  allwins ();
+  return (SUCCESS);
 }
 
 /* 
@@ -86,19 +86,19 @@ short n;
 */
 
 short
-rd_ivce(n)
-short n;
+rd_ivce (n)
+     short n;
 {
-	/* convert to ASCII */
+  /* convert to ASCII */
 
-	sprintf(dspbuf, "%02d", curvce + 1);
+  sprintf (dspbuf, "%02d", curvce + 1);
 
-	vbank(0);			/* display the value */
+  vbank (0);			/* display the value */
 
-	vcputsv(instob, 64, idbox[n][4], idbox[n][5],
-		idbox[n][6], idbox[n][7] + VCE_OFF, dspbuf, 14);
+  vcputsv (instob, 64, idbox[n][4], idbox[n][5],
+	   idbox[n][6], idbox[n][7] + VCE_OFF, dspbuf, 14);
 
-	return(SUCCESS);
+  return (SUCCESS);
 }
 
 /* 
@@ -111,26 +111,25 @@ short n;
 */
 
 short
-nd_ivce(n, k)
-short n;
-register short  k;
+nd_ivce (n, k)
+     short n;
+     register short k;
 {
-	register short ec;
+  register short ec;
 
-	ec = stccol - cfetp->flcol;	/* setup edit buffer column */
-	ebuf[ec] = k + '0';
-	ebuf[2] = '\0';
+  ec = stccol - cfetp->flcol;	/* setup edit buffer column */
+  ebuf[ec] = k + '0';
+  ebuf[2] = '\0';
 
-	dspbuf[0] = k + '0';
-	dspbuf[1] = '\0';
+  dspbuf[0] = k + '0';
+  dspbuf[1] = '\0';
 
-	vbank(0);
+  vbank (0);
 
-	vcputsv(instob, 64, ID_ENTRY, idbox[n][5],
-		idbox[n][6], stccol, dspbuf, 14);
+  vcputsv (instob, 64, ID_ENTRY, idbox[n][5],
+	   idbox[n][6], stccol, dspbuf, 14);
 
-	advicur();
+  advicur ();
 
-	return(SUCCESS);
+  return (SUCCESS);
 }
-

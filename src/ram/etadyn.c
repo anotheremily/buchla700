@@ -17,27 +17,27 @@
 #include "asgdsp.h"
 #include "instdsp.h"
 
-extern	short	setsr();
+extern short setsr ();
 
-extern	unsigned	*asgob;
+extern unsigned *asgob;
 
-extern	unsigned	curintp;
+extern unsigned curintp;
 
-extern	short		stccol;
-extern	short		stcrow;
-extern	short		timemlt;
+extern short stccol;
+extern short stcrow;
+extern short timemlt;
 
-extern	char		dspbuf[];
+extern char dspbuf[];
 
-extern	short		vce2grp[];
-extern	short		grpdyn[];
-extern	short		dyntab[];
+extern short vce2grp[];
+extern short grpdyn[];
+extern short dyntab[];
 
-extern	unsigned	expbit[];
+extern unsigned expbit[];
 
-extern	short		adbox[][8];
+extern short adbox[][8];
 
-extern	struct instdef	vbufs[];
+extern struct instdef vbufs[];
 
 /* 
 */
@@ -49,19 +49,19 @@ extern	struct instdef	vbufs[];
 */
 
 short
-et_adyn(n)
-short n;
+et_adyn (n)
+     short n;
 {
-	register short grp;
+  register short grp;
 
-	grp = 0x00FF & (n >> 8);
+  grp = 0x00FF & (n >> 8);
 
-	ebuf[0] = grpdyn[grp] + '0';
-	ebuf[1] = '\0';
+  ebuf[0] = grpdyn[grp] + '0';
+  ebuf[1] = '\0';
 
-	ebflag = TRUE;
+  ebflag = TRUE;
 
-	return(SUCCESS);
+  return (SUCCESS);
 }
 
 /* 
@@ -73,59 +73,66 @@ short n;
    =============================================================================
 */
 
-setdyn(grp, dyn)
-short grp, dyn;
+setdyn (grp, dyn)
+     short grp, dyn;
 {
-	register short g, i, val;
-	register long ltmp;
-	register unsigned *fpu;
-	register struct idfnhdr *fp;
-	unsigned fpmant, fpexp;
-	short oldsr;
-	short nop;
+  register short g, i, val;
+  register long ltmp;
+  register unsigned *fpu;
+  register struct idfnhdr *fp;
+  unsigned fpmant, fpexp;
+  short oldsr;
+  short nop;
 
-	grpdyn[grp] = dyn;
-	val = dyntab[dyn];
-	g = grp + 1;
+  grpdyn[grp] = dyn;
+  val = dyntab[dyn];
+  g = grp + 1;
 
-	fpmant = (((long)curintp & 0x0000FFF0L) *
-		  ((long)timemlt & 0x0000FFFFL)) >> 15;
+  fpmant = (((long) curintp & 0x0000FFF0L) *
+	    ((long) timemlt & 0x0000FFFFL)) >> 15;
 
-	fpexp = expbit[curintp & 0x000F];
+  fpexp = expbit[curintp & 0x000F];
 
 /* 
 */
-	for (i = 0; i < 12; i++)
-		if (g EQ vce2grp[i]) {
+  for (i = 0; i < 12; i++)
+    if (g EQ vce2grp[i])
+      {
 
-			fp = &vbufs[i].idhfnc[8];
-			fpu = io_fpu + FPU_OFNC + (i << 8) + 0x0080;
+	fp = &vbufs[i].idhfnc[8];
+	fpu = io_fpu + FPU_OFNC + (i << 8) + 0x0080;
 
-			oldsr = setsr(0x2200);
+	oldsr = setsr (0x2200);
 
 /* ++++++++++++++++++++++++++++ FPU interrupts disabled +++++++++++++++++++++ */
 
-			fp->idftmd ^= I_NVBITS;
-			*(fpu + (long)FPU_TMNT) = fpmant;
-			++nop;	++nop;	++nop;
-			*(fpu + (long)FPU_TEXP) = fpexp;
-			++nop;	++nop;	++nop;
+	fp->idftmd ^= I_NVBITS;
+	*(fpu + (long) FPU_TMNT) = fpmant;
+	++nop;
+	++nop;
+	++nop;
+	*(fpu + (long) FPU_TEXP) = fpexp;
+	++nop;
+	++nop;
+	++nop;
 
-			if (fp->idftmd & I_VNSUBN)
-				*(fpu + (long)FPU_TNV1) = val;
-			else
-				*(fpu + (long)FPU_TNV0) = val;
+	if (fp->idftmd & I_VNSUBN)
+	  *(fpu + (long) FPU_TNV1) = val;
+	else
+	  *(fpu + (long) FPU_TNV0) = val;
 
-			++nop;	++nop;	++nop;
+	++nop;
+	++nop;
+	++nop;
 
-			*(fpu + (long)FPU_TCTL) =
-				(fp->idftmd & (I_NRATIO | I_NVBITS)) | 0x0001;
+	*(fpu + (long) FPU_TCTL) =
+	  (fp->idftmd & (I_NRATIO | I_NVBITS)) | 0x0001;
 
-			setsr(oldsr);
+	setsr (oldsr);
 
 /* ++++++++++++++++++++++++++++ Interrupts restored +++++++++++++++++++++++++ */
 
-		}
+      }
 }
 
 /* 
@@ -138,21 +145,21 @@ short grp, dyn;
 */
 
 short
-ef_adyn(n)
-short n;
+ef_adyn (n)
+     short n;
 {
-	register short dyn, grp;
+  register short dyn, grp;
 
-	grp = 0x00FF & (n >> 8);
+  grp = 0x00FF & (n >> 8);
 
-	ebuf[1] = '\0';			/* terminate the string in ebuf */
-	ebflag = FALSE;
+  ebuf[1] = '\0';		/* terminate the string in ebuf */
+  ebflag = FALSE;
 
-	dyn = ebuf[0] - '0';
+  dyn = ebuf[0] - '0';
 
-	setdyn(grp, dyn);
-	modasg();
-	return(SUCCESS);
+  setdyn (grp, dyn);
+  modasg ();
+  return (SUCCESS);
 }
 
 /* 
@@ -165,22 +172,22 @@ short n;
 */
 
 short
-rd_adyn(nn)
-short nn;
+rd_adyn (nn)
+     short nn;
 {
-	register short n, grp;
+  register short n, grp;
 
-	n = 0x00FF & nn;
-	grp = 0x00FF & (nn >> 8);
+  n = 0x00FF & nn;
+  grp = 0x00FF & (nn >> 8);
 
-	dspbuf[0] = grpdyn[grp] + '0';
-	dspbuf[1] = '\0';
+  dspbuf[0] = grpdyn[grp] + '0';
+  dspbuf[1] = '\0';
 
-	vbank(0);
-	vcputsv(asgob, 64, adbox[n][4], adbox[n][5],
-		cfetp->frow, cfetp->flcol, dspbuf, 14);
+  vbank (0);
+  vcputsv (asgob, 64, adbox[n][4], adbox[n][5],
+	   cfetp->frow, cfetp->flcol, dspbuf, 14);
 
-	return(SUCCESS);
+  return (SUCCESS);
 }
 
 /*
@@ -190,20 +197,19 @@ short nn;
 */
 
 short
-nd_adyn(nn, k)
-short nn;
-register short  k;
+nd_adyn (nn, k)
+     short nn;
+     register short k;
 {
-	register short n;
+  register short n;
 
-	n = nn & 0xFF;
+  n = nn & 0xFF;
 
-	dspbuf[0] = ebuf[0] = k + '0';
-	dspbuf[1] = ebuf[1] = '\0';
+  dspbuf[0] = ebuf[0] = k + '0';
+  dspbuf[1] = ebuf[1] = '\0';
 
-	vbank(0);
-	vcputsv(asgob, 64, AK_ENTRY, adbox[n][5], stcrow, stccol, dspbuf, 14);
+  vbank (0);
+  vcputsv (asgob, 64, AK_ENTRY, adbox[n][5], stcrow, stccol, dspbuf, 14);
 
-	return(SUCCESS);
+  return (SUCCESS);
 }
-

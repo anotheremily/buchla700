@@ -8,28 +8,30 @@
 #include "stddefs.h"
 #include "stdio.h"
 
-main()
+main ()
 {
-	register short rc, xl, xr, yt, yb;
+  register short rc, xl, xr, yt, yb;
 
-	printf("rc   xl ..  xr    yt ..  yb\n\n");
+  printf ("rc   xl ..  xr    yt ..  yb\n\n");
 
-	for (rc = 0; rc < 25; rc++) {
+  for (rc = 0; rc < 25; rc++)
+    {
 
-		xl = rc << 3;
-		xr = xl + 7;
+      xl = rc << 3;
+      xr = xl + 7;
 
-		yt = rc * 14;
-		yb = yt + 13;
+      yt = rc * 14;
+      yb = yt + 13;
 
-		printf("%2d  %3d .. %3d   %3d .. %3d\n", rc, xl, xr, yt, yb);
-	}
+      printf ("%2d  %3d .. %3d   %3d .. %3d\n", rc, xl, xr, yt, yb);
+    }
 
-	for (; rc < 64; rc++) {
+  for (; rc < 64; rc++)
+    {
 
-		xl = rc << 3;
-		xr = xl + 7;
+      xl = rc << 3;
+      xr = xl + 7;
 
-		printf("%2d  %3d .. %3d\n", rc, xl, xr);
-	}
+      printf ("%2d  %3d .. %3d\n", rc, xl, xr);
+    }
 }

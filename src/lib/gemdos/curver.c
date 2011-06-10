@@ -20,65 +20,68 @@
 
 #define	VERFILE		"verdate.o"	/* version message file */
 
-extern	int	errno;	/* system error code */
+extern int errno;		/* system error code */
 
-FILE	*fp;		/* VERFILE file pointer */
+FILE *fp;			/* VERFILE file pointer */
 
-struct vb {		/* VERFILE buffer (66 bytes) */
+struct vb
+{				/* VERFILE buffer (66 bytes) */
 
-	struct EXFILE	hdr;
-	char		ver[12];
-	struct SYMBOL	sym;
-	char		rem[12];
+  struct EXFILE hdr;
+  char ver[12];
+  struct SYMBOL sym;
+  char rem[12];
 
 } verbuf;
 
 /* 
 */
-	
+
 /*
    =============================================================================
 	read and print an Alcyon/GEMDOS format version message object file
    =============================================================================
 */
 
-main()
+main ()
 {
-	short	len, rc;
+  short len, rc;
 
-	len = sizeof verbuf;
+  len = sizeof verbuf;
 
-	/* first, read the version message object file */
+  /* first, read the version message object file */
 
-	if ((FILE *)NULL EQ (fp = fopenb(VERFILE, "r"))) {
+  if ((FILE *) NULL EQ (fp = fopenb (VERFILE, "r")))
+    {
 
-		printf("ERROR -- Unable to open \"%s\" for reading  (errno = %d)\n",
-			VERFILE, errno);
+      printf ("ERROR -- Unable to open \"%s\" for reading  (errno = %d)\n",
+	      VERFILE, errno);
 
-		exit(1);
-	}
+      exit (1);
+    }
 
-	rewind(fp);
+  rewind (fp);
 
-	if (1 NE (rc = fread(&verbuf, len, 1, fp))) {
+  if (1 NE (rc = fread (&verbuf, len, 1, fp)))
+    {
 
-		printf("ERROR -- Unable to read \"%s\"  (rc = %d, errno = %d)\n",
-			VERFILE, rc, errno);
+      printf ("ERROR -- Unable to read \"%s\"  (rc = %d, errno = %d)\n",
+	      VERFILE, rc, errno);
 
-		if (ferror(fp))
-			printf("  File system ERROR.\n");
-		else if (feof(fp))
-			printf("  Premature EOF.\n");
-		else
-			printf("  Neither ERROR or EOF set -- very odd\n");
+      if (ferror (fp))
+	printf ("  File system ERROR.\n");
+      else if (feof (fp))
+	printf ("  Premature EOF.\n");
+      else
+	printf ("  Neither ERROR or EOF set -- very odd\n");
 
-		fclose(fp);
-		exit(1);
-	}
+      fclose (fp);
+      exit (1);
+    }
 
-	/* close the file, print the version message, and exit */
+  /* close the file, print the version message, and exit */
 
-	fclose(fp);
-	printf("Current version:  %s\n", verbuf.ver);
-	exit(0);
+  fclose (fp);
+  printf ("Current version:  %s\n", verbuf.ver);
+  exit (0);
 }

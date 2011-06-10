@@ -5,9 +5,9 @@
 *
 **/
 
-extern bios();
-extern xbios();
-extern gemdos();
+extern bios ();
+extern xbios ();
+extern gemdos ();
 
 /* GEMDOS functions (trap #1) */
 
@@ -55,7 +55,7 @@ extern gemdos();
 #define Dgetpath(a,b)  gemdos(0x47,a,b)
 #define Malloc(a)      gemdos(0x48,a)
 #define Mfree(a)       gemdos(0x49,a)
-#define Mshrink(a,b)   gemdos(0x4a,0,a,b)   /* NOTE: Null parameter added */
+#define Mshrink(a,b)   gemdos(0x4a,0,a,b)	/* NOTE: Null parameter added */
 #define Pexec(a,b,c,d) gemdos(0x4b,a,b,c,d)
 #define Pterm(a)       gemdos(0x4c,a)
 #define Fsfirst(a,b)   gemdos(0x4e,a,b)

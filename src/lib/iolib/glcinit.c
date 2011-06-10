@@ -60,15 +60,15 @@
 #include "hwdefs.h"
 #include "glcdefs.h"
 
-unsigned	lcdbase;	/* LCD graphics base address */
-unsigned	lcdbit;		/* LCD graphics pixel bit mask */
-unsigned	lcdcol;		/* LCD text column */
-unsigned	lcdctl1;	/* LCD display control -- command */
-unsigned	lcdctl2;	/* LCD display control -- data */
-unsigned	lcdcurs;	/* LCD graphics pixel byte address */
-unsigned	lcdrow;		/* LCD text row */
-unsigned	lcdx;		/* LCD graphics x */
-unsigned	lcdy;		/* LCD graphics y */
+unsigned lcdbase;		/* LCD graphics base address */
+unsigned lcdbit;		/* LCD graphics pixel bit mask */
+unsigned lcdcol;		/* LCD text column */
+unsigned lcdctl1;		/* LCD display control -- command */
+unsigned lcdctl2;		/* LCD display control -- data */
+unsigned lcdcurs;		/* LCD graphics pixel byte address */
+unsigned lcdrow;		/* LCD text row */
+unsigned lcdx;			/* LCD graphics x */
+unsigned lcdy;			/* LCD graphics y */
 
 /* GLC initialization values */
 
@@ -85,19 +85,18 @@ char glc_is2[] = { 0x00, 0x00, 0x3F, 0x00, 0x20, 0x3F, 0x00, 0x00 };
    =============================================================================
 */
 
-GLCdisp(dsp, crs, blk1, blk2, blk3)
-short dsp, crs, blk1, blk2, blk3;
+GLCdisp (dsp, crs, blk1, blk2, blk3)
+     short dsp, crs, blk1, blk2, blk3;
 {
-	register short val;
+  register short val;
 
-	val = ((blk3 & 3) << 6) | ((blk2 & 3) << 4) | ((blk1 & 3) << 2) |
-		(crs & 3);
+  val = ((blk3 & 3) << 6) | ((blk2 & 3) << 4) | ((blk1 & 3) << 2) | (crs & 3);
 
-	lcdctl1 = G_DSPCTL | (dsp & 1);
-	lcdctl2 = val;
+  lcdctl1 = G_DSPCTL | (dsp & 1);
+  lcdctl2 = val;
 
-	LCD_WC = lcdctl1;
-	LCD_WD = lcdctl2;
+  LCD_WC = lcdctl1;
+  LCD_WD = lcdctl2;
 
 }
 
@@ -107,13 +106,13 @@ short dsp, crs, blk1, blk2, blk3;
    =============================================================================
 */
 
-GLCcurs(crs)
-short crs;
+GLCcurs (crs)
+     short crs;
 {
-	lcdctl2 = (crs & 3) | (lcdctl2 & ~3);
+  lcdctl2 = (crs & 3) | (lcdctl2 & ~3);
 
-	LCD_WC = lcdctl1;
-	LCD_WD = lcdctl2;
+  LCD_WC = lcdctl1;
+  LCD_WD = lcdctl2;
 }
 
 /* 
@@ -126,67 +125,67 @@ short crs;
    =============================================================================
 */
 
-GLCinit()
+GLCinit ()
 {
-	register int	i;
-	register long ic;
-	register char *gp;
+  register int i;
+  register long ic;
+  register char *gp;
 
-	lcdbase = G_PLANE2;	/* set defaults for graphics variables */
-	lcdx = 0;
-	lcdy = 0;
-	lcdbit = 0x01;
+  lcdbase = G_PLANE2;		/* set defaults for graphics variables */
+  lcdx = 0;
+  lcdy = 0;
+  lcdbit = 0x01;
 
-	lcdrow = 0;		/* set default for text variables */
-	lcdcol = 0;
+  lcdrow = 0;			/* set default for text variables */
+  lcdcol = 0;
 
-	lcdctl1 = G_DSPCTL;
-	lcdctl2 = 0;
+  lcdctl1 = G_DSPCTL;
+  lcdctl2 = 0;
 
-	LCD_WC = G_INIT;	/* initialize the GLC */
-	gp = &glc_is1[0];
+  LCD_WC = G_INIT;		/* initialize the GLC */
+  gp = &glc_is1[0];
 
-	for (i = 0; i < 8; i++)
-		LCD_WD= *gp++;
+  for (i = 0; i < 8; i++)
+    LCD_WD = *gp++;
 
-	LCD_WC = G_SETSAD;	/* setup scroll registers */
-	gp = &glc_is2[0];
+  LCD_WC = G_SETSAD;		/* setup scroll registers */
+  gp = &glc_is2[0];
 
-	for (i = 0; i < 8; i++)
-		LCD_WD = *gp++;
+  for (i = 0; i < 8; i++)
+    LCD_WD = *gp++;
 
-	LCD_WC = G_HSCRL;	/* clear the horizontal scroll counter */
-	LCD_WD = 0;
+  LCD_WC = G_HSCRL;		/* clear the horizontal scroll counter */
+  LCD_WD = 0;
 
-	LCD_WC = G_OVRLAY;	/* setup the display mode */
-	LCD_WD = 0x08;
+  LCD_WC = G_OVRLAY;		/* setup the display mode */
+  LCD_WD = 0x08;
 
-	GLCdisp(G_OFF, G_B2, G_ON, G_ON, G_OFF);
+  GLCdisp (G_OFF, G_B2, G_ON, G_ON, G_OFF);
 
 /* 
 */
-	LCD_WC = G_CRSWR;	/* set cursor at (0,0) in G_PLANE1 */
-	LCD_WD = G_PLANE1 & 0xFF;
-	LCD_WD = (G_PLANE1 >> 8) & 0xFF;
+  LCD_WC = G_CRSWR;		/* set cursor at (0,0) in G_PLANE1 */
+  LCD_WD = G_PLANE1 & 0xFF;
+  LCD_WD = (G_PLANE1 >> 8) & 0xFF;
 
-	LCD_WC = G_CRSMRT;	/* set cursor motion forward */
+  LCD_WC = G_CRSMRT;		/* set cursor motion forward */
 
-	LCD_WC = G_MWRITE;	/* write zeros to GLC RAM */
+  LCD_WC = G_MWRITE;		/* write zeros to GLC RAM */
 
-	for (ic = 0; ic < 65536L; ic++)
-		LCD_WD = 0;
+  for (ic = 0; ic < 65536L; ic++)
+    LCD_WD = 0;
 
-	LCD_WC = G_CRSWR;	/* set cursor to (0,0) in G_PLANE1 */
-	LCD_WD = G_PLANE1 & 0xFF;
-	LCD_WD = (G_PLANE1 >> 8) & 0xFF;
+  LCD_WC = G_CRSWR;		/* set cursor to (0,0) in G_PLANE1 */
+  LCD_WD = G_PLANE1 & 0xFF;
+  LCD_WD = (G_PLANE1 >> 8) & 0xFF;
 
-	LCD_WC = G_CRSFRM;	/* setup a blinking underline cursor */
-	LCD_WD = 0x04;
-	LCD_WD = 0x06;
+  LCD_WC = G_CRSFRM;		/* setup a blinking underline cursor */
+  LCD_WD = 0x04;
+  LCD_WD = 0x06;
 
-	/* enable display */
+  /* enable display */
 
-	GLCdisp(G_ON, G_B2, G_ON, G_ON, G_OFF);
+  GLCdisp (G_ON, G_B2, G_ON, G_ON, G_OFF);
 }
 
 /* 
@@ -201,21 +200,21 @@ GLCinit()
 */
 
 unsigned
-GLCcrc(row, col)
-unsigned row, col;
+GLCcrc (row, col)
+     unsigned row, col;
 {
-	unsigned curad;
+  unsigned curad;
 
-	curad = col + (row * 85);	/* calculate cursor location */
+  curad = col + (row * 85);	/* calculate cursor location */
 
-	LCD_WC = G_CRSWR;		/* send cursor address to GLC */
-	LCD_WD = curad & 0xFF;
-	LCD_WD = (curad >> 8) & 0xFF;
+  LCD_WC = G_CRSWR;		/* send cursor address to GLC */
+  LCD_WD = curad & 0xFF;
+  LCD_WD = (curad >> 8) & 0xFF;
 
-	lcdrow = row;			/* set text cursor variables */
-	lcdcol = col;
+  lcdrow = row;			/* set text cursor variables */
+  lcdcol = col;
 
-	return(curad);			/* return calculated cursor address */
+  return (curad);		/* return calculated cursor address */
 }
 
 /* 
@@ -232,33 +231,33 @@ unsigned row, col;
 */
 
 unsigned
-GLCcxy(x, y)
-register unsigned x, y;
+GLCcxy (x, y)
+     register unsigned x, y;
 {
-	register unsigned curad, xby6;
+  register unsigned curad, xby6;
 
-	/* calculate cursor address */
+  /* calculate cursor address */
 
-	xby6 = x % 6;
-	curad = lcdbase + (85 * (63 - y)) + (x / 6) + (xby6 >> 3);
-	lcdcurs = curad;
+  xby6 = x % 6;
+  curad = lcdbase + (85 * (63 - y)) + (x / 6) + (xby6 >> 3);
+  lcdcurs = curad;
 
-	/* send cursor address to GLC */
+  /* send cursor address to GLC */
 
-	LCD_WC = G_CRSWR;
-	LCD_WD = curad & 0xFF;
-	LCD_WD = (curad >> 8) & 0xFF;
+  LCD_WC = G_CRSWR;
+  LCD_WD = curad & 0xFF;
+  LCD_WD = (curad >> 8) & 0xFF;
 
-	/* set graphics variables */
+  /* set graphics variables */
 
-	lcdx = x;
-	lcdy = y;
+  lcdx = x;
+  lcdy = y;
 
-	/* calculate bit mask */
+  /* calculate bit mask */
 
-	lcdbit = 0x01 << (xby6 & 0x07);
+  lcdbit = 0x01 << (xby6 & 0x07);
 
-	return(lcdbit);
+  return (lcdbit);
 }
 
 /* 
@@ -274,18 +273,19 @@ register unsigned x, y;
    =============================================================================
 */
 
-GLCwrts(s)
-register char *s;
+GLCwrts (s)
+     register char *s;
 {
-	LCD_WC = G_CRSMRT;	/* set cursor motion =  right */
+  LCD_WC = G_CRSMRT;		/* set cursor motion =  right */
 
-	LCD_WC = G_MWRITE;	/* set to write data */
+  LCD_WC = G_MWRITE;		/* set to write data */
 
-	while (*s) {		/* write string to GLC */
+  while (*s)
+    {				/* write string to GLC */
 
-		LCD_WD = *s++;
-		lcdcol++;	/* keep column variable up to date */
-	}
+      LCD_WD = *s++;
+      lcdcol++;			/* keep column variable up to date */
+    }
 }
 
 /* 
@@ -301,29 +301,29 @@ register char *s;
    =============================================================================
 */
 
-GLCtext(row, col, s)
-register unsigned row, col;
-register char *s;
+GLCtext (row, col, s)
+     register unsigned row, col;
+     register char *s;
 {
-	register unsigned curad;
+  register unsigned curad;
 
-	curad = col + (row * 85);	/* calculate cursor address */
+  curad = col + (row * 85);	/* calculate cursor address */
 
-	LCD_WC = G_CRSWR;		/* send cursor address to GLC */
-	LCD_WD = curad & 0xFF;
-	LCD_WD = (curad >> 8) & 0xFF;
+  LCD_WC = G_CRSWR;		/* send cursor address to GLC */
+  LCD_WD = curad & 0xFF;
+  LCD_WD = (curad >> 8) & 0xFF;
 
-	lcdrow = row;			/* set GLC text cursor variables */
-	lcdcol = col;
+  lcdrow = row;			/* set GLC text cursor variables */
+  lcdcol = col;
 
-	LCD_WC = G_CRSMRT;		/* set cursor motion = right */
+  LCD_WC = G_CRSMRT;		/* set cursor motion = right */
 
-	LCD_WC = G_MWRITE;		/* set to write data */
+  LCD_WC = G_MWRITE;		/* set to write data */
 
-	while (*s) {			/* write string to GLC */
+  while (*s)
+    {				/* write string to GLC */
 
-		LCD_WD = *s++;
-		lcdcol++;		/* keep cursor column up to date */
-	}
+      LCD_WD = *s++;
+      lcdcol++;			/* keep cursor column up to date */
+    }
 }
-

@@ -19,34 +19,37 @@
 */
 
 int
-flread(buff, len, fp)
-register char *buff;
-register long len;
-FILE *fp;
+flread (buff, len, fp)
+     register char *buff;
+     register long len;
+     FILE *fp;
 {
-	register int	ilen;
+  register int ilen;
 
-	while (len > 0L) {
+  while (len > 0L)
+    {
 
-		if (len GE (long)CHUNK) {
+      if (len GE (long) CHUNK)
+	{
 
-			if (1 NE fread(buff, CHUNK, 1, fp))
-				return(EOF);
+	  if (1 NE fread (buff, CHUNK, 1, fp))
+	    return (EOF);
 
-			buff += (long)CHUNK;
-			len -= (long)CHUNK;
+	  buff += (long) CHUNK;
+	  len -= (long) CHUNK;
 
-		} else {
-
-			ilen = len;
-
-			if (1 NE fread(buff, ilen, 1, fp))
-				return(EOF);
-
-			len = 0L;
-		}
 	}
+      else
+	{
 
-	return(SUCCESS);
+	  ilen = len;
+
+	  if (1 NE fread (buff, ilen, 1, fp))
+	    return (EOF);
+
+	  len = 0L;
+	}
+    }
+
+  return (SUCCESS);
 }
-

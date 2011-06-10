@@ -16,7 +16,7 @@
 #include "biosdefs.h"
 #include "varargs.h"
 
-extern	long	dofmt_();
+extern long dofmt_ ();
 
 /*
    =============================================================================
@@ -25,18 +25,18 @@ extern	long	dofmt_();
 */
 
 long
-printf(fmt, va_alist)
-char *fmt;
-va_dcl
+printf (fmt, va_alist)
+     char *fmt;
+     va_dcl
 {
-	register long count;
-	int fpsub();
-	va_list aptr;
+  register long count;
+  int fpsub ();
+  va_list aptr;
 
-	va_start(aptr);
-	count = dofmt_(fpsub, fmt, aptr);
-	va_end(aptr);
-	return(count);
+  va_start (aptr);
+  count = dofmt_ (fpsub, fmt, aptr);
+  va_end (aptr);
+  return (count);
 }
 
 /*
@@ -45,16 +45,15 @@ va_dcl
    =============================================================================
 */
 
-static
-int
-fpsub(c)
-int c;
+static int
+fpsub (c)
+     int c;
 {
-	/* KLUDGE:  since we aren't Unix(tm) we prepend a CR to LF's */
+  /* KLUDGE:  since we aren't Unix(tm) we prepend a CR to LF's */
 
-	if (c EQ '\n')
-		BIOS(B_PUTC, CON_DEV, '\r');
+  if (c EQ '\n')
+    BIOS (B_PUTC, CON_DEV, '\r');
 
-	BIOS(B_PUTC, CON_DEV, c);
-	return(c);
+  BIOS (B_PUTC, CON_DEV, c);
+  return (c);
 }

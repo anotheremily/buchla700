@@ -10,7 +10,7 @@
 #include "errno.h"
 #include "stddefs.h"
 
-extern	int	_seek();
+extern int _seek ();
 
 /*
    =============================================================================
@@ -19,37 +19,39 @@ extern	int	_seek();
 */
 
 int
-posit(fd, pos)
-int fd;
-unsigned pos;
+posit (fd, pos)
+     int fd;
+     unsigned pos;
 {
-	register struct fcb *fp;
+  register struct fcb *fp;
 
-	if ((fd < 0) OR (fd > MAXCHAN)) {
+  if ((fd < 0) OR (fd > MAXCHAN))
+    {
 
-		errno = EBADF;
-		return(FAILURE);
-	}
+      errno = EBADF;
+      return (FAILURE);
+    }
 
-	fp = chantab[fd].c_arg;
+  fp = chantab[fd].c_arg;
 
-	if ((chantab[fd].c_seek EQ 0)
-	    OR ((pos << FILESHFT) > fp->curlen)) {
+  if ((chantab[fd].c_seek EQ 0) OR ((pos << FILESHFT) > fp->curlen))
+    {
 
-		errno = EINVAL;
-		fp->modefl |= FC_ERR;
-		return(FAILURE);
-	}
+      errno = EINVAL;
+      fp->modefl |= FC_ERR;
+      return (FAILURE);
+    }
 
-	fp->curlsn = pos;
-	fp->offset = 0;
+  fp->curlsn = pos;
+  fp->offset = 0;
 
-	if (_seek(fp) < 0) {
+  if (_seek (fp) < 0)
+    {
 
-		errno = EIO;
-		fp->modefl |= FC_ERR;
-		return(FAILURE);
-	}
+      errno = EIO;
+      fp->modefl |= FC_ERR;
+      return (FAILURE);
+    }
 
-	return(SUCCESS);
+  return (SUCCESS);
 }

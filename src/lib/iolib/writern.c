@@ -21,15 +21,15 @@
 #include "errdefs.h"
 #include "fspars.h"
 
-extern	long	_berrno;
-extern	int	_seek();
+extern long _berrno;
+extern int _seek ();
 
 #if DEBUGIT
-extern	short	fsdebug;
+extern short fsdebug;
 #endif
 
 #if	TBUFFER
-extern	long	_secwr();		/* update buffer function */
+extern long _secwr ();		/* update buffer function */
 #endif
 
 /* 
@@ -43,65 +43,71 @@ extern	long	_secwr();		/* update buffer function */
 */
 
 int
-WriteRN(fcp, buf)
-struct fcb *fcp;
-char *buf;
+WriteRN (fcp, buf)
+     struct fcb *fcp;
+     char *buf;
 {
-	int	sv;		/* seek return code */
-	long	brc;		/* bios return code */
+  int sv;			/* seek return code */
+  long brc;			/* bios return code */
 
-	if (sv = _seek(fcp)) {		/* try to find the sector we want */
+  if (sv = _seek (fcp))
+    {				/* try to find the sector we want */
 
-		if (sv < 0) {			/* seek error ? */
+      if (sv < 0)
+	{			/* seek error ? */
 
 #if DEBUGIT
-	if (fsdebug)
-		printf("WriteRN():  _seek FAILED (%d) - curlsn=%ld, curdsn=%ld\n",
-			sv, fcp->curlsn, fcp->curdsn);
+	  if (fsdebug)
+	    printf
+	      ("WriteRN():  _seek FAILED (%d) - curlsn=%ld, curdsn=%ld\n", sv,
+	       fcp->curlsn, fcp->curdsn);
 #endif
 
-			errno = EIO;		/* I/O error or seek past EOF */
-			return(FAILURE);
+	  errno = EIO;		/* I/O error or seek past EOF */
+	  return (FAILURE);
 
-		} else if (sv EQ 2) {		/* at hard EOF ? */
-
-			if (_alcnew(fcp)) {	/* allocate a new cluster */
-
-				errno = EIO;
-				return(FAILURE);
-			}
-#if DEBUGIT
-	if (fsdebug)
-		printf("WriteRN():  cluster allocated - curcls=%d, clsec=%d\n",
-			fcp->curcls, fcp->clsec);
-#endif
-
-		}
 	}
+      else if (sv EQ 2)
+	{			/* at hard EOF ? */
 
+	  if (_alcnew (fcp))
+	    {			/* allocate a new cluster */
+
+	      errno = EIO;
+	      return (FAILURE);
+	    }
 #if DEBUGIT
-	if (fsdebug)
-		printf("WriteRN():  curlsn=%ld, curdsn=%ld\n",
-			fcp->curlsn, fcp->curdsn);
+	  if (fsdebug)
+	    printf ("WriteRN():  cluster allocated - curcls=%d, clsec=%d\n",
+		    fcp->curcls, fcp->clsec);
 #endif
 
-	/* write the sector */
-
-	if (brc = BIOS(B_RDWR, 1, buf, 1, (short)fcp->curdsn, 0)) {
-
-#if DEBUGIT
-	if (fsdebug)
-		printf("WriteRN():  B_RDWR FAILED - brc=%ld\n", brc);
-#endif
-
-		_berrno = brc;			/* log the error */
-		errno = EIO;			/* ... as an I/O error */
-		return(FAILURE);		/* return:  ERROR */
 	}
+    }
+
+#if DEBUGIT
+  if (fsdebug)
+    printf ("WriteRN():  curlsn=%ld, curdsn=%ld\n", fcp->curlsn, fcp->curdsn);
+#endif
+
+  /* write the sector */
+
+  if (brc = BIOS (B_RDWR, 1, buf, 1, (short) fcp->curdsn, 0))
+    {
+
+#if DEBUGIT
+      if (fsdebug)
+	printf ("WriteRN():  B_RDWR FAILED - brc=%ld\n", brc);
+#endif
+
+      _berrno = brc;		/* log the error */
+      errno = EIO;		/* ... as an I/O error */
+      return (FAILURE);		/* return:  ERROR */
+    }
 
 #if	TBUFFER
-	_secwr(buf, (short)fcp->curdsn);
+  _secwr (buf, (short) fcp->curdsn);
 #endif
 
-	return(SUCCESS);		/* return:  SUCCESS */
+  return (SUCCESS);		/* return:  SUCCESS */
 }

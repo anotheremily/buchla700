@@ -13,9 +13,9 @@
 
 #include "stddefs.h"
 
-typedef	unsigned int	uint;
+typedef unsigned int uint;
 
-extern int	vputcv();
+extern int vputcv ();
 
 /*
    =============================================================================
@@ -26,25 +26,27 @@ extern int	vputcv();
    =============================================================================
 */
 
-vputsv(sbase, row, col, str, attrib, len)
-uint *sbase, row, col;
-char *str;
-uint attrib, len;
+vputsv (sbase, row, col, str, attrib, len)
+     uint *sbase, row, col;
+     char *str;
+     uint attrib, len;
 {
-	uint	c;
+  uint c;
 
-	while (c = *str++) {
+  while (c = *str++)
+    {
 
-		vputcv(sbase, row, col, c, attrib, len);
+      vputcv (sbase, row, col, c, attrib, len);
 
-		if (++col GE 64) {
+      if (++col GE 64)
+	{
 
-			col = 0;
+	  col = 0;
 
-			if (++row GE 25)
-				row = 0;
-		}
+	  if (++row GE 25)
+	    row = 0;
 	}
+    }
 }
 
 /*  */
@@ -59,23 +61,25 @@ uint attrib, len;
    =============================================================================
 */
 
-vputsav(sbase, row, col, str, attrib, len)
-uint *sbase, row, col;
-char *str;
-uint *attrib, len;
+vputsav (sbase, row, col, str, attrib, len)
+     uint *sbase, row, col;
+     char *str;
+     uint *attrib, len;
 {
-	uint	c;
+  uint c;
 
-	while (c = *str++) {
+  while (c = *str++)
+    {
 
-		vputcv(sbase, row, col, c, *attrib++, len);
+      vputcv (sbase, row, col, c, *attrib++, len);
 
-		if (++col GE 64) {
+      if (++col GE 64)
+	{
 
-			col = 0;
+	  col = 0;
 
-			if (++row GE 25)
-				row = 0;
-		}
+	  if (++row GE 25)
+	    row = 0;
 	}
+    }
 }

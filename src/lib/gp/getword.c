@@ -22,24 +22,26 @@
 */
 
 char *
-getword(string, ioptr)
-register char *string;
-register FILE *ioptr;
+getword (string, ioptr)
+     register char *string;
+     register FILE *ioptr;
 {
-	register int c;
+  register int c;
 
-	while (((c = getc(ioptr)) NE EOF) AND isspace(c))
-		;
+  while (((c = getc (ioptr)) NE EOF) AND isspace (c))
+    ;
 
-	if (c EQ EOF)
-		return(NULL);
+  if (c EQ EOF)
+    return (NULL);
 
-	do {
-		*string++ = c;
+  do
+    {
+      *string++ = c;
 
-	} while (((c = getc(ioptr)) NE EOF) AND (NOT isspace(c)));
+    }
+  while (((c = getc (ioptr)) NE EOF) AND (NOT isspace (c)));
 
-	*string = '\0';		/* terminate the string */
+  *string = '\0';		/* terminate the string */
 
-	return(string);		/* return a pointer to the end of the string */
+  return (string);		/* return a pointer to the end of the string */
 }

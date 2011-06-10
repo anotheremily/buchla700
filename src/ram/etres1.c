@@ -19,22 +19,22 @@
 #include "midas.h"
 #include "scdsp.h"
 
-extern	short	ancmsw;
-extern	short	angroup;
-extern	short	ctrsw;
-extern	short	recsw;
-extern	short	stccol;
+extern short ancmsw;
+extern short angroup;
+extern short ctrsw;
+extern short recsw;
+extern short stccol;
 
-extern	unsigned	*obj8;
+extern unsigned *obj8;
 
-extern	short	anrs[8][16];
-extern	short	grpmode[12];
-extern	short	grpstat[12];
-extern	short	var2src[6];
-extern	short	varmode[8][16];
+extern short anrs[8][16];
+extern short grpmode[12];
+extern short grpstat[12];
+extern short var2src[6];
+extern short varmode[8][16];
 
-extern	struct	gdsel	*gdstbc[];
-extern	struct	valent	valents[];
+extern struct gdsel *gdstbc[];
+extern struct valent valents[];
 
 /*
    =============================================================================
@@ -43,12 +43,12 @@ extern	struct	valent	valents[];
 */
 
 short
-et_res1(n)
-short n;
+et_res1 (n)
+     short n;
 {
-	ebuf[0] = anrs[n][abs(angroup)-1];
-	ebflag = TRUE;
-	return(SUCCESS);
+  ebuf[0] = anrs[n][abs (angroup) - 1];
+  ebflag = TRUE;
+  return (SUCCESS);
 }
 
 /* 
@@ -61,45 +61,49 @@ short n;
 */
 
 short
-ef_res1(n)
-short n;
+ef_res1 (n)
+     short n;
 {
-	register short ival, grp, vg;
-	register struct s_entry *ep;
+  register short ival, grp, vg;
+  register struct s_entry *ep;
 
-	ebflag = FALSE;
-	grp = abs(angroup)-1;
-	ival = ebuf[0] & 0x00FF;
+  ebflag = FALSE;
+  grp = abs (angroup) - 1;
+  ival = ebuf[0] & 0x00FF;
 
-	if ((ival < 3) OR (ival > 8))
-		return(FAILURE);
+  if ((ival < 3) OR (ival > 8))
+    return (FAILURE);
 
-	anrs[n][grp] = ival;
+  anrs[n][grp] = ival;
 
-	if (recsw AND grpstat[grp] AND
-	    (2 EQ (ancmsw ? varmode[n][grp] : grpmode[grp]))) {
+  if (recsw AND grpstat[grp] AND
+      (2 EQ (ancmsw ? varmode[n][grp] : grpmode[grp])))
+    {
 
-		vg = ((n << 4) | grp);
+      vg = ((n << 4) | grp);
 
-		if (E_NULL NE (ep = findev(p_cur, t_cur, EV_ANRS, vg, -1))) {
+      if (E_NULL NE (ep = findev (p_cur, t_cur, EV_ANRS, vg, -1)))
+	{
 
-			ep->e_data2 = ival;
+	  ep->e_data2 = ival;
 
-		} else if (E_NULL NE (ep = e_alc(E_SIZE2))) {
-
-			ep->e_type  = EV_ANRS;
-			ep->e_data1 = vg;
-			ep->e_data2 = ival;
-			ep->e_time  = t_cur;
-			p_cur = e_ins(ep, ep_adj(p_cur, 0, t_cur))->e_fwd;
-			eh_ins(ep, EH_ANRS);
-			ctrsw = TRUE;
-			se_disp(ep, D_FWD, gdstbc, 1);
-			scupd();
-		}
 	}
+      else if (E_NULL NE (ep = e_alc (E_SIZE2)))
+	{
 
-	return(SUCCESS);
+	  ep->e_type = EV_ANRS;
+	  ep->e_data1 = vg;
+	  ep->e_data2 = ival;
+	  ep->e_time = t_cur;
+	  p_cur = e_ins (ep, ep_adj (p_cur, 0, t_cur))->e_fwd;
+	  eh_ins (ep, EH_ANRS);
+	  ctrsw = TRUE;
+	  se_disp (ep, D_FWD, gdstbc, 1);
+	  scupd ();
+	}
+    }
+
+  return (SUCCESS);
 }
 
 /* 
@@ -112,21 +116,21 @@ short n;
 */
 
 short
-rd_res1(n)
-short n;
+rd_res1 (n)
+     short n;
 {
-	register short grp, chr;
+  register short grp, chr;
 
-	grp = abs(angroup) - 1;
+  grp = abs (angroup) - 1;
 
-	chr = anrs[n][grp] + '0';
+  chr = anrs[n][grp] + '0';
 
-	if (v_regs[5] & 0x0180)
-		vbank(0);
+  if (v_regs[5] & 0x0180)
+    vbank (0);
 
-	vputc(obj8, 7, 6 + (n * 9), chr, SDW12ATR);
+  vputc (obj8, 7, 6 + (n * 9), chr, SDW12ATR);
 
-	return(SUCCESS);
+  return (SUCCESS);
 }
 
 /* 
@@ -139,17 +143,17 @@ short n;
 */
 
 short
-nd_res1(n, k)
-short n, k;
+nd_res1 (n, k)
+     short n, k;
 {
-	ebuf[0] = k;
+  ebuf[0] = k;
 
-	if (v_regs[5] & 0x0180)
-		vbank(0);
+  if (v_regs[5] & 0x0180)
+    vbank (0);
 
-	vputc(obj8, 7, stccol, k + '0', SDW12DEA);
+  vputc (obj8, 7, stccol, k + '0', SDW12DEA);
 
-	return(SUCCESS);
+  return (SUCCESS);
 }
 
 /* 
@@ -162,35 +166,38 @@ short n, k;
 */
 
 short
-et_aval(n)
-short n;
+et_aval (n)
+     short n;
 {
-	register short val, grp, gs;
-	short val1, val2, val3;
+  register short val, grp, gs;
+  short val1, val2, val3;
 
-	grp = abs(angroup) - 1;
-	gs = (grp << 4) | var2src[n];
-	val = (valents[gs].val) >> 5;
+  grp = abs (angroup) - 1;
+  gs = (grp << 4) | var2src[n];
+  val = (valents[gs].val) >> 5;
 
-	if (val < 0 ) {
+  if (val < 0)
+    {
 
-		ebuf[0] = 8;
-		val = -val;
+      ebuf[0] = 8;
+      val = -val;
 
-	} else {
+    }
+  else
+    {
 
-		ebuf[0] = 9;
-	}
+      ebuf[0] = 9;
+    }
 
-	val1 = val / 100;
-	ebuf[4] = (val - (val1 * 100)) / 10;
-	val2 = val1 / 10;
-	ebuf[2] = val1 - (val2 * 10);
-	ebuf[1] = val2;
+  val1 = val / 100;
+  ebuf[4] = (val - (val1 * 100)) / 10;
+  val2 = val1 / 10;
+  ebuf[2] = val1 - (val2 * 10);
+  ebuf[1] = val2;
 
-	ebflag = TRUE;
+  ebflag = TRUE;
 
-	return(SUCCESS);
+  return (SUCCESS);
 }
 
 /* 
@@ -203,50 +210,54 @@ short n;
 */
 
 short
-ef_aval(n)
-short n;
+ef_aval (n)
+     short n;
 {
-	register short val, grp, src, vg;
-	register struct s_entry *ep;
+  register short val, grp, src, vg;
+  register struct s_entry *ep;
 
-	ebflag = FALSE;
-	grp = abs(angroup) - 1;
-	src = var2src[n];
-	val = ((ebuf[1] * 100) + (ebuf[2] * 10) + ebuf[4]) * 10;
+  ebflag = FALSE;
+  grp = abs (angroup) - 1;
+  src = var2src[n];
+  val = ((ebuf[1] * 100) + (ebuf[2] * 10) + ebuf[4]) * 10;
 
-	if (val > 1000)
-		return(FAILURE);
+  if (val > 1000)
+    return (FAILURE);
 
-	if (ebuf[0] EQ 8)
-		val = -val;
+  if (ebuf[0] EQ 8)
+    val = -val;
 
-	val = val << 5;
+  val = val << 5;
 
-	setsv(grp, src, val);
+  setsv (grp, src, val);
 
-	if (recsw AND grpstat[grp] AND
-	    (2 EQ (ancmsw ? varmode[n][grp] : grpmode[grp]))) {
+  if (recsw AND grpstat[grp] AND
+      (2 EQ (ancmsw ? varmode[n][grp] : grpmode[grp])))
+    {
 
-		vg =  (n << 4) | grp;
+      vg = (n << 4) | grp;
 
-		if (E_NULL NE (ep = findev(p_cur, t_cur, EV_ANVL, vg, -1))) {
+      if (E_NULL NE (ep = findev (p_cur, t_cur, EV_ANVL, vg, -1)))
+	{
 
-			ep->e_dn = (struct s_entry *)((long)val << 16);
+	  ep->e_dn = (struct s_entry *) ((long) val << 16);
 
-		} else if (E_NULL NE (ep = e_alc(E_SIZE2))) {
-
-			ep->e_type  = EV_ANVL;
-			ep->e_data1 = vg;
-			ep->e_dn    = (struct s_entry *)((long)val << 16);
-			ep->e_time  = t_cur;
-			p_cur = e_ins(ep, ep_adj(p_cur, 0, t_cur))->e_fwd;
-			ctrsw = TRUE;
-			se_disp(ep, D_FWD, gdstbc, 1);
-			scupd();
-		}
 	}
+      else if (E_NULL NE (ep = e_alc (E_SIZE2)))
+	{
 
-	return(SUCCESS);
+	  ep->e_type = EV_ANVL;
+	  ep->e_data1 = vg;
+	  ep->e_dn = (struct s_entry *) ((long) val << 16);
+	  ep->e_time = t_cur;
+	  p_cur = e_ins (ep, ep_adj (p_cur, 0, t_cur))->e_fwd;
+	  ctrsw = TRUE;
+	  se_disp (ep, D_FWD, gdstbc, 1);
+	  scupd ();
+	}
+    }
+
+  return (SUCCESS);
 }
 
 /* 
@@ -259,41 +270,44 @@ short n;
 */
 
 short
-rd_aval(n)
-short n;
+rd_aval (n)
+     short n;
 {
-	register short grp, val, gs;
-	short val1, val2;
-	char	buf[6];
+  register short grp, val, gs;
+  short val1, val2;
+  char buf[6];
 
-	grp = abs(angroup) - 1;
-	gs = (grp << 4) | var2src[n];
-	val = (valents[gs].val) >> 5;
+  grp = abs (angroup) - 1;
+  gs = (grp << 4) | var2src[n];
+  val = (valents[gs].val) >> 5;
 
-	if (val < 0) {
+  if (val < 0)
+    {
 
-		buf[0] = '-';
-		val = -val;
+      buf[0] = '-';
+      val = -val;
 
-	} else {
+    }
+  else
+    {
 
-		buf[0] = '+';
-	}
+      buf[0] = '+';
+    }
 
-	val1 = val / 100;
-	buf[4] = '0' + ((val - (val1 * 100)) / 10);
-	val2 = val1 / 10;
-	buf[2] = '0' + (val1 - (val2 * 10));
-	buf[1] = '0' + val2;
-	buf[3] = '.';
-	buf[5] = '\0';
+  val1 = val / 100;
+  buf[4] = '0' + ((val - (val1 * 100)) / 10);
+  val2 = val1 / 10;
+  buf[2] = '0' + (val1 - (val2 * 10));
+  buf[1] = '0' + val2;
+  buf[3] = '.';
+  buf[5] = '\0';
 
-	if (v_regs[5] & 0x0180)
-		vbank(0);
+  if (v_regs[5] & 0x0180)
+    vbank (0);
 
-	vputs(obj8, 7, 8 + (n * 9), buf, SDW12ATR);
+  vputs (obj8, 7, 8 + (n * 9), buf, SDW12ATR);
 
-	return(SUCCESS);
+  return (SUCCESS);
 }
 
 /* 
@@ -306,37 +320,37 @@ short n;
 */
 
 short
-nd_aval(n, k)
-register short n, k;
+nd_aval (n, k)
+     register short n, k;
 {
-	register short ec;
+  register short ec;
 
-	ec = stccol - cfetp->flcol;
+  ec = stccol - cfetp->flcol;
 
-	if (ec EQ 3)
-		return(FAILURE);
+  if (ec EQ 3)
+    return (FAILURE);
 
-	ebuf[ec] = k;
+  ebuf[ec] = k;
 
-	if (ec EQ 0)
-		k = (k EQ 8) ? '-' : '+';
-	else
-		k += '0';
+  if (ec EQ 0)
+    k = (k EQ 8) ? '-' : '+';
+  else
+    k += '0';
 
-	if (v_regs[5] & 0x0180)
-		vbank(0);
+  if (v_regs[5] & 0x0180)
+    vbank (0);
 
-	vputc(obj8, 7, stccol, k, SDW12DEA);
+  vputc (obj8, 7, stccol, k, SDW12DEA);
 
-	if (ec EQ 4)
-		return(SUCCESS);
+  if (ec EQ 4)
+    return (SUCCESS);
 
-	advscur();
+  advscur ();
 
-	if (ec EQ 2)
-		advscur();
+  if (ec EQ 2)
+    advscur ();
 
-	return(SUCCESS);
+  return (SUCCESS);
 }
 
 /* 
@@ -349,12 +363,12 @@ register short n, k;
 */
 
 short
-et_agrp(n)
-short n;
+et_agrp (n)
+     short n;
 {
-	sprintf(ebuf, "%02.2d", abs(angroup));
-	ebflag = TRUE;
-	return(SUCCESS);
+  sprintf (ebuf, "%02.2d", abs (angroup));
+  ebflag = TRUE;
+  return (SUCCESS);
 }
 
 /* 
@@ -367,23 +381,23 @@ short n;
 */
 
 short
-ef_agrp(n)
-short n;
+ef_agrp (n)
+     short n;
 {
-	register short ival;
+  register short ival;
 
-	ebflag = FALSE;
-	ival = (10 * (ebuf[0] - '0')) + (ebuf[1] - '0');
+  ebflag = FALSE;
+  ival = (10 * (ebuf[0] - '0')) + (ebuf[1] - '0');
 
-	if ((ival >12) OR (ival < 1))
-		return(FAILURE);
+  if ((ival > 12) OR (ival < 1))
+    return (FAILURE);
 
-	angroup = sign(angroup, ival);
+  angroup = sign (angroup, ival);
 
-	ds_anmd();
-	ds_anrs();
-	ds_anvl();
-	return(SUCCESS);
+  ds_anmd ();
+  ds_anrs ();
+  ds_anvl ();
+  return (SUCCESS);
 }
 
 /* 
@@ -396,19 +410,19 @@ short n;
 */
 
 short
-rd_agrp(n)
-short n;
+rd_agrp (n)
+     short n;
 {
-	char	buf[4];
+  char buf[4];
 
-	sprintf(buf, "%02.2d", abs(angroup));
+  sprintf (buf, "%02.2d", abs (angroup));
 
-	if (v_regs[5] & 0x0180)
-		vbank(0);
+  if (v_regs[5] & 0x0180)
+    vbank (0);
 
-	vputs(obj8, 7, 61, buf, SDW12ATR);
+  vputs (obj8, 7, 61, buf, SDW12ATR);
 
-	return(SUCCESS);
+  return (SUCCESS);
 }
 
 /* 
@@ -421,20 +435,20 @@ short n;
 */
 
 short
-nd_agrp(n, k)
-short n, k;
+nd_agrp (n, k)
+     short n, k;
 {
-	register short ec;
+  register short ec;
 
-	ec = stccol - cfetp->flcol;
+  ec = stccol - cfetp->flcol;
 
-	ebuf[ec] = k + '0';
+  ebuf[ec] = k + '0';
 
-	if (v_regs[5] & 0x0180)
-		vbank(0);
+  if (v_regs[5] & 0x0180)
+    vbank (0);
 
-	vputc(obj8, 7, stccol, k + '0', SDW12DEA);
-	advscur();
+  vputc (obj8, 7, stccol, k + '0', SDW12DEA);
+  advscur ();
 
-	return(SUCCESS);
+  return (SUCCESS);
 }

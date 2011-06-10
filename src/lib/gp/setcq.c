@@ -29,23 +29,23 @@
 */
 
 unsigned short
-setcq(qp, qadr, qsiz, hi, lo)
-register struct charq *qp;
-char *qadr;
-unsigned short qsiz, hi, lo;
+setcq (qp, qadr, qsiz, hi, lo)
+     register struct charq *qp;
+     char *qadr;
+     unsigned short qsiz, hi, lo;
 {
-	if ((char *)0L EQ qadr)
-		qsiz = 0;
+  if ((char *) 0L EQ qadr)
+    qsiz = 0;
 
-	qp->qbuf  = qadr;
-	qp->qsize = qsiz;
-	qp->qlen  = 0;
-	qp->qin   = 0;
-	qp->qout  = 0;
-	qp->qhi   = hi;
-	qp->qlo   = lo;
+  qp->qbuf = qadr;
+  qp->qsize = qsiz;
+  qp->qlen = 0;
+  qp->qin = 0;
+  qp->qout = 0;
+  qp->qhi = hi;
+  qp->qlo = lo;
 
-	return(qsiz);
+  return (qsiz);
 }
 
 /* 
@@ -70,29 +70,32 @@ unsigned short qsiz, hi, lo;
 */
 
 short
-putcq(qp, c)
-register struct charq *qp;
-register unsigned short c;
+putcq (qp, c)
+     register struct charq *qp;
+     register unsigned short c;
 {
-	if (0 NE qp->qsize) {				/* verify queue is ok */
+  if (0 NE qp->qsize)
+    {				/* verify queue is ok */
 
-		if (qp->qlen EQ qp->qsize)		/* check queue length */
-			return(-1);			/* -1 = full */
+      if (qp->qlen EQ qp->qsize)	/* check queue length */
+	return (-1);		/* -1 = full */
 
-		qp->qbuf[qp->qin++] = c;		/* put character in queue */
+      qp->qbuf[qp->qin++] = c;	/* put character in queue */
 
-		if (qp->qin GE qp->qsize)		/* update input index */
-			qp->qin = 0;			/* wrap around */
+      if (qp->qin GE qp->qsize)	/* update input index */
+	qp->qin = 0;		/* wrap around */
 
-		if (++qp->qlen EQ qp->qhi)		/* check length again */
-			return(1);			/* 1 = at hi water */
-		else
-			return(0);			/* 0 = OK */
+      if (++qp->qlen EQ qp->qhi)	/* check length again */
+	return (1);		/* 1 = at hi water */
+      else
+	return (0);		/* 0 = OK */
 
-	} else {
+    }
+  else
+    {
 
-		return(-2);				/* -2 = error */
-	}
+      return (-2);		/* -2 = error */
+    }
 }
 
 /* 
@@ -117,31 +120,37 @@ register unsigned short c;
 */
 
 short
-getcq(qp, p)
-register struct charq *qp;
-register char *p;
+getcq (qp, p)
+     register struct charq *qp;
+     register char *p;
 {
-	if (0 NE qp->qsize) {				/* check queue is ok */
+  if (0 NE qp->qsize)
+    {				/* check queue is ok */
 
-		if (0 NE qp->qlen) {			/* check queue length */
+      if (0 NE qp->qlen)
+	{			/* check queue length */
 
-			*p = qp->qbuf[qp->qout++];	/* get character from queue */
+	  *p = qp->qbuf[qp->qout++];	/* get character from queue */
 
-			if (qp->qout GE qp->qsize)	/* check out pointer */
-				qp->qout = 0;		/* wrap around */
+	  if (qp->qout GE qp->qsize)	/* check out pointer */
+	    qp->qout = 0;	/* wrap around */
 
-			if (--qp->qlen EQ qp->qlo)	/* check length again */
-				return(1);		/* 1 = at low water */
-			else
-				return(0);		/* 0 = OK */
+	  if (--qp->qlen EQ qp->qlo)	/* check length again */
+	    return (1);		/* 1 = at low water */
+	  else
+	    return (0);		/* 0 = OK */
 
-		} else {
-
-			return(-1);			/* -1 = emtpy */
-		}
-
-	} else {
-
-		return(-2);				/* -2 = error */
 	}
+      else
+	{
+
+	  return (-1);		/* -1 = emtpy */
+	}
+
+    }
+  else
+    {
+
+      return (-2);		/* -2 = error */
+    }
 }

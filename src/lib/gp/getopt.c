@@ -57,123 +57,129 @@
 #define	EMSG		""
 #define	ENDARGS		"--"
 
-int	opterr;		/* set to non-zero to get error message output */
-int	optind;		/* index of current option string in parent argv */
-int	optopt;		/* current option letter */
+int opterr;			/* set to non-zero to get error message output */
+int optind;			/* index of current option string in parent argv */
+int optopt;			/* current option letter */
 
-char	*optarg;	/* pointer to the option argument */
-
-/* 
-*/
-
-int
-getarg(nargc, nargv)
-int nargc;
-char *nargv[];
-{
-	if (optind EQ 0)		/* in case getopt() wasn't called */
-		optind++;
-
-	if (optind GE nargc)
-		return(EOF);		/* out of arguments */
-
-	optarg = nargv[optind];		/* set optarg to point at the argument */
-	return(optind++);		/* return the argument index */
-}
-
-static
-char *
-index(s, c)
-register char *s;
-register int c;
-{
-	while (*s)
-		if (c EQ *s)
-			return(s);
-		else
-			s++;
-
-	return(NULL);
-}
+char *optarg;			/* pointer to the option argument */
 
 /* 
 */
 
 int
-getopt(nargc, nargv, ostr)
-int nargc;
-char *nargv[], *ostr;
+getarg (nargc, nargv)
+     int nargc;
+     char *nargv[];
 {
-	static char *place = EMSG;	/* private scan pointer */
-	register char *oli;
+  if (optind EQ 0)		/* in case getopt() wasn't called */
+    optind++;
 
-	if (optind EQ 0)	/* make sure optind starts out non-zero */
-		++optind;
+  if (optind GE nargc)
+    return (EOF);		/* out of arguments */
 
-	if (!*place) {		/* update the scan pointer */
-
-		if ((optind GE nargc)
-		    OR (*(place = nargv[optind]) NE '-')
-		    OR (!*++place))
-			return(EOF);
-
-		if (*place EQ '-') {		/* found "--" */
-
-			++optind;
-			return(EOF);
-		}
-	}
-
-	if (((optopt = (int)*place++) EQ ARGCH)
-	    OR (!(oli = index(ostr, optopt)))) {	/* option letter OK ? */
-
-		if (!*place)
-			++optind;
-
-		if (opterr) {
-
-			fputs(*nargv, stderr);
-			fputs(": unknown argument \042", stderr);
-			fputc(optopt, stderr);
-			fputs("\042\n", stderr);
-		}
-
-		return(BADCH);
-	}
-/* 
-*/
-	if (*++oli NE ARGCH) {		/* check for required argument */
-
-		optarg = NULL;		/* no argument needed */
-
-		if (!*place)
-			++optind;
-
-	} else {	/* we need an arguement */
-
-		if (*place)
-			optarg = place;
-		else if (nargc LE ++optind) {
-
-			place = EMSG;
-
-			if (opterr) {
-
-				fputs(*nargv, stderr);
-				fputs(": option \042", stderr);
-				fputc(optopt, stderr);
-				fputs("\042 requires an argument.\n", stderr);
-			}
-
-			return(BADCH);
-
-		} else
-			optarg = nargv[optind];
-
-		place = EMSG;
-		++optind;
-	}
-
-	return(optopt);
+  optarg = nargv[optind];	/* set optarg to point at the argument */
+  return (optind++);		/* return the argument index */
 }
 
+static char *
+index (s, c)
+     register char *s;
+     register int c;
+{
+  while (*s)
+    if (c EQ * s)
+      return (s);
+    else
+      s++;
+
+  return (NULL);
+}
+
+/* 
+*/
+
+int
+getopt (nargc, nargv, ostr)
+     int nargc;
+     char *nargv[], *ostr;
+{
+  static char *place = EMSG;	/* private scan pointer */
+  register char *oli;
+
+  if (optind EQ 0)		/* make sure optind starts out non-zero */
+    ++optind;
+
+  if (!*place)
+    {				/* update the scan pointer */
+
+      if ((optind GE nargc)
+	  OR (*(place = nargv[optind]) NE '-') OR (!*++place))
+	return (EOF);
+
+      if (*place EQ '-')
+	{			/* found "--" */
+
+	  ++optind;
+	  return (EOF);
+	}
+    }
+
+  if (((optopt = (int) *place++) EQ ARGCH) OR (!(oli = index (ostr, optopt))))
+    {				/* option letter OK ? */
+
+      if (!*place)
+	++optind;
+
+      if (opterr)
+	{
+
+	  fputs (*nargv, stderr);
+	  fputs (": unknown argument \042", stderr);
+	  fputc (optopt, stderr);
+	  fputs ("\042\n", stderr);
+	}
+
+      return (BADCH);
+    }
+/* 
+*/
+  if (*++oli NE ARGCH)
+    {				/* check for required argument */
+
+      optarg = NULL;		/* no argument needed */
+
+      if (!*place)
+	++optind;
+
+    }
+  else
+    {				/* we need an arguement */
+
+      if (*place)
+	optarg = place;
+      else if (nargc LE++ optind)
+	{
+
+	  place = EMSG;
+
+	  if (opterr)
+	    {
+
+	      fputs (*nargv, stderr);
+	      fputs (": option \042", stderr);
+	      fputc (optopt, stderr);
+	      fputs ("\042 requires an argument.\n", stderr);
+	    }
+
+	  return (BADCH);
+
+	}
+      else
+	optarg = nargv[optind];
+
+      place = EMSG;
+      ++optind;
+    }
+
+  return (optopt);
+}

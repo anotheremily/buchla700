@@ -11,12 +11,12 @@
 #include "stddefs.h"
 
 #if	DEBUGIT
-extern	short	fsdebug;
+extern short fsdebug;
 
-extern	int	waitcr();
+extern int waitcr ();
 #endif
 
-extern	int	DelFile();
+extern int DelFile ();
 
 /*
    =============================================================================
@@ -25,22 +25,22 @@ extern	int	DelFile();
 */
 
 int
-unlink(name)
-char *name;
+unlink (name)
+     char *name;
 {
-	struct fcb delfcb;
+  struct fcb delfcb;
 
-	if (fcbinit(name, &delfcb))
-		return(FAILURE);
+  if (fcbinit (name, &delfcb))
+    return (FAILURE);
 
 #if	DEBUGIT
-	if (fsdebug) {
+  if (fsdebug)
+    {
 
-		printf("unlink(%s):  deletion FCB created\n", name);
-		SnapFCB(&delfcb);
-		waitcr();
-	}
+      printf ("unlink(%s):  deletion FCB created\n", name);
+      SnapFCB (&delfcb);
+      waitcr ();
+    }
 #endif
-	return(DelFile(&delfcb));
+  return (DelFile (&delfcb));
 }
-

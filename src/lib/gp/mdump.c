@@ -38,21 +38,22 @@
 */
 
 static
-prifp(chars, length)
-register char *chars;
-register int length;
+prifp (chars, length)
+     register char *chars;
+     register int length;
 {
-	register int	i, c;
+  register int i, c;
 
-	for (i = 0; i < length; i++) {
+  for (i = 0; i < length; i++)
+    {
 
-		c = 0x00FF & *chars++;
+      c = 0x00FF & *chars++;
 
-		if (isascii(c) AND (isprint(c)))
-			printf("%c", c);
-		else
-			printf(".");
-	}
+      if (isascii (c) AND (isprint (c)))
+	printf ("%c", c);
+      else
+	printf (".");
+    }
 }
 
 /* 
@@ -64,57 +65,61 @@ register int length;
    =============================================================================
 */
 
-mdump(begin, end, start)
-register char *begin, *end;
-long start;
+mdump (begin, end, start)
+     register char *begin, *end;
+     long start;
 {
-	register long	i, ii;
-	int	j, k;
-	char	c, chars[PERLINE];
+  register long i, ii;
+  int j, k;
+  char c, chars[PERLINE];
 
-	if (begin > end)
-		return;
+  if (begin > end)
+    return;
 
-	i  = 0L;
-	ii = start;
-	j  = 0;
+  i = 0L;
+  ii = start;
+  j = 0;
 
-	while (begin LE end) {
+  while (begin LE end)
+    {
 
-		c = *begin++;
+      c = *begin++;
 
-		if (NOT (i % PERLINE)) {
+      if (NOT (i % PERLINE))
+	{
 
-			if (i) {
+	  if (i)
+	    {
 
-				j=0;
-				printf("  ");
-				prifp(chars, PERLINE);
-			}
-                
-			printf("\n%08lX:", ii);
-		}
+	      j = 0;
+	      printf ("  ");
+	      prifp (chars, PERLINE);
+	    }
 
-		ii++;
-		i++;
-
-		printf(" %02.2X", (c & 0x00FF));
-		chars[j++] = c;
+	  printf ("\n%08lX:", ii);
 	}
+
+      ii++;
+      i++;
+
+      printf (" %02.2X", (c & 0x00FF));
+      chars[j++] = c;
+    }
 
 /* 
 */
-	if (k = (i % PERLINE)) {
+  if (k = (i % PERLINE))
+    {
 
-		k = PERLINE - k;
+      k = PERLINE - k;
 
-		for (ii = 0; ii < (3 * k); ++ii)
-			printf(" ");
-	}
+      for (ii = 0; ii < (3 * k); ++ii)
+	printf (" ");
+    }
 
-	printf("  ");
-	prifp(chars, PERLINE);
-	printf("\n");
+  printf ("  ");
+  prifp (chars, PERLINE);
+  printf ("\n");
 }
 
 /* 
@@ -122,16 +127,16 @@ long start;
 
 #if	TESTER
 
-char	area[128];
+char area[128];
 
-main()
+main ()
 {
-	register short i;
+  register short i;
 
-	for (i = 0; i < 128; i++)
-		area[i] = i + 128;
+  for (i = 0; i < 128; i++)
+    area[i] = i + 128;
 
-	mdump(area, (area + 127), area);
+  mdump (area, (area + 127), area);
 }
 
 #endif

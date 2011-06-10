@@ -7,21 +7,22 @@
    =============================================================================
 */
 
-static int	msk[] = { 0xFF00, 0x00FF };
+static int msk[] = { 0xFF00, 0x00FF };
 
-vtext(obj, nc, row, col, ip)
-register unsigned *obj, nc, row, col;
-register char *ip;
+vtext (obj, nc, row, col, ip)
+     register unsigned *obj, nc, row, col;
+     register char *ip;
 {
-	register unsigned *op;
+  register unsigned *op;
 
-	while (*ip) {
+  while (*ip)
+    {
 
-		op = obj + ((nc >> 1) * row) + (col >> 1);
+      op = obj + ((nc >> 1) * row) + (col >> 1);
 
-		*op = (*op & (unsigned)msk[col & 1]) |
-		      ((*ip++ & 0x00FF) << ((col & 1) ? 8 : 0));
+      *op = (*op & (unsigned) msk[col & 1]) |
+	((*ip++ & 0x00FF) << ((col & 1) ? 8 : 0));
 
-		col++;
-	}
+      col++;
+    }
 }

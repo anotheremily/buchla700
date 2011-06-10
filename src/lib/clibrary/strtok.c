@@ -12,34 +12,35 @@
 
 #define	NULL	(char *)0
 
-extern int strspn();
-extern char *strpbrk();
+extern int strspn ();
+extern char *strpbrk ();
 
 char *
-strtok(string, sepset)
-char *string, *sepset;
+strtok (string, sepset)
+     char *string, *sepset;
 {
-	register char *p, *q, *r;
-	static char *savept;
+  register char *p, *q, *r;
+  static char *savept;
 
-	/* first or subsequent call ? */
+  /* first or subsequent call ? */
 
-        p = (string == NULL) ? savept : string;
+  p = (string == NULL) ? savept : string;
 
-	if (p == 0)              /* return if no tokens remain */
-		return(NULL);
+  if (p == 0)			/* return if no tokens remain */
+    return (NULL);
 
-	q = p + strspn(p, sepset);      /* skip leading separators */
+  q = p + strspn (p, sepset);	/* skip leading separators */
 
-	if (*q == '\0')          /* return if no tokens remain */
-		return(NULL);
+  if (*q == '\0')		/* return if no tokens remain */
+    return (NULL);
 
-	if ((r = strpbrk(q, sepset)) == NULL)    /* move past token */
-		savept = 0;     /* indicate this is last token */
-	else {
-		*r = '\0';
-		savept = ++r;
-	}
+  if ((r = strpbrk (q, sepset)) == NULL)	/* move past token */
+    savept = 0;			/* indicate this is last token */
+  else
+    {
+      *r = '\0';
+      savept = ++r;
+    }
 
-	return(q);
+  return (q);
 }

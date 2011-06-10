@@ -19,39 +19,38 @@
    =============================================================================
 */
 
-prbits(n, l, r, gs)
-register long n;
-register int l, r, gs;
+prbits (n, l, r, gs)
+     register long n;
+     register int l, r, gs;
 {
-	register char *bp;
-	register int i;
-	char buf[66];
+  register char *bp;
+  register int i;
+  char buf[66];
 
-	if (( l < 0) OR ( l > 31) OR
-	    ( r < 0) OR ( r > 31) OR
-	    (gs < 1) OR (gs > 32) OR
-	    ( r > l))
-		return;
+  if ((l < 0) OR (l > 31) OR
+      (r < 0) OR (r > 31) OR (gs < 1) OR (gs > 32) OR (r > l))
+    return;
 
-	bp    = &buf[65];
-	*bp-- = '\0';
+  bp = &buf[65];
+  *bp-- = '\0';
 
-	for (i = r; i < (l + 1); i++) {
+  for (i = r; i < (l + 1); i++)
+    {
 
-		if ((i NE 0) AND (0 EQ (i % gs)))
-			*bp-- = ' ';
+      if ((i NE 0) AND (0 EQ (i % gs)))
+	*bp-- = ' ';
 
-		if (n & (1L << i))
-			*bp-- = '1';
-		else
-			*bp-- = '0';
-	}
+      if (n & (1L << i))
+	*bp-- = '1';
+      else
+	*bp-- = '0';
+    }
 
-	++bp;
+  ++bp;
 
-	if (*bp EQ ' ')
-		++bp;
+  if (*bp EQ ' ')
+    ++bp;
 
-	while ('\0' NE (c = *bp++))
-		putchar(c);
+  while ('\0' NE (c = *bp++))
+    putchar (c);
 }

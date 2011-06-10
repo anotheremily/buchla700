@@ -5,7 +5,7 @@
    =============================================================================
 */
 
-#define	M7CAT		1		/* so libdsp.h gets it right */
+#define	M7CAT		1	/* so libdsp.h gets it right */
 
 #include "stdio.h"
 #include "stddefs.h"
@@ -16,14 +16,14 @@
 #include "instdsp.h"
 #include "libdsp.h"
 
-#define	LIBNAME		"m7slot00.orc"		/* library name */
+#define	LIBNAME		"m7slot00.orc"	/* library name */
 
-extern	int	errno;
+extern int errno;
 
-char	libname[64];
+char libname[64];
 
-struct	instdef	idefs[1];
-struct	mlibhdr	ldhead;
+struct instdef idefs[1];
+struct mlibhdr ldhead;
 
 /* 
 */
@@ -35,14 +35,14 @@ struct	mlibhdr	ldhead;
 */
 
 short
-skipit(fp, len)
-register FILE *fp;
-register long len;
+skipit (fp, len)
+     register FILE *fp;
+     register long len;
 {
-	if (fseek(fp, len, 1))
-		return(FAILURE);
-	else
-		return(SUCCESS);
+  if (fseek (fp, len, 1))
+    return (FAILURE);
+  else
+    return (SUCCESS);
 }
 
 /*
@@ -51,12 +51,12 @@ register long len;
    =============================================================================
 */
 
-die(fp)
-FILE *fp;
+die (fp)
+     FILE *fp;
 {
-	fclose(fp);
-	printf("Program terminated\n");
-	exit(1);
+  fclose (fp);
+  printf ("Program terminated\n");
+  exit (1);
 }
 
 /* 
@@ -69,29 +69,33 @@ FILE *fp;
 */
 
 short
-readit(fp, to, len)
-register FILE *fp;
-register char *to;
-register long len;
+readit (fp, to, len)
+     register FILE *fp;
+     register char *to;
+     register long len;
 {
-	register long count;
-	register int c;
+  register long count;
+  register int c;
 
-	for (count = 0; count < len; count++) {
+  for (count = 0; count < len; count++)
+    {
 
-		if (EOF EQ (c = getc(fp))) {
+      if (EOF EQ (c = getc (fp)))
+	{
 
-			printf("ERROR: Unexpected EOF -- errno = %d\n", errno);
-			fclose(fp);
-			return(FAILURE);
+	  printf ("ERROR: Unexpected EOF -- errno = %d\n", errno);
+	  fclose (fp);
+	  return (FAILURE);
 
-		} else {
-
-			*to++ = c;
-		}
 	}
+      else
+	{
 
-	return(SUCCESS);
+	  *to++ = c;
+	}
+    }
+
+  return (SUCCESS);
 }
 
 /* 
@@ -103,51 +107,54 @@ register long len;
    =============================================================================
 */
 
-main(argc, argv)
-int argc;
-char *argv[];
+main (argc, argv)
+     int argc;
+     char *argv[];
 {
-	register FILE *fp;
-	register struct instdef *ip;
-	register short i;
+  register FILE *fp;
+  register struct instdef *ip;
+  register short i;
 
-	strcpy(libname, LIBNAME);
+  strcpy (libname, LIBNAME);
 
-	if (argc EQ 2)
-		strcpy(libname, argv[1]);
+  if (argc EQ 2)
+    strcpy (libname, argv[1]);
 
-	if ((FILE *)NULL EQ (fp = fopenb(libname, "r"))) {
+  if ((FILE *) NULL EQ (fp = fopenb (libname, "r")))
+    {
 
-		printf("Unable to open [%s]\n", libname);
-		exit(1);
-	}
+      printf ("Unable to open [%s]\n", libname);
+      exit (1);
+    }
 
-	if (readit(fp, &ldhead, (long)LH_LEN))
-		die(fp);
+  if (readit (fp, &ldhead, (long) LH_LEN))
+    die (fp);
 
-	printf("Directory of Orchestra in [%s]\n", libname);
-	printf("N_  Name             Comments\n");
-	printf("--  ---------------- ---------------- ---------------- ----------------\n");
+  printf ("Directory of Orchestra in [%s]\n", libname);
+  printf ("N_  Name             Comments\n");
+  printf
+    ("--  ---------------- ---------------- ---------------- ----------------\n");
 
-	for (i = 0; i < NINORC; i++) {
+  for (i = 0; i < NINORC; i++)
+    {
 
-		ip = &idefs;
+      ip = &idefs;
 
-		if (readit(fp, ip, (long)OR_LEN1))
-			die(fp);
+      if (readit (fp, ip, (long) OR_LEN1))
+	die (fp);
 
-		if (skipit(fp, (long)OR_LEN2))
-			die(fp);
+      if (skipit (fp, (long) OR_LEN2))
+	die (fp);
 
-		if (skipit(fp, (long)OR_LEN2))
-			die(fp);
+      if (skipit (fp, (long) OR_LEN2))
+	die (fp);
 
-		printf("%2d: %-16.16s", i + 1, ip->idhname);
-		printf(" %-16.16s", ip->idhcom1);
-		printf(" %-16.16s", ip->idhcom2);
-		printf(" %-16.16s\n", ip->idhcom3);
-	}
+      printf ("%2d: %-16.16s", i + 1, ip->idhname);
+      printf (" %-16.16s", ip->idhcom1);
+      printf (" %-16.16s", ip->idhcom2);
+      printf (" %-16.16s\n", ip->idhcom3);
+    }
 
-	fclose(fp);
-	exit(0);
+  fclose (fp);
+  exit (0);
 }

@@ -9,21 +9,22 @@
 */
 
 int
-strcspn(string, charset)
-char    *string;
-register char   *charset;
+strcspn (string, charset)
+     char *string;
+     register char *charset;
 {
-        register char *p, *q;
-	register int n = 0;
+  register char *p, *q;
+  register int n = 0;
 
-        for(q = string; *q != '\0'; ++q , ++n) {
+  for (q = string; *q != '\0'; ++q, ++n)
+    {
 
-                for(p = charset; *p != '\0' && *p != *q; ++p)
-                        ;
+      for (p = charset; *p != '\0' && *p != *q; ++p)
+	;
 
-                if(*p != '\0')
-                        break;
-        }
+      if (*p != '\0')
+	break;
+    }
 
-        return(n);
+  return (n);
 }

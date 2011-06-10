@@ -5,8 +5,8 @@
    ============================================================================
 */
 
-int	getln(), getrln(), readln();
+int getln (), getrln (), readln ();
 
 /* The following should really be void ... */
 
-int	writeln();
+int writeln ();

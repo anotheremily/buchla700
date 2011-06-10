@@ -10,25 +10,25 @@
 #include "stddefs.h"
 
 char *
-strltrm(s)
-register char *s;
+strltrm (s)
+     register char *s;
 {
-	register char c;
-	register char *lp, *rp;
+  register char c;
+  register char *lp, *rp;
 
-	if (*s NE ' ')
-		return(s);
+  if (*s NE ' ')
+    return (s);
 
-	lp = s;
-	rp = s;
+  lp = s;
+  rp = s;
 
-	while (*rp EQ ' ')
-		++rp;
+  while (*rp EQ ' ')
+    ++rp;
 
-	while (c = *rp++)
-		*lp++ = c;
+  while (c = *rp++)
+    *lp++ = c;
 
-	*lp = '\0';
+  *lp = '\0';
 
-	return(s);
+  return (s);
 }

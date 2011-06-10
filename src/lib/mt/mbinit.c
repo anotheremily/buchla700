@@ -9,8 +9,8 @@
 #include "stddefs.h"
 #include "mtdefs.h"
 
-extern	short	setipl();		/* set processor IPL function */
-extern	short	SMStat();		/* semaphore check function */
+extern short setipl ();		/* set processor IPL function */
+extern short SMStat ();		/* semaphore check function */
 
 /*
    =============================================================================
@@ -18,19 +18,19 @@ extern	short	SMStat();		/* semaphore check function */
    =============================================================================
 */
 
-MBInit(pmbox)
-register MBOX *pmbox;
+MBInit (pmbox)
+     register MBOX *pmbox;
 {
-	register short oldipl;
+  register short oldipl;
 
-	oldipl = setipl(7);		/* DISABLE INTERRUPTS */
+  oldipl = setipl (7);		/* DISABLE INTERRUPTS */
 
-	pmbox->mail  = (SEM)1L;		/* reset the mail semaphore */
-	pmbox->mutex = (SEM)3L;		/* reset the mutex semaphore */
-	pmbox->head  = (MSG *)NIL;	/* clear the MSG queue head pointer */
-	pmbox->tail  = (MSG *)NIL;	/* clear the MSG queue tail pointer */
+  pmbox->mail = (SEM) 1L;	/* reset the mail semaphore */
+  pmbox->mutex = (SEM) 3L;	/* reset the mutex semaphore */
+  pmbox->head = (MSG *) NIL;	/* clear the MSG queue head pointer */
+  pmbox->tail = (MSG *) NIL;	/* clear the MSG queue tail pointer */
 
-	setipl(oldipl);			/* RESTORE INTERRUPTS */
+  setipl (oldipl);		/* RESTORE INTERRUPTS */
 }
 
 /* 
@@ -42,23 +42,23 @@ register MBOX *pmbox;
    =============================================================================
 */
 
-MBSend(pmbox, pmsg)
-register MBOX *pmbox;
-register MSG *pmsg;
+MBSend (pmbox, pmsg)
+     register MBOX *pmbox;
+     register MSG *pmsg;
 {
-	SMWait(&pmbox->mutex);		/* ACQUIRE THE MAILBOX */
+  SMWait (&pmbox->mutex);	/* ACQUIRE THE MAILBOX */
 
-	if (pmbox->head)			/* is anything in the  queue ? */
-		(pmbox->tail)->next = pmsg;	/* set next of tail message */
-	else					/* ... queue was empty */
-		pmbox->head = pmsg;		/* set the head pointer */
+  if (pmbox->head)		/* is anything in the  queue ? */
+    (pmbox->tail)->next = pmsg;	/* set next of tail message */
+  else				/* ... queue was empty */
+    pmbox->head = pmsg;		/* set the head pointer */
 
-	pmbox->tail = pmsg;		/* set the tail pointer */
-	pmsg->next = (MSG *)NIL;	/* set next of new message */
+  pmbox->tail = pmsg;		/* set the tail pointer */
+  pmsg->next = (MSG *) NIL;	/* set next of new message */
 
-	SMSig(&pmbox->mail);		/* signal that there's mail */
+  SMSig (&pmbox->mail);		/* signal that there's mail */
 
-	SMSig(&pmbox->mutex);		/* RELEASE THE MAILBOX */
+  SMSig (&pmbox->mutex);	/* RELEASE THE MAILBOX */
 }
 
 /* 
@@ -71,32 +71,35 @@ register MSG *pmsg;
 */
 
 MSG *
-MBRecv(pmbox)
-register MBOX *pmbox;
+MBRecv (pmbox)
+     register MBOX *pmbox;
 {
-	register MSG *pmsg;
+  register MSG *pmsg;
 
-	SMWait(&pmbox->mail);		/* WAIT FOR SOME MAIL */
+  SMWait (&pmbox->mail);	/* WAIT FOR SOME MAIL */
 
-	SMWait(&pmbox->mutex);		/* ACQUIRE THE MAILBOX */
+  SMWait (&pmbox->mutex);	/* ACQUIRE THE MAILBOX */
 
-	pmsg = pmbox->head;		/* get the first message in the queue */
+  pmsg = pmbox->head;		/* get the first message in the queue */
 
-	if (pmbox->head EQ pmbox->tail) {	/* only message ? */
+  if (pmbox->head EQ pmbox->tail)
+    {				/* only message ? */
 
-		pmbox->head = (MSG *)NIL;	/* clear queue head pointer */
-		pmbox->tail = (MSG *)NIL;	/* clear queue tail pointer */
+      pmbox->head = (MSG *) NIL;	/* clear queue head pointer */
+      pmbox->tail = (MSG *) NIL;	/* clear queue tail pointer */
 
-	} else {
+    }
+  else
+    {
 
-		pmbox->head =  pmsg->next;	/* update queue head pointer */
-	}
+      pmbox->head = pmsg->next;	/* update queue head pointer */
+    }
 
-	pmsg->next = (MSG *)NIL;	/* clear next message pointer */
+  pmsg->next = (MSG *) NIL;	/* clear next message pointer */
 
-	SMSig(&pmbox->mutex);		/* RELEASE THE MAILBOX */
+  SMSig (&pmbox->mutex);	/* RELEASE THE MAILBOX */
 
-	return(pmsg);			/* return the address of the message */
+  return (pmsg);		/* return the address of the message */
 }
 
 /* 
@@ -113,37 +116,43 @@ register MBOX *pmbox;
 */
 
 MSG *
-MBChek(pmbox)
-register MBOX *pmbox;
+MBChek (pmbox)
+     register MBOX *pmbox;
 {
-	register MSG *pmsg;
+  register MSG *pmsg;
 
-	if (SMCWait(&pmbox->mail)) {		/* try for some mail */
+  if (SMCWait (&pmbox->mail))
+    {				/* try for some mail */
 
-		SMWait(&pmbox->mutex);		/* ACQUIRE THE MAILBOX */
+      SMWait (&pmbox->mutex);	/* ACQUIRE THE MAILBOX */
 
-		pmsg = pmbox->head;		/* get the first message in the queue */
+      pmsg = pmbox->head;	/* get the first message in the queue */
 
-		if (pmbox->head EQ pmbox->tail) {	/* only message ? */
+      if (pmbox->head EQ pmbox->tail)
+	{			/* only message ? */
 
-			pmbox->head = (MSG *)NIL;	/* clear queue head pointer */
-			pmbox->tail = (MSG *)NIL;	/* clear queue tail pointer */
+	  pmbox->head = (MSG *) NIL;	/* clear queue head pointer */
+	  pmbox->tail = (MSG *) NIL;	/* clear queue tail pointer */
 
-		} else {
-
-			pmbox->head =  pmsg->next;	/* update queue head pointer */
-		}
-
-		pmsg->next = (MSG *)NIL;	/* clear next message pointer */
-
-		SMSig(&pmbox->mutex);		/* RELEASE THE MAILBOX */
-
-		return(pmsg);			/* return the message pointer */
-
-	} else {
-
-		return((MSG *)NIL);		/* return -- no mail */
 	}
+      else
+	{
+
+	  pmbox->head = pmsg->next;	/* update queue head pointer */
+	}
+
+      pmsg->next = (MSG *) NIL;	/* clear next message pointer */
+
+      SMSig (&pmbox->mutex);	/* RELEASE THE MAILBOX */
+
+      return (pmsg);		/* return the message pointer */
+
+    }
+  else
+    {
+
+      return ((MSG *) NIL);	/* return -- no mail */
+    }
 }
 
 /* 
@@ -159,43 +168,49 @@ register MBOX *pmbox;
 */
 
 short
-MBDel(pmbox, pmsg)
-register MBOX *pmbox;
-register MSG *pmsg;
+MBDel (pmbox, pmsg)
+     register MBOX *pmbox;
+     register MSG *pmsg;
 {
-	register MSG *mprv, *mcur;
+  register MSG *mprv, *mcur;
 
-	if (SMStat(&pmbox->mail) EQ 1) {		/* anything in the mailbox ? */
+  if (SMStat (&pmbox->mail) EQ 1)
+    {				/* anything in the mailbox ? */
 
-		SMWait(&pmbox->mutex);		/* ACQUIRE THE MAILBOX */
+      SMWait (&pmbox->mutex);	/* ACQUIRE THE MAILBOX */
 
-		mcur = pmbox->head;		/* point at the first message */
+      mcur = pmbox->head;	/* point at the first message */
 
-		while (TRUE) {
+      while (TRUE)
+	{
 
-			mprv = mcur;		/* previous MSG = current MSG */
-			mcur = mprv->next;	/* current MSG = next MSG */
+	  mprv = mcur;		/* previous MSG = current MSG */
+	  mcur = mprv->next;	/* current MSG = next MSG */
 
-			if (mcur EQ (MSG *)NIL) {	/* end of queue ? */
+	  if (mcur EQ (MSG *) NIL)
+	    {			/* end of queue ? */
 
-				SMSig(&pmbox->mutex);	/* RELEASE MAILBOX */
+	      SMSig (&pmbox->mutex);	/* RELEASE MAILBOX */
 
-				return(FAILURE);		/* return -- not found */
-			}
+	      return (FAILURE);	/* return -- not found */
+	    }
 
-			if (mcur EQ pmsg) {		/* message we want ? */
+	  if (mcur EQ pmsg)
+	    {			/* message we want ? */
 
-				mprv->next = mcur->next;	/* dequeue it */
-				mcur->next = (MSG *)NIL;	/* ... */
+	      mprv->next = mcur->next;	/* dequeue it */
+	      mcur->next = (MSG *) NIL;	/* ... */
 
-				SMSig(&pmbox->mutex);	/* RELEASE MAILBOX */
+	      SMSig (&pmbox->mutex);	/* RELEASE MAILBOX */
 
-				return(SUCCESS);	/* return -- deleted */
-			}
-		}
-
-	} else {
-
-		return(FAILURE);	/* return -- mailbox emtpy */
+	      return (SUCCESS);	/* return -- deleted */
+	    }
 	}
+
+    }
+  else
+    {
+
+      return (FAILURE);		/* return -- mailbox emtpy */
+    }
 }

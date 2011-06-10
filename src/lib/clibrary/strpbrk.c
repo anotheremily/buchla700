@@ -9,22 +9,23 @@
 */
 
 char *
-strpbrk(string, brkset)
-register char *string, *brkset;
+strpbrk (string, brkset)
+     register char *string, *brkset;
 {
-	register char *p;
+  register char *p;
 
-	do {
+  do
+    {
 
-	for (p = brkset; *p != '\0' && *p != *string; ++p)
-		;
+      for (p = brkset; *p != '\0' && *p != *string; ++p)
+	;
 
-	if (*p != '\0')
-		return(string);
-	}
+      if (*p != '\0')
+	return (string);
+    }
 
-	while(*string++)
-		;
+  while (*string++)
+  ;
 
-	return((char *)0);
+  return ((char *) 0);
 }

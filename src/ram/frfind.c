@@ -61,10 +61,10 @@
 #include "scfns.h"
 
 #if	DEBUGIT
-extern	short	verbose, testing;
+extern short verbose, testing;
 #endif
 
-extern	short	insmode;
+extern short insmode;
 
 /* 
 */
@@ -77,141 +77,150 @@ extern	short	insmode;
 */
 
 struct s_entry *
-ep_adj(sep, sdir, tval)
-register struct s_entry *sep;
-int sdir;
-register long tval;
+ep_adj (sep, sdir, tval)
+     register struct s_entry *sep;
+     int sdir;
+     register long tval;
 {
-	register struct s_entry *tep;
+  register struct s_entry *tep;
 
 #if	DEBUGIT
-	if (verbose)
-		printf("epadj($%08lX, %d, %ld):  sep->e_time=%ld\n", 
-			sep, sdir, tval, sep->e_time);
+  if (verbose)
+    printf ("epadj($%08lX, %d, %ld):  sep->e_time=%ld\n",
+	    sep, sdir, tval, sep->e_time);
 #endif
 
 #if CHECKP
-	Pcheck(sep, "sep - ep_adj() entry");
+  Pcheck (sep, "sep - ep_adj() entry");
 #endif
 
-	if (tval < 0)		/* return start of score for negative times */
-		return(scores[curscor]);
-		
-	if (sdir) {	/* find left (earliest) end of chain */
+  if (tval < 0)			/* return start of score for negative times */
+    return (scores[curscor]);
 
-		if (sep->e_time LT tval) {
+  if (sdir)
+    {				/* find left (earliest) end of chain */
 
-			while (E_NULL NE (tep = sep->e_fwd)) {
+      if (sep->e_time LT tval)
+	{
+
+	  while (E_NULL NE (tep = sep->e_fwd))
+	    {
 
 #if CHECKP
-	Pcheck(tep, "tep - ep_adj() L .1.");
+	      Pcheck (tep, "tep - ep_adj() L .1.");
 #endif
 
 #if	DEBUGIT
-	if (verbose AND testing)
-		printf("  .1. sep=$%08lX, tep=$%08lX\n", sep, tep);
+	      if (verbose AND testing)
+		printf ("  .1. sep=$%08lX, tep=$%08lX\n", sep, tep);
 #endif
 
-				if (sep->e_time LT tval)
-					sep = tep;
-				else
-					break;
-			}
-		}
+	      if (sep->e_time LT tval)
+		sep = tep;
+	      else
+		break;
+	    }
+	}
 
-		while (E_NULL NE (tep = sep->e_bak)) {
+      while (E_NULL NE (tep = sep->e_bak))
+	{
 
 #if CHECKP
-	Pcheck(tep, "tep - ep_adj() L .2.");
+	  Pcheck (tep, "tep - ep_adj() L .2.");
 #endif
 
 #if	DEBUGIT
-	if (verbose AND testing)
-		printf("  .2. sep=$%08lX, tep=$%08lX\n", sep, tep);
+	  if (verbose AND testing)
+	    printf ("  .2. sep=$%08lX, tep=$%08lX\n", sep, tep);
 #endif
 
-			if ((tep->e_time LT tval) OR
-			    (tep->e_type EQ EV_SCORE)) {
+	  if ((tep->e_time LT tval) OR (tep->e_type EQ EV_SCORE))
+	    {
 
 #if	DEBUGIT
-	if (verbose)
-		printf("  .3. $%08lX returned\n", sep);
+	      if (verbose)
+		printf ("  .3. $%08lX returned\n", sep);
 #endif
-				return(sep);
-			}
+	      return (sep);
+	    }
 
-			sep = tep;
-		}
+	  sep = tep;
+	}
 
 #if CHECKP
-	Pcheck(tep, "tep - ep_adj() L .4.");
+      Pcheck (tep, "tep - ep_adj() L .4.");
 #endif
 
 #if	DEBUGIT
-	if (verbose)
-		printf("  .4. $%08lX returned\n", sep);
+      if (verbose)
+	printf ("  .4. $%08lX returned\n", sep);
 #endif
-		return(sep);
+      return (sep);
 
 /* 
 */
 
-	} else {	/* find right (latest) end of chain */
+    }
+  else
+    {				/* find right (latest) end of chain */
 
-		if (sep->e_time GT tval) {
+      if (sep->e_time GT tval)
+	{
 
-			while (E_NULL NE (tep = sep->e_bak)) {
+	  while (E_NULL NE (tep = sep->e_bak))
+	    {
 
 #if	CHECKP
-	Pcheck(tep, "tep - ep_adj() R .5.");
+	      Pcheck (tep, "tep - ep_adj() R .5.");
 #endif
 
 #if DEBUGIT
-	if (verbose AND testing)
-		printf("  .5. sep=$%08lX, tep=$%08lX\n", sep, tep);
+	      if (verbose AND testing)
+		printf ("  .5. sep=$%08lX, tep=$%08lX\n", sep, tep);
 #endif
 
-				if ((sep->e_time LE tval) OR
-				    (sep->e_type EQ EV_SCORE))
-					break;
-				else
-					sep = tep;
-			}
-		}
-
-		while (E_NULL NE (tep = sep->e_fwd)) {
-
-#if CHECKP
-	Pcheck(tep, "tep - ep_adj() R .6.");
-#endif
-
-#if DEBUGIT
-	if (verbose AND testing)
-		printf("  .6. sep=$%08lX, tep=$%08lX\n", sep, tep);
-#endif
-
-			if (tep->e_time GT tval) {
-			    
-#if	DEBUGIT
-	if (verbose)
-		printf("  .7. $%08lX returned\n", sep);
-#endif
-				return(sep);
-			}
-
-			sep = tep;
-		}
-
-#if CHECKP
-	Pcheck(tep, "tep - ep_adj() R .8.");
-#endif
-
-#if DEBUGIT
-	if (verbose)
-		printf("  .8. $%08lX returned\n", sep);
-#endif
-		return(sep);
+	      if ((sep->e_time LE tval) OR (sep->e_type EQ EV_SCORE))
+		break;
+	      else
+		sep = tep;
+	    }
 	}
+
+      while (E_NULL NE (tep = sep->e_fwd))
+	{
+
+#if CHECKP
+	  Pcheck (tep, "tep - ep_adj() R .6.");
+#endif
+
+#if DEBUGIT
+	  if (verbose AND testing)
+	    printf ("  .6. sep=$%08lX, tep=$%08lX\n", sep, tep);
+#endif
+
+	  if (tep->e_time GT tval)
+	    {
+
+#if	DEBUGIT
+	      if (verbose)
+		printf ("  .7. $%08lX returned\n", sep);
+#endif
+	      return (sep);
+	    }
+
+	  sep = tep;
+	}
+
+#if CHECKP
+      Pcheck (tep, "tep - ep_adj() R .8.");
+#endif
+
+#if DEBUGIT
+      if (verbose)
+	printf ("  .8. $%08lX returned\n", sep);
+#endif
+      return (sep);
+    }
 }
 
 /* 
@@ -226,135 +235,142 @@ register long tval;
 */
 
 struct s_entry *
-frfind(tval, sdir)
-register long tval;
-int sdir;
+frfind (tval, sdir)
+     register long tval;
+     int sdir;
 {
-	register int	i;
-	register long	t_min, dt;
-	register struct	s_entry	*ep, *sep;
+  register int i;
+  register long t_min, dt;
+  register struct s_entry *ep, *sep;
 
 #if	DEBUGIT
-	if (verbose) {
+  if (verbose)
+    {
 
-		printf("frfind(%ld, %d):  searching\n", tval, sdir);
-	}
+      printf ("frfind(%ld, %d):  searching\n", tval, sdir);
+    }
 #endif
 
 #if CHECKP
-	Pcheck(scp, "scp - frfind() - entry");
-	Pcheck(p_fwd, "p_fwd - frfind() - entry");
-	Pcheck(p_cur, "p_cur - frfind() - entry");
-	Pcheck(p_bak, "p_bak - frfind() - entry");
+  Pcheck (scp, "scp - frfind() - entry");
+  Pcheck (p_fwd, "p_fwd - frfind() - entry");
+  Pcheck (p_cur, "p_cur - frfind() - entry");
+  Pcheck (p_bak, "p_bak - frfind() - entry");
 #endif
 
-	if (scp EQ E_NULL) {			/* NULL if no score selected */
+  if (scp EQ E_NULL)
+    {				/* NULL if no score selected */
 
 #if	DEBUGIT
-	if (verbose)
-		printf("frfind(%ld, %d):  found scp EQ E_NULL\n", tval, sdir);
+      if (verbose)
+	printf ("frfind(%ld, %d):  found scp EQ E_NULL\n", tval, sdir);
 #endif
-		return(E_NULL);
-	}
+      return (E_NULL);
+    }
 
-	if (tval < 0)
-		return(ep_adj(scp, sdir, tval));
+  if (tval < 0)
+    return (ep_adj (scp, sdir, tval));
 
-	if (p_cur->e_time EQ tval) {		/* at p_cur ? */
+  if (p_cur->e_time EQ tval)
+    {				/* at p_cur ? */
 
 #if	DEBUGIT
-	if (verbose)
-		printf("frfind():  found tval at p_cur\n");
+      if (verbose)
+	printf ("frfind():  found tval at p_cur\n");
 #endif
-		return(ep_adj(p_cur, sdir, tval));
-	}
+      return (ep_adj (p_cur, sdir, tval));
+    }
 
-	if (p_fwd->e_time EQ tval) {		/* at p_fwd ? */
-	
-#if	DEBUGIT
-	if (verbose)
-		printf("frfind():  found tval at p_fwd\n");
-#endif
-		return(ep_adj(p_fwd, sdir, tval));
-	}
-
-	if (p_bak->e_time EQ tval) {		/* at p_bak ? */
+  if (p_fwd->e_time EQ tval)
+    {				/* at p_fwd ? */
 
 #if	DEBUGIT
-	if (verbose)
-		printf("frfind():  found tval at p_bak\n");
+      if (verbose)
+	printf ("frfind():  found tval at p_fwd\n");
 #endif
-		return(ep_adj(p_bak, sdir, tval));
-	}
+      return (ep_adj (p_fwd, sdir, tval));
+    }
 
-	t_min = (tval GT p_cur->e_time) ?		/* time from p_cur */
-		(tval - p_cur->e_time) :
-		(p_cur->e_time - tval);
-
-	ep = p_cur;
-
-	dt = (tval GT p_fwd->e_time) ?		/* time from p_fwd */
-		(tval - p_fwd->e_time) :
-		(p_fwd->e_time - tval);
-
-	if (dt LT t_min) {			/* select shortest time */
-
-		t_min = dt;
-		ep = p_fwd;
+  if (p_bak->e_time EQ tval)
+    {				/* at p_bak ? */
 
 #if	DEBUGIT
-	if (verbose)
-		printf("frfind():  p_fwd dt=%ld\n", dt);
+      if (verbose)
+	printf ("frfind():  found tval at p_bak\n");
 #endif
-	}
+      return (ep_adj (p_bak, sdir, tval));
+    }
+
+  t_min = (tval GT p_cur->e_time) ?	/* time from p_cur */
+    (tval - p_cur->e_time) : (p_cur->e_time - tval);
+
+  ep = p_cur;
+
+  dt = (tval GT p_fwd->e_time) ?	/* time from p_fwd */
+    (tval - p_fwd->e_time) : (p_fwd->e_time - tval);
+
+  if (dt LT t_min)
+    {				/* select shortest time */
+
+      t_min = dt;
+      ep = p_fwd;
+
+#if	DEBUGIT
+      if (verbose)
+	printf ("frfind():  p_fwd dt=%ld\n", dt);
+#endif
+    }
 
 /* 
 */
 
-	dt = (tval GT p_bak->e_time) ?		/* time to p_bak */
-		(tval - p_bak->e_time) :
-		(p_bak->e_time - tval);
+  dt = (tval GT p_bak->e_time) ?	/* time to p_bak */
+    (tval - p_bak->e_time) : (p_bak->e_time - tval);
 
-	if (dt LT t_min) {			/* select shortest time */
+  if (dt LT t_min)
+    {				/* select shortest time */
 
-		t_min = dt;
-		ep = p_bak;
-
-#if	DEBUGIT
-	if (verbose)
-		printf("frfind():  p_bak dt=%ld\n", dt);
-#endif
-	}
-
-	if (NOT insmode) {
-
-		for (i = 0; i < N_SECTS; i++) {		/* search section list */
-
-			if (E_NULL NE (sep = seclist[curscor][i])) {
-
-				dt = (tval GT sep->e_time) ?	/* time to section */
-					(tval - sep->e_time) :
-					(sep->e_time - tval);
-
-				if (dt LT t_min) {		/* select shortest time */
-
-					t_min = dt;
-					ep = sep;
+      t_min = dt;
+      ep = p_bak;
 
 #if	DEBUGIT
-	if (verbose)
-		printf("frfind():  section %d dt=%ld\n", i, dt);
+      if (verbose)
+	printf ("frfind():  p_bak dt=%ld\n", dt);
 #endif
-				}
-			}
+    }
+
+  if (NOT insmode)
+    {
+
+      for (i = 0; i < N_SECTS; i++)
+	{			/* search section list */
+
+	  if (E_NULL NE (sep = seclist[curscor][i]))
+	    {
+
+	      dt = (tval GT sep->e_time) ?	/* time to section */
+		(tval - sep->e_time) : (sep->e_time - tval);
+
+	      if (dt LT t_min)
+		{		/* select shortest time */
+
+		  t_min = dt;
+		  ep = sep;
+
+#if	DEBUGIT
+		  if (verbose)
+		    printf ("frfind():  section %d dt=%ld\n", i, dt);
+#endif
 		}
+	    }
 	}
+    }
 
 #if	CHECKP
-	Pcheck(ep, "ep - frfind() - ep_adj()/exiting");
+  Pcheck (ep, "ep - frfind() - ep_adj()/exiting");
 #endif
 
-	return(ep_adj(ep, sdir, tval));	/* adjust the pointer */
+  return (ep_adj (ep, sdir, tval));	/* adjust the pointer */
 }
 
 /* 
@@ -375,26 +391,27 @@ int sdir;
 */
 
 struct s_entry *
-findev(ep, te, et, d1, d2)
-struct s_entry *ep;
-register long te;
-register short et, d1, d2;
+findev (ep, te, et, d1, d2)
+     struct s_entry *ep;
+     register long te;
+     register short et, d1, d2;
 {
-	register struct s_entry *tp;
+  register struct s_entry *tp;
 
-	tp = ep_adj(ep, 1, te);		/* search from left end of chain */
+  tp = ep_adj (ep, 1, te);	/* search from left end of chain */
 
-	while (tp->e_time EQ te) {		/* check the time, ... */
+  while (tp->e_time EQ te)
+    {				/* check the time, ... */
 
-		if ((tp->e_type EQ et) AND			/* ... e_type, */
-		    ((d1 EQ -1) OR (tp->e_data1 EQ d1)) AND	/* ... e_data1, */
-		    ((d2 EQ -1) OR (tp->e_data2 EQ d2)))	/* ... e_data2 */
-			return(tp);	/* found the event */
+      if ((tp->e_type EQ et) AND	/* ... e_type, */
+	  ((d1 EQ - 1) OR (tp->e_data1 EQ d1)) AND	/* ... e_data1, */
+	  ((d2 EQ - 1) OR (tp->e_data2 EQ d2)))	/* ... e_data2 */
+	return (tp);		/* found the event */
 
-		tp = tp->e_fwd;		/* search forward */
-	}
+      tp = tp->e_fwd;		/* search forward */
+    }
 
-	return(E_NULL);			/* event not found */
+  return (E_NULL);		/* event not found */
 }
 
 /* 
@@ -418,24 +435,25 @@ register short et, d1, d2;
 */
 
 struct s_entry *
-ehfind(eh, te, d1, d2)
-register short eh;
-register long te;
-register short d1, d2;
+ehfind (eh, te, d1, d2)
+     register short eh;
+     register long te;
+     register short d1, d2;
 {
-	register struct s_entry *tp;
+  register struct s_entry *tp;
 
-	tp = hplist[curscor][eh];	/* get head of chain */
+  tp = hplist[curscor][eh];	/* get head of chain */
 
-	while (E_NULL NE tp) {		/* check each event ... */
+  while (E_NULL NE tp)
+    {				/* check each event ... */
 
-		if (((te EQ -1L) OR (tp->e_time  EQ te)) AND	/* ... time, */
-		    ((d1 EQ  -1) OR (tp->e_data1 EQ d1)) AND	/* ... e_data1, */
-		    ((d2 EQ  -1) OR (tp->e_data2 EQ d2)))	/* ... e_data2 */
-			return(tp);	/* found the event */
+      if (((te EQ - 1L) OR (tp->e_time EQ te)) AND	/* ... time, */
+	  ((d1 EQ - 1) OR (tp->e_data1 EQ d1)) AND	/* ... e_data1, */
+	  ((d2 EQ - 1) OR (tp->e_data2 EQ d2)))	/* ... e_data2 */
+	return (tp);		/* found the event */
 
-		tp = tp->e_up;		/* search up the chain */
-	}
+      tp = tp->e_up;		/* search up the chain */
+    }
 
-	return(tp);			/* event not found */
+  return (tp);			/* event not found */
 }

@@ -10,9 +10,9 @@
 #include "ctype.h"
 
 static int maxwide;
-static int (*gsub)();
+static int (*gsub) ();
 
-extern char *index();
+extern char *index ();
 
 static char *scnstr;
 static char quit;
@@ -20,314 +20,340 @@ static char quit;
 /* 
 */
 
-static
-long
-getnum(list, values, base)
-char *list;
-char *values;
-int base;
+static long
+getnum (list, values, base)
+     char *list;
+     char *values;
+     int base;
 {
-	register long val;
-	register char *cp;
-	int c;
-	int sign;
+  register long val;
+  register char *cp;
+  int c;
+  int sign;
 
-	if (maxwide LE 0)
-		return(0L);
+  if (maxwide LE 0)
+    return (0L);
 
-	val = sign = 0;
+  val = sign = 0;
 
-	if ((c = (*gsub)(0)) EQ '-') {
+  if ((c = (*gsub) (0)) EQ '-')
+    {
 
-		sign = 1;
-		--maxwide;
+      sign = 1;
+      --maxwide;
 
-	} else if (c EQ '+')
-		--maxwide;
-	else
-		(*gsub)(1);
+    }
+  else if (c EQ '+')
+    --maxwide;
+  else
+    (*gsub) (1);
 
-	while (maxwide--) {
+  while (maxwide--)
+    {
 
-		if ((cp = index(list, (*gsub)(0))) EQ NULL) {
+      if ((cp = index (list, (*gsub) (0))) EQ NULL)
+	{
 
-			(*gsub)(1);
-			break;
-		}
-
-		val *= base;
-		val += values[(long)cp - (long)list];
+	  (*gsub) (1);
+	  break;
 	}
 
-	if (sign)
-		val = -val;
+      val *= base;
+      val += values[(long) cp - (long) list];
+    }
 
-	return(val);
+  if (sign)
+    val = -val;
+
+  return (val);
 }
 
 /* 
 */
 
 static
-skipblk()
+skipblk ()
 {
-	while (isspace((*gsub)(0)))
-		;
+  while (isspace ((*gsub) (0)))
+    ;
 
-	if ((*gsub)(1) EQ EOF)
-		return(EOF);
+  if ((*gsub) (1) EQ EOF)
+    return (EOF);
 
-	return(0);
+  return (0);
 }
 
 static
-sgetc(what)
+sgetc (what)
 {
-	if (what EQ 0) {
+  if (what EQ 0)
+    {
 
-		if (*scnstr)
-			return(*scnstr++ & 0x00FF);
+      if (*scnstr)
+	return (*scnstr++ & 0x00FF);
 
-		quit = TRUE;
+      quit = TRUE;
 
-	} else {
+    }
+  else
+    {
 
-		if (!quit)
-			return(*--scnstr & 0x00FF);
-	}
+      if (!quit)
+	return (*--scnstr & 0x00FF);
+    }
 
-	return(EOF);
+  return (EOF);
 }
 
 /* 
 */
 
-scanfmt(getsub, fmt, args)
-int (*getsub)();
-register char *fmt;
-int **args;
+scanfmt (getsub, fmt, args)
+     int (*getsub) ();
+     register char *fmt;
+     int **args;
 {
 
 #ifdef FLOAT
-	double getflt(), d;
+  double getflt (), d;
 #endif
 
-	long lv;
-	int c, count, dontdo, lflag, base;
-	char *cp;
-	char tlist[130];
+  long lv;
+  int c, count, dontdo, lflag, base;
+  char *cp;
+  char tlist[130];
 
-	static char list[] = "ABCDEFabcdef9876543210";
+  static char list[] = "ABCDEFabcdef9876543210";
 
-	static char vals[] = {
+  static char vals[] = {
 
-		10,11,12,13,14,15,10,11,12,13,14,15,9,8,7,6,5,4,3,2,1,0
-	};
+    10, 11, 12, 13, 14, 15, 10, 11, 12, 13, 14, 15, 9, 8, 7, 6, 5, 4, 3, 2, 1,
+    0
+  };
 
 /* 
 */
-	count = 0;
-	gsub = getsub;
+  count = 0;
+  gsub = getsub;
 
-	while (c = *fmt++) {
+  while (c = *fmt++)
+    {
 
-		if (c EQ '%') {
+      if (c EQ '%')
+	{
 
-			lflag = dontdo = FALSE;
-			maxwide = 127;
+	  lflag = dontdo = FALSE;
+	  maxwide = 127;
 
-			if (*fmt EQ '*') {
-				++fmt;
-				dontdo = 1;
-			}
+	  if (*fmt EQ '*')
+	    {
+	      ++fmt;
+	      dontdo = 1;
+	    }
 
-			if (isdigit(*fmt)) {
+	  if (isdigit (*fmt))
+	    {
 
-				maxwide = 0;
+	      maxwide = 0;
 
-				do {
+	      do
+		{
 
-					maxwide = maxwide*10 + *fmt - '0';
+		  maxwide = maxwide * 10 + *fmt - '0';
 
-				} while (isdigit(*++fmt));
-			}
+		}
+	      while (isdigit (*++fmt));
+	    }
 
-			if (*fmt EQ 'l') {
+	  if (*fmt EQ 'l')
+	    {
 
-				lflag = TRUE;
-				++fmt;
-			}
-	
+	      lflag = TRUE;
+	      ++fmt;
+	    }
+
 /* 
 */
-			switch (*fmt++) {
+	  switch (*fmt++)
+	    {
 
-			case '%':
-				c = '%';
-				goto matchit;
+	    case '%':
+	      c = '%';
+	      goto matchit;
 
-			case 'h':	/* specify short (for compatibility) */
-				lflag = FALSE;
-				goto decimal;
+	    case 'h':		/* specify short (for compatibility) */
+	      lflag = FALSE;
+	      goto decimal;
 
-			case 'D':
-				lflag = TRUE;
+	    case 'D':
+	      lflag = TRUE;
 
-			case 'd':
-	decimal:
-				c = 12;
-				base = 10;
-				goto getval;
+	    case 'd':
+	    decimal:
+	      c = 12;
+	      base = 10;
+	      goto getval;
 
-			case 'X':
-				lflag = TRUE;
+	    case 'X':
+	      lflag = TRUE;
 
-			case 'x':
-				c = 0;
-				base = 16;
-				goto getval;
+	    case 'x':
+	      c = 0;
+	      base = 16;
+	      goto getval;
 
-			case 'O':
-				lflag = TRUE;
+	    case 'O':
+	      lflag = TRUE;
 
-			case 'o':
-				c = 14;
-				base = 8;
-	getval:
-				if (skipblk())
-					goto ateof;
+	    case 'o':
+	      c = 14;
+	      base = 8;
+	    getval:
+	      if (skipblk ())
+		goto ateof;
 
-				lv = getnum(&list[c], &vals[c], base);
+	      lv = getnum (&list[c], &vals[c], base);
 
-				if (!dontdo) {
+	      if (!dontdo)
+		{
 
-					if (lflag)
-						*(long *)(*args++) = lv;
-					else
-						**args++ = lv;
-					++count;
-				}
+		  if (lflag)
+		    *(long *) (*args++) = lv;
+		  else
+		    **args++ = lv;
+		  ++count;
+		}
 
-				break;
+	      break;
 /* 
 */
 
 #ifdef FLOAT
-			case 'E':
-			case 'F':
-				lflag = TRUE;
+	    case 'E':
+	    case 'F':
+	      lflag = TRUE;
 
-			case 'e':
-			case 'f':
-				if (skipblk())
-					goto ateof;
+	    case 'e':
+	    case 'f':
+	      if (skipblk ())
+		goto ateof;
 
-				d = getflt(tlist);
+	      d = getflt (tlist);
 
-				if (!dontdo) {
+	      if (!dontdo)
+		{
 
-					if (lflag)
-						*(double *)(*args++) = d;
-					else
-						*(float *)(*args++) = d;
-					++count;
-				}
+		  if (lflag)
+		    *(double *) (*args++) = d;
+		  else
+		    *(float *) (*args++) = d;
+		  ++count;
+		}
 
-				break;
+	      break;
 #endif
 
 /* 
 */
 
-			case '[':
-				lflag = FALSE;
+	    case '[':
+	      lflag = FALSE;
 
-				if (*fmt EQ '^' || *fmt EQ '~') {
+	      if (*fmt EQ '^' || *fmt EQ '~')
+		{
 
-					++fmt;
-					lflag = TRUE;
-				}
+		  ++fmt;
+		  lflag = TRUE;
+		}
 
-				for (cp = tlist ; (c = *fmt++) != ']' ; )
-					*cp++ = c;
+	      for (cp = tlist; (c = *fmt++) != ']';)
+		*cp++ = c;
 
-				*cp = 0;
-				goto string;
+	      *cp = 0;
+	      goto string;
 
-			case 's':
-				lflag = TRUE;
-				tlist[0] = ' ';
-				tlist[1] = '\t';
-				tlist[2] = '\n';
-				tlist[3] = 0;
-		string:
-				if (skipblk())
-					goto ateof;
+	    case 's':
+	      lflag = TRUE;
+	      tlist[0] = ' ';
+	      tlist[1] = '\t';
+	      tlist[2] = '\n';
+	      tlist[3] = 0;
+	    string:
+	      if (skipblk ())
+		goto ateof;
 
-				if (!dontdo)
-					cp = *args++;
+	      if (!dontdo)
+		cp = *args++;
 
-				while (maxwide--) {
+	      while (maxwide--)
+		{
 
-					if ((c = (*gsub)(0)) EQ EOF)
-						break;
+		  if ((c = (*gsub) (0)) EQ EOF)
+		    break;
 
-					if (lflag ?
-					     (index(tlist, c) NE 0) :
-					     (index(tlist, c) EQ 0)) {
+		  if (lflag ?
+		      (index (tlist, c) NE 0) : (index (tlist, c) EQ 0))
+		    {
 
-						(*gsub)(1);	/* unget last character */
-						break;
-					}
+		      (*gsub) (1);	/* unget last character */
+		      break;
+		    }
 
-					if (!dontdo)
-						*cp++ = c;
-				}
+		  if (!dontdo)
+		    *cp++ = c;
+		}
 
-				if (!dontdo) {
+	      if (!dontdo)
+		{
 
-					*cp = 0;
-					++count;
-				}
+		  *cp = 0;
+		  ++count;
+		}
 
-				break;
+	      break;
 /* 
 */
-			case 'c':
-				if ((c = (*gsub)(0)) EQ EOF)
-					goto ateof;
+	    case 'c':
+	      if ((c = (*gsub) (0)) EQ EOF)
+		goto ateof;
 
-				if (!dontdo) {
+	      if (!dontdo)
+		{
 
-					*(char *)(*args++) = c;
-					++count;
-				}
-
-				break;
-			}
-
-		} else if (isspace(c)) {
-
-			if (skipblk()) {
-ateof:
-				if (count EQ 0)
-					return(EOF);
-
-				return(count);
-			}
-
-		} else {
-
-matchit:
-			if (skipblk())
-				goto ateof;
-
-			if ((*gsub)(0) != c)
-				return(count);
+		  *(char *) (*args++) = c;
+		  ++count;
 		}
-	}
 
-	return(count);
+	      break;
+	    }
+
+	}
+      else if (isspace (c))
+	{
+
+	  if (skipblk ())
+	    {
+	    ateof:
+	      if (count EQ 0)
+		return (EOF);
+
+	      return (count);
+	    }
+
+	}
+      else
+	{
+
+	matchit:
+	  if (skipblk ())
+	    goto ateof;
+
+	  if ((*gsub) (0) != c)
+	    return (count);
+	}
+    }
+
+  return (count);
 }
 
 /* 
@@ -336,41 +362,45 @@ matchit:
 #ifdef FLOAT
 
 double
-getflt(buffer)
-char *buffer;
+getflt (buffer)
+     char *buffer;
 {
-	register int c;
-	char decpt, sign, exp;
-	register char *cp;
-	double atof();
+  register int c;
+  char decpt, sign, exp;
+  register char *cp;
+  double atof ();
 
-	cp = buffer;
-	sign = exp = decpt = 0;
+  cp = buffer;
+  sign = exp = decpt = 0;
 
-	while (maxwide--) {
+  while (maxwide--)
+    {
 
-		c = (*gsub)(0);
+      c = (*gsub) (0);
 
-		if (!sign AND (c EQ '-' OR c EQ '+'))
-			sign = 1;
-		else if (!decpt AND c EQ '.')
-			decpt = 1;
-		else if (!exp AND (c EQ 'e' OR c EQ 'E')) {
+      if (!sign AND (c EQ '-' OR c EQ '+'))
+	sign = 1;
+      else if (!decpt AND c EQ '.')
+	decpt = 1;
+      else if (!exp AND (c EQ 'e' OR c EQ 'E'))
+	{
 
-			sign = 0;
-			exp = decpt = 1;
+	  sign = 0;
+	  exp = decpt = 1;
 
-		} else if (!isdigit(c)) {
+	}
+      else if (!isdigit (c))
+	{
 
-			(*gsub)(1);
-			break;
-		}
-
-		*cp++ = c;
+	  (*gsub) (1);
+	  break;
 	}
 
-	*cp = 0;
-	return(atof(buffer));
+      *cp++ = c;
+    }
+
+  *cp = 0;
+  return (atof (buffer));
 }
 
 #endif
@@ -378,12 +408,11 @@ char *buffer;
 /* 
 */
 
-sscanf(string, fmt, args)
-char *string, *fmt;
-int *args;
+sscanf (string, fmt, args)
+     char *string, *fmt;
+     int *args;
 {
-	scnstr = string;
-	quit = FALSE;
-	return(scanfmt(sgetc, fmt, &args));
+  scnstr = string;
+  quit = FALSE;
+  return (scanfmt (sgetc, fmt, &args));
 }
-

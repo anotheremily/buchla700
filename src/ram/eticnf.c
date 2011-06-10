@@ -18,14 +18,14 @@
 
 #define	CFG_OFF		10	/* display offset into configuration field */
 
-extern	unsigned	*instob;
+extern unsigned *instob;
 
-extern	short	stccol, curvce;
-extern	short	idbox[][8];
+extern short stccol, curvce;
+extern short idbox[][8];
 
-extern	char	dspbuf[];
+extern char dspbuf[];
 
-extern	struct	instdef	vbufs[];
+extern struct instdef vbufs[];
 
 /* 
 */
@@ -37,13 +37,13 @@ extern	struct	instdef	vbufs[];
 */
 
 short
-et_icnf(n)
-short n;
+et_icnf (n)
+     short n;
 {
-	sprintf(ebuf, "%02d", vbufs[curvce].idhcfg);
-	ebflag = TRUE;
+  sprintf (ebuf, "%02d", vbufs[curvce].idhcfg);
+  ebflag = TRUE;
 
-	return(SUCCESS);
+  return (SUCCESS);
 }
 
 /* 
@@ -56,27 +56,27 @@ short n;
 */
 
 short
-ef_icnf(n)
-short n;
+ef_icnf (n)
+     short n;
 {
-	register short i, tmpval;
+  register short i, tmpval;
 
-	ebuf[2] = '\0';			/* terminate the string in ebuf */
-	ebflag = FALSE;
+  ebuf[2] = '\0';		/* terminate the string in ebuf */
+  ebflag = FALSE;
 
-	tmpval = 0;
+  tmpval = 0;
 
-	for (i = 0; i < 2; i++)		/* convert from ASCII to binary */
-		tmpval = (tmpval * 10) + (ebuf[i] - '0');
+  for (i = 0; i < 2; i++)	/* convert from ASCII to binary */
+    tmpval = (tmpval * 10) + (ebuf[i] - '0');
 
-	if (tmpval GE NUMCFG)		/* check against limit */
-		return(FAILURE);
+  if (tmpval GE NUMCFG)		/* check against limit */
+    return (FAILURE);
 
-	vbufs[curvce].idhcfg = tmpval;
-	dosync(curvce);
-	showcfg(tmpval);
-	modinst();
-	return(SUCCESS);
+  vbufs[curvce].idhcfg = tmpval;
+  dosync (curvce);
+  showcfg (tmpval);
+  modinst ();
+  return (SUCCESS);
 }
 
 /* 
@@ -89,18 +89,18 @@ short n;
 */
 
 short
-rd_icnf(n)
-short n;
+rd_icnf (n)
+     short n;
 {
-	sprintf(dspbuf, "%02d", vbufs[curvce].idhcfg);	/* convert */
+  sprintf (dspbuf, "%02d", vbufs[curvce].idhcfg);	/* convert */
 
-	if (v_regs[5] & 0x0180)
-		vbank(0);
+  if (v_regs[5] & 0x0180)
+    vbank (0);
 
-	vcputsv(instob, 64, idbox[n][4], idbox[n][5],		/* display */
-		idbox[n][6], idbox[n][7] + CFG_OFF, dspbuf, 14);
+  vcputsv (instob, 64, idbox[n][4], idbox[n][5],	/* display */
+	   idbox[n][6], idbox[n][7] + CFG_OFF, dspbuf, 14);
 
-	return(SUCCESS);
+  return (SUCCESS);
 }
 
 /* 
@@ -113,29 +113,28 @@ short n;
 */
 
 short
-nd_icnf(n, k)
-short n;
-register short  k;
+nd_icnf (n, k)
+     short n;
+     register short k;
 {
-	register short ec, c;
+  register short ec, c;
 
-	ec = stccol - cfetp->flcol;	/* setup edit buffer column */
-	ebuf[ec] = k + '0';		/* enter new data in buffer */
-	ebuf[2] = '\0';			/* make sure string is terminated */
+  ec = stccol - cfetp->flcol;	/* setup edit buffer column */
+  ebuf[ec] = k + '0';		/* enter new data in buffer */
+  ebuf[2] = '\0';		/* make sure string is terminated */
 
-	dspbuf[0] = k + '0';		/* setup for display */
-	dspbuf[1] = '\0';
+  dspbuf[0] = k + '0';		/* setup for display */
+  dspbuf[1] = '\0';
 
-	if (v_regs[5] & 0x0180)
-		vbank(0);
+  if (v_regs[5] & 0x0180)
+    vbank (0);
 
-	/* display the new data */
+  /* display the new data */
 
-	vcputsv(instob, 64, ID_ENTRY, idbox[n][5],
-		idbox[n][6], stccol, dspbuf, 14);
+  vcputsv (instob, 64, ID_ENTRY, idbox[n][5],
+	   idbox[n][6], stccol, dspbuf, 14);
 
-	advicur();			/* advance cursor */
+  advicur ();			/* advance cursor */
 
-	return(SUCCESS);
+  return (SUCCESS);
 }
-

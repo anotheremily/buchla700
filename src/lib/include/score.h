@@ -11,17 +11,19 @@
 #define	N_SECTS		20	/* number of sections per score */
 #define	NNEVTS		32	/* number of note entry events */
 
-struct	nevent	{	/* note event entry list structure */
+struct nevent
+{				/* note event entry list structure */
 
-	struct	nevent	*nxt;
-	short	group;
-	short	note;
+  struct nevent *nxt;
+  short group;
+  short note;
 };
 
-struct s_time {
+struct s_time
+{
 
-	short	sflags;
-	char	smpte[10];
+  short sflags;
+  char smpte[10];
 };
 
 /* 
@@ -29,37 +31,37 @@ struct s_time {
 
 /* score list structures */
 
-struct	s_entry {	/* event entry structure */
+struct s_entry
+{				/* event entry structure */
 
-	long		e_time;		/* time, in frames */
-	char		e_size;		/* size of entry, in longs */
-	char		e_type;		/* type of entry */
-	char		e_data1;	/* 1st 8 bits of data */
-	char		e_data2;	/* 2nd 8 bits of data */
+  long e_time;			/* time, in frames */
+  char e_size;			/* size of entry, in longs */
+  char e_type;			/* type of entry */
+  char e_data1;			/* 1st 8 bits of data */
+  char e_data2;			/* 2nd 8 bits of data */
 
-	struct s_entry	*e_bak,		/* backward pointer */
-			*e_fwd,		/* forward pointer */
-
-			*e_dn,		/* down pointer or 4 bytes of data */
-			*e_up,		/* up pointer or 4 bytes of data */
-
-			*e_lft,		/* left pointer or 4 bytes of data */
-			*e_rgt;		/* right pointer or 4 bytes of data */
+  struct s_entry *e_bak,	/* backward pointer */
+   *e_fwd,			/* forward pointer */
+   *e_dn,			/* down pointer or 4 bytes of data */
+   *e_up,			/* up pointer or 4 bytes of data */
+   *e_lft,			/* left pointer or 4 bytes of data */
+   *e_rgt;			/* right pointer or 4 bytes of data */
 };
 
-struct	n_entry {	/* note entry structure */
+struct n_entry
+{				/* note entry structure */
 
-	long		e_time;		/* time, in frames */
-	char		e_size;		/* size of entry, in longs */
-	char		e_type;		/* type of entry */
-	char		e_note;		/* note number */
-	char		e_group;	/* group */
+  long e_time;			/* time, in frames */
+  char e_size;			/* size of entry, in longs */
+  char e_type;			/* type of entry */
+  char e_note;			/* note number */
+  char e_group;			/* group */
 
-	struct s_entry	*e_bak,		/* backward pointer */
-			*e_fwd;		/* forward pointer */
+  struct s_entry *e_bak,	/* backward pointer */
+   *e_fwd;			/* forward pointer */
 
-	short		e_vel;		/* velocity */
-	short		e_data4;
+  short e_vel;			/* velocity */
+  short e_data4;
 };
 
 /* 

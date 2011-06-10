@@ -11,12 +11,12 @@
 #include "io.h"
 #include "stddefs.h"
 
-extern	int	_badfd(), ClsFile(), _clsvol();
+extern int _badfd (), ClsFile (), _clsvol ();
 
-extern	int	_fatmod, _dirmod;
-extern	struct	bpb	*_thebpb;
-extern	struct	dirent	_thedir[];
-extern	unsigned	_thefat[];
+extern int _fatmod, _dirmod;
+extern struct bpb *_thebpb;
+extern struct dirent _thedir[];
+extern unsigned _thefat[];
 
 /* 
 */
@@ -27,19 +27,18 @@ extern	unsigned	_thefat[];
    =============================================================================
 */
 
-_clsfat()
+_clsfat ()
 {
-	/* write the primary FAT to disk */
+  /* write the primary FAT to disk */
 
-	BIOS(B_RDWR, 1, _thefat, _thebpb->fsiz,
-		_thebpb->fatrec, 0);
+  BIOS (B_RDWR, 1, _thefat, _thebpb->fsiz, _thebpb->fatrec, 0);
 
-	/* write the secondary FAT to disk */
+  /* write the secondary FAT to disk */
 
-	BIOS(B_RDWR, 1, _thefat, _thebpb->fsiz,
-		(_thebpb->fatrec - _thebpb->fsiz), 0);
+  BIOS (B_RDWR, 1, _thefat, _thebpb->fsiz,
+	(_thebpb->fatrec - _thebpb->fsiz), 0);
 
-	_fatmod = FALSE;	/* FAT on disk now matches memory */
+  _fatmod = FALSE;		/* FAT on disk now matches memory */
 }
 
 /*
@@ -48,14 +47,14 @@ _clsfat()
    =============================================================================
 */
 
-_clsdir()
+_clsdir ()
 {
-	/* write the directory to disk */
+  /* write the directory to disk */
 
-	BIOS(B_RDWR, 1, _thedir, _thebpb->rdlen,
-		(_thebpb->fatrec + _thebpb->fsiz), 0);
+  BIOS (B_RDWR, 1, _thedir, _thebpb->rdlen,
+	(_thebpb->fatrec + _thebpb->fsiz), 0);
 
-	_dirmod = FALSE;	/* directory on disk now matches memory */
+  _dirmod = FALSE;		/* directory on disk now matches memory */
 }
 
 /* 
@@ -68,35 +67,36 @@ _clsdir()
 */
 
 int
-close(fd)
-int fd;
+close (fd)
+     int fd;
 {
-	register struct channel *chp;
-	register int rc;
+  register struct channel *chp;
+  register int rc;
 
-	if ((fd < 0) OR (fd > MAXCHAN)) {
+  if ((fd < 0) OR (fd > MAXCHAN))
+    {
 
-		errno = EBADF;
-		return(FAILURE);
-	}
+      errno = EBADF;
+      return (FAILURE);
+    }
 
-	chp = &chantab[fd];			/* point at the channel */
+  chp = &chantab[fd];		/* point at the channel */
 
-	rc  = (*chp->c_close)(chp->c_arg);	/* close the FCB */
+  rc = (*chp->c_close) (chp->c_arg);	/* close the FCB */
 
-	chp->c_read  = 0;			/* release the channel */
-	chp->c_write = 0;
-	chp->c_ioctl = 0;
-	chp->c_seek  = 0;
-	chp->c_close = _badfd;
+  chp->c_read = 0;		/* release the channel */
+  chp->c_write = 0;
+  chp->c_ioctl = 0;
+  chp->c_seek = 0;
+  chp->c_close = _badfd;
 
-	if (_fatmod)
-		_clsfat();			/* write modified FAT */
+  if (_fatmod)
+    _clsfat ();			/* write modified FAT */
 
-	if (_dirmod)
-		_clsdir();			/* write modified directory */
+  if (_dirmod)
+    _clsdir ();			/* write modified directory */
 
-	return(rc);				/* return result of close */
+  return (rc);			/* return result of close */
 }
 
 /* 
@@ -109,14 +109,14 @@ int fd;
 */
 
 int
-_filecl(fp)
-register struct fcb *fp;
+_filecl (fp)
+     register struct fcb *fp;
 {
-	register int rc;
+  register int rc;
 
-	rc = ClsFile(fp);		/* close the FCB */
-	fp->modefl = 0;		/* mark the FILE closed */
-	return(rc);
+  rc = ClsFile (fp);		/* close the FCB */
+  fp->modefl = 0;		/* mark the FILE closed */
+  return (rc);
 }
 
 /*
@@ -125,13 +125,13 @@ register struct fcb *fp;
    =============================================================================
 */
 
-_fd_cls()
+_fd_cls ()
 {
-	register int fd;
+  register int fd;
 
-	for (fd = 0; fd < MAXCHAN; ++fd)
-		if (chantab[fd].c_close NE _badfd)
-			close(fd);
+  for (fd = 0; fd < MAXCHAN; ++fd)
+    if (chantab[fd].c_close NE _badfd)
+      close (fd);
 
-	_clsvol();			/* write modified directory adn FAT */
+  _clsvol ();			/* write modified directory adn FAT */
 }

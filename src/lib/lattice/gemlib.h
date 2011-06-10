@@ -8,7 +8,7 @@
 
 /* multi flags */
 
-#define MU_KEYBD  0x0001   
+#define MU_KEYBD  0x0001
 #define MU_BUTTON 0x0002
 #define MU_M1     0x0004
 #define MU_M2     0x0008
@@ -56,18 +56,18 @@
 #define R_TEDINFO   2
 #define R_ICONBLK   3
 #define R_BITBLK    4
-#define R_STRING    5      /* gets pointer to free strings */
-#define R_IMAGEDATA 6      /* gets pointer to free images */
+#define R_STRING    5		/* gets pointer to free strings */
+#define R_IMAGEDATA 6		/* gets pointer to free images */
 #define R_OBSPEC    7
-#define R_TEPTEXT   8      /* sub ptrs in TEDINFO */
+#define R_TEPTEXT   8		/* sub ptrs in TEDINFO */
 #define R_TEPTMPLT  9
 #define R_TEPVALID 10
-#define R_IBPMASK  11      /* sub ptrs in ICONBLK */
+#define R_IBPMASK  11		/* sub ptrs in ICONBLK */
 #define R_IBPDATA  12
 #define R_IBPTEXT  13
-#define R_BIPDATA  14      /* sub ptrs in BITBLK  */
-#define R_FRSTR    15      /* gets addr of ptr to free strings */
-#define R_FRIMG    16      /* gets addr of ptr to free images */
+#define R_BIPDATA  14		/* sub ptrs in BITBLK  */
+#define R_FRSTR    15		/* gets addr of ptr to free strings */
+#define R_FRIMG    16		/* gets addr of ptr to free images */
 
 /* WINDOW Manager Definitions */
 
@@ -274,56 +274,56 @@
 
 typedef struct object
 {
-  short          ob_next;    /* -> object's next sibling */
-  short          ob_head;    /* -> head of object's children */
-  short          ob_tail;    /* -> tail of object's children */
-  unsigned short ob_type;    /* type of object- BOX, CHAR,... */
-  unsigned short ob_flags;   /* flags  */
-  unsigned short ob_state;   /* state- SELECTED, OPEN, ...  */
-  long           ob_spec;    /* "out"- -> anything else  */
-  short          ob_x;       /* upper left corner of object */
-  short          ob_y;       /* upper left corner of object */
-  short          ob_width;   /* width of object */
-  short          ob_height;  /* height of object */
+  short ob_next;		/* -> object's next sibling */
+  short ob_head;		/* -> head of object's children */
+  short ob_tail;		/* -> tail of object's children */
+  unsigned short ob_type;	/* type of object- BOX, CHAR,... */
+  unsigned short ob_flags;	/* flags  */
+  unsigned short ob_state;	/* state- SELECTED, OPEN, ...  */
+  long ob_spec;			/* "out"- -> anything else  */
+  short ob_x;			/* upper left corner of object */
+  short ob_y;			/* upper left corner of object */
+  short ob_width;		/* width of object */
+  short ob_height;		/* height of object */
 } OBJECT;
 
 typedef struct orect
 {
   struct orect *o_link;
-  short         o_x;
-  short         o_y;
-  short         o_w;
-  short         o_h;
+  short o_x;
+  short o_y;
+  short o_w;
+  short o_h;
 } ORECT;
 
 typedef struct grect
 {
-  short   g_x;
-  short   g_y;
-  short   g_w;
-  short   g_h;
+  short g_x;
+  short g_y;
+  short g_w;
+  short g_h;
 } GRECT;
 
 typedef struct text_edinfo
 {
-  long  te_ptext;     /* ptr to text (must be 1st) */
-  long  te_ptmplt;    /* ptr to template */
-  long  te_pvalid;    /* ptr to validation chrs. */
-  short te_font;      /* font */
-  short te_junk1;     /* junk short */
-  short te_just;      /* justification- left, right... */
-  short te_color;     /* color information short */
-  short te_junk2;     /* junk short */
-  short te_thickness; /* border thickness */
-  short te_txtlen;    /* length of text string */
-  short te_tmplen;    /* length of template string */
+  long te_ptext;		/* ptr to text (must be 1st) */
+  long te_ptmplt;		/* ptr to template */
+  long te_pvalid;		/* ptr to validation chrs. */
+  short te_font;		/* font */
+  short te_junk1;		/* junk short */
+  short te_just;		/* justification- left, right... */
+  short te_color;		/* color information short */
+  short te_junk2;		/* junk short */
+  short te_thickness;		/* border thickness */
+  short te_txtlen;		/* length of text string */
+  short te_tmplen;		/* length of template string */
 } TEDINFO;
 
 typedef struct icon_block
 {
-  long  ib_pmask;
-  long  ib_pdata;
-  long  ib_ptext;
+  long ib_pmask;
+  long ib_pdata;
+  long ib_ptext;
   short ib_char;
   short ib_xchar;
   short ib_ychar;
@@ -339,12 +339,12 @@ typedef struct icon_block
 
 typedef struct bit_block
 {
-  long  bi_pdata;   /* ptr to bit forms data */
-  short bi_wb;      /* width of form in bytes */
-  short bi_hl;      /* height in lines */
-  short bi_x;       /* source x in bit form */
-  short bi_y;       /* source y in bit form */
-  short bi_colour;  /* fg colour of blt */
+  long bi_pdata;		/* ptr to bit forms data */
+  short bi_wb;			/* width of form in bytes */
+  short bi_hl;			/* height in lines */
+  short bi_x;			/* source x in bit form */
+  short bi_y;			/* source y in bit form */
+  short bi_colour;		/* fg colour of blt */
 } BITBLK;
 
 typedef struct user_blk
@@ -355,7 +355,7 @@ typedef struct user_blk
 
 typedef struct parm_blk
 {
-  long  pb_tree;
+  long pb_tree;
   short pb_obj;
   short pb_prevstate;
   short pb_currstate;
@@ -367,12 +367,12 @@ typedef struct parm_blk
   short pb_yc;
   short pb_wc;
   short pb_hc;
-  long  pb_parm;
+  long pb_parm;
 } PARMBLK;
 
 typedef struct fdbstr
 {
-  long  fd_addr;
+  long fd_addr;
   short fd_w;
   short fd_h;
   short fd_wdwidth;
@@ -393,4 +393,3 @@ typedef struct mfstr
   short mf_mask[16];
   short mf_data[16];
 } MFORM;
-

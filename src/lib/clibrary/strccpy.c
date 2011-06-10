@@ -16,16 +16,16 @@
  */
 
 char *
-strccpy(s1, s2, c)
-register char *s1, *s2, c;
+strccpy (s1, s2, c)
+     register char *s1, *s2, c;
 {
-        register char *os1;
-	register char x;
+  register char *os1;
+  register char x;
 
-        os1 = s1;
+  os1 = s1;
 
-        while(c != (x = *s1++))
-		*s2++ = x;
+  while (c != (x = *s1++))
+    *s2++ = x;
 
-        return(os1);
+  return (os1);
 }

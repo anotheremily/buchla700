@@ -5,67 +5,70 @@
    =============================================================================
 */
 
-#define	MAXPATCH	256		/* patch table size */
-#define	RAWDEFS		256		/* def table size */
+#define	MAXPATCH	256	/* patch table size */
+#define	RAWDEFS		256	/* def table size */
 
-#define	NSLINES		1000		/* sequence table size */
-#define	NSEQW		7		/* number of words in a seqent */
+#define	NSLINES		1000	/* sequence table size */
+#define	NSEQW		7	/* number of words in a seqent */
 
-#define	SEQTIME		10		/* milliseconds per tick */
+#define	SEQTIME		10	/* milliseconds per tick */
 
-#define	DATAROW		9		/* data entry row */
+#define	DATAROW		9	/* data entry row */
 
-#define	NDEFSTMS	5120		/* number of stms/defs */
-#define	NPTEQELS	256		/* number of trigger fifo entries */
+#define	NDEFSTMS	5120	/* number of stms/defs */
+#define	NPTEQELS	256	/* number of trigger fifo entries */
 
-#define	NPTEQLO		(NPTEQELS >> 2)		/* trigger fifo lo water */
+#define	NPTEQLO		(NPTEQELS >> 2)	/* trigger fifo lo water */
 #define	NPTEQHI		(NPTEQELS - NPTEQLO)	/* trigger fifo hi water */
 
-#define	NULL_DEF	0x1200		/* blank definer code */
+#define	NULL_DEF	0x1200	/* blank definer code */
 
-#define	ADR_MASK	0x00FF		/* patch / defent table index mask */
-#define	TRG_MASK	0x1FFF		/* trigger mask */
-#define	PE_SPEC		0x00FF		/* destination mask */
-#define	PE_TBIT		0x8000		/* DEF triggered bit */
+#define	ADR_MASK	0x00FF	/* patch / defent table index mask */
+#define	TRG_MASK	0x1FFF	/* trigger mask */
+#define	PE_SPEC		0x00FF	/* destination mask */
+#define	PE_TBIT		0x8000	/* DEF triggered bit */
 
 /* 
 */
 
 /* Patch structure definitions */
 
-struct	patch	{	/* patch table entry (16 bytes per entry) */
+struct patch
+{				/* patch table entry (16 bytes per entry) */
 
-	unsigned short	nextstm;	/* index of next entry in stm chain */
-	unsigned short	prevstm;	/* index of previous entry in stm chain */
-	unsigned short	defnum;		/* definer */
-	unsigned short	stmnum;		/* stimulus */
-	unsigned short	paspec;		/* destination type and flags */
-	unsigned short	pasuba;		/* sub-address */
-	unsigned short	padat1;		/* data word 1 */
-	unsigned short	padat2;		/* data word 2 */
+  unsigned short nextstm;	/* index of next entry in stm chain */
+  unsigned short prevstm;	/* index of previous entry in stm chain */
+  unsigned short defnum;	/* definer */
+  unsigned short stmnum;	/* stimulus */
+  unsigned short paspec;	/* destination type and flags */
+  unsigned short pasuba;	/* sub-address */
+  unsigned short padat1;	/* data word 1 */
+  unsigned short padat2;	/* data word 2 */
 };
 
-struct	defent	{	/* definition table entry -- 10 bytes per entry */
+struct defent
+{				/* definition table entry -- 10 bytes per entry */
 
-	unsigned short	nextdef;	/* index of next in def chain */
-	unsigned short	stm;		/* stimulus */
-	unsigned short	adspec;		/* destination type */
-	unsigned short	adsuba;		/* sub-address */
-	unsigned short	addat1;		/* data word 1 */
+  unsigned short nextdef;	/* index of next in def chain */
+  unsigned short stm;		/* stimulus */
+  unsigned short adspec;	/* destination type */
+  unsigned short adsuba;	/* sub-address */
+  unsigned short addat1;	/* data word 1 */
 };
 
 
 /* Sequence structure definitions */
 
-struct	seqent	{	/* sequence table entry -- 14 bytes per entry */
+struct seqent
+{				/* sequence table entry -- 14 bytes per entry */
 
-	unsigned short	seqtime;	/* time */
-	unsigned short	seqact1;	/* action 1 */
-	unsigned short	seqdat1;	/* action 1 data */
-	unsigned short	seqact2;	/* action 2 */
-	unsigned short	seqdat2;	/* action 2 data */
-	unsigned short	seqact3;	/* action 3 */
-	unsigned short	seqdat3;	/* action 3 data */
+  unsigned short seqtime;	/* time */
+  unsigned short seqact1;	/* action 1 */
+  unsigned short seqdat1;	/* action 1 data */
+  unsigned short seqact2;	/* action 2 */
+  unsigned short seqdat2;	/* action 2 data */
+  unsigned short seqact3;	/* action 3 */
+  unsigned short seqdat3;	/* action 3 data */
 };
 
 /* 
@@ -74,26 +77,26 @@ struct	seqent	{	/* sequence table entry -- 14 bytes per entry */
 /* Patch table references */
 
 #ifndef	PATCHDEF
-extern	char		stmptr[];	/* stimulus pointer table */
-extern	char		defptr[];	/* definition pointer table */
+extern char stmptr[];		/* stimulus pointer table */
+extern char defptr[];		/* definition pointer table */
 
-extern	struct patch	patches[];	/* patch table */
+extern struct patch patches[];	/* patch table */
 
-extern	struct defent	defents[];	/* definition control table */
+extern struct defent defents[];	/* definition control table */
 #endif
 
 
 /* Sequence table references */
 
 #ifndef	SEQDEFS
-extern	struct seqent	seqtab[];		/* sequence table */
+extern struct seqent seqtab[];	/* sequence table */
 
-extern	unsigned short	seqflag[16];		/* sequence flags */
-extern	unsigned short	seqline[16];		/* sequence line */
-extern	unsigned short	seqstim[16];		/* sequence stimulus */
-extern	unsigned short	seqtime[16];		/* sequence timers */
-extern	unsigned short	sregval[16];		/* register values */
-extern	unsigned short	trstate[16];		/* trigger states */
+extern unsigned short seqflag[16];	/* sequence flags */
+extern unsigned short seqline[16];	/* sequence line */
+extern unsigned short seqstim[16];	/* sequence stimulus */
+extern unsigned short seqtime[16];	/* sequence timers */
+extern unsigned short sregval[16];	/* register values */
+extern unsigned short trstate[16];	/* trigger states */
 
 #endif
 
@@ -149,8 +152,8 @@ extern	unsigned short	trstate[16];		/* trigger states */
 
 /* Sequence control flags */
 
-#define	SQF_RUN		0x8000		/* RUN state */
-#define	SQF_CLK		0x4000		/* CLK state */
+#define	SQF_RUN		0x8000	/* RUN state */
+#define	SQF_CLK		0x4000	/* CLK state */
 
 /* Sequence action word masks */
 

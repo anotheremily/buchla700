@@ -7,7 +7,7 @@
 
 #include "stdio.h"
 
-extern	int	fgetc();
+extern int fgetc ();
 
 /*
    =============================================================================
@@ -19,18 +19,18 @@ extern	int	fgetc();
 */
 
 long
-getl(stream)
-register FILE *stream;
+getl (stream)
+     register FILE *stream;
 {
-	long temp;
-	register char *t;
+  long temp;
+  register char *t;
 
-	t = &temp;
+  t = &temp;
 
-	*t++ = fgetc(stream);
-	*t++ = fgetc(stream);
-	*t++ = fgetc(stream);
-	*t = fgetc(stream);
+  *t++ = fgetc (stream);
+  *t++ = fgetc (stream);
+  *t++ = fgetc (stream);
+  *t = fgetc (stream);
 
-	return(temp);
+  return (temp);
 }

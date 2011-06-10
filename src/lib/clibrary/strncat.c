@@ -10,25 +10,26 @@
 */
 
 char *
-strncat(s1, s2, n)
-register char *s1, *s2;
-register int n;
+strncat (s1, s2, n)
+     register char *s1, *s2;
+     register int n;
 {
-	register char *os1;
+  register char *os1;
 
-	os1 = s1;
+  os1 = s1;
 
-	while(*s1++)
-		;
+  while (*s1++)
+    ;
 
-	--s1;
+  --s1;
 
-	while(*s1++ = *s2++)
-		if(--n < 0) {
+  while (*s1++ = *s2++)
+    if (--n < 0)
+      {
 
-			*--s1 = '\0';
-			break;
-		}
+	*--s1 = '\0';
+	break;
+      }
 
-	return(os1);
+  return (os1);
 }

@@ -5,19 +5,21 @@
    =============================================================================
 */
 
-struct	sment {
+struct sment
+{
 
-	struct	sment	*nxt;
-	struct	sment	*prv;
-	unsigned	vp;
-	unsigned	sm;
+  struct sment *nxt;
+  struct sment *prv;
+  unsigned vp;
+  unsigned sm;
 };
 
-struct	valent	{
+struct valent
+{
 
-	struct	sment	*nxt;
-	struct	sment	*prv;
-	unsigned	val;
+  struct sment *nxt;
+  struct sment *prv;
+  unsigned val;
 };
 
 #define	SM_NONE		0	/* No source - always 0 */
@@ -36,5 +38,5 @@ struct	valent	{
 
 /* Sources 3, 4, and 9 no longer exist */
 
-#define	NSRCS		14		/* Highest source number + 1 */
+#define	NSRCS		14	/* Highest source number + 1 */
 #define	NGPSRS		(12 << 4)	/* Number of group/source pairs */

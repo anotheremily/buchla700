@@ -61,14 +61,14 @@
 
 /* System 5 Unix(tm) / Aztec C table definitions */
 
-#define _U	0x01	/* upper case */
-#define _L	0x02	/* lower case */
-#define _N	0x04	/* numeric 0..9 */
-#define _S	0x08	/* whitespace */
-#define	_P	0x10	/* punctuation */
-#define	_C	0x20	/* control 00..1F */
-#define _B	0x40	/* blank */
-#define _X	0x80	/* hex digit */
+#define _U	0x01		/* upper case */
+#define _L	0x02		/* lower case */
+#define _N	0x04		/* numeric 0..9 */
+#define _S	0x08		/* whitespace */
+#define	_P	0x10		/* punctuation */
+#define	_C	0x20		/* control 00..1F */
+#define _B	0x40		/* blank */
+#define _X	0x80		/* hex digit */
 
 #else
 
@@ -76,14 +76,14 @@
 
 /* Digital Research / Alcyon C table definitions */
 
-#define	_C	0x01	/* control 00.1F */
-#define	_P	0x02	/* punctuation */
-#define	_N	0x04	/* numeric 0..9 */
-#define	_U	0x08	/* upper case */
-#define	_L	0x10	/* lower case */
-#define	_S	0x20	/* whitespace */
-#define	_B	0x40	/* blank */
-#define	_X	0x80	/* hex digit */
+#define	_C	0x01		/* control 00.1F */
+#define	_P	0x02		/* punctuation */
+#define	_N	0x04		/* numeric 0..9 */
+#define	_U	0x08		/* upper case */
+#define	_L	0x10		/* lower case */
+#define	_S	0x20		/* whitespace */
+#define	_B	0x40		/* blank */
+#define	_X	0x80		/* hex digit */
 
 #endif
 
@@ -91,16 +91,16 @@
 
 #if	SYS5CODE
 
-extern	char _ctype[];		/* character type table */
+extern char _ctype[];		/* character type table */
 
-#else	/* SYS5CODE */
+#else /* SYS5CODE */
 
-extern	char ___atab();		/* so the loader sees us ... */
-extern	char __atab[];		/* character type table */
+extern char ___atab ();		/* so the loader sees us ... */
+extern char __atab[];		/* character type table */
 
-#endif	/* SYS5CODE */
+#endif /* SYS5CODE */
 
-#endif	/* _CTYPE_C */
+#endif /* _CTYPE_C */
 
 /* 
 */
@@ -132,4 +132,3 @@ extern	char __atab[];		/* character type table */
 #define _tolower(c)	((c)-'A'+'a')
 
 #define	tonumber(c)	((((c)&0x7F)>'9')?((islower(c)?_toupper(c):c)-'A'+10):(c&0x0F))
-

@@ -11,17 +11,17 @@
 #include "io.h"
 #include "stddefs.h"
 
-extern	int	_badfd(), _noper();
-extern	int	_inifcb(), _opfcb();
+extern int _badfd (), _noper ();
+extern int _inifcb (), _opfcb ();
 
-extern	char	*FilName(), *FilExt();
+extern char *FilName (), *FilExt ();
 
-int	_fileop(), _filecl();
+int _fileop (), _filecl ();
 
-static struct device condev  = { 2, 2, 1, 0, _noper  };
+static struct device condev = { 2, 2, 1, 0, _noper };
 static struct device filedev = { 1, 1, 0, 1, _fileop };
 
-extern	struct fcb _fcbtab[];
+extern struct fcb _fcbtab[];
 
 /*
    =============================================================================
@@ -31,10 +31,10 @@ extern	struct fcb _fcbtab[];
 
 static struct devtabl devtabl[] = {
 
-	{ "con:", &condev,  2 },	/* console device */
-	{ "CON:", &condev,  2 },
+  {"con:", &condev, 2},		/* console device */
+  {"CON:", &condev, 2},
 
-	{      0, &filedev, 0 }		/* this MUST be the last entry */
+  {0, &filedev, 0}		/* this MUST be the last entry */
 };
 
 /* 
@@ -50,68 +50,73 @@ static struct devtabl devtabl[] = {
 */
 
 int
-open(name, flag, mode)
-char *name;
-int flag, mode;
+open (name, flag, mode)
+     char *name;
+     int flag, mode;
 {
-	register struct devtabl	*dp;
-	register struct channel	*chp;
-	register struct device	*dev;
-	int	fd, mdmask;
+  register struct devtabl *dp;
+  register struct channel *chp;
+  register struct device *dev;
+  int fd, mdmask;
 
-	/* search for a free channel */
+  /* search for a free channel */
 
-	for (chp = chantab, fd = 0 ; fd < MAXCHAN ; ++chp, ++fd)
-		if (chp->c_close EQ _badfd)
-			goto fndchan;
+  for (chp = chantab, fd = 0; fd < MAXCHAN; ++chp, ++fd)
+    if (chp->c_close EQ _badfd)
+      goto fndchan;
 
-	errno = EMFILE;		/* no channels available */
-	return(FAILURE);
+  errno = EMFILE;		/* no channels available */
+  return (FAILURE);
 
 /* 
 */
 
-fndchan:	/* found a channel to use */
+fndchan:			/* found a channel to use */
 
-	for (dp = devtabl; dp->d_name; ++dp)	 /* search for the device */
-		if (strcmp(dp->d_name, name) EQ 0)
-			break;
+  for (dp = devtabl; dp->d_name; ++dp)	/* search for the device */
+    if (strcmp (dp->d_name, name) EQ 0)
+      break;
 
-	dev = dp->d_dev;
-	mdmask = (flag & 3) + 1;
+  dev = dp->d_dev;
+  mdmask = (flag & 3) + 1;
 
-	if (mdmask & 1) {	/* see if device is readable */
+  if (mdmask & 1)
+    {				/* see if device is readable */
 
-		if ((chp->c_read = dev->d_read) EQ 0) {
+      if ((chp->c_read = dev->d_read) EQ 0)
+	{
 
-			errno = EACCES;		/* can't read */
-			return(FAILURE);
-		}
+	  errno = EACCES;	/* can't read */
+	  return (FAILURE);
 	}
+    }
 
-	if (mdmask & 2) {	/* see if device is writeable */
+  if (mdmask & 2)
+    {				/* see if device is writeable */
 
-		if ((chp->c_write = dev->d_write) EQ 0) {
+      if ((chp->c_write = dev->d_write) EQ 0)
+	{
 
-			errno = EACCES;		/* can't write */
-			return(FAILURE);
-		}
+	  errno = EACCES;	/* can't write */
+	  return (FAILURE);
 	}
+    }
 
-	/* setup the channel table entries */
+  /* setup the channel table entries */
 
-	chp->c_arg   = dp->d_arg;
-	chp->c_ioctl = dev->d_ioctl;
-	chp->c_seek  = dev->d_seek;
-	chp->c_close = _noper;
+  chp->c_arg = dp->d_arg;
+  chp->c_ioctl = dev->d_ioctl;
+  chp->c_seek = dev->d_seek;
+  chp->c_close = _noper;
 
-	if ((*dev->d_open)(name, flag, mode, chp, dp) < 0) {	/* open */
+  if ((*dev->d_open) (name, flag, mode, chp, dp) < 0)
+    {				/* open */
 
-		chp->c_close = _badfd;	/* couldn't open for some reason */
-		return(FAILURE);
-	}
+      chp->c_close = _badfd;	/* couldn't open for some reason */
+      return (FAILURE);
+    }
 
-	return(fd);
+  return (fd);
 }
 
 /* 
@@ -127,11 +132,11 @@ fndchan:	/* found a channel to use */
 */
 
 int
-opena(name, flag, mode)
-char *name;
-int flag, mode;
+opena (name, flag, mode)
+     char *name;
+     int flag, mode;
 {
-	return(open(name, flag, mode));
+  return (open (name, flag, mode));
 }
 
 /*
@@ -144,11 +149,11 @@ int flag, mode;
 */
 
 int
-openb(name, flag, mode)
-char *name;
-int flag, mode;
+openb (name, flag, mode)
+     char *name;
+     int flag, mode;
 {
-	return(open(name, flag|O_RAW, mode));
+  return (open (name, flag | O_RAW, mode));
 }
 
 /* 
@@ -165,11 +170,11 @@ int flag, mode;
 */
 
 int
-creat(name, mode)
-char *name;
-int mode;
+creat (name, mode)
+     char *name;
+     int mode;
 {
-	return(open(name, O_WRONLY|O_TRUNC|O_CREAT, mode));
+  return (open (name, O_WRONLY | O_TRUNC | O_CREAT, mode));
 }
 
 /* 
@@ -186,11 +191,11 @@ int mode;
 */
 
 int
-creata(name, mode)
-char *name;
-int mode;
+creata (name, mode)
+     char *name;
+     int mode;
 {
-	return(open(name, O_WRONLY|O_TRUNC|O_CREAT, mode));
+  return (open (name, O_WRONLY | O_TRUNC | O_CREAT, mode));
 }
 
 /*
@@ -204,11 +209,11 @@ int mode;
 */
 
 int
-creatb(name, mode)
-char *name;
-int mode;
+creatb (name, mode)
+     char *name;
+     int mode;
 {
-	return(creat(name, O_WRONLY|O_TRUNC|O_CREAT|O_RAW, mode));
+  return (creat (name, O_WRONLY | O_TRUNC | O_CREAT | O_RAW, mode));
 }
 
 /* 
@@ -223,40 +228,40 @@ int mode;
 */
 
 int
-_fileop(name, flag, mode, chp, dp)
-char *name;
-int flag, mode;
-struct channel *chp;
-struct devtabl *dp;
+_fileop (name, flag, mode, chp, dp)
+     char *name;
+     int flag, mode;
+     struct channel *chp;
+     struct devtabl *dp;
 {
-	register struct fcb *fp;
-	char	tmpname[9], tmpext[4];
+  register struct fcb *fp;
+  char tmpname[9], tmpext[4];
 
-	/* search for an available fcb entry */
+  /* search for an available fcb entry */
 
-	for (fp = _fcbtab; fp < (_fcbtab + MAXDFILE); ++fp)
-		if (fp->modefl EQ 0)
-			goto havefcb;
+  for (fp = _fcbtab; fp < (_fcbtab + MAXDFILE); ++fp)
+    if (fp->modefl EQ 0)
+      goto havefcb;
 
-	errno = ENFILE;		/* no fcb space available for file */
-	return (FAILURE);
+  errno = ENFILE;		/* no fcb space available for file */
+  return (FAILURE);
 
 havefcb:
 
-	/* setup the initial fcb */
+  /* setup the initial fcb */
 
-	if (_inifcb(fp, FilName(name, tmpname), FilExt(name, tmpext), flag)) {
+  if (_inifcb (fp, FilName (name, tmpname), FilExt (name, tmpext), flag))
+    {
 
-		errno = EINVAL;		/* bad file name or flags */
-		return(FAILURE);
-	}
+      errno = EINVAL;		/* bad file name or flags */
+      return (FAILURE);
+    }
 
-	if (_opfcb(fp))			/* open the file */
-		return(FAILURE);
+  if (_opfcb (fp))		/* open the file */
+    return (FAILURE);
 
-	chp->c_arg   = fp;		/* allocate the channel */
-	chp->c_close = _filecl;
+  chp->c_arg = fp;		/* allocate the channel */
+  chp->c_close = _filecl;
 
-	return(SUCCESS);
+  return (SUCCESS);
 }
-

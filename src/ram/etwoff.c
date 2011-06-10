@@ -17,17 +17,17 @@
 #include "instdsp.h"
 #include "wsdsp.h"
 
-extern	short	advwcur(), wdswin(), pntsup();
+extern short advwcur (), wdswin (), pntsup ();
 
-extern	unsigned	*waveob;
+extern unsigned *waveob;
 
-extern	short	stcrow, stccol, lstwoff, curwoff, curvce, curwslt, curwdth;
+extern short stcrow, stccol, lstwoff, curwoff, curvce, curwslt, curwdth;
 
-extern	short	wsnmod[12][2];
+extern short wsnmod[12][2];
 
-extern	short	wdbox[][8];
+extern short wdbox[][8];
 
-extern	char	dspbuf[];
+extern char dspbuf[];
 
 /* 
 */
@@ -39,29 +39,32 @@ extern	char	dspbuf[];
 */
 
 short
-et_woff(n)
-short n;
+et_woff (n)
+     short n;
 {
-	register short hoff;
-	register char hosgn;
+  register short hoff;
+  register char hosgn;
 
-	lstwoff = curwoff;
+  lstwoff = curwoff;
 
-	if (curwoff LT 0) {
+  if (curwoff LT 0)
+    {
 
-		hosgn = '-';
-		hoff = -curwoff;
+      hosgn = '-';
+      hoff = -curwoff;
 
-	} else {
+    }
+  else
+    {
 
-		hosgn = '+';
-		hoff = curwoff;
-	}
+      hosgn = '+';
+      hoff = curwoff;
+    }
 
-	sprintf(ebuf, "%c%04d", hosgn, hoff);
-	ebflag = TRUE;
+  sprintf (ebuf, "%c%04d", hosgn, hoff);
+  ebflag = TRUE;
 
-	return(SUCCESS);
+  return (SUCCESS);
 }
 
 /* 
@@ -74,37 +77,37 @@ short n;
 */
 
 short
-ef_woff(n)
-short n;
+ef_woff (n)
+     short n;
 {
-	register short *ov;
-	register short i, tmpval;
+  register short *ov;
+  register short i, tmpval;
 
-	ebuf[5] = '\0';			/* terminate the string in ebuf */
-	ebflag = FALSE;
+  ebuf[5] = '\0';		/* terminate the string in ebuf */
+  ebflag = FALSE;
 
-	tmpval = 0;
+  tmpval = 0;
 
-	for (i = 1; i < 5; i++)		/* convert from ASCII to binary */
-		tmpval = (tmpval * 10) + (ebuf[i] - '0');
+  for (i = 1; i < 5; i++)	/* convert from ASCII to binary */
+    tmpval = (tmpval * 10) + (ebuf[i] - '0');
 
-	if (tmpval GT 1023)
-		return(FAILURE);
+  if (tmpval GT 1023)
+    return (FAILURE);
 
-	if (ebuf[0] EQ '-')
-		curwoff = -tmpval;
-	else
-		curwoff = tmpval;
+  if (ebuf[0] EQ '-')
+    curwoff = -tmpval;
+  else
+    curwoff = tmpval;
 
-	if (curwdth EQ NUMWIDS)
-		wdintp();
-	else
-		pntsup();
+  if (curwdth EQ NUMWIDS)
+    wdintp ();
+  else
+    pntsup ();
 
-	wdswin(0);
-	wdswin(2);
-	wdswin(4);
-	return(SUCCESS);
+  wdswin (0);
+  wdswin (2);
+  wdswin (4);
+  return (SUCCESS);
 }
 
 /* 
@@ -117,37 +120,40 @@ short n;
 */
 
 short
-rd_woff(nn)
-short nn;
+rd_woff (nn)
+     short nn;
 {
-	register short hoff, n;
-	register char hosgn;
+  register short hoff, n;
+  register char hosgn;
 
-	n = nn & 0xFF;
-	lstwoff = curwoff;
+  n = nn & 0xFF;
+  lstwoff = curwoff;
 
-	if (curwoff LT 0) {
+  if (curwoff LT 0)
+    {
 
-		hosgn = '-';
-		hoff = -curwoff;
+      hosgn = '-';
+      hoff = -curwoff;
 
-	} else {
+    }
+  else
+    {
 
-		hosgn = '+';
-		hoff = curwoff;
-	}
+      hosgn = '+';
+      hoff = curwoff;
+    }
 
-	sprintf(dspbuf, "%c%04d", hosgn, hoff);
+  sprintf (dspbuf, "%c%04d", hosgn, hoff);
 
-	/* display the value */
+  /* display the value */
 
-	if (v_regs[5] & 0x0180)
-		vbank(0);
+  if (v_regs[5] & 0x0180)
+    vbank (0);
 
-	vcputsv(waveob, 64, wdbox[n][4], wdbox[n][5],
-		wdbox[n][6], wdbox[n][7] + WOFF_OFF, dspbuf, 14);
+  vcputsv (waveob, 64, wdbox[n][4], wdbox[n][5],
+	   wdbox[n][6], wdbox[n][7] + WOFF_OFF, dspbuf, 14);
 
-	return(SUCCESS);
+  return (SUCCESS);
 }
 
 /* 
@@ -160,54 +166,61 @@ short nn;
 */
 
 short
-nd_woff(nn, k)
-short nn;
-register short  k;
+nd_woff (nn, k)
+     short nn;
+     register short k;
 {
-	register short ec, n;
+  register short ec, n;
 
-	n = nn & 0xFF;
-	ec = stccol - cfetp->flcol;	/* setup edit buffer column */
+  n = nn & 0xFF;
+  ec = stccol - cfetp->flcol;	/* setup edit buffer column */
 
-	if (ec EQ 0) {
+  if (ec EQ 0)
+    {
 
-		if (k EQ 8) {
+      if (k EQ 8)
+	{
 
-			ebuf[0] = '-';
-			ebuf[5] = '\0';
+	  ebuf[0] = '-';
+	  ebuf[5] = '\0';
 
-			dspbuf[0] = '-';
-			dspbuf[1] = '\0';
+	  dspbuf[0] = '-';
+	  dspbuf[1] = '\0';
 
-		} else if (k EQ 9) {
-
-			ebuf[0] = '+';
-			ebuf[5] = '\0';
-
-			dspbuf[0] = '+';
-			dspbuf[1] = '\0';
-
-		} else {
-
-			return(FAILURE);
-		}
-
-	} else {
-
-		ebuf[ec] = k + '0';
-		ebuf[5] = '\0';
-
-		dspbuf[0] = k + '0';
-		dspbuf[1] = '\0';
 	}
+      else if (k EQ 9)
+	{
+
+	  ebuf[0] = '+';
+	  ebuf[5] = '\0';
+
+	  dspbuf[0] = '+';
+	  dspbuf[1] = '\0';
+
+	}
+      else
+	{
+
+	  return (FAILURE);
+	}
+
+    }
+  else
+    {
+
+      ebuf[ec] = k + '0';
+      ebuf[5] = '\0';
+
+      dspbuf[0] = k + '0';
+      dspbuf[1] = '\0';
+    }
 /* 
 */
-	if (v_regs[5] & 0x0180)
-		vbank(0);
+  if (v_regs[5] & 0x0180)
+    vbank (0);
 
-	vcputsv(waveob, 64, WS_ENTRY, wdbox[n][5],
-		stcrow, stccol, dspbuf, 14);
+  vcputsv (waveob, 64, WS_ENTRY, wdbox[n][5], stcrow, stccol, dspbuf, 14);
 
-	advwcur();
-	return(SUCCESS);
+  advwcur ();
+  return (SUCCESS);
 }

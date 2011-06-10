@@ -18,14 +18,14 @@
 #include "scdsp.h"
 #include "instdsp.h"
 
-extern	unsigned	*obj8;
+extern unsigned *obj8;
 
-extern	short	recsw;
-extern	short	stccol;
+extern short recsw;
+extern short stccol;
 
-extern	short	grpmode[];
-extern	short	grpstat[];
-extern	short	lastvel[];
+extern short grpmode[];
+extern short grpstat[];
+extern short lastvel[];
 
 /* 
 */
@@ -37,13 +37,13 @@ extern	short	lastvel[];
 */
 
 short
-et_vel(n)
-short n;
+et_vel (n)
+     short n;
 {
-	sprintf(ebuf, "%03d", lastvel[n] / 252);
+  sprintf (ebuf, "%03d", lastvel[n] / 252);
 
-	ebflag = TRUE;
-	return(SUCCESS);
+  ebflag = TRUE;
+  return (SUCCESS);
 }
 
 /* 
@@ -56,42 +56,44 @@ short n;
 */
 
 short
-ef_vel(n)
-short n;
+ef_vel (n)
+     short n;
 {
-	register short ival, i;
-	register struct s_entry *ep;
+  register short ival, i;
+  register struct s_entry *ep;
 
-	ival = 0;
+  ival = 0;
 
-	for (i = 0; i < 3; i++)
-		ival = (ival * 10) + (ebuf[i] - '0');
+  for (i = 0; i < 3; i++)
+    ival = (ival * 10) + (ebuf[i] - '0');
 
-	ebflag = FALSE;
+  ebflag = FALSE;
 
-	if (ival > 127)
-		return(FAILURE);
+  if (ival > 127)
+    return (FAILURE);
 
-	ival = SM_SCALE(ival);
+  ival = SM_SCALE (ival);
 
-	if (recsw AND grpstat[n] AND (2 EQ grpmode[n])) {
+  if (recsw AND grpstat[n] AND (2 EQ grpmode[n]))
+    {
 
-		lastvel[n] = ival;
-		ep = ep_adj(p_cur, 1, t_cur);
+      lastvel[n] = ival;
+      ep = ep_adj (p_cur, 1, t_cur);
 
-		while (t_cur EQ ep->e_time) {
+      while (t_cur EQ ep->e_time)
+	{
 
-			if ((EV_NBEG EQ (0x007F & ep->e_type)) AND
-			    (ep->e_data2 EQ n)) {
+	  if ((EV_NBEG EQ (0x007F & ep->e_type)) AND (ep->e_data2 EQ n))
+	    {
 
-				((struct n_entry *)ep)->e_vel = ival;
-			}
+	      ((struct n_entry *) ep)->e_vel = ival;
+	    }
 
-			ep = ep->e_fwd;
-		}
+	  ep = ep->e_fwd;
 	}
+    }
 
-	return(SUCCESS);
+  return (SUCCESS);
 }
 
 /* 
@@ -104,19 +106,19 @@ short n;
 */
 
 short
-rd_vel(n)
-short n;
+rd_vel (n)
+     short n;
 {
-	char buf[6];
+  char buf[6];
 
-	sprintf(buf, "%03d", lastvel[n] / 252);
+  sprintf (buf, "%03d", lastvel[n] / 252);
 
-	if (v_regs[5] & 0x0180)
-		vbank(0);
+  if (v_regs[5] & 0x0180)
+    vbank (0);
 
-	vputs(obj8, 5, 6 + (n * 5), buf, SDW11ATR);
+  vputs (obj8, 5, 6 + (n * 5), buf, SDW11ATR);
 
-	return(SUCCESS);
+  return (SUCCESS);
 }
 
 /* 
@@ -129,19 +131,19 @@ short n;
 */
 
 short
-nd_vel(n, k)
-register short n, k;
+nd_vel (n, k)
+     register short n, k;
 {
-	register short ec;
+  register short ec;
 
-	ec = stccol - cfetp->flcol;	/* setup edit buffer column */
-	ebuf[ec]  = k + '0';
+  ec = stccol - cfetp->flcol;	/* setup edit buffer column */
+  ebuf[ec] = k + '0';
 
-	if (v_regs[5] & 0x0180)
-		vbank(0);
+  if (v_regs[5] & 0x0180)
+    vbank (0);
 
-	vputc(obj8, 5, stccol, k + '0', SDW11DEA);
-	advscur();
+  vputc (obj8, 5, stccol, k + '0', SDW11DEA);
+  advscur ();
 
-	return(SUCCESS);
+  return (SUCCESS);
 }

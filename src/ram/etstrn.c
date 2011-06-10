@@ -17,16 +17,16 @@
 #include "midas.h"
 #include "scdsp.h"
 
-extern	unsigned	*obj8;
+extern unsigned *obj8;
 
-extern	short	grptran;
-extern	short	sdmctl;
-extern	short	vtccol;
-extern	short	vtcrow;
-extern	short	vtxval;
-extern	short	vtyval;
+extern short grptran;
+extern short sdmctl;
+extern short vtccol;
+extern short vtcrow;
+extern short vtxval;
+extern short vtyval;
 
-extern	char	dspbuf[];
+extern char dspbuf[];
 
 /*
    =============================================================================
@@ -35,13 +35,13 @@ extern	char	dspbuf[];
 */
 
 short
-et_strn()
+et_strn ()
 {
-	sprintf(ebuf, "%c%02d", grptran < 0 ? '-' : '+', abs(grptran));
+  sprintf (ebuf, "%c%02d", grptran < 0 ? '-' : '+', abs (grptran));
 
-	ebflag = TRUE;
+  ebflag = TRUE;
 
-	return(SUCCESS);
+  return (SUCCESS);
 }
 
 /* 
@@ -54,21 +54,21 @@ et_strn()
 */
 
 short
-ef_strn()
+ef_strn ()
 {
-	register short ival;
+  register short ival;
 
-	ebuf[3] = '\0';
-	ival = ((ebuf[1] - '0') * 10) + (ebuf[2] - '0');
+  ebuf[3] = '\0';
+  ival = ((ebuf[1] - '0') * 10) + (ebuf[2] - '0');
 
-	ebflag = FALSE;
+  ebflag = FALSE;
 
-	if ((ival NE 0) AND (ebuf[0] EQ '-'))
-		ival = -ival;
+  if ((ival NE 0) AND (ebuf[0] EQ '-'))
+    ival = -ival;
 
-	grptran = ival;
+  grptran = ival;
 
-	return(SUCCESS);
+  return (SUCCESS);
 }
 
 /*
@@ -78,21 +78,21 @@ ef_strn()
 */
 
 short
-rd_strn()
+rd_strn ()
 {
-	sprintf(dspbuf, "%c%02d", grptran < 0 ? '-' : '+', abs(grptran));
+  sprintf (dspbuf, "%c%02d", grptran < 0 ? '-' : '+', abs (grptran));
 
-	if (v_regs[5] & 0x0180)
-		vbank(0);
+  if (v_regs[5] & 0x0180)
+    vbank (0);
 
-	vputs(obj8, 7, 22, dspbuf, SDMENUBG);
+  vputs (obj8, 7, 22, dspbuf, SDMENUBG);
 
-	return(SUCCESS);
+  return (SUCCESS);
 }
 
 /* 
 */
- 
+
 /*
    =============================================================================
 	nd_strn() -- data entry
@@ -100,43 +100,46 @@ rd_strn()
 */
 
 short
-nd_strn(n, k)
-short n, k;
+nd_strn (n, k)
+     short n, k;
 {
-	register short ec;
+  register short ec;
 
-	if (sdmctl NE 4)
-		return(FAILURE);
+  if (sdmctl NE 4)
+    return (FAILURE);
 
-	if ((vtccol GE 22) AND (vtccol LE 24))
-		ec = vtccol - 22;
-	else
-		return(FAILURE);
+  if ((vtccol GE 22) AND (vtccol LE 24))
+    ec = vtccol - 22;
+  else
+    return (FAILURE);
 
-	if (ec EQ 0) {
+  if (ec EQ 0)
+    {
 
-		if (k EQ 8)
-			k = '-';
-		else if (k EQ 9)
-			k = '+';
-		else
-			return(FAILURE);
-	} else
-		k += '0';
+      if (k EQ 8)
+	k = '-';
+      else if (k EQ 9)
+	k = '+';
+      else
+	return (FAILURE);
+    }
+  else
+    k += '0';
 
-	ebuf[ec] = k;
+  ebuf[ec] = k;
 
-	if (v_regs[5] & 0x0180)
-		vbank(0);
+  if (v_regs[5] & 0x0180)
+    vbank (0);
 
-	vputc(obj8, 7, vtccol, k, (SDBGMM | (SD_ENTR << 4)));
+  vputc (obj8, 7, vtccol, k, (SDBGMM | (SD_ENTR << 4)));
 
-	if (vtccol < 24) {
+  if (vtccol < 24)
+    {
 
-		++vtccol;
-		vtxval = CTOX(vtccol);
-		ttcpos(vtcrow, vtccol);
-	}
+      ++vtccol;
+      vtxval = CTOX (vtccol);
+      ttcpos (vtcrow, vtccol);
+    }
 
-	return(SUCCESS);
+  return (SUCCESS);
 }

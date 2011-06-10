@@ -14,25 +14,26 @@
    =============================================================================
 */
 
-struct	JMP_BUF {	/* setjmp() / longjmp() environment structure */
+struct JMP_BUF
+{				/* setjmp() / longjmp() environment structure */
 
-	long	jmpret;		/* return address */
+  long jmpret;			/* return address */
 
-	long	jmp_d1;		/* data registers */
-	long	jmp_d2;
-	long	jmp_d3;
-	long	jmp_d4;
-	long	jmp_d5;
-	long	jmp_d6;
-	long	jmp_d7;
+  long jmp_d1;			/* data registers */
+  long jmp_d2;
+  long jmp_d3;
+  long jmp_d4;
+  long jmp_d5;
+  long jmp_d6;
+  long jmp_d7;
 
-	long	jmp_a1;		/* address registers */
-	long	jmp_a2;
-	long	jmp_a3;
-	long	jmp_a4;
-	long	jmp_a5;
-	long	jmp_a6;
-	long	jmp_a7;
+  long jmp_a1;			/* address registers */
+  long jmp_a2;
+  long jmp_a3;
+  long jmp_a4;
+  long jmp_a5;
+  long jmp_a6;
+  long jmp_a7;
 };
 
 typedef struct JMP_BUF jmp_buf;

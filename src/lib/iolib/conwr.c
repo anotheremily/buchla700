@@ -19,15 +19,15 @@
    ============================================================================
 */
 int
-_conwr(kind, buff, len)
-int kind;
-register char *buff;
-int len;
+_conwr (kind, buff, len)
+     int kind;
+     register char *buff;
+     int len;
 {
-	register int count;
+  register int count;
 
-	for (count = 0; count < len; ++count)
-		BIOS(B_PUTC, kind, *buff++);
+  for (count = 0; count < len; ++count)
+    BIOS (B_PUTC, kind, *buff++);
 
-	return(count);
+  return (count);
 }

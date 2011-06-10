@@ -9,28 +9,30 @@
 #include "ctype.h"
 
 int
-atoi(cp)
-register char *cp;
+atoi (cp)
+     register char *cp;
 {
-	register unsigned i;
-	register short sign;
+  register unsigned i;
+  register short sign;
 
-	sign = 0;
+  sign = 0;
 
-	if ( *cp EQ '-' ) {
+  if (*cp EQ '-')
+    {
 
-		++cp;
-		sign = 1;
+      ++cp;
+      sign = 1;
 
-	} else {
+    }
+  else
+    {
 
-		if (*cp EQ '+')
-			++cp;
-	}
+      if (*cp EQ '+')
+	++cp;
+    }
 
-	for (i = 0; isdigit(*cp); )
-		i = i * 10 + (0x7F & *cp++) - '0';
+  for (i = 0; isdigit (*cp);)
+    i = i * 10 + (0x7F & *cp++) - '0';
 
-	return(sign ? -i : i);
+  return (sign ? -i : i);
 }
-

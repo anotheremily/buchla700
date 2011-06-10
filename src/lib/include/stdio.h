@@ -19,30 +19,31 @@
 #define	_EOF	0x08
 #define	_IOERR	0x10
 
-typedef struct {
+typedef struct
+{
 
-	char	*_bp;		/* current position in buffer */
-	char	*_bend;		/* last character in buffer + 1 */
-	char	*_buff;		/* address of buffer */
-	char	_flags;		/* {_BUSY, _ALLBUF, _DIRTY, _EOF, _IOERR} */
-	char	_unit;		/* fd token returned by open */
-	char	_bytbuf;	/* single byte buffer for unbuffered streams */
-	char	_pad;		/* pad for alignment -- possibly use later */
-	int	_buflen;	/* length of buffer */
+  char *_bp;			/* current position in buffer */
+  char *_bend;			/* last character in buffer + 1 */
+  char *_buff;			/* address of buffer */
+  char _flags;			/* {_BUSY, _ALLBUF, _DIRTY, _EOF, _IOERR} */
+  char _unit;			/* fd token returned by open */
+  char _bytbuf;			/* single byte buffer for unbuffered streams */
+  char _pad;			/* pad for alignment -- possibly use later */
+  int _buflen;			/* length of buffer */
 
 } FILE;
 
 #ifndef	_FS_DEF_
 
-extern	FILE	Cbuffs[NSTREAMS];		/* table of FILE structures */
-extern	char	*Stdbufs;			/* free list of buffers */
-extern	long	Stdbuf[MAXDFILE][BUFSIZL];	/* buffers */
+extern FILE Cbuffs[NSTREAMS];	/* table of FILE structures */
+extern char *Stdbufs;		/* free list of buffers */
+extern long Stdbuf[MAXDFILE][BUFSIZL];	/* buffers */
 
 #endif
 
-extern	long	ftell();
-extern	char	*gets(), *fgets();
-extern	FILE	*fopen(), *fopena(), *fopenb();
+extern long ftell ();
+extern char *gets (), *fgets ();
+extern FILE *fopen (), *fopena (), *fopenb ();
 
 #define	stdin	(&Cbuffs[0])
 #define	stdout	(&Cbuffs[1])
@@ -55,7 +56,7 @@ extern	FILE	*fopen(), *fopena(), *fopenb();
 #define	clearerr(fp)	((fp)->_flags &= ~(_IOERR | _EOF))
 #define	fileno(fp)	((fp)->_unit)
 
-#ifndef	O_RDONLY	/* only define these once */
+#ifndef	O_RDONLY		/* only define these once */
 
 #define	O_RDONLY	0x0000	/* Read-only value  */
 #define	O_WRONLY	0x0001	/* Write-only value */

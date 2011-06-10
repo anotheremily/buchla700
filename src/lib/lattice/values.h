@@ -129,8 +129,8 @@
 #define M_LN2	0.69314718055994530942
 #define M_PI	3.14159265358979323846
 #define M_SQRT2	1.41421356237309504880
-#define MAXBEXP	DMAXEXP /* for backward compatibility */
-#define MINBEXP	DMINEXP /* for backward compatibility */
-#define MAXPOWTWO	DMAXPOWTWO /* for backward compatibility */
+#define MAXBEXP	DMAXEXP		/* for backward compatibility */
+#define MINBEXP	DMINEXP		/* for backward compatibility */
+#define MAXPOWTWO	DMAXPOWTWO	/* for backward compatibility */
 
 #endif

@@ -59,27 +59,29 @@
 
 #define MCB struct _mcb
 
-struct _mcb {
+struct _mcb
+{
 
-	MCB	*fore;		/* forward link */
-	MCB	*aft;		/* backward link */
-	MCB	*buddy;		/* nearest lower address neighbor */
-	long	size;		/* size of this chunk including MCB */
-	HEAP	*heap;		/* 0L if free, else owner of this chunk */	
-	int	magic;		/* magic number for validation */
+  MCB *fore;			/* forward link */
+  MCB *aft;			/* backward link */
+  MCB *buddy;			/* nearest lower address neighbor */
+  long size;			/* size of this chunk including MCB */
+  HEAP *heap;			/* 0L if free, else owner of this chunk */
+  int magic;			/* magic number for validation */
 };
 
 /* and here is the heap control block */
 
-struct _heap {
+struct _heap
+{
 
-	HEAP	*link;		/* pointer to next heap (0 if end) */
-	MCB	*avail;		/* pointer to first free block or 0 */
-	MCB	*limit;		/* address of the end of this heap */
+  HEAP *link;			/* pointer to next heap (0 if end) */
+  MCB *avail;			/* pointer to first free block or 0 */
+  MCB *limit;			/* address of the end of this heap */
 };
 
 #if	DEBUGIT
-short	mal_dbg;		/* set non-zero for malloc debug trace */
+short mal_dbg;			/* set non-zero for malloc debug trace */
 #endif
 
 /*
@@ -87,7 +89,7 @@ short	mal_dbg;		/* set non-zero for malloc debug trace */
 	Start off with no heaps allocated (NULL terminated linked list).
  */
 
-static HEAP heaps = { (HEAP *)0 };
+static HEAP heaps = { (HEAP *) 0 };
 
 /* 
 */
@@ -98,67 +100,68 @@ static HEAP heaps = { (HEAP *)0 };
    =============================================================================
 */
 
-static
-HEAP *
-a_heap(x)
-long x;
+static HEAP *
+a_heap (x)
+     long x;
 {
-	MCB *m;
-	HEAP *heap;
+  MCB *m;
+  HEAP *heap;
 
-	/* locate end of the heap list */
-	/* (a tail pointer would help here) */
+  /* locate end of the heap list */
+  /* (a tail pointer would help here) */
 
-	for (heap = &heaps; heap->link; heap = heap->link)
-		;
+  for (heap = &heaps; heap->link; heap = heap->link)
+    ;
 
-	/* adjust the request for the minmum required overhead */
+  /* adjust the request for the minmum required overhead */
 
-	x = (x + sizeof(HEAP) + sizeof(MCB) + 1) & ~1L;
+  x = (x + sizeof (HEAP) + sizeof (MCB) + 1) & ~1L;
 
-	/* grab a chunk from GEMDOS */
+  /* grab a chunk from GEMDOS */
 
-	if ((heap->link = (HEAP *)Malloc(x)) EQ 0) {
+  if ((heap->link = (HEAP *) Malloc (x)) EQ 0)
+    {
 
 #if	DEBUGIT
-	if (mal_dbg) {
+      if (mal_dbg)
+	{
 
-		printf("a_heap(%ld):  GEMDOS Malloc() returned 0\n", x);
-		printf("      largest block available = %ld\n", Malloc(-1L));
+	  printf ("a_heap(%ld):  GEMDOS Malloc() returned 0\n", x);
+	  printf ("      largest block available = %ld\n", Malloc (-1L));
 	}
 #endif
-		return((HEAP *)0);
-	}
+      return ((HEAP *) 0);
+    }
 
-	/* add the heap to the heap list */
+  /* add the heap to the heap list */
 
-	heap = heap->link;
-	heap->link = (HEAP *)0;
+  heap = heap->link;
+  heap->link = (HEAP *) 0;
 
-	/* first chunk is just after header */
+  /* first chunk is just after header */
 
-	m = (MCB *)(heap + 1);
+  m = (MCB *) (heap + 1);
 
-	/* set up size and mark it as a free chunk */
+  /* set up size and mark it as a free chunk */
 
-	m->size = x - sizeof(HEAP);
-	m->heap = 0L;
+  m->size = x - sizeof (HEAP);
+  m->heap = 0L;
 
-	/* this is the last (only) chunk on the linked list */
+  /* this is the last (only) chunk on the linked list */
 
-	m->fore = (MCB *)0;
-	m->aft = (MCB *)(&heap->avail);
+  m->fore = (MCB *) 0;
+  m->aft = (MCB *) (&heap->avail);
 
-	/* there is no lower addressed neighbor to this chunk */
+  /* there is no lower addressed neighbor to this chunk */
 
-	m->buddy = (MCB *)0;
+  m->buddy = (MCB *) 0;
 
-	/* mark the heap limit and place chunk on the free list */
+  /* mark the heap limit and place chunk on the free list */
 
-	heap->limit = (MCB *)((char *)heap + x); 
-	heap->avail = m;
+  heap->limit = (MCB *) ((char *) heap + x);
+  heap->avail = m;
 
-	return(heap);
+  return (heap);
 }
 
 /* 
@@ -171,45 +174,46 @@ long x;
 */
 
 static
-s_split(mcb, x)
-MCB *mcb;
-long x;
+s_split (mcb, x)
+     MCB *mcb;
+     long x;
 {
-	MCB *m;
-	HEAP *heap;
+  MCB *m;
+  HEAP *heap;
 
-	/* check for ownership here */
+  /* check for ownership here */
 
-	if (mcb EQ 0 OR (heap = mcb->heap) EQ 0 OR mcb->magic NE MAGIC) {
+  if (mcb EQ 0 OR (heap = mcb->heap) EQ 0 OR mcb->magic NE MAGIC)
+    {
 
 #if	DEBUGIT
-		if (mal_dbg)
-			printf("s_split($%lx, %ld):  MCB invalid\n", mcb, x);
+      if (mal_dbg)
+	printf ("s_split($%lx, %ld):  MCB invalid\n", mcb, x);
 #endif
-		return(FAILURE);
-	}
+      return (FAILURE);
+    }
 
-	/* make a new chunk inside this one */
+  /* make a new chunk inside this one */
 
-	m = (MCB *)((char *)mcb + x);
-	m->size  = mcb->size - x;
-	m->buddy = mcb;
-	m->heap  = mcb->heap;
-	m->magic = MAGIC;
+  m = (MCB *) ((char *) mcb + x);
+  m->size = mcb->size - x;
+  m->buddy = mcb;
+  m->heap = mcb->heap;
+  m->magic = MAGIC;
 
-	/* shrink the old chunk */
+  /* shrink the old chunk */
 
-	mcb->size = x;
+  mcb->size = x;
 
-	/* establish the forward neighbor's relationship to us */
+  /* establish the forward neighbor's relationship to us */
 
-	mcb = m;
+  mcb = m;
 
-	if ((m = (MCB *)((char *)mcb + mcb->size)) < heap->limit)
-		m->buddy = mcb;
+  if ((m = (MCB *) ((char *) mcb + mcb->size)) < heap->limit)
+    m->buddy = mcb;
 
-	free(++mcb);
-	return(SUCCESS);
+  free (++mcb);
+  return (SUCCESS);
 }
 
 /* 
@@ -221,43 +225,43 @@ long x;
    =============================================================================
 */
 
-static
-MCB *
-aloc_s(x, heap)
-long x;
-HEAP *heap;
+static MCB *
+aloc_s (x, heap)
+     long x;
+     HEAP *heap;
 {
-	MCB *mcb;
+  MCB *mcb;
 
-	/* use first fit algorithm to find chunk to use */
+  /* use first fit algorithm to find chunk to use */
 
-	for (mcb = heap->avail; mcb; mcb = mcb->fore)
-		if (mcb->size GE x + sizeof(MCB))
-			break;
+  for (mcb = heap->avail; mcb; mcb = mcb->fore)
+    if (mcb->size GE x + sizeof (MCB))
+      break;
 
-	if (mcb) {
+  if (mcb)
+    {
 
-		/* remove it from the free list */
+      /* remove it from the free list */
 
-		unfree(mcb);
+      unfree (mcb);
 
-		/* set up owner */
+      /* set up owner */
 
-		mcb->heap = heap;
-		mcb->magic = MAGIC;
+      mcb->heap = heap;
+      mcb->magic = MAGIC;
 
-		/* if it's bigger than we need and splitable, split it */
+      /* if it's bigger than we need and splitable, split it */
 
-		if (mcb->size - x > MINSEG)
-			if (s_split(mcb, x + sizeof(MCB)))
-				return((MCB *)0);
+      if (mcb->size - x > MINSEG)
+	if (s_split (mcb, x + sizeof (MCB)))
+	  return ((MCB *) 0);
 
-		/* return start of data area to caller */
+      /* return start of data area to caller */
 
-		mcb++;
-	}
+      mcb++;
+    }
 
-	return(mcb);
+  return (mcb);
 }
 
 /* 
@@ -270,11 +274,11 @@ HEAP *heap;
 */
 
 static
-unfree(mcb)
-MCB *mcb;
+unfree (mcb)
+     MCB *mcb;
 {
-	if ((mcb->aft->fore = mcb->fore) NE 0)
-		mcb->fore->aft = mcb->aft;
+  if ((mcb->aft->fore = mcb->fore) NE 0)
+    mcb->fore->aft = mcb->aft;
 }
 
 
@@ -286,31 +290,34 @@ MCB *mcb;
 */
 
 static
-collect()
+collect ()
 {
-	HEAP *heap, *h;
-	MCB *mcb;
-	int flag;
+  HEAP *heap, *h;
+  MCB *mcb;
+  int flag;
 
 #if	DEBUGIT
-	if (mal_dbg)
-		printf("collect():  collecting garbage ...\n");
+  if (mal_dbg)
+    printf ("collect():  collecting garbage ...\n");
 #endif
-	
-	for (flag = 0, heap = &heaps; (h = heap->link) NE 0; ) {
 
-		if ((mcb = h->avail) NE 0 AND
-		     NOT mcb->buddy AND ((char *)mcb + mcb->size) EQ h->limit) {
+  for (flag = 0, heap = &heaps; (h = heap->link) NE 0;)
+    {
 
-			heap->link = h->link;
-			Mfree(h);
-			flag++;
-			
-		} else
-			heap = h;
+      if ((mcb = h->avail) NE 0 AND
+	  NOT mcb->buddy AND ((char *) mcb + mcb->size) EQ h->limit)
+	{
+
+	  heap->link = h->link;
+	  Mfree (h);
+	  flag++;
+
 	}
+      else
+	heap = h;
+    }
 
-	return(flag);
+  return (flag);
 }
 
 /* 
@@ -342,39 +349,39 @@ collect()
 
 
 char *
-malloc(n)
-unsigned n;
+malloc (n)
+     unsigned n;
 {
-	register HEAP *heap;
-	register long x;
-	char *p;
+  register HEAP *heap;
+  register long x;
+  char *p;
 
-	x = (long)(n + 1) & ~1L;
+  x = (long) (n + 1) & ~1L;
 
-	/* first check all current heaps */
+  /* first check all current heaps */
 
-	for (heap = heaps.link; heap; heap = heap->link)
-		if ((p = aloc_s(x, heap)) NE 0)
-			return(p);
+  for (heap = heaps.link; heap; heap = heap->link)
+    if ((p = aloc_s (x, heap)) NE 0)
+      return (p);
 
-	/* not enough room on heap list, try garbage collection */
+  /* not enough room on heap list, try garbage collection */
 
-	collect();
+  collect ();
 
-	/* now allocate a new heap */
+  /* now allocate a new heap */
 
-	if ((heap = a_heap(max(x, HEAPSIZE))) NE 0)
-		if ((p = aloc_s(x, heap)) NE 0)
-			return(p);
+  if ((heap = a_heap (max (x, HEAPSIZE))) NE 0)
+    if ((p = aloc_s (x, heap)) NE 0)
+      return (p);
 
-	/* couldn't get a chunk big enough */
+  /* couldn't get a chunk big enough */
 
 #if	DEBUGIT
-	if (mal_dbg)
-		printf("malloc(%u):  unable to find a large enough chunk\n", n);
+  if (mal_dbg)
+    printf ("malloc(%u):  unable to find a large enough chunk\n", n);
 #endif
 
-	return((char *)0);
+  return ((char *) 0);
 }
 
 /* 
@@ -388,62 +395,65 @@ unsigned n;
 */
 
 
-free(mcb)
-MCB *mcb;
+free (mcb)
+     MCB *mcb;
 {
-	MCB *m;
-	HEAP *heap;
+  MCB *m;
+  HEAP *heap;
 
-	/* address header */
+  /* address header */
 
-	mcb--;
+  mcb--;
 
-	/* check for ownership here */
+  /* check for ownership here */
 
-	if (mcb EQ 0 OR (heap = mcb->heap) EQ 0 OR mcb->magic NE MAGIC) {
+  if (mcb EQ 0 OR (heap = mcb->heap) EQ 0 OR mcb->magic NE MAGIC)
+    {
 
 #if	DEBUGIT
-	printf("free($%lx):  MCB invalid\n", mcb);
+      printf ("free($%lx):  MCB invalid\n", mcb);
 #endif
 
-		return(-40);
-	}
-		
-	/* connect to chunks behind this one */
+      return (-40);
+    }
 
-	while (mcb->buddy) {
+  /* connect to chunks behind this one */
 
-		if (mcb->buddy->heap)
-			break;
+  while (mcb->buddy)
+    {
 
-		mcb->buddy->size += mcb->size;
-		mcb = mcb->buddy;
-		unfree(mcb);
-	}
+      if (mcb->buddy->heap)
+	break;
 
-	/* now connect to chunks after this one */
+      mcb->buddy->size += mcb->size;
+      mcb = mcb->buddy;
+      unfree (mcb);
+    }
 
-	while ((m = (MCB *)((char *)mcb + mcb->size)) < heap->limit) {
+  /* now connect to chunks after this one */
 
-		m->buddy = mcb;
+  while ((m = (MCB *) ((char *) mcb + mcb->size)) < heap->limit)
+    {
 
-		if (m->heap)
-			break;
+      m->buddy = mcb;
 
-		mcb->size += m->size;
-		unfree(m);
-	}
+      if (m->heap)
+	break;
 
-	/* place the resultant chunk on the free list */
+      mcb->size += m->size;
+      unfree (m);
+    }
 
-	for (m = (MCB *)(&heap->avail); m->fore; m = m->fore)
-		;
+  /* place the resultant chunk on the free list */
 
-	m->fore = mcb;
-	mcb->fore = (MCB *)0;
-	mcb->aft = m;
-	mcb->heap = 0L;
-	return(0);
+  for (m = (MCB *) (&heap->avail); m->fore; m = m->fore)
+    ;
+
+  m->fore = mcb;
+  mcb->fore = (MCB *) 0;
+  mcb->aft = m;
+  mcb->heap = 0L;
+  return (0);
 }
 
 /* 
@@ -458,59 +468,62 @@ MCB *mcb;
 
 
 char *
-realloc(mcb, n)
-MCB *mcb;
-unsigned n;
+realloc (mcb, n)
+     MCB *mcb;
+     unsigned n;
 {
-	long x;
-	char *t, *s, *p;
+  long x;
+  char *t, *s, *p;
 
-	/* address header */
+  /* address header */
 
-	--mcb;
+  --mcb;
 
-	/* check for ownership here */
+  /* check for ownership here */
 
-	if (mcb EQ 0 OR mcb->magic NE MAGIC) {
-
-#if	DEBUGIT
-	printf("realloc($%lx, %u):  MCB invalid\n", mcb, n);
-#endif
-
-		return((char *)0);
-	}
-
-	/* round up the request and add overhead */
-
-	x = (long)(n + 1 + sizeof(MCB)) & ~1L;
-
-	/* if less than current size, just shrink it */
-
-	if (mcb->size > x) {
-
-		if (s_split(mcb, x))
-			return((char *)0);
-		else
-			return((char *)(++mcb));
-	}
-
-	/* it's bigger - allocate new block, copy data, and free old one */
-
-	if ((p = malloc(n)) NE 0) {
-
-		x = mcb->size - sizeof(MCB);
-		s = ++mcb;
-		t = p;
-
-		while (x--)
-			*t++ = *s++;
-
-		free(mcb);
-		return(p);
-	}
+  if (mcb EQ 0 OR mcb->magic NE MAGIC)
+    {
 
 #if	DEBUGIT
-	printf("realloc($%lx, %u):  unable to reallocate\n", mcb, n);
+      printf ("realloc($%lx, %u):  MCB invalid\n", mcb, n);
 #endif
-	return((char *)0);
+
+      return ((char *) 0);
+    }
+
+  /* round up the request and add overhead */
+
+  x = (long) (n + 1 + sizeof (MCB)) & ~1L;
+
+  /* if less than current size, just shrink it */
+
+  if (mcb->size > x)
+    {
+
+      if (s_split (mcb, x))
+	return ((char *) 0);
+      else
+	return ((char *) (++mcb));
+    }
+
+  /* it's bigger - allocate new block, copy data, and free old one */
+
+  if ((p = malloc (n)) NE 0)
+    {
+
+      x = mcb->size - sizeof (MCB);
+      s = ++mcb;
+      t = p;
+
+      while (x--)
+	*t++ = *s++;
+
+      free (mcb);
+      return (p);
+    }
+
+#if	DEBUGIT
+  printf ("realloc($%lx, %u):  unable to reallocate\n", mcb, n);
+#endif
+  return ((char *) 0);
 }

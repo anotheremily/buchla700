@@ -22,113 +22,116 @@
 #include "libdsp.h"
 #include "score.h"
 
-extern	short	select(), whatbox(), nokey(), cxkstd(), cykstd(), stdmkey();
-extern	short	et_null(), ef_null(), rd_null(), nd_null(), lmwclr();
-extern	short	vcputsv(), ftkind(), _clsvol(), lcancel(), stdctp0();
-extern	short	ldline(), lin2slt(), dslslot(), putcat(), showcat(), showsiz();
+extern short select (), whatbox (), nokey (), cxkstd (), cykstd (),
+stdmkey ();
+extern short et_null (), ef_null (), rd_null (), nd_null (), lmwclr ();
+extern short vcputsv (), ftkind (), _clsvol (), lcancel (), stdctp0 ();
+extern short ldline (), lin2slt (), dslslot (), putcat (), showcat (),
+showsiz ();
 
-extern	unsigned	exp_c();
+extern unsigned exp_c ();
 
-extern	char	*memset(), *slotnam();
+extern char *memset (), *slotnam ();
 
 /* 
 */
 
 #if	DEBUGIT
-extern	short	debugsw;
+extern short debugsw;
 #endif
 
-extern	short	astat;
-extern	short	catin;
-extern	short	cmfirst;
-extern	short	cxrate;
-extern	short	cxval;
-extern	short	cyrate;
-extern	short	cyval;
-extern	short	ldelsw;
-extern	short	lderrsw;
-extern	short	ldkind;
-extern	short	ldpass;
-extern	short	ldrow;
-extern	short	ldslot;
-extern	short	lmwtype;
-extern	short	loadrow;
-extern	short	loadsw;
-extern	short	lorchl;
-extern	short	lrasw;
-extern	short	lselsw;
-extern	short	ltagged;
-extern	short	ndisp;
-extern	short	oldltag;
-extern	short	oldpk;
-extern	short	oldsl;
-extern	short	pkctrl;
-extern	short	sliders;
-extern	short	stcrow;
-extern	short	stccol;
-extern	short	submenu;
-extern	short	tagslot;
-extern	short	thcwval;
-extern	short	tvcwval;
+extern short astat;
+extern short catin;
+extern short cmfirst;
+extern short cxrate;
+extern short cxval;
+extern short cyrate;
+extern short cyval;
+extern short ldelsw;
+extern short lderrsw;
+extern short ldkind;
+extern short ldpass;
+extern short ldrow;
+extern short ldslot;
+extern short lmwtype;
+extern short loadrow;
+extern short loadsw;
+extern short lorchl;
+extern short lrasw;
+extern short lselsw;
+extern short ltagged;
+extern short ndisp;
+extern short oldltag;
+extern short oldpk;
+extern short oldsl;
+extern short pkctrl;
+extern short sliders;
+extern short stcrow;
+extern short stccol;
+extern short submenu;
+extern short tagslot;
+extern short thcwval;
+extern short tvcwval;
 
-extern	unsigned *librob;
+extern unsigned *librob;
 
-extern	char	bfs[];
-extern	char	ldfile[];
-extern	char	ldcmnt[];
+extern char bfs[];
+extern char ldfile[];
+extern char ldcmnt[];
 
-extern	short	crate1[];
-extern	short	ldmap[];
+extern short crate1[];
+extern short ldmap[];
 
-extern	PFS	(*swpt)[];
-extern	PFS	(*oldsw)[];
+extern
+PFS (*swpt)[];
+     extern PFS (*oldsw)[];
 
-extern	struct	selbox	*csbp;
-extern	struct	selbox	ldboxes[];
+     extern struct selbox *csbp;
+     extern struct selbox ldboxes[];
 
 /* forward reference */
 
-short	ld_prmv(), ldxkey(), ldmkey(), ldkey(), ldcxupd(), ldcyupd();
+     short ld_prmv (), ldxkey (), ldmkey (), ldkey (), ldcxupd (), ldcyupd ();
 
 /* 
 */
 
-struct	fet	ld_fet1[] = {
+     struct fet ld_fet1[] = {
 
-	{21, 10, 17, 0x0000, et_null, ef_null, rd_null, nd_null},  /* name */
-	{21, 27, 63, 0x0000, et_null, ef_null, rd_null, nd_null},  /* comment */
+       {21, 10, 17, 0x0000, et_null, ef_null, rd_null, nd_null},	/* name */
+       {21, 27, 63, 0x0000, et_null, ef_null, rd_null, nd_null},	/* comment */
 
-	{ 0,  0,  0, 0x0000, FN_NULL, FN_NULL, FN_NULL, FN_NULL}
+       {0, 0, 0, 0x0000, FN_NULL, FN_NULL, FN_NULL, FN_NULL}
+     };
+
+short ldbox[][8] = {		/* display box parameters */
+
+  {1, 1, 510, 13, LCFBX00, LCBBX00, 0, 1},	/*  0 - index area label */
+  {1, 14, 510, 292, LCFBX01, LCBBX01, 1, 1},	/*  1 - index area */
+  {1, 294, 78, 307, LCFBX02, LCBBX02, 21, 1},	/*  2 - file name label */
+  {80, 294, 143, 307, LCFBX03, LCBBX03, 21, 10},	/*  3 - file name */
+  {145, 294, 214, 307, LCFBX04, LCBBX04, 21, 19},	/*  4 - comment label */
+  {216, 294, 510, 307, LCFBX05, LCBBX05, 21, 27},	/*  5 - comment */
+  {1, 309, 70, 321, LCFBX06, LCBBX06, 22, 1},	/*  6 - fetch */
+  {1, 322, 70, 335, LCFBX07, LCBBX07, 23, 1},	/*  7 - replace / append */
+  {1, 336, 70, 348, LCFBX08, LCBBX08, 24, 1},	/*  8 - lo orch / hi orch */
+  {72, 309, 255, 348, LCFBX09, LCBBX09, 22, 10},	/*  9 - store */
+  {257, 309, 510, 348, LCFBX10, LCBBX10, 22, 33}	/* 10 - message window */
 };
 
-short	ldbox[][8] = {	/* display box parameters */
+char *ldbxlb0[] = {		/* display box labels */
 
-	{  1,   1, 510,  13, LCFBX00, LCBBX00,  0,  1},	/*  0 - index area label */
-	{  1,  14, 510, 292, LCFBX01, LCBBX01,  1,  1},	/*  1 - index area */
-	{  1, 294,  78, 307, LCFBX02, LCBBX02, 21,  1},	/*  2 - file name label */
-	{ 80, 294, 143, 307, LCFBX03, LCBBX03, 21, 10},	/*  3 - file name */
-	{145, 294, 214, 307, LCFBX04, LCBBX04, 21, 19},	/*  4 - comment label */
-	{216, 294, 510, 307, LCFBX05, LCBBX05, 21, 27},	/*  5 - comment */
-	{  1, 309,  70, 321, LCFBX06, LCBBX06, 22,  1},	/*  6 - fetch */
-	{  1, 322,  70, 335, LCFBX07, LCBBX07, 23,  1},	/*  7 - replace / append */
-	{  1, 336,  70, 348, LCFBX08, LCBBX08, 24,  1},	/*  8 - lo orch / hi orch */
-	{ 72, 309, 255, 348, LCFBX09, LCBBX09, 22, 10},	/*  9 - store */
-	{257, 309, 510, 348, LCFBX10, LCBBX10, 22, 33}	/* 10 - message window */
-};
-
-char	*ldbxlb0[] = {	/* display box labels */
-
-	"RecrdType L FileName Comment                               Mem", /*  0 */
-	"",			/*  1 */
-	"FileName",		/*  2 */
-	"",			/*  3 */
-	"Comment",		/*  4 */
-	"",			/*  5 */
-	"Index",		/*  6 */
-	"",			/*  7 */
-	"",			/*  8 */
-	"",			/*  9 */
-	""			/* 10 */
+  "RecrdType L FileName Comment                               Mem",	/*  0 */
+  "",				/*  1 */
+  "FileName",			/*  2 */
+  "",				/*  3 */
+  "Comment",			/*  4 */
+  "",				/*  5 */
+  "Index",			/*  6 */
+  "",				/*  7 */
+  "",				/*  8 */
+  "",				/*  9 */
+  ""				/* 10 */
 };
 
 /* 
@@ -136,27 +139,27 @@ char	*ldbxlb0[] = {	/* display box labels */
 
 struct curpak ld_flds = {
 
-	stdctp0,	/* curtype */
-	ld_prmv,	/* premove */
-	nokey,		/* pstmove */
-	cxkstd,		/* cx_key */
-	cykstd,		/* cy_key */
-	ldcxupd,	/* cx_upd */
-	ldcyupd,	/* cy_upd */
-	nokey,		/* xy_up */
-	nokey,		/* xy_dn */
-	ldxkey,		/* x_key */
-	select,		/* e_key */
-	ldmkey,		/* m_key */
-	ldkey,		/* d_key */
-	nokey,		/* not_fld */
-	ld_fet1,	/* curfet */
-	ldboxes,	/* csbp */
-	crate1,		/* cratex */
-	crate1,		/* cratey */
-	CT_TEXT,	/* cmtype */
-	LCURX,		/* cxval */
-	LCURY		/* cyval */
+  stdctp0,			/* curtype */
+  ld_prmv,			/* premove */
+  nokey,			/* pstmove */
+  cxkstd,			/* cx_key */
+  cykstd,			/* cy_key */
+  ldcxupd,			/* cx_upd */
+  ldcyupd,			/* cy_upd */
+  nokey,			/* xy_up */
+  nokey,			/* xy_dn */
+  ldxkey,			/* x_key */
+  select,			/* e_key */
+  ldmkey,			/* m_key */
+  ldkey,			/* d_key */
+  nokey,			/* not_fld */
+  ld_fet1,			/* curfet */
+  ldboxes,			/* csbp */
+  crate1,			/* cratex */
+  crate1,			/* cratey */
+  CT_TEXT,			/* cmtype */
+  LCURX,			/* cxval */
+  LCURY				/* cyval */
 };
 
 /* 
@@ -169,144 +172,164 @@ struct curpak ld_flds = {
 */
 
 short
-ldxkey()
+ldxkey ()
 {
-	register char *fn;
-	register short slot;
-	char buf[4];
+  register char *fn;
+  register short slot;
+  char buf[4];
 
-	if (NOT astat)		/* only on key closure */
-		return(FAILURE);
+  if (NOT astat)		/* only on key closure */
+    return (FAILURE);
 
-	clrerms();
-	stcrow = cyval / 14;
-	stccol = cxval >> 3;
+  clrerms ();
+  stcrow = cyval / 14;
+  stccol = cxval >> 3;
 
-	if (lselsw AND lrasw) {
+  if (lselsw AND lrasw)
+    {
 
-		if (0 NE (slot = ldline(cyval))) {
+      if (0 NE (slot = ldline (cyval)))
+	{
 
-			slot -= 1;
-			ldmap[slot] = -1;
-			dpy_scr(ldbox[1][4], slot);
-			return(SUCCESS);
+	  slot -= 1;
+	  ldmap[slot] = -1;
+	  dpy_scr (ldbox[1][4], slot);
+	  return (SUCCESS);
 
-		} else
-			return(FAILURE);
 	}
+      else
+	return (FAILURE);
+    }
 
-	if (lcancel(2))
-		return(SUCCESS);
+  if (lcancel (2))
+    return (SUCCESS);
 
-	if (NOT ldelsw) {	/* deletion not yet selected ? */
+  if (NOT ldelsw)
+    {				/* deletion not yet selected ? */
 
-		if (0 NE (ldrow = ldline(cyval))) {	/* index area ? */
+      if (0 NE (ldrow = ldline (cyval)))
+	{			/* index area ? */
 
-			if (stccol EQ 11) {	/* load tag ? */
+	  if (stccol EQ 11)
+	    {			/* load tag ? */
 
-				if (-1 EQ (slot = lin2slt(stcrow)))
-					return(FAILURE);
+	      if (-1 EQ (slot = lin2slt (stcrow)))
+		return (FAILURE);
 
-				if (ltagged) {
+	      if (ltagged)
+		{
 
-					if (slot NE tagslot) {
+		  if (slot NE tagslot)
+		    {
 
-						filecat[tagslot].fcp0 = oldltag;
-						ltagged = FALSE;
-						showcat();
-						return(FAILURE);
-					}
+		      filecat[tagslot].fcp0 = oldltag;
+		      ltagged = FALSE;
+		      showcat ();
+		      return (FAILURE);
+		    }
 
-					putcat();
-					ltagged = FALSE;
-					showcat();
+		  putcat ();
+		  ltagged = FALSE;
+		  showcat ();
 
-				} else {
+		}
+	      else
+		{
 
-					oldltag = filecat[slot].fcp0;
-					filecat[slot].fcp0 = ' ';
-					ltagged = TRUE;
-					tagslot = slot;
+		  oldltag = filecat[slot].fcp0;
+		  filecat[slot].fcp0 = ' ';
+		  ltagged = TRUE;
+		  tagslot = slot;
 
-					buf[0] = oldltag;
-					buf[1] = '\0';
+		  buf[0] = oldltag;
+		  buf[1] = '\0';
 
-					if (v_regs[5] & 0x0180)
-						vbank(0);
+		  if (v_regs[5] & 0x0180)
+		    vbank (0);
 
-					vcputsv(librob, 64, exp_c(LD_DELC), ldbox[1][5],
-						stcrow, 11, buf, 14);
-				}
-
-				return(SUCCESS);
-			}
-
-			if ((stccol < 13) OR (stccol > 20))	/* name ? */
-				return(FAILURE);
-
-			if (-1 NE (ldslot = lin2slt(ldrow))) {
-
-				/* select file to delete */
-
-				dslslot(ldslot, exp_c(LD_DELC), ldrow);
-				ldelsw = TRUE;
-				return(SUCCESS);
-			}
-/* 
-*/
-		} else {	/* not in the index area */
-
-			if (21 EQ stcrow) {	/* filename or comment ? */
-
-				if ((stccol GE 10) AND (stccol LE 17)) {
-
-					/* clear filename field */
-
-					memset(ldfile, ' ', 8);
-					ldswin(3);
-					return(SUCCESS);
-
-				} else if (stccol GE 27) {
-
-					/* clear comment field */
-
-					memset(ldcmnt, ' ', 37);
-					ldswin(5);
-					return(SUCCESS);
-				}
-			}
-
-			return(FAILURE);
+		  vcputsv (librob, 64, exp_c (LD_DELC), ldbox[1][5],
+			   stcrow, 11, buf, 14);
 		}
 
+	      return (SUCCESS);
+	    }
+
+	  if ((stccol < 13) OR (stccol > 20))	/* name ? */
+	    return (FAILURE);
+
+	  if (-1 NE (ldslot = lin2slt (ldrow)))
+	    {
+
+	      /* select file to delete */
+
+	      dslslot (ldslot, exp_c (LD_DELC), ldrow);
+	      ldelsw = TRUE;
+	      return (SUCCESS);
+	    }
+/* 
+*/
+	}
+      else
+	{			/* not in the index area */
+
+	  if (21 EQ stcrow)
+	    {			/* filename or comment ? */
+
+	      if ((stccol GE 10) AND (stccol LE 17))
+		{
+
+		  /* clear filename field */
+
+		  memset (ldfile, ' ', 8);
+		  ldswin (3);
+		  return (SUCCESS);
+
+		}
+	      else if (stccol GE 27)
+		{
+
+		  /* clear comment field */
+
+		  memset (ldcmnt, ' ', 37);
+		  ldswin (5);
+		  return (SUCCESS);
+		}
+	    }
+
+	  return (FAILURE);
+	}
+
 /* 
 */
 
-	} else {	/* file selected for deletion */
+    }
+  else
+    {				/* file selected for deletion */
 
-		/* delete the file if cursor hasn't moved */
+      /* delete the file if cursor hasn't moved */
 
-		if (ldrow EQ ldline(cyval)) {
+      if (ldrow EQ ldline (cyval))
+	{
 
-			filecat[ldslot].fcsize[0] = 0;
-			fn = slotnam(ldslot, ftkind(ldslot));
+	  filecat[ldslot].fcsize[0] = 0;
+	  fn = slotnam (ldslot, ftkind (ldslot));
 
-			unlink(fn);
+	  unlink (fn);
 
-			ldelsw = FALSE;
-			putcat();
+	  ldelsw = FALSE;
+	  putcat ();
 
-			_clsvol();
-			showcat();
-			showsiz();
+	  _clsvol ();
+	  showcat ();
+	  showsiz ();
 
-			return(SUCCESS);
-		}
-
-		ldelsw = FALSE;
-		showcat();
-		return(SUCCESS);
+	  return (SUCCESS);
 	}
+
+      ldelsw = FALSE;
+      showcat ();
+      return (SUCCESS);
+    }
 }
 
 /* 
@@ -318,17 +341,18 @@ ldxkey()
    =============================================================================
 */
 
-ld_prmv()
+ld_prmv ()
 {
-	if (lderrsw)		/* clear any error messages in the window */
-		clrerms();
+  if (lderrsw)			/* clear any error messages in the window */
+    clrerms ();
 
-	if (ltagged) {		/* clear any non-stored load tag */
+  if (ltagged)
+    {				/* clear any non-stored load tag */
 
-		filecat[tagslot].fcp0 = oldltag;
-		ltagged = FALSE;
-		showcat();
-	}
+      filecat[tagslot].fcp0 = oldltag;
+      ltagged = FALSE;
+      showcat ();
+    }
 }
 
 /* 
@@ -340,21 +364,24 @@ ld_prmv()
    =============================================================================
 */
 
-ldcyupd()
+ldcyupd ()
 {
-	if (lmwtype EQ 1) {
+  if (lmwtype EQ 1)
+    {
 
-		vtcyupd();	/* update virtual typewriter cursor y */
+      vtcyupd ();		/* update virtual typewriter cursor y */
 
-	} else {
+    }
+  else
+    {
 
-		cyval += cyrate;
+      cyval += cyrate;
 
-		if (cyval GT (CYMAX - 1))
-			cyval = CYMAX - 1;
-		else if (cyval LT 1)
-			cyval = 1;
-	}
+      if (cyval GT (CYMAX - 1))
+	cyval = CYMAX - 1;
+      else if (cyval LT 1)
+	cyval = 1;
+    }
 }
 
 /* 
@@ -366,21 +393,24 @@ ldcyupd()
    =============================================================================
 */
 
-ldcxupd()
+ldcxupd ()
 {
-	if (lmwtype EQ 1 ) {
+  if (lmwtype EQ 1)
+    {
 
-		vtcxupd();	/* update virtual typewriter cursor x */
+      vtcxupd ();		/* update virtual typewriter cursor x */
 
-	} else {
+    }
+  else
+    {
 
-		cxval += cxrate;
+      cxval += cxrate;
 
-		if (cxval GT (CXMAX - 1))
-			cxval = CXMAX - 1;
-		else if (cxval LT 1)
-			cxval = 1;
-	}
+      if (cxval GT (CXMAX - 1))
+	cxval = CXMAX - 1;
+      else if (cxval LT 1)
+	cxval = 1;
+    }
 }
 
 /* 
@@ -392,23 +422,25 @@ ldcxupd()
    =============================================================================
 */
 
-ldmkey()
+ldmkey ()
 {
-	if (astat) {
+  if (astat)
+    {
 
-		ltagged = FALSE;
+      ltagged = FALSE;
 
-		if ((sliders EQ LS_LIBR) OR (pkctrl EQ PK_LIBR)) {
+      if ((sliders EQ LS_LIBR) OR (pkctrl EQ PK_LIBR))
+	{
 
-			sliders = oldsl;
-			swpt = oldsw;
-			pkctrl = oldpk;
-			lcdlbls();
-			setleds();
-		}
+	  sliders = oldsl;
+	  swpt = oldsw;
+	  pkctrl = oldpk;
+	  lcdlbls ();
+	  setleds ();
 	}
+    }
 
-	stdmkey();
+  stdmkey ();
 }
 
 /* 
@@ -420,41 +452,41 @@ ldmkey()
    =============================================================================
 */
 
-loadem(key)
-short key;
+loadem (key)
+     short key;
 {
-	register short c, i, rc, slot;
+  register short c, i, rc, slot;
 
-	rc = FALSE;
+  rc = FALSE;
 
-	if (getcat(0))				/* get the file catalog */
-		return;
+  if (getcat (0))		/* get the file catalog */
+    return;
 
-	for (ldslot = 0; ldslot < 20; ldslot++) {	/* check each slot */
+  for (ldslot = 0; ldslot < 20; ldslot++)
+    {				/* check each slot */
 
-		if (ocslot(ldslot) AND
-		    ((c = filecat[ldslot].fcp0) & 0x007F) EQ (key & 0x007F)) {
+      if (ocslot (ldslot) AND
+	  ((c = filecat[ldslot].fcp0) & 0x007F) EQ (key & 0x007F))
+	{
 
-			ldkind = ftkind(ldslot);
+	  ldkind = ftkind (ldslot);
 
-			if ((ldkind EQ FT_ORC) OR
-			    (ldkind EQ FT_ORL) OR
-			    (ldkind EQ FT_ORH))
-				lorchl = (c & 0x0080) ? 1 : 0;
+	  if ((ldkind EQ FT_ORC) OR (ldkind EQ FT_ORL) OR (ldkind EQ FT_ORH))
+	    lorchl = (c & 0x0080) ? 1 : 0;
 
-			if (ldkind EQ FT_SCR)
-				for (i = 0; i < N_SCORES; i++)
-					ldmap[i] = i;
+	  if (ldkind EQ FT_SCR)
+	    for (i = 0; i < N_SCORES; i++)
+	      ldmap[i] = i;
 
-			if(getit())
-				return;
+	  if (getit ())
+	    return;
 
-			rc = TRUE;
-		}
+	  rc = TRUE;
 	}
+    }
 
-	if (rc AND (ndisp EQ -1))
-		m7menu();
+  if (rc AND (ndisp EQ - 1))
+    m7menu ();
 }
 
 /* 
@@ -466,52 +498,53 @@ short key;
    =============================================================================
 */
 
-ldkey(k)
-short k;
+ldkey (k)
+     short k;
 {
-	register short c, col, row, slot;
-	char buf[4];
+  register short c, col, row, slot;
+  char buf[4];
 
-	if (NOT astat)				/* only on key closure */
-		return(FAILURE);
+  if (NOT astat)		/* only on key closure */
+    return (FAILURE);
 
-	if (NOT catin)				/* catalog must be valid */
-		return;
+  if (NOT catin)		/* catalog must be valid */
+    return;
 
-	row = cyval / 14;			/* determine cursor position */
-	col = cxval >> 3;
+  row = cyval / 14;		/* determine cursor position */
+  col = cxval >> 3;
 
-	if (col NE 11)				/* must be column 11 */
-		return;
+  if (col NE 11)		/* must be column 11 */
+    return;
 
-	if (-1 EQ (slot = lin2slt(row)))	/* ... and a valid slot */
-		return;
+  if (-1 EQ (slot = lin2slt (row)))	/* ... and a valid slot */
+    return;
 
-	if (NOT ltagged) {
+  if (NOT ltagged)
+    {
 
-		oldltag = filecat[slot].fcp0;	/* save old tag */
-		lcancel(3);			/* cancel other selections */
-	}
+      oldltag = filecat[slot].fcp0;	/* save old tag */
+      lcancel (3);		/* cancel other selections */
+    }
 
 /* 
 */
-	/* process the key */
+  /* process the key */
 
-	if (k < 7)
-		filecat[slot].fcp0 = (c = k + 'A');
-	else if (k EQ 7)
-		return;
-	else if (k EQ 8)
-		filecat[slot].fcp0 = (c = filecat[slot].fcp0 & 0x007F);
-	else	/* k EQ 9 */
-		filecat[slot].fcp0 = (c = filecat[slot].fcp0 | 0x0080);
+  if (k < 7)
+    filecat[slot].fcp0 = (c = k + 'A');
+  else if (k EQ 7)
+    return;
+  else if (k EQ 8)
+    filecat[slot].fcp0 = (c = filecat[slot].fcp0 & 0x007F);
+  else				/* k EQ 9 */
+    filecat[slot].fcp0 = (c = filecat[slot].fcp0 | 0x0080);
 
-	loadrow = row;
-	tagslot = slot;
-	ltagged = TRUE;
+  loadrow = row;
+  tagslot = slot;
+  ltagged = TRUE;
 
-	dslslot(slot, exp_c(LD_SELC), row);
-	return;
+  dslslot (slot, exp_c (LD_SELC), row);
+  return;
 }
 
 /* 
@@ -523,11 +556,11 @@ short k;
    =============================================================================
 */
 
-ldfield()
+ldfield ()
 {
-	lmwtype = 0;
-	ltagged = FALSE;
-	submenu = FALSE;
+  lmwtype = 0;
+  ltagged = FALSE;
+  submenu = FALSE;
 
-	curset(&ld_flds);
+  curset (&ld_flds);
 }

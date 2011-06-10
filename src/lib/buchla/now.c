@@ -34,34 +34,35 @@
 */
 
 char *
-now(p)
-char *p;
+now (p)
+     char *p;
 {
-	time_t curtime;
-	struct tm *loctime;
-	
-	/* Get the current time.  */
-	curtime = time (NULL);
-	
-	/* Convert it to local time representation.  */
-	loctime = localtime (&curtime);
+  time_t curtime;
+  struct tm *loctime;
 
-	strftime(p, 256, "%Y-%m-%d  %H:%M:%S", loctime);
-	return(p);
+  /* Get the current time.  */
+  curtime = time (NULL);
+
+  /* Convert it to local time representation.  */
+  loctime = localtime (&curtime);
+
+  strftime (p, 256, "%Y-%m-%d  %H:%M:%S", loctime);
+  return (p);
 }
 
 /* */
 
 #if	TESTER
 
-char	x[22];		/* buffer for the returned string */
+char x[22];			/* buffer for the returned string */
 
 /* simple test program for the now() function */
 
-int main()
+int
+main ()
 {
-	printf("Date/Time = %s\n", now(x));
-	return 0;
+  printf ("Date/Time = %s\n", now (x));
+  return 0;
 }
 
 #endif

@@ -5,8 +5,8 @@
    ============================================================================
 */
 
-extern	long	trap13();	/* BIOS linkage */
-extern	long	trap14();	/* XBIOS linkage */
+extern long trap13 ();		/* BIOS linkage */
+extern long trap14 ();		/* XBIOS linkage */
 
 #define	BIOS	trap13
 #define	XBIOS	trap14
@@ -61,24 +61,25 @@ extern	long	trap14();	/* XBIOS linkage */
 */
 
 
-struct bpb {			/* BIOS parameter block returned by B_GBPB */
+struct bpb
+{				/* BIOS parameter block returned by B_GBPB */
 
-	unsigned short	recsiz;		/* physical sector size in bytes */
-	unsigned short	clsiz;		/* cluster size in sectors */
-	unsigned short	clsizb;		/* cluster size in bytes */
-	unsigned short	rdlen;		/* root directory length in sectors */
-	unsigned short	fsiz;		/* FAT size in sectors */
-	unsigned short	fatrec;		/* sector number of 1st sector of 2nd FAT */
-	unsigned short	datrec;		/* sector number of 1st data sector */
-	unsigned short	numcl;		/* number of data clusters on disk */
-	unsigned short	bflags;		/* flags */
-	unsigned short	ntracks;	/* number of tracks */
-	unsigned short	nsides;		/* number of sides (heads) */
-	unsigned short	dspc;		/* sectors per cylinder */
-	unsigned short	dspt;		/* sectors per track */
-	unsigned short	hidden;		/* number of hidden files */
-	char	serno[3];		/* disk serial number */
-	char	nada;			/* --- filler - nothing here --- */
+  unsigned short recsiz;	/* physical sector size in bytes */
+  unsigned short clsiz;		/* cluster size in sectors */
+  unsigned short clsizb;	/* cluster size in bytes */
+  unsigned short rdlen;		/* root directory length in sectors */
+  unsigned short fsiz;		/* FAT size in sectors */
+  unsigned short fatrec;	/* sector number of 1st sector of 2nd FAT */
+  unsigned short datrec;	/* sector number of 1st data sector */
+  unsigned short numcl;		/* number of data clusters on disk */
+  unsigned short bflags;	/* flags */
+  unsigned short ntracks;	/* number of tracks */
+  unsigned short nsides;	/* number of sides (heads) */
+  unsigned short dspc;		/* sectors per cylinder */
+  unsigned short dspt;		/* sectors per track */
+  unsigned short hidden;	/* number of hidden files */
+  char serno[3];		/* disk serial number */
+  char nada;			/* --- filler - nothing here --- */
 };
 
 #define	BPBSIZE	32		/* length of a BPB */
@@ -94,16 +95,17 @@ struct bpb {			/* BIOS parameter block returned by B_GBPB */
    ============================================================================
 */
 
-struct dirent {			/* Directory entry */
+struct dirent
+{				/* Directory entry */
 
-	char	fname[8];		/* file name */
-	char	fext[3];		/* file extension */
-	char	atrib;			/* attribute byte */
-	char	unused[10];		/* unused space */
-	unsigned short	crtime;		/* 'LLHH' creation time */
-	unsigned short	crdate;		/* 'LLHH' creation date */
-	unsigned short	bclust;		/* 'LLHH' starting cluster number */
-	long	flen;			/* 'LLHH' file length */
+  char fname[8];		/* file name */
+  char fext[3];			/* file extension */
+  char atrib;			/* attribute byte */
+  char unused[10];		/* unused space */
+  unsigned short crtime;	/* 'LLHH' creation time */
+  unsigned short crdate;	/* 'LLHH' creation date */
+  unsigned short bclust;	/* 'LLHH' starting cluster number */
+  long flen;			/* 'LLHH' file length */
 };
 
 #define	DENTSIZE	(sizeof (struct dirent))
@@ -124,17 +126,18 @@ struct dirent {			/* Directory entry */
    ============================================================================
 */
 
-struct	fcb {			/* file control block */
+struct fcb
+{				/* file control block */
 
-	struct	dirent	de;	/* directory entry image for file */
-	unsigned short	modefl;	/* fcb flags */
-	unsigned short	clsec;	/* current sector in cluster */
-	unsigned short	curcls;	/* current cluster */
-	unsigned short	offset;	/* current offset into sector */
-	long	curlsn;		/* current logical sector number in file */
-	long	curdsn;		/* current logical sector number on disk */
-	long	curlen;		/* current file length in bytes */
-	long	asects;		/* allocated file length in sectors */
+  struct dirent de;		/* directory entry image for file */
+  unsigned short modefl;	/* fcb flags */
+  unsigned short clsec;		/* current sector in cluster */
+  unsigned short curcls;	/* current cluster */
+  unsigned short offset;	/* current offset into sector */
+  long curlsn;			/* current logical sector number in file */
+  long curdsn;			/* current logical sector number on disk */
+  long curlen;			/* current file length in bytes */
+  long asects;			/* allocated file length in sectors */
 };
 
 #define	FC_EOF	0x8000		/* end of file */

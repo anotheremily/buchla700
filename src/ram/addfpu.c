@@ -9,7 +9,7 @@
 
 #define	MAXSEGT		32767
 
-extern	unsigned	tofpu(), fromfpu();
+extern unsigned tofpu (), fromfpu ();
 
 /* 
 */
@@ -21,28 +21,28 @@ extern	unsigned	tofpu(), fromfpu();
 */
 
 unsigned
-addfpu(t, k)
-unsigned t;
-short k;
+addfpu (t, k)
+     unsigned t;
+     short k;
 {
-	register short x, z;
-	register unsigned y;
+  register short x, z;
+  register unsigned y;
 
-	x = fromfpu(t);
+  x = fromfpu (t);
 
-	if (x EQ MAXSEGT)
-		return(t);
+  if (x EQ MAXSEGT)
+    return (t);
 
-	y = t;
-	z = x + k;
+  y = t;
+  z = x + k;
 
-	if (z GE MAXSEGT)
-		return(tofpu(MAXSEGT));
+  if (z GE MAXSEGT)
+    return (tofpu (MAXSEGT));
 
-	while ((y EQ t) OR (z > x))
-		y = tofpu(++x);
+  while ((y EQ t) OR (z > x))
+    y = tofpu (++x);
 
-	return(y);
+  return (y);
 }
 
 /* 
@@ -55,26 +55,26 @@ short k;
 */
 
 unsigned
-subfpu(t, k)
-unsigned t;
-short k;
+subfpu (t, k)
+     unsigned t;
+     short k;
 {
-	register short x, z;
-	register unsigned y;
+  register short x, z;
+  register unsigned y;
 
-	x = fromfpu(t);
+  x = fromfpu (t);
 
-	if (x EQ 1)
-		return(t);
+  if (x EQ 1)
+    return (t);
 
-	y = t;
-	z = x - k;
+  y = t;
+  z = x - k;
 
-	if (z LE 1)
-		return(tofpu(1));
+  if (z LE 1)
+    return (tofpu (1));
 
-	while ((y EQ t) OR (z < x))
-		y = tofpu(--x);
+  while ((y EQ t) OR (z < x))
+    y = tofpu (--x);
 
-	return(y);
+  return (y);
 }

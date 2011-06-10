@@ -11,29 +11,28 @@
 
 static FILE *Stream;
 
-extern	int	_dofmt();
-extern	int	aputc();
+extern int _dofmt ();
+extern int aputc ();
 
 int
-fprintf(stream, fmt, va_alist)
-FILE *stream;
-char *fmt;
-va_dcl
+fprintf (stream, fmt, va_alist)
+     FILE *stream;
+     char *fmt;
+     va_dcl
 {
-	register int count;
-	int fpsub();
-	va_list aptr;
+  register int count;
+  int fpsub ();
+  va_list aptr;
 
-	Stream = stream;
-	va_start(aptr);
-	count = _dofmt(fpsub, fmt, aptr);
-	va_end(aptr);
-	return(count);
+  Stream = stream;
+  va_start (aptr);
+  count = _dofmt (fpsub, fmt, aptr);
+  va_end (aptr);
+  return (count);
 }
 
-static
-int
-fpsub(c)
+static int
+fpsub (c)
 {
-	return(aputc(c, Stream));
+  return (aputc (c, Stream));
 }

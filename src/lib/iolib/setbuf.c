@@ -7,21 +7,24 @@
 
 #include "stdio.h"
 
-setbuf(stream, buffer)
-register FILE *stream;
-char *buffer;
+setbuf (stream, buffer)
+     register FILE *stream;
+     char *buffer;
 {
-	if (stream->_buff)
-		return;
+  if (stream->_buff)
+    return;
 
-	if (buffer) {
+  if (buffer)
+    {
 
-		stream->_buff = buffer;
-		stream->_buflen = BUFSIZ;
+      stream->_buff = buffer;
+      stream->_buflen = BUFSIZ;
 
-	} else {
+    }
+  else
+    {
 
-		stream->_buff = &stream->_bytbuf;
-		stream->_buflen = 1;
-	}
+      stream->_buff = &stream->_bytbuf;
+      stream->_buflen = 1;
+    }
 }

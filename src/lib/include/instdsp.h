@@ -12,31 +12,31 @@
 #define	ICURX		256	/* initial cursor x location */
 #define	ICURY		175	/* initial cursor y location */
 
-#define	INSTOBJ		8		/* instrument display object number */
-#define	INSTPRI		8		/* instrument display object priority */
+#define	INSTOBJ		8	/* instrument display object number */
+#define	INSTPRI		8	/* instrument display object priority */
 
-#define	TCURS		0		/* text cursor object number */
-#define	TCPRI		15		/* text cursor priority */
+#define	TCURS		0	/* text cursor object number */
+#define	TCPRI		15	/* text cursor priority */
 
 #define	INSTFL		(V_RES3)	/* instrument display object flags */
 #define	TCURFL		(V_RES3)	/* text cursor display flags */
 
-#define	CBORD		9		/* color of border */
-#define	TGRID		2		/* color of level grid titles */
-#define	LGRID		0		/* color of level grid */
-#define	ID_LVLC		6		/* color of level background plot */
-#define	ID_CLVL		2		/* color of level lines as reference */
-#define	ID_CLIN		14		/* color of function lines */
-#define	ID_CPNT		11		/* color of normal point */
-#define	ID_NCUR		1		/* color of normal graphic cursor */
-#define	ID_TCUR		1		/* color of text cursor */
-#define	ID_CHGD		3		/* color of voice # for changed data */
-#define	ID_INST		2		/* color of funcs started at def time */
-#define	ID_ENTRY	10		/* color of new data being entered */
-#define	ID_SELD		3		/* color of selected point and cursor */
-#define	ID_ACTP		15		/* color of point with action or source */
-#define	WSAFC		8		/* color of waveshape A final values */
-#define	WSBFC		4		/* color of waveshape B final values */
+#define	CBORD		9	/* color of border */
+#define	TGRID		2	/* color of level grid titles */
+#define	LGRID		0	/* color of level grid */
+#define	ID_LVLC		6	/* color of level background plot */
+#define	ID_CLVL		2	/* color of level lines as reference */
+#define	ID_CLIN		14	/* color of function lines */
+#define	ID_CPNT		11	/* color of normal point */
+#define	ID_NCUR		1	/* color of normal graphic cursor */
+#define	ID_TCUR		1	/* color of text cursor */
+#define	ID_CHGD		3	/* color of voice # for changed data */
+#define	ID_INST		2	/* color of funcs started at def time */
+#define	ID_ENTRY	10	/* color of new data being entered */
+#define	ID_SELD		3	/* color of selected point and cursor */
+#define	ID_ACTP		15	/* color of point with action or source */
+#define	WSAFC		8	/* color of waveshape A final values */
+#define	WSBFC		4	/* color of waveshape B final values */
 
 /* 
 */
@@ -110,17 +110,18 @@
 
 /* -------------- pendant function list entry structure definition ---------- */
 
-struct	pflent	{	/* pendant function list entry structure */
+struct pflent
+{				/* pendant function list entry structure */
 
-	struct	pflent	*nextpf;	/* next entry pointer */
-	unsigned	pftrig;		/* trigger number */
-	unsigned	pfvpval;	/* voice / parameter number */
-	long		d1reg;		/* D1 register contents */
-	long		d2reg;		/* D2 register contents */
-	long		d4reg;		/* D4 register contents */
-	char		*a1reg;		/* A1 register contents */
-	char		*a2reg;		/* A2 register contents */
-	char		*a3reg;		/* A3 register contents */
+  struct pflent *nextpf;	/* next entry pointer */
+  unsigned pftrig;		/* trigger number */
+  unsigned pfvpval;		/* voice / parameter number */
+  long d1reg;			/* D1 register contents */
+  long d2reg;			/* D2 register contents */
+  long d4reg;			/* D4 register contents */
+  char *a1reg;			/* A1 register contents */
+  char *a2reg;			/* A2 register contents */
+  char *a3reg;			/* A3 register contents */
 };
 
 /* 
@@ -128,14 +129,15 @@ struct	pflent	{	/* pendant function list entry structure */
 
 /* -------------- function point structure definitions ---------------------- */
 
-struct	instpnt	{	/* function point definition */
+struct instpnt
+{				/* function point definition */
 
-	short	iptim;		/* time (packed) */
-	short	ipval;		/* value */
-	short	ipvmlt;		/* value multiplier */
+  short iptim;			/* time (packed) */
+  short ipval;			/* value */
+  short ipvmlt;			/* value multiplier */
 
-	char	ipvsrc;		/* value source */
-	char	ipact;		/* action code */
+  char ipvsrc;			/* value source */
+  char ipact;			/* action code */
 
 #define	AC_NULL		0	/* null action */
 #define	AC_SUST		1	/* sustain (hold here while key is down) */
@@ -146,11 +148,11 @@ struct	instpnt	{	/* function point definition */
 #define	AC_KYDN		6	/* jump if key down (sustain jump) */
 #define	AC_UNDF		7	/* -- undefined - treated as AC_NULL -- */
 
-	char	ippar1;		/* action parameter 1  (point) */
-	char	ippar2;		/* action parameter 2  (count) */
+  char ippar1;			/* action parameter 1  (point) */
+  char ippar2;			/* action parameter 2  (count) */
 
-	char	ippar3;		/* action parameter 3  (counter) */
-	char	ippad;		/* padding for even boundary */
+  char ippar3;			/* action parameter 3  (counter) */
+  char ippad;			/* padding for even boundary */
 };
 
 /* 
@@ -158,16 +160,17 @@ struct	instpnt	{	/* function point definition */
 
 /* ------------- function header structure definitions ---------------------- */
 
-struct	idfnhdr	{	/* function header */
+struct idfnhdr
+{				/* function header */
 
-	short	idfpch;		/* pitch (used for freq1 only) */
-	short	idfmlt;		/* overall value multiplier (-1 .. +1) */
+  short idfpch;			/* pitch (used for freq1 only) */
+  short idfmlt;			/* overall value multiplier (-1 .. +1) */
 
-	char	idfsrc;		/* overall value source */
-	char	idfpif;		/* points in the function */
+  char idfsrc;			/* overall value source */
+  char idfpif;			/* points in the function */
 
-	char	idfpt1;		/* index of first point (0..NIPTS) */
-	char	idftmd;		/* trigger mode and control bits */
+  char idfpt1;			/* index of first point (0..NIPTS) */
+  char idftmd;			/* trigger mode and control bits */
 
 #define	I_TM_KEY	0x01	/* trigger on key closure */
 #define	I_ACTIVE	0x02	/* function active */
@@ -175,10 +178,10 @@ struct	idfnhdr	{	/* function header */
 #define	I_NVBITS	0x18	/* new value select bits  (matches hardware) */
 #define	I_VNSUBN	0x08	/* new value sub-n bit    (matches hardware) */
 
-	char	idfcpt;		/* index of current point (0..NIPTS) */
-	char	idfprm;		/* parameter associated with this function */
+  char idfcpt;			/* index of current point (0..NIPTS) */
+  char idfprm;			/* parameter associated with this function */
 
-	short	idftrg;		/* trigger that started the function */
+  short idftrg;			/* trigger that started the function */
 };
 
 /* 
@@ -186,50 +189,51 @@ struct	idfnhdr	{	/* function header */
 
 /* ---------- instrument definition structure definitions ------------------- */
 
-struct	instdef	{	/* instrument definition */
+struct instdef
+{				/* instrument definition */
 
-	short	idhflag;		/* flags */
+  short idhflag;		/* flags */
 
-	char	idhname[MAXIDLN+1];	/* instrument name */
-	char	idhcom1[MAXIDLN+1];	/* first line of comments */
-	char	idhcom2[MAXIDLN+1];	/* second line of comments */
-	char	idhcom3[MAXIDLN+1];	/* third line of comments */
+  char idhname[MAXIDLN + 1];	/* instrument name */
+  char idhcom1[MAXIDLN + 1];	/* first line of comments */
+  char idhcom2[MAXIDLN + 1];	/* second line of comments */
+  char idhcom3[MAXIDLN + 1];	/* third line of comments */
 
-	char	idhcfg;			/* configuration byte */
-	char	idhplft;		/* points unused */
+  char idhcfg;			/* configuration byte */
+  char idhplft;			/* points unused */
 
-	char	idhwsa;			/* waveshape A library number */
-	char	idhwsb;			/* waveshape B library number */
+  char idhwsa;			/* waveshape A library number */
+  char idhwsb;			/* waveshape B library number */
 
-	char	idhos1c;		/* oscillator 1 controls */
-	char	idhos2c;		/* oscillator 2 controls */
-	char	idhos3c;		/* oscillator 3 controls */
-	char	idhos4c;		/* oscillator 4 controls */
+  char idhos1c;			/* oscillator 1 controls */
+  char idhos2c;			/* oscillator 2 controls */
+  char idhos3c;			/* oscillator 3 controls */
+  char idhos4c;			/* oscillator 4 controls */
 
-#define	OC_MOD		0x0003		/* oscillator mode mask */
+#define	OC_MOD		0x0003	/* oscillator mode mask */
 
-#define	OC_INT		0x0000		/* oscillator in interval mode */
-#define	OC_RAT		0x0001		/* oscillator in ratio mode */
-#define	OC_FRQ		0x0002		/* oscillator in frequency mode */
-#define	OC_PCH		0x0003		/* oscillator in pitch mode */
+#define	OC_INT		0x0000	/* oscillator in interval mode */
+#define	OC_RAT		0x0001	/* oscillator in ratio mode */
+#define	OC_FRQ		0x0002	/* oscillator in frequency mode */
+#define	OC_PCH		0x0003	/* oscillator in pitch mode */
 
-#define	OC_SYN		0x0004		/* oscillator in sync mode */
+#define	OC_SYN		0x0004	/* oscillator in sync mode */
 
-	short	idhos1v;		/* oscillator 1 value */
-	short	idhos2v;		/* oscillator 2 value */
-	short	idhos3v;		/* oscillator 3 value */
-	short	idhos4v;		/* oscillator 4 value */
+  short idhos1v;		/* oscillator 1 value */
+  short idhos2v;		/* oscillator 2 value */
+  short idhos3v;		/* oscillator 3 value */
+  short idhos4v;		/* oscillator 4 value */
 
-	struct	idfnhdr	idhfnc[NFINST];	/* function headers */
+  struct idfnhdr idhfnc[NFINST];	/* function headers */
 
-	struct	instpnt	idhpnt[NIPNTS];	/* point table */
+  struct instpnt idhpnt[NIPNTS];	/* point table */
 
-	short	idhwvaf[NUMWPNT];	/* waveshape A final values */
-	short	idhwvao[NUMWPNT];	/* waveshape A offset values */
-	short	idhwvah[NUMHARM];	/* waveshape A harmonic values */
+  short idhwvaf[NUMWPNT];	/* waveshape A final values */
+  short idhwvao[NUMWPNT];	/* waveshape A offset values */
+  short idhwvah[NUMHARM];	/* waveshape A harmonic values */
 
-	short	idhwvbf[NUMWPNT];	/* waveshape B final values */
-	short	idhwvbo[NUMWPNT];	/* waveshape B offset values */
-	short	idhwvbh[NUMHARM];	/* waveshape B harmonic values */
+  short idhwvbf[NUMWPNT];	/* waveshape B final values */
+  short idhwvbo[NUMWPNT];	/* waveshape B offset values */
+  short idhwvbh[NUMHARM];	/* waveshape B harmonic values */
 
 };

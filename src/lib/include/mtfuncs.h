@@ -6,8 +6,8 @@
    =============================================================================
 */
 
-extern	unsigned	MTID(), MTSetP(), MTGetID();
-extern	short		MTRun(), MTStop(), MTStat(), MTZap();
-extern	short		SMStat(), SMCSig(), SMCWait();
-extern	short		MBDel();
-extern	MSG		*MBRecv(), *MBChek();
+extern unsigned MTID (), MTSetP (), MTGetID ();
+extern short MTRun (), MTStop (), MTStat (), MTZap ();
+extern short SMStat (), SMCSig (), SMCWait ();
+extern short MBDel ();
+extern MSG *MBRecv (), *MBChek ();

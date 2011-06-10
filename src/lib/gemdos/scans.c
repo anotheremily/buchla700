@@ -4,12 +4,13 @@
 
 #define	CON_DEV		2
 
-main()
+main ()
 {
-	int c;
+  int c;
 
-	while ('\033' NE (0x00FF & (c = Bconin(CON_DEV)))) {
+  while ('\033' NE (0x00FF & (c = Bconin (CON_DEV))))
+    {
 
-		printf("%08x\n", c);
-	}
+      printf ("%08x\n", c);
+    }
 }

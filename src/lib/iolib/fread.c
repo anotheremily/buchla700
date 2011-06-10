@@ -16,25 +16,26 @@
 */
 
 int
-fread(buffer, size, number, stream)
-register char *buffer;
-unsigned size;
-int number;
-FILE *stream;
+fread (buffer, size, number, stream)
+     register char *buffer;
+     unsigned size;
+     int number;
+     FILE *stream;
 {
-	int total;
-	register int c,i;
+  int total;
+  register int c, i;
 
-	for (total = 0; total < number; ++total) {
+  for (total = 0; total < number; ++total)
+    {
 
-		for (i = size; i; --i) {
+      for (i = size; i; --i)
+	{
 
-			if ((c = getc(stream)) EQ EOF)
-				return(total);
+	  if ((c = getc (stream)) EQ EOF)
+	    return (total);
 
-			*buffer++ = c;
-		}
+	  *buffer++ = c;
 	}
-	return(total);
+    }
+  return (total);
 }
-

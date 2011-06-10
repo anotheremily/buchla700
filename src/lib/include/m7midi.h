@@ -33,9 +33,9 @@
 #define	PT_SIZE		4	/* port setup table width */
 
 #ifdef	PT_DEFS
-char	grpasg[12][RT_SIZE];	/* group assignment data */
-short	portasg[3][PT_SIZE];	/* port setup data */
+char grpasg[12][RT_SIZE];	/* group assignment data */
+short portasg[3][PT_SIZE];	/* port setup data */
 #else
-extern	char	grpasg[12][RT_SIZE];
-extern	short	portasg[3][PT_SIZE];
+extern char grpasg[12][RT_SIZE];
+extern short portasg[3][PT_SIZE];
 #endif

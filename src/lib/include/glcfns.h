@@ -5,9 +5,9 @@
    =============================================================================
 */
 
-extern	unsigned	GLCcrc(), GLCcxy();
-extern	short		GLCplot();
-extern	short		GLCinit(), GLCwrts(), GLCtext(), GLCdisp(), GLCcurs();
+extern unsigned GLCcrc (), GLCcxy ();
+extern short GLCplot ();
+extern short GLCinit (), GLCwrts (), GLCtext (), GLCdisp (), GLCcurs ();
 
-extern	unsigned	lcdx, lcdy, lcdbit, lcdrow, lcdcol, lcdbase;
-extern	unsigned	lcdctl1, lcdctl2;
+extern unsigned lcdx, lcdy, lcdbit, lcdrow, lcdcol, lcdbase;
+extern unsigned lcdctl1, lcdctl2;

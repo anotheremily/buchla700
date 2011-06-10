@@ -17,30 +17,30 @@
 #include "midas.h"
 #include "instdsp.h"
 
-extern	unsigned	*instob;
+extern unsigned *instob;
 
-extern	short	stcrow, stccol, curvce, curfunc;
+extern short stcrow, stccol, curvce, curfunc;
 
-extern	short	idbox[][8];
+extern short idbox[][8];
 
-extern	char	dspbuf[];
+extern char dspbuf[];
 
-extern	struct	instdef	vbufs[];
+extern struct instdef vbufs[];
 
-extern	struct	instpnt	*pntptr;
+extern struct instpnt *pntptr;
 
-short	rsntab[] = {		/* resonance table */
+short rsntab[] = {		/* resonance table */
 
-	0,		/* 0 =  0.00 */
-	(110 << 5),	/* 1 =  1.10 */
-	(220 << 5),	/* 2 =  2.20 */
-	(330 << 5),	/* 3 =  3.30 */
-	(440 << 5),	/* 4 =  4.40 */
-	(550 << 5),	/* 5 =  5.50 */
-	(660 << 5),	/* 6 =  6.60 */
-	(770 << 5),	/* 7 =  7.70 */
-	(880 << 5),	/* 8 =  8.80 */
-	(1000 << 5)	/* 9 = 10.00 */
+  0,				/* 0 =  0.00 */
+  (110 << 5),			/* 1 =  1.10 */
+  (220 << 5),			/* 2 =  2.20 */
+  (330 << 5),			/* 3 =  3.30 */
+  (440 << 5),			/* 4 =  4.40 */
+  (550 << 5),			/* 5 =  5.50 */
+  (660 << 5),			/* 6 =  6.60 */
+  (770 << 5),			/* 7 =  7.70 */
+  (880 << 5),			/* 8 =  8.80 */
+  (1000 << 5)			/* 9 = 10.00 */
 };
 
 /* 
@@ -53,16 +53,16 @@ short	rsntab[] = {		/* resonance table */
 */
 
 short
-et_ires(n)
-short n;
+et_ires (n)
+     short n;
 {
-	if (curfunc NE 4)
-		return(FAILURE);
+  if (curfunc NE 4)
+    return (FAILURE);
 
-	ebuf[0] = '0' + vbufs[curvce].idhfnc[4].idfprm;
-	ebuf[1] = '\0';
-	ebflag = TRUE;
-	return(SUCCESS);
+  ebuf[0] = '0' + vbufs[curvce].idhfnc[4].idfprm;
+  ebuf[1] = '\0';
+  ebflag = TRUE;
+  return (SUCCESS);
 }
 
 /*
@@ -72,21 +72,21 @@ short n;
 */
 
 short
-ef_ires(n)
-short n;
+ef_ires (n)
+     short n;
 {
-	register short tmpval;
+  register short tmpval;
 
-	if (curfunc NE 4)
-		return(FAILURE);
+  if (curfunc NE 4)
+    return (FAILURE);
 
-	ebuf[1] = '\0';
-	ebflag = FALSE;
-	tmpval = ebuf[0] - '0';
-	vbufs[curvce].idhfnc[4].idfprm = tmpval;
-	sendval(curvce, 6, rsntab[tmpval]);
-	modinst();
-	return(SUCCESS);
+  ebuf[1] = '\0';
+  ebflag = FALSE;
+  tmpval = ebuf[0] - '0';
+  vbufs[curvce].idhfnc[4].idfprm = tmpval;
+  sendval (curvce, 6, rsntab[tmpval]);
+  modinst ();
+  return (SUCCESS);
 }
 
 /* 
@@ -99,26 +99,26 @@ short n;
 */
 
 short
-rd_ires(n)
-short n;
+rd_ires (n)
+     short n;
 {
-	register struct idfnhdr *fp;
+  register struct idfnhdr *fp;
 
-	fp = &vbufs[curvce].idhfnc[4];
+  fp = &vbufs[curvce].idhfnc[4];
 
-	if (curfunc NE 4)
-		return(FAILURE);
+  if (curfunc NE 4)
+    return (FAILURE);
 
-	dspbuf[0] = '0' + fp->idfprm;
-	dspbuf[1] = '\0';
+  dspbuf[0] = '0' + fp->idfprm;
+  dspbuf[1] = '\0';
 
-	if (v_regs[5] & 0x0180)
-		vbank(0);
+  if (v_regs[5] & 0x0180)
+    vbank (0);
 
-	vcputsv(instob, 64, ((fp->idftmd & I_TM_KEY) ? idbox[n][4] : ID_INST),
-		idbox[n][5], idbox[n][6] + 1, idbox[n][7] + 8, dspbuf, 14);
+  vcputsv (instob, 64, ((fp->idftmd & I_TM_KEY) ? idbox[n][4] : ID_INST),
+	   idbox[n][5], idbox[n][6] + 1, idbox[n][7] + 8, dspbuf, 14);
 
-	return(SUCCESS);
+  return (SUCCESS);
 }
 
 /* 
@@ -131,19 +131,19 @@ short n;
 */
 
 short
-nd_ires(n, k)
-short n;
-register short  k;
+nd_ires (n, k)
+     short n;
+     register short k;
 {
-	if (curfunc NE 4)
-		return(FAILURE);
+  if (curfunc NE 4)
+    return (FAILURE);
 
-	dspbuf[0] = ebuf[0] = k + '0';
-	dspbuf[1] = ebuf[1] = '\0';
+  dspbuf[0] = ebuf[0] = k + '0';
+  dspbuf[1] = ebuf[1] = '\0';
 
-	if (v_regs[5] & 0x0180)
-		vbank(0);
+  if (v_regs[5] & 0x0180)
+    vbank (0);
 
-	vcputsv(instob, 64, ID_ENTRY, idbox[n][5], stcrow, stccol, dspbuf, 14);
-	return(SUCCESS);
+  vcputsv (instob, 64, ID_ENTRY, idbox[n][5], stcrow, stccol, dspbuf, 14);
+  return (SUCCESS);
 }

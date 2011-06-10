@@ -20,24 +20,23 @@
 */
 
 int
-fwrite(buffer, size, number, stream)
-register char *buffer;
-register int size, number;
-register FILE *stream;
+fwrite (buffer, size, number, stream)
+     register char *buffer;
+     register int size, number;
+     register FILE *stream;
 {
-	register int i, j;
+  register int i, j;
 
-	if (size < 0)		/* check size for validity */
-		return(0);
+  if (size < 0)			/* check size for validity */
+    return (0);
 
-	if (number < 0)		/* check number for validity */
-		return(0);
+  if (number < 0)		/* check number for validity */
+    return (0);
 
-	for (i = 0; i < number; ++i)
-		for (j = 0; j < size; ++j)
-			if (putc(*buffer++, stream) EQ EOF)
-				return(i);
+  for (i = 0; i < number; ++i)
+    for (j = 0; j < size; ++j)
+      if (putc (*buffer++, stream) EQ EOF)
+	return (i);
 
-	return(number);
+  return (number);
 }
-

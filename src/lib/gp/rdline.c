@@ -28,26 +28,27 @@
 */
 
 short
-rdline(fp, buf, maxc)
-register FILE *fp;
-register char *buf;
-register short maxc;
+rdline (fp, buf, maxc)
+     register FILE *fp;
+     register char *buf;
+     register short maxc;
 {
-	register short c, i;
+  register short c, i;
 
-	*buf = '\0';
+  *buf = '\0';
 
-	for (i = 0; i < maxc; i++) {
+  for (i = 0; i < maxc; i++)
+    {
 
-		if (EOF EQ (c = fgetc(fp)))
-			return(i ? 1 : -1);
+      if (EOF EQ (c = fgetc (fp)))
+	return (i ? 1 : -1);
 
-		*buf++ = c;
-		*buf   = '\0';
+      *buf++ = c;
+      *buf = '\0';
 
-		if (c EQ '\n')
-			return(0);
-	}
+      if (c EQ '\n')
+	return (0);
+    }
 
-	return(2);
+  return (2);
 }

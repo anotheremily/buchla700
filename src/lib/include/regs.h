@@ -8,13 +8,14 @@
    ============================================================================
 */
 
-struct regs {
+struct regs
+{
 
-	long	d_reg[8];		/* Data registers d0..d7 */
+  long d_reg[8];		/* Data registers d0..d7 */
 
-	char	*a_reg[8];		/* Address registers */
+  char *a_reg[8];		/* Address registers */
 
-	unsigned short	reg_fill,	/* Filler to keep long alignment */
-			reg_sr,		/* Status register */
-			*reg_pc;	/* Program counter */
+  unsigned short reg_fill,	/* Filler to keep long alignment */
+    reg_sr,			/* Status register */
+   *reg_pc;			/* Program counter */
 };

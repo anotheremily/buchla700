@@ -8,7 +8,7 @@
 #include "biosdefs.h"
 #include "stddefs.h"
 
-extern	int	xtrap15();	/* the ROMP trap */
+extern int xtrap15 ();		/* the ROMP trap */
 
 /*
    =============================================================================
@@ -21,17 +21,17 @@ extern	int	xtrap15();	/* the ROMP trap */
 */
 
 int
-waitcr()
+waitcr ()
 {
-	int	c;
+  int c;
 
-	BIOS(B_PUTC, CON_DEV, '\007');		/* wake up the operator */
+  BIOS (B_PUTC, CON_DEV, '\007');	/* wake up the operator */
 
-	/* await a CR, in which case we just exit */
+  /* await a CR, in which case we just exit */
 
-	while ('\r' NE (c = (0x007F & (int)BIOS(B_GETC, CON_DEV))))
-		if (c EQ '\007')	/* ... or a control-G */
-			xtrap15();	/* ... in which case we trap first */
+  while ('\r' NE (c = (0x007F & (int) BIOS (B_GETC, CON_DEV))))
+    if (c EQ '\007')		/* ... or a control-G */
+      xtrap15 ();		/* ... in which case we trap first */
 
-	return(c);	/* return the character that caused us to exit */
+  return (c);			/* return the character that caused us to exit */
 }

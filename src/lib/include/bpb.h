@@ -5,15 +5,16 @@
    =============================================================================
 */
 
-struct	BPB	{
+struct BPB
+{
 
-	unsigned	recsiz;
-	unsigned	clsiz;
-	unsigned	clsizb;
-	unsigned	rdlen;
-	unsigned	fsiz;
-	unsigned	fatrec;
-	unsigned	datrec;
-	unsigned	numcl;
-	unsigned	bflags;
+  unsigned recsiz;
+  unsigned clsiz;
+  unsigned clsizb;
+  unsigned rdlen;
+  unsigned fsiz;
+  unsigned fatrec;
+  unsigned datrec;
+  unsigned numcl;
+  unsigned bflags;
 };

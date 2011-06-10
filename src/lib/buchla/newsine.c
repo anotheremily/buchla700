@@ -20,39 +20,39 @@
 #define TWOPI	((double)2.0 * (double)PI)	/* 2 * PI */
 
 #define	ISHIFT	((double)PI * (double)0.625)	/* phase shift */
-#define	OSCALE	((double)30000.0)		/* output scale factor */
+#define	OSCALE	((double)30000.0)	/* output scale factor */
 
-#define	BRLEN	15				/* address length */
-#define TABLEN	32768				/* sine table length (integer) */
-#define	DTABLEN	((double)32768.0)		/* sine table length (real) */
+#define	BRLEN	15		/* address length */
+#define TABLEN	32768		/* sine table length (integer) */
+#define	DTABLEN	((double)32768.0)	/* sine table length (real) */
 
-#define	LO_FILE	"SINELO.MOT"			/* LS byte file name */
-#define	HI_FILE	"SINEHI.MOT"			/* MS byte file name */
-#define	THE_LOG	"SINE.LOG"			/* log file name */
+#define	LO_FILE	"SINELO.MOT"	/* LS byte file name */
+#define	HI_FILE	"SINEHI.MOT"	/* MS byte file name */
+#define	THE_LOG	"SINE.LOG"	/* log file name */
 
-#define RECLEN	32				/* 32 bytes per S-record */
-#define	BUFLEN	512				/* LS/MS buffer length */
+#define RECLEN	32		/* 32 bytes per S-record */
+#define	BUFLEN	512		/* LS/MS buffer length */
 
-char	*fname1;				/* file name for LS bytes */
-char	*fname2;				/* file name for MS bytes */
-char	*fname3;				/* file name for log */
+char *fname1;			/* file name for LS bytes */
+char *fname2;			/* file name for MS bytes */
+char *fname3;			/* file name for log */
 
-int	t[TABLEN];				/* sine table */
+int t[TABLEN];			/* sine table */
 
-char	hi_buf[BUFLEN];				/* buffer for MS bytes */
-char	lo_buf[BUFLEN];				/* buffer for LS bytes */
+char hi_buf[BUFLEN];		/* buffer for MS bytes */
+char lo_buf[BUFLEN];		/* buffer for LS bytes */
 
-int	csum;					/* current record checksum */
+int csum;			/* current record checksum */
 
-unsigned bitmask[] = {				/* bit mask table for bitrev */
+unsigned bitmask[] = {		/* bit mask table for bitrev */
 
-	0x0001, 0x0002, 0x0004, 0x0008,
-	0x0010, 0x0020, 0x0040, 0x0080,
-	0x0100, 0x0200, 0x0400, 0x0800,
-	0x1000, 0x2000, 0x4000, 0x8000
+  0x0001, 0x0002, 0x0004, 0x0008,
+  0x0010, 0x0020, 0x0040, 0x0080,
+  0x0100, 0x0200, 0x0400, 0x0800,
+  0x1000, 0x2000, 0x4000, 0x8000
 };
 
-char	hexdig[] = "0123456789ABCDEF";		/* hex table */
+char hexdig[] = "0123456789ABCDEF";	/* hex table */
 
 /* 
 */
@@ -64,10 +64,10 @@ char	hexdig[] = "0123456789ABCDEF";		/* hex table */
 */
 
 VOID
-msdone(fp)
-FILE *fp;
+msdone (fp)
+     FILE *fp;
 {
-	fprintf(fp, "S904000000FB\n");  /* end of S-records */
+  fprintf (fp, "S904000000FB\n");	/* end of S-records */
 }
 
 /*
@@ -80,13 +80,13 @@ FILE *fp;
 */
 
 VOID
-outhex(fp,val)
-FILE *fp;		/* file pointer for output */
-unsigned int val;	/* byte to be output */
+outhex (fp, val)
+     FILE *fp;			/* file pointer for output */
+     unsigned int val;		/* byte to be output */
 {
-	fputc(hexdig[(val >> 4) & 0x0F], fp);
-	fputc(hexdig[val & 0x0F], fp);
-	csum += (val & 0x0FF);
+  fputc (hexdig[(val >> 4) & 0x0F], fp);
+  fputc (hexdig[val & 0x0F], fp);
+  csum += (val & 0x0FF);
 }
 
 /* 
@@ -102,29 +102,29 @@ unsigned int val;	/* byte to be output */
 */
 
 VOID
-outrec(fp,adr,len,buf)
-FILE *fp;		/* file pointer for output */
-long adr;		/* beginning address for S-record */
-int len;		/* length of data in record */
-char *buf;		/* buffer address of record */
+outrec (fp, adr, len, buf)
+     FILE *fp;			/* file pointer for output */
+     long adr;			/* beginning address for S-record */
+     int len;			/* length of data in record */
+     char *buf;			/* buffer address of record */
 {
-	int i;
+  int i;
 
-	csum = 0;				/* zero the checksum */
-	fprintf(fp, "S2");                      /* record header */
-	outhex(fp, (unsigned int)(len+4));	/* record length */
+  csum = 0;			/* zero the checksum */
+  fprintf (fp, "S2");		/* record header */
+  outhex (fp, (unsigned int) (len + 4));	/* record length */
 
-	/* record address */
-	outhex(fp, (unsigned int)((adr >> 16) & 0x0FFL));
-	outhex(fp, (unsigned int)((adr >> 8) & 0x0FFL));
-	outhex(fp, (unsigned int)(adr & 0x0FFL));
+  /* record address */
+  outhex (fp, (unsigned int) ((adr >> 16) & 0x0FFL));
+  outhex (fp, (unsigned int) ((adr >> 8) & 0x0FFL));
+  outhex (fp, (unsigned int) (adr & 0x0FFL));
 
-	/* data */
-	for (i = 0; i < len; i++)
-		outhex(fp, (unsigned int)*buf++);
+  /* data */
+  for (i = 0; i < len; i++)
+    outhex (fp, (unsigned int) *buf++);
 
-	outhex(fp, (~csum) & 0x0FFL);		/* checksum */
-	fprintf(fp, "\n");                      /* CR/LF */
+  outhex (fp, (~csum) & 0x0FFL);	/* checksum */
+  fprintf (fp, "\n");		/* CR/LF */
 }
 
 /* 
@@ -140,34 +140,38 @@ char *buf;		/* buffer address of record */
 */
 
 VOID
-msrec(fp,adr,len,buf)
-FILE *fp;		/* file pointer for output */
-long adr;		/* beginning address for S-records */
-long len;		/* length of data in buffer */
-char *buf;		/* buffer address */
+msrec (fp, adr, len, buf)
+     FILE *fp;			/* file pointer for output */
+     long adr;			/* beginning address for S-records */
+     long len;			/* length of data in buffer */
+     char *buf;			/* buffer address */
 {
-	long recadr = adr;
-	char *rp = buf;
-	int j;
-	long i = len;
+  long recadr = adr;
+  char *rp = buf;
+  int j;
+  long i = len;
 
-	while (i) {	/* while there's data ... */
+  while (i)
+    {				/* while there's data ... */
 
-		if (i GE RECLEN) {	/* full record */
+      if (i GE RECLEN)
+	{			/* full record */
 
-			outrec(fp, recadr, RECLEN, rp);
-			i -= RECLEN;
-			rp += RECLEN;
-			recadr += RECLEN;
+	  outrec (fp, recadr, RECLEN, rp);
+	  i -= RECLEN;
+	  rp += RECLEN;
+	  recadr += RECLEN;
 
-		} else {		/* final short record */
-
-			j = i;
-			outrec(fp, recadr, j ,rp);
-			i = 0;
-
-		}
 	}
+      else
+	{			/* final short record */
+
+	  j = i;
+	  outrec (fp, recadr, j, rp);
+	  i = 0;
+
+	}
+    }
 }
 
 /* 
@@ -182,18 +186,18 @@ char *buf;		/* buffer address */
 */
 
 unsigned
-bitrev(bitsin, nbits)
-unsigned bitsin, nbits;
+bitrev (bitsin, nbits)
+     unsigned bitsin, nbits;
 {
-	unsigned m, n;
+  unsigned m, n;
 
-	n = 0;
+  n = 0;
 
-	for (m = 0; m < nbits; m++)
-		if (bitsin & bitmask[m])
-			n |= bitmask[nbits-1-m];
+  for (m = 0; m < nbits; m++)
+    if (bitsin & bitmask[m])
+      n |= bitmask[nbits - 1 - m];
 
-	return(n);
+  return (n);
 }
 
 /* 
@@ -205,111 +209,116 @@ unsigned bitsin, nbits;
    =============================================================================
 */
 
-main()
+main ()
 {
-	FILE *fp1, *fp2, *fp3;
-	register long i, j, nr;
-	double k, q, ip, os;
+  FILE *fp1, *fp2, *fp3;
+  register long i, j, nr;
+  double k, q, ip, os;
 
-	printf("Buchla 700 Sine PROM Generator %s\n", VER);
+  printf ("Buchla 700 Sine PROM Generator %s\n", VER);
 
-	q = TWOPI / DTABLEN;	/* step size */
-	ip = ISHIFT;		/* offset */
-	os = OSCALE;		/* output scaling */
+  q = TWOPI / DTABLEN;		/* step size */
+  ip = ISHIFT;			/* offset */
+  os = OSCALE;			/* output scaling */
 
-	fname1 = LO_FILE;	/* LS byte file */
-	fname2 = HI_FILE;	/* MS byte file */
-	fname3 = THE_LOG;	/* log file */
+  fname1 = LO_FILE;		/* LS byte file */
+  fname2 = HI_FILE;		/* MS byte file */
+  fname3 = THE_LOG;		/* log file */
 
-	if( (fp1 = fopen(fname1, "wa")) == NULL)  {
+  if ((fp1 = fopen (fname1, "wa")) == NULL)
+    {
 
-		printf("sine:  ERROR - couldn't open [%s]\n", fname1);
-		exit(1);
-	}
+      printf ("sine:  ERROR - couldn't open [%s]\n", fname1);
+      exit (1);
+    }
 
-	if( (fp2 = fopen(fname2, "wa")) == NULL) {
+  if ((fp2 = fopen (fname2, "wa")) == NULL)
+    {
 
-		printf("sine:  ERROR - couldn't open [%s]\n", fname2);
-		fclose(fp1);
-		exit(1);
-	}
+      printf ("sine:  ERROR - couldn't open [%s]\n", fname2);
+      fclose (fp1);
+      exit (1);
+    }
 
-	if( (fp3 = fopen(fname3, "wa")) == NULL) {
+  if ((fp3 = fopen (fname3, "wa")) == NULL)
+    {
 
-		printf("sine:  ERROR - couldn't open [%s]\n", fname3);
-		fclose(fp1);
-		fclose(fp2);
-		exit(1);
-	}
+      printf ("sine:  ERROR - couldn't open [%s]\n", fname3);
+      fclose (fp1);
+      fclose (fp2);
+      exit (1);
+    }
 
-	printf("  size = %ld, step = %f, offset = %f, scaling = %f\n",
-		(long)TABLEN, q, ip, os);
+  printf ("  size = %ld, step = %f, offset = %f, scaling = %f\n",
+	  (long) TABLEN, q, ip, os);
 
-	fprintf(fp3, "Buchla 700 Sine PROM Generator %s\n", VER);
-	fprintf(fp3, "  size = %ld, step = %f, offset = %f, scaling = %f\n\n",
-		(long)TABLEN, q, ip, os);
-	fprintf(fp3, "Addr Rev  Data Value\n");
+  fprintf (fp3, "Buchla 700 Sine PROM Generator %s\n", VER);
+  fprintf (fp3, "  size = %ld, step = %f, offset = %f, scaling = %f\n\n",
+	   (long) TABLEN, q, ip, os);
+  fprintf (fp3, "Addr Rev  Data Value\n");
 
-	printf("  output on %s and %s, log on %s\n\n", fname1, fname2, fname3);
+  printf ("  output on %s and %s, log on %s\n\n", fname1, fname2, fname3);
 
 /* 
 */
-	printf("Beginning calculation phase.\n\n");
+  printf ("Beginning calculation phase.\n\n");
 
-	printf("Addr Rev  Data Value\n");
+  printf ("Addr Rev  Data Value\n");
 
-	for(i = 0; i < TABLEN; i++) {
+  for (i = 0; i < TABLEN; i++)
+    {
 
-		k = sin(((double)i * q) + ip);
+      k = sin (((double) i * q) + ip);
 
-		if( k >= 1.0 )
-			k = 0.9999999999;
+      if (k >= 1.0)
+	k = 0.9999999999;
 
-		t[bitrev(i, BRLEN)] = k * os;
+      t[bitrev (i, BRLEN)] = k * os;
 
-		if (! (i & 0x03FF)) {
+      if (!(i & 0x03FF))
+	{
 
-			printf("%04x %04x %04x %f\n",
-				i, bitrev(i, BRLEN), t[i], k);
+	  printf ("%04x %04x %04x %f\n", i, bitrev (i, BRLEN), t[i], k);
 
-			fprintf(fp3, "%04x %04x %04x %f\n",
-				i, bitrev(i, BRLEN), t[i], k);
-		}
+	  fprintf (fp3, "%04x %04x %04x %f\n", i, bitrev (i, BRLEN), t[i], k);
 	}
+    }
 /* 
 */
-	printf("\nSine table created, starting output phase.\n");
+  printf ("\nSine table created, starting output phase.\n");
 
-	i = 0L;		/* initialize sine table index */
-	nr = 0L;	/* initialize output address */
+  i = 0L;			/* initialize sine table index */
+  nr = 0L;			/* initialize output address */
 
-	while (i < (long)TABLEN) {
+  while (i < (long) TABLEN)
+    {
 
-		for (j = 0; j < (long)BUFLEN; j++) {	/* split the words */
+      for (j = 0; j < (long) BUFLEN; j++)
+	{			/* split the words */
 
-			lo_buf[j] = t[i] & 0x00FF;
-			hi_buf[j] = (t[i] >> 8) & 0x00FF;
-			i++;
-		}
-
-		msrec(fp1, nr, (long)BUFLEN, lo_buf);	/* write the S-Records */
-		msrec(fp2, nr, (long)BUFLEN, hi_buf);
-
-		printf("S-Record %5ld complete\n", nr);
-
-		nr += (long)BUFLEN;
+	  lo_buf[j] = t[i] & 0x00FF;
+	  hi_buf[j] = (t[i] >> 8) & 0x00FF;
+	  i++;
 	}
 
-	msdone(fp1);	/* write final S-Records */
-	msdone(fp2);
+      msrec (fp1, nr, (long) BUFLEN, lo_buf);	/* write the S-Records */
+      msrec (fp2, nr, (long) BUFLEN, hi_buf);
 
-	fflush(fp1);	/* flush the files */
-	fflush(fp2);
-	fflush(fp3);
+      printf ("S-Record %5ld complete\n", nr);
 
-	fclose(fp1);	/* close the files */
-	fclose(fp2);
-	fclose(fp3);
+      nr += (long) BUFLEN;
+    }
 
-	exit(0);	/* exit back to the operating system */
+  msdone (fp1);			/* write final S-Records */
+  msdone (fp2);
+
+  fflush (fp1);			/* flush the files */
+  fflush (fp2);
+  fflush (fp3);
+
+  fclose (fp1);			/* close the files */
+  fclose (fp2);
+  fclose (fp3);
+
+  exit (0);			/* exit back to the operating system */
 }

@@ -13,11 +13,11 @@
 */
 
 /* Functions in NSCLIP.O */
-int Clip();
+int Clip ();
 
 /* Functions in NSGRAF.O */
-int SetWind(), SetView(), WctoSc(), MoveTo(), LineTo(), ShowLine();
-int NSinit(), VPbord();
+int SetWind (), SetView (), WctoSc (), MoveTo (), LineTo (), ShowLine ();
+int NSinit (), VPbord ();
 
 /* Functions in NSSNAP.O */
-int SnapWV();
+int SnapWV ();

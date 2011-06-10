@@ -18,13 +18,13 @@
 #include "scdsp.h"
 #include "instdsp.h"
 
-extern	unsigned	*obj8;
+extern unsigned *obj8;
 
-extern	short	ctrsw, recsw, stccol;
+extern short ctrsw, recsw, stccol;
 
-extern	short	grpdyn[], grpmode[], grpstat[];
+extern short grpdyn[], grpmode[], grpstat[];
 
-extern	struct	gdsel	*gdstbc[];
+extern struct gdsel *gdstbc[];
 
 /*
    =============================================================================
@@ -33,13 +33,13 @@ extern	struct	gdsel	*gdstbc[];
 */
 
 short
-et_dyn(n)
-short n;
+et_dyn (n)
+     short n;
 {
-	ebuf[0] =grpdyn[n] + '0';
-	ebuf[1] = '\0';
-	ebflag = TRUE;
-	return(SUCCESS);
+  ebuf[0] = grpdyn[n] + '0';
+  ebuf[1] = '\0';
+  ebflag = TRUE;
+  return (SUCCESS);
 }
 
 /* 
@@ -52,39 +52,43 @@ short n;
 */
 
 short
-ef_dyn(n)
-short n;
+ef_dyn (n)
+     short n;
 {
-	register short ival;
-	register struct s_entry *ep;
+  register short ival;
+  register struct s_entry *ep;
 
-	ebuf[1] = '\0';
-	ival = ebuf[0] - '0';
-	ebflag = FALSE;
+  ebuf[1] = '\0';
+  ival = ebuf[0] - '0';
+  ebflag = FALSE;
 
-	setdyn(n, ival);
+  setdyn (n, ival);
 
-	if (recsw AND grpmode[n] AND (2 EQ grpmode[n])) {
+  if (recsw AND grpmode[n] AND (2 EQ grpmode[n]))
+    {
 
-		if (E_NULL NE (ep = findev(p_cur, t_cur, EV_DYN, n, -1))) {
+      if (E_NULL NE (ep = findev (p_cur, t_cur, EV_DYN, n, -1)))
+	{
 
-			ep->e_data2 = ival;
+	  ep->e_data2 = ival;
 
-		} else if (E_NULL NE (ep = e_alc(E_SIZE2))) {
-
-			ep->e_type  = EV_DYN;
-			ep->e_data1 = n;
-			ep->e_data2 = ival;
-			ep->e_time  = t_cur;
-			p_cur = e_ins(ep, ep_adj(p_cur, 0, t_cur))->e_fwd;
-			eh_ins(ep, EH_DYN);
-			ctrsw = TRUE;
-			se_disp(ep, D_FWD, gdstbc, 1);
-			scupd();
-		}
 	}
+      else if (E_NULL NE (ep = e_alc (E_SIZE2)))
+	{
 
-	return(SUCCESS);
+	  ep->e_type = EV_DYN;
+	  ep->e_data1 = n;
+	  ep->e_data2 = ival;
+	  ep->e_time = t_cur;
+	  p_cur = e_ins (ep, ep_adj (p_cur, 0, t_cur))->e_fwd;
+	  eh_ins (ep, EH_DYN);
+	  ctrsw = TRUE;
+	  se_disp (ep, D_FWD, gdstbc, 1);
+	  scupd ();
+	}
+    }
+
+  return (SUCCESS);
 }
 
 /* 
@@ -97,15 +101,15 @@ short n;
 */
 
 short
-rd_dyn(n)
-short n;
+rd_dyn (n)
+     short n;
 {
-	if (v_regs[5] & 0x0180)
-		vbank(0);
+  if (v_regs[5] & 0x0180)
+    vbank (0);
 
-	vputc(obj8, 4, 6+(n*5), (grpdyn[n] + '0'), SDW11ATR);
+  vputc (obj8, 4, 6 + (n * 5), (grpdyn[n] + '0'), SDW11ATR);
 
-	return(SUCCESS);
+  return (SUCCESS);
 }
 
 /*
@@ -114,12 +118,12 @@ short n;
    =============================================================================
 */
 
-ds_dyn()
+ds_dyn ()
 {
-	register short i;
+  register short i;
 
-	for (i = 0; i < 12; i++)
-		rd_dyn(i);
+  for (i = 0; i < 12; i++)
+    rd_dyn (i);
 }
 
 /* 
@@ -132,16 +136,16 @@ ds_dyn()
 */
 
 short
-nd_dyn(n, k)
-register short n, k;
+nd_dyn (n, k)
+     register short n, k;
 {
-	ebuf[0]  = k + '0';
+  ebuf[0] = k + '0';
 
-	if (v_regs[5] & 0x0180)
-		vbank(0);
+  if (v_regs[5] & 0x0180)
+    vbank (0);
 
-	vputc(obj8, 4, stccol, k + '0', SDW11DEA);
-	advscur();
+  vputc (obj8, 4, stccol, k + '0', SDW11DEA);
+  advscur ();
 
-	return(SUCCESS);
+  return (SUCCESS);
 }

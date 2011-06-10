@@ -14,20 +14,20 @@
 #include "midas.h"
 #include "asgdsp.h"
 
-extern	char	*numblk();
+extern char *numblk ();
 
-extern	unsigned	*asgob;
+extern unsigned *asgob;
 
-extern	short	stcrow, stccol;
+extern short stcrow, stccol;
 
-extern	char	dspbuf[];
-extern	char	*gprep[];
+extern char dspbuf[];
+extern char *gprep[];
 
-extern	short	key2grp[];
+extern short key2grp[];
 
-extern	short	adbox[][8];
+extern short adbox[][8];
 
-extern	short	grp2prt[12][2];	/* group to port and channel table */
+extern short grp2prt[12][2];	/* group to port and channel table */
 				/* port [0] = 0..3, channel [1] = -1, 1..16 */
 
 /* 
@@ -40,19 +40,19 @@ extern	short	grp2prt[12][2];	/* group to port and channel table */
 */
 
 short
-et_agpt(n)
-short n;
+et_agpt (n)
+     short n;
 {
-	register short grp;
+  register short grp;
 
-	grp = 0x00FF & (n >> 8);
+  grp = 0x00FF & (n >> 8);
 
-	ebuf[0] = grp2prt[grp][0];
-	ebuf[1] = '\0';
+  ebuf[0] = grp2prt[grp][0];
+  ebuf[1] = '\0';
 
-	ebflag = TRUE;
+  ebflag = TRUE;
 
-	return(SUCCESS);
+  return (SUCCESS);
 }
 
 /*
@@ -62,26 +62,26 @@ short n;
 */
 
 short
-ef_agpt(n)
-short n;
+ef_agpt (n)
+     short n;
 {
-	register short tmpval, grp, i;
+  register short tmpval, grp, i;
 
-	grp = 0x00FF & (n >> 8);
+  grp = 0x00FF & (n >> 8);
 
-	ebuf[1] = '\0';			/* terminate the string in ebuf */
-	ebflag = FALSE;
+  ebuf[1] = '\0';		/* terminate the string in ebuf */
+  ebflag = FALSE;
 
-	grp2prt[grp][0] = ebuf[0];
+  grp2prt[grp][0] = ebuf[0];
 
-	if (grp2prt[grp][0] NE 1)
-		for (i = 0; i < 88; i++)
-			key2grp[i] &= ~(0x0001 << grp);
+  if (grp2prt[grp][0] NE 1)
+    for (i = 0; i < 88; i++)
+      key2grp[i] &= ~(0x0001 << grp);
 
-	drawk2g(grp);
+  drawk2g (grp);
 
-	modasg();
-	return(SUCCESS);
+  modasg ();
+  return (SUCCESS);
 }
 
 /* 
@@ -94,19 +94,19 @@ short n;
 */
 
 short
-rd_agpt(nn)
-short nn;
+rd_agpt (nn)
+     short nn;
 {
-	register short n, grp;
+  register short n, grp;
 
-	n   = 0x00FF & nn;
-	grp = 0x00FF & (nn >> 8);
+  n = 0x00FF & nn;
+  grp = 0x00FF & (nn >> 8);
 
-	vbank(0);
-	vcputsv(asgob, 64, adbox[n][4], adbox[n][5],
-		cfetp->frow, cfetp->flcol, gprep[grp2prt[grp][0]], 14);
+  vbank (0);
+  vcputsv (asgob, 64, adbox[n][4], adbox[n][5],
+	   cfetp->frow, cfetp->flcol, gprep[grp2prt[grp][0]], 14);
 
-	return(SUCCESS);
+  return (SUCCESS);
 }
 
 /*
@@ -116,35 +116,39 @@ short nn;
 */
 
 short
-nd_agpt(nn, k)
-short nn;
-register short  k;
+nd_agpt (nn, k)
+     short nn;
+     register short k;
 {
-	register short n;
+  register short n;
 
-	n = nn & 0x00FF;
+  n = nn & 0x00FF;
 
-	if (k EQ 8) {		/* '-' */
+  if (k EQ 8)
+    {				/* '-' */
 
-		if (--ebuf[0] LT 0)
-			ebuf[0] = 3;
+      if (--ebuf[0] LT 0)
+	ebuf[0] = 3;
 
-	} else if (k EQ 9) {	/* '+' */
+    }
+  else if (k EQ 9)
+    {				/* '+' */
 
-		if (++ebuf[0] GT 3)
-			ebuf[0] = 0;
+      if (++ebuf[0] GT 3)
+	ebuf[0] = 0;
 
-	} else {
+    }
+  else
+    {
 
-		return(FAILURE);
-	}
+      return (FAILURE);
+    }
 
-	dspbuf[0] = *gprep[ebuf[0]];
-	dspbuf[1] = '\0';
+  dspbuf[0] = *gprep[ebuf[0]];
+  dspbuf[1] = '\0';
 
-	vbank(0);
-	vcputsv(asgob, 64, AK_ENTRY, adbox[n][5], stcrow, stccol, dspbuf, 14);
+  vbank (0);
+  vcputsv (asgob, 64, AK_ENTRY, adbox[n][5], stcrow, stccol, dspbuf, 14);
 
-	return(SUCCESS);
+  return (SUCCESS);
 }
-

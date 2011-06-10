@@ -9,37 +9,37 @@
 #include "stddefs.h"
 
 int
-puts(str)
-register char *str;
+puts (str)
+     register char *str;
 {
-	while (*str)
-		if (putchar(*str++) EQ EOF)
-			return(EOF);
+  while (*str)
+    if (putchar (*str++) EQ EOF)
+      return (EOF);
 
-	return(putchar('\n'));
+  return (putchar ('\n'));
 }
 
 int
-aputc(c,ptr)
-register int c;
-register FILE *ptr;
+aputc (c, ptr)
+     register int c;
+     register FILE *ptr;
 {
-	c &= 127;
+  c &= 127;
 
-	if (c EQ '\n')
-		if (putc('\r', ptr) EQ EOF)
-			return(EOF);
+  if (c EQ '\n')
+    if (putc ('\r', ptr) EQ EOF)
+      return (EOF);
 
-	return(putc(c, ptr));
+  return (putc (c, ptr));
 }
 
 int
-fputs(s,fp)
-register char *s;
-FILE *fp;
+fputs (s, fp)
+     register char *s;
+     FILE *fp;
 {
-	while ( *s )
-		if (aputc(*s++, fp) EQ EOF)
-			return(EOF);
-	return(0);
+  while (*s)
+    if (aputc (*s++, fp) EQ EOF)
+      return (EOF);
+  return (0);
 }

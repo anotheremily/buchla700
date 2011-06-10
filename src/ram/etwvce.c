@@ -14,15 +14,15 @@
 #include "midas.h"
 #include "wsdsp.h"
 
-extern	short	advwcur();
+extern short advwcur ();
 
-extern	unsigned	*waveob;
+extern unsigned *waveob;
 
-extern	short	stcrow, stccol, curvce;
+extern short stcrow, stccol, curvce;
 
-extern	short	wdbox[][8];
+extern short wdbox[][8];
 
-extern	char	dspbuf[];
+extern char dspbuf[];
 
 /* 
 */
@@ -34,13 +34,13 @@ extern	char	dspbuf[];
 */
 
 short
-et_wvce(n)
-short n;
+et_wvce (n)
+     short n;
 {
-	sprintf(ebuf, "%02d", curvce + 1);
-	ebflag = TRUE;
+  sprintf (ebuf, "%02d", curvce + 1);
+  ebflag = TRUE;
 
-	return(SUCCESS);
+  return (SUCCESS);
 }
 
 /*
@@ -50,24 +50,24 @@ short n;
 */
 
 short
-ef_wvce(n)
-short n;
+ef_wvce (n)
+     short n;
 {
-	register short i, tmpval;
+  register short i, tmpval;
 
-	ebuf[2] = '\0';			/* terminate the string in ebuf */
-	ebflag = FALSE;
-	tmpval = 0;
+  ebuf[2] = '\0';		/* terminate the string in ebuf */
+  ebflag = FALSE;
+  tmpval = 0;
 
-	for (i = 0; i < 2; i++)		/* convert from ASCII to binary */
-		tmpval = (tmpval * 10) + (ebuf[i] - '0');
+  for (i = 0; i < 2; i++)	/* convert from ASCII to binary */
+    tmpval = (tmpval * 10) + (ebuf[i] - '0');
 
-	if ((tmpval EQ 0) OR (tmpval GT 12))
-		return(FAILURE);
+  if ((tmpval EQ 0) OR (tmpval GT 12))
+    return (FAILURE);
 
-	newvce(tmpval - 1);
-	wwins();
-	return(SUCCESS);
+  newvce (tmpval - 1);
+  wwins ();
+  return (SUCCESS);
 }
 
 /* 
@@ -80,19 +80,19 @@ short n;
 */
 
 short
-rd_wvce(nn)
-short nn;
+rd_wvce (nn)
+     short nn;
 {
-	register short n;
+  register short n;
 
-	n = nn & 0xFF;
-	sprintf(dspbuf, "%02d", curvce + 1);
+  n = nn & 0xFF;
+  sprintf (dspbuf, "%02d", curvce + 1);
 
-	vbank(0);
-	vcputsv(waveob, 64, wdbox[n][4], wdbox[n][5],
-		wdbox[n][6], wdbox[n][7] + WVCE_OFF, dspbuf, 14);
+  vbank (0);
+  vcputsv (waveob, 64, wdbox[n][4], wdbox[n][5],
+	   wdbox[n][6], wdbox[n][7] + WVCE_OFF, dspbuf, 14);
 
-	return(SUCCESS);
+  return (SUCCESS);
 }
 
 /*
@@ -102,24 +102,23 @@ short nn;
 */
 
 short
-nd_wvce(nn, k)
-short nn;
-register short  k;
+nd_wvce (nn, k)
+     short nn;
+     register short k;
 {
-	register short ec, n;
+  register short ec, n;
 
-	n = nn & 0xFF;
-	ec = stccol - cfetp->flcol;	/* setup edit buffer column */
-	ebuf[ec] = k + '0';
-	ebuf[2] = '\0';
+  n = nn & 0xFF;
+  ec = stccol - cfetp->flcol;	/* setup edit buffer column */
+  ebuf[ec] = k + '0';
+  ebuf[2] = '\0';
 
-	dspbuf[0] = k + '0';
-	dspbuf[1] = '\0';
+  dspbuf[0] = k + '0';
+  dspbuf[1] = '\0';
 
-	vbank(0);
-	vcputsv(waveob, 64, WS_ENTRY, wdbox[n][5],
-		stcrow, stccol, dspbuf, 14);
+  vbank (0);
+  vcputsv (waveob, 64, WS_ENTRY, wdbox[n][5], stcrow, stccol, dspbuf, 14);
 
-	advwcur();
-	return(SUCCESS);
+  advwcur ();
+  return (SUCCESS);
 }

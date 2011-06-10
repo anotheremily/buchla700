@@ -44,9 +44,9 @@
 #define	LCL_PRT		3	/* 1-origin local keyboard port number */
 
 #if	DEBUGIT
-extern	short	debugsw;
+extern short debugsw;
 
-short	debugms = 1;
+short debugms = 1;
 #endif
 
 /* 
@@ -54,95 +54,96 @@ short	debugms = 1;
 
 /* variables defined elsewhere */
 
-extern	short	(*cx_key)();
-extern	short	(*cy_key)();
-extern	short	(*d_key)();
-extern	short	(*e_key)();
-extern	short	(*m_key)();
-extern	short	(*x_key)();
+extern short (*cx_key) ();
+extern short (*cy_key) ();
+extern short (*d_key) ();
+extern short (*e_key) ();
+extern short (*m_key) ();
+extern short (*x_key) ();
 
-extern	PFS	(*swpt)[];
+extern
+PFS (*swpt)[];
 
-extern	short	aflag;
-extern	short	amplval;
-extern	short	ancmsw;
-extern	short	angroup;
-extern	short	asig;
-extern	short	astat;
-extern	short	aval;
-extern	short	clkctl;
-extern	short	clkrun;
-extern	short	ctrsw;
-extern	short	cxrate;
-extern	short	cxval;
-extern	short	cyrate;
-extern	short	cyval;
-extern	short	dsp_ok;
-extern	short	editss;
-extern	short	editsw;
-extern	short	lampsw;
-extern	short	ndisp;
-extern	short	nxtflag;
-extern	short	pchsw;
-extern	short	recsw;
-extern	short	runit;
-extern	short	swback;
-extern	short	swctrl;
-extern	short	swdelta;
-extern	short	swdir;
-extern	short	swfiin;
-extern	short	swflag;
-extern	short	swlast;
-extern	short	swndx;
-extern	short	swstop;
-extern	short	swthr;
-extern	short	swtime;
-extern	short	swwait;
-extern	short	sd;
-extern	short	se;
-extern	short	stcrow;
-extern	short	stccol;
-extern	short	tglclk;
-extern	short	tglpch;
-extern	short	timemlt;
-extern	short	tmpomlt;
-extern	short	tmpoval;
-extern	short	tuneval;
-extern	short	vtpcol;
-extern	short	vtprow;
+     extern short aflag;
+     extern short amplval;
+     extern short ancmsw;
+     extern short angroup;
+     extern short asig;
+     extern short astat;
+     extern short aval;
+     extern short clkctl;
+     extern short clkrun;
+     extern short ctrsw;
+     extern short cxrate;
+     extern short cxval;
+     extern short cyrate;
+     extern short cyval;
+     extern short dsp_ok;
+     extern short editss;
+     extern short editsw;
+     extern short lampsw;
+     extern short ndisp;
+     extern short nxtflag;
+     extern short pchsw;
+     extern short recsw;
+     extern short runit;
+     extern short swback;
+     extern short swctrl;
+     extern short swdelta;
+     extern short swdir;
+     extern short swfiin;
+     extern short swflag;
+     extern short swlast;
+     extern short swndx;
+     extern short swstop;
+     extern short swthr;
+     extern short swtime;
+     extern short swwait;
+     extern short sd;
+     extern short se;
+     extern short stcrow;
+     extern short stccol;
+     extern short tglclk;
+     extern short tglpch;
+     extern short timemlt;
+     extern short tmpomlt;
+     extern short tmpoval;
+     extern short tuneval;
+     extern short vtpcol;
+     extern short vtprow;
 
 /* 
 */
 
-extern	unsigned short	*obj8;
+     extern unsigned short *obj8;
 
-extern	long	afi;
-extern	long	lcdtime;
-extern	long	swcount;
-extern	long	swrate;
-extern	long	swrmin;
-extern	long	swtemp;
+     extern long afi;
+     extern long lcdtime;
+     extern long swcount;
+     extern long swrate;
+     extern long swrmin;
+     extern long swtemp;
 
-extern	short	grpmode[];
-extern	short	grpstat[];
-extern	short	prstab[];
-extern	short	simled[];
-extern	short	swfifo[NSWFIFO];
-extern	short	tmultab[];
-extern	short	vce2trg[];
-extern	short	veltab[];
+     extern short grpmode[];
+     extern short grpstat[];
+     extern short prstab[];
+     extern short simled[];
+     extern short swfifo[NSWFIFO];
+     extern short tmultab[];
+     extern short vce2trg[];
+     extern short veltab[];
 
-extern	char	trgtab[];
+     extern char trgtab[];
 
-extern	short	grp2prt[][2];
-extern	short	sigtab[][2];
-extern	short	varmode[][16];
+     extern short grp2prt[][2];
+     extern short sigtab[][2];
+     extern short varmode[][16];
 
-extern	struct	gdsel	*gdstbc[];
+     extern struct gdsel *gdstbc[];
 
-extern	struct 	wordq	ptefifo;
+     extern struct wordq ptefifo;
 
-unsigned short fifoval;
+     unsigned short fifoval;
 
 /* 
 */
@@ -153,11 +154,11 @@ unsigned short fifoval;
    =============================================================================
 */
 
-clk_ped(stat)
-short stat;
+clk_ped (stat)
+     short stat;
 {
-	if (stat)
-		tglclk = TRUE;
+  if (stat)
+    tglclk = TRUE;
 }
 
 /* 
@@ -166,11 +167,11 @@ short stat;
    =============================================================================
 */
 
-pch_ped(stat)
-short stat;
+pch_ped (stat)
+     short stat;
 {
-	if (stat AND pchsw)
-		tglpch = TRUE;
+  if (stat AND pchsw)
+    tglpch = TRUE;
 }
 
 /* 
@@ -182,639 +183,770 @@ short stat;
    =============================================================================
 */
 
-msl()
+msl ()
 {
-	register char *ioadr;
-	register unsigned *fpu;
-	register struct s_entry *ep;
-	register short i, ti, val;
-	register long rt;
-	unsigned short chan, crel, oldsr, port, trg, trig, vel;
-	short cxprev, cyprev, esi, newsig, oldclk, oldrec;
-	long fctemp;
+  register char *ioadr;
+  register unsigned *fpu;
+  register struct s_entry *ep;
+  register short i, ti, val;
+  register long rt;
+  unsigned short chan, crel, oldsr, port, trg, trig, vel;
+  short cxprev, cyprev, esi, newsig, oldclk, oldrec;
+  long fctemp;
 
 #if	DEBUGIT
-	if (debugsw AND debugms)
-		printf("msl():  ENTRY  ndisp=%d\n", ndisp);
+  if (debugsw AND debugms)
+    printf ("msl():  ENTRY  ndisp=%d\n", ndisp);
 #endif
 
-	runit = TRUE;		/* set run state */
+  runit = TRUE;			/* set run state */
 
-	while (runit) {
+  while (runit)
+    {
 
-		dsp_ok = TRUE;		/* set display-OK flag for this pass */
+      dsp_ok = TRUE;		/* set display-OK flag for this pass */
 
-		ioadr = &io_ser + 2L;	/* get edit switch status */
-		esi   = *ioadr & 0x0008;
+      ioadr = &io_ser + 2L;	/* get edit switch status */
+      esi = *ioadr & 0x0008;
 
-		if (editss NE esi) {	/* check for edit switch change */
+      if (editss NE esi)
+	{			/* check for edit switch change */
 
-			editss = esi;
+	  editss = esi;
 
-			if (editss)	/* toggle edit state if it went hi */
-				editsw = NOT editsw;
+	  if (editss)		/* toggle edit state if it went hi */
+	    editsw = NOT editsw;
+	}
+
+      if (editsw)		/* update edit LED */
+	io_leds = 0x9E;
+      else
+	io_leds = 0x1E;
+
+      if ((NOT lampsw) AND lcdtime)
+	{
+
+	  if (0 EQ-- lcdtime)
+	    io_leds = 0x1F;	/* turn off the LCD backlight */
+	}
+
+      msm ();			/* scan the MIDI ports */
+/* 
+*/
+
+      if (tglclk)
+	{			/* check for clock on/off toggle */
+
+	  oldsr = setsr (0x2700);	/* disable interrupts */
+	  tglclk = FALSE;	/* cancel toggle flag */
+	  setsr (oldsr);	/* enable interrupts */
+
+	  clkset (NOT clkrun);	/* toggle clock mode */
+	  dclkmd ();		/* update display */
+	}
+
+      if (tglpch)
+	{			/* check for punch in/out toggle */
+
+	  oldsr = setsr (0x2700);	/* disable interrupts */
+	  tglpch = FALSE;	/* cancel toggle flag */
+	  setsr (oldsr);	/* enable interrupts */
+
+	  if ((ndisp EQ 2) AND (v_regs[5] & 0x0180))
+	    vbank (0);
+
+	  for (i = 0; i < 12; i++)
+	    {			/* scan the groups */
+
+	      if (grpmode[i] EQ 1)
+		{		/* stdby -> rec */
+
+		  grpmode[i] = 2;
+
+		  if (ndisp EQ 2)
+		    vputc (obj8, 2, 6 + (i * 5), '*', simled[grpmode[i]]);
+
+		}
+	      else if (grpmode[i] EQ 2)
+		{		/* rec -> play */
+
+		  grpmode[i] = 0;
+
+		  if (ndisp EQ 2)
+		    vputc (obj8, 2, 6 + (i * 5), '*', simled[grpmode[i]]);
+		}
+	    }
+	}
+
+/* 
+*/
+      /* process stimulli from the patch stimulus fifo */
+
+      if (getwq (&ptefifo, &fifoval) GE 0)
+	{
+
+	  crel = 0x8000 & fifoval;
+
+	  trg = TRG_MASK & fifoval;
+	  port = 0x0003 & (fifoval >> 11);
+	  chan = 0x000F & (fifoval >> 7);
+	  trig = 0x007F & fifoval;
+
+	  veltab[trg] = vel = SM_SCALE (64);
+	  prstab[trg] = 0;
+
+	  if (crel)
+	    {			/* release */
+
+	      trgtab[trg] &= ~M_KSTATE;
+
+	      for (i = 0; i < 12; i++)
+		{
+
+		  if (vce2trg[i] EQ trg)
+		    {
+
+		      vce2trg[i] = -1;
+		      procpfl (trg);
+
+		    }
 		}
 
-		if (editsw)		/* update edit LED */
-			io_leds = 0x9E;
-		else
-			io_leds = 0x1E;
+	      stmproc (fifoval);	/* do it as a patch stimulus */
 
-		if ((NOT lampsw) AND lcdtime) {
+	    }
+	  else
+	    {			/* closure */
 
-			if (0 EQ --lcdtime)
-				io_leds = 0x1F;	/* turn off the LCD backlight */
+	      trgtab[trg] |= M_KSTATE;
+
+	      stmproc (fifoval);	/* do it as a patch stimulus */
+
+	      for (i = 0; i < 12; i++)
+		if ((grp2prt[i][0] EQ 1 + port) AND
+		    (grp2prt[i][1] EQ 1 + chan))
+		  asgvce (i, port, chan, trig, vel);
+	    }
+	}
+/* 
+*/
+      if (-1L NE (afi = XBIOS (X_ANALOG)))
+	{			/* check panel inputs */
+
+	  asig = (afi >> 8) & 0x007F;	/* signal number */
+	  astat = (afi >> 7) & 0x0001;	/* status */
+	  aval = afi & 0x007F;	/* value */
+
+	  if (asig)
+	    {			/* active signal */
+
+	      aflag = TRUE;
+	      newsig = astat AND (NOT sigtab[asig][1]);
+
+	      sigtab[asig][0] = aval;
+	      sigtab[asig][1] = astat;
+
+	    }
+	  else
+	    {			/* all keys up */
+
+	      aflag = FALSE;
+	      newsig = FALSE;
+
+	      for (i = 0; i < 128; i++)
+		sigtab[i][1] = 0;
+	    }
+
+/* 
+*/
+	  if (aflag)
+	    {			/* anything changed ? */
+
+	      if ((asig GE 1) AND (asig LE 24))
+		{
+
+		  /* local keyboard performance key */
+
+		  localkb (asig);
+
 		}
+	      else if ((asig GE 25) AND (asig LE 38))
+		{
 
-		msm();			/* scan the MIDI ports */
-/* 
-*/
+		  if (astat)
+		    lcd_on ();
 
-		if (tglclk) {		/* check for clock on/off toggle */
+		  if (NOT newsig)
+		    doslide ();
 
-			oldsr  = setsr(0x2700);		/* disable interrupts */
-			tglclk = FALSE;			/* cancel toggle flag */
-			setsr(oldsr);			/* enable interrupts */
-
-			clkset(NOT clkrun);		/* toggle clock mode */
-			dclkmd();			/* update display */
 		}
+	      else if ((asig GE 39) AND (asig LE 52))
+		{
 
-		if (tglpch) {		/* check for punch in/out toggle */
+		  if (astat)
+		    lcd_on ();
 
-			oldsr  = setsr(0x2700);		/* disable interrupts */
-			tglpch = FALSE;			/* cancel toggle flag */
-			setsr(oldsr);			/* enable interrupts */
+		  (*(*swpt)[asig - 39]) (astat, (asig - 39));
 
-			if ((ndisp EQ 2) AND (v_regs[5] & 0x0180))
-				vbank(0);
-
-			for (i = 0; i < 12; i++) {	/* scan the groups */
-
-				if (grpmode[i] EQ 1) {	/* stdby -> rec */
-
-					grpmode[i] = 2;
-
-					if (ndisp EQ 2)
-						vputc(obj8, 2, 6 + (i * 5),
-							'*', simled[grpmode[i]]);
-
-				} else if (grpmode[i] EQ 2) {	/* rec -> play */
-
-					grpmode[i] = 0;
-
-					if (ndisp EQ 2)
-						vputc(obj8, 2, 6 + (i * 5),
-							'*', simled[grpmode[i]]);
-				}
-			}
 		}
+	      else if ((asig GE 60) AND (asig LE 69))
+		{
+
+		  (*d_key) (asig - 60);
 
 /* 
 */
-		/* process stimulli from the patch stimulus fifo */
-
-		if (getwq(&ptefifo, &fifoval) GE 0) {
-
-			crel = 0x8000   &  fifoval;
-
-			trg  = TRG_MASK &  fifoval;
-			port = 0x0003   & (fifoval >> 11);
-			chan = 0x000F   & (fifoval >>  7);
-			trig = 0x007F   &  fifoval;
-
-			veltab[trg] = vel =  SM_SCALE(64);
-			prstab[trg] = 0;
-
-			if (crel) {		/* release */
-
-				trgtab[trg] &= ~M_KSTATE;
-
-				for (i = 0; i < 12; i++) {
-
-					if (vce2trg[i] EQ trg) {
-
-						vce2trg[i] = -1;
-						procpfl(trg);
-
-					}
-				}
-
-				stmproc(fifoval);	/* do it as a patch stimulus */
-
-			} else {		/* closure */
-
-				trgtab[trg] |= M_KSTATE;
-
-				stmproc(fifoval);	/* do it as a patch stimulus */
-
-				for (i = 0; i < 12; i++)
-					if ((grp2prt[i][0] EQ 1 + port) AND
-					    (grp2prt[i][1] EQ 1 + chan))
-						asgvce(i, port, chan, trig, vel);
-			}
 		}
+	      else
+		switch (asig)
+		  {
+
+		  case 53:	/* tablet x */
+
+		    val = SM_SCALE (aval);
+
+		    for (i = 0; i < 12; i++)
+		      {
+
+			if (grp2prt[i][0] EQ LCL_PRT)
+			  {
+
+			    if (newsv (i, SM_HTPW, val))
+			      {
+
+				if (recsw AND grpstat[i] AND
+				    (2
+				     EQ (ancmsw ? varmode[0][i] :
+					 grpmode[i])))
+				  {
+
+				    if (E_NULL NE (ep = e_alc (E_SIZE2)))
+				      {
+
+					ep->e_time = t_cur;
+					ep->e_type = EV_ANVL;
+					ep->e_data1 = i;
+					ep->e_dn =
+					  (struct s_entry *) ((long) val <<
+							      16);
+					p_cur =
+					  e_ins (ep,
+						 ep_adj (p_cur, 0,
+							 t_cur))->e_fwd;
+					ctrsw = TRUE;
+					se_disp (ep, D_FWD, gdstbc, 1);
+					ctrsw = FALSE;
+				      }
+
+				  }
+				else if ((angroup - 1) EQ i)
+				  {
+
+				    dsanval (0);
+				  }
+			      }
+			  }
+		      }
+
+		    break;
 /* 
 */
-		if (-1L NE (afi = XBIOS(X_ANALOG))) {	/* check panel inputs */
+		  case 54:	/* tablet y */
 
-			asig  = (afi >> 8) & 0x007F;	/* signal number */
-			astat = (afi >> 7) & 0x0001;	/* status */
-			aval  = afi & 0x007F;		/* value */
+		    val = SM_SCALE (aval);
 
-			if (asig) {	/* active signal */
+		    for (i = 0; i < 12; i++)
+		      {
 
-				aflag  = TRUE;
-				newsig = astat AND (NOT sigtab[asig][1]);
+			if (grp2prt[i][0] EQ LCL_PRT)
+			  {
 
-				sigtab[asig][0] = aval;
-				sigtab[asig][1] = astat;
+			    if (newsv (i, SM_VTMW, val))
+			      {
 
-			} else {	/* all keys up */
+				if (recsw AND grpstat[i] AND
+				    (2
+				     EQ (ancmsw ? varmode[1][i] :
+					 grpmode[i])))
+				  {
 
-				aflag  = FALSE;
-				newsig = FALSE;
+				    if (E_NULL NE (ep = e_alc (E_SIZE2)))
+				      {
 
-				for (i = 0; i < 128; i++)
-					sigtab[i][1] = 0;
-			}
+					ep->e_time = t_cur;
+					ep->e_type = EV_ANVL;
+					ep->e_data1 = 0x0010 | i;
+					ep->e_dn =
+					  (struct s_entry *) ((long) val <<
+							      16);
+					p_cur =
+					  e_ins (ep,
+						 ep_adj (p_cur, 0,
+							 t_cur))->e_fwd;
+					ctrsw = TRUE;
+					se_disp (ep, D_FWD, gdstbc, 1);
+					ctrsw = FALSE;
+				      }
 
+				  }
+				else if ((angroup - 1) EQ i)
+				  {
+
+				    dsanval (1);
+				  }
+			      }
+			  }
+		      }
+
+		    break;
+
+		  case 55:	/* cursor x */
+
+		    (*cx_key) ();
+		    break;
+
+		  case 56:	/* cursor y */
+
+		    (*cy_key) ();
+		    break;
 /* 
 */
-			if (aflag) {	/* anything changed ? */
+		  case 58:	/* longpot r */
 
-				if ((asig GE 1) AND (asig LE 24)) {
+		    val = SM_SCALE (aval);
 
-					/* local keyboard performance key */
+		    for (i = 0; i < 12; i++)
+		      {
 
-					localkb(asig);
+			if (grp2prt[i][0] EQ LCL_PRT)
+			  {
 
-				} else if ((asig GE 25) AND (asig LE 38)) {
+			    if (newsv (i, SM_LPBR, val))
+			      {
 
-					if (astat)
-						lcd_on();
+				if (recsw AND grpstat[i] AND
+				    (2
+				     EQ (ancmsw ? varmode[2][i] :
+					 grpmode[i])))
+				  {
 
-					if (NOT newsig)
-						doslide();
+				    if (E_NULL NE (ep = e_alc (E_SIZE2)))
+				      {
 
-				} else if ((asig GE 39) AND (asig LE 52)) {
+					ep->e_time = t_cur;
+					ep->e_type = EV_ANVL;
+					ep->e_data1 = 0x0020 | i;
+					ep->e_dn =
+					  (struct s_entry *) ((long) val <<
+							      16);
+					p_cur =
+					  e_ins (ep,
+						 ep_adj (p_cur, 0,
+							 t_cur))->e_fwd;
+					ctrsw = TRUE;
+					se_disp (ep, D_FWD, gdstbc, 1);
+					ctrsw = FALSE;
+				      }
 
-					if (astat)
-						lcd_on();
+				  }
+				else if ((angroup - 1) EQ i)
+				  {
 
-					(*(*swpt)[asig - 39])(astat, (asig - 39));
+				    dsanval (2);
+				  }
+			      }
+			  }
+		      }
 
-				} else if ((asig GE 60) AND (asig LE 69)) {
-
-					(*d_key)(asig - 60);
-
-/* 
-*/
-				} else 	switch (asig) {
-
-				case 53:		/* tablet x */
-
-					val = SM_SCALE(aval);
-
-					for (i = 0; i < 12; i++) {
-
-						if (grp2prt[i][0] EQ LCL_PRT) {
-
-							if (newsv(i, SM_HTPW, val)) {
-
-								if (recsw AND grpstat[i] AND
-								    (2 EQ (ancmsw ? varmode[0][i] : grpmode[i]))) {
-
-									if (E_NULL NE (ep = e_alc(E_SIZE2))) {
-
-										ep->e_time = t_cur;
-										ep->e_type = EV_ANVL;
-										ep->e_data1 = i;
-										ep->e_dn = (struct s_entry *)((long)val << 16);
-										p_cur = e_ins(ep, ep_adj(p_cur, 0, t_cur))->e_fwd;
-										ctrsw = TRUE;
-										se_disp(ep, D_FWD, gdstbc, 1);
-										ctrsw = FALSE;
-									}
-
-								} else if ((angroup - 1) EQ i) {
-
-									dsanval(0);
-								}
-							}
-						}
-					}
-
-					break;
-/* 
-*/
-				case 54:		/* tablet y */
-
-					val = SM_SCALE(aval);
-
-					for (i = 0; i < 12; i++) {
-
-						if (grp2prt[i][0] EQ LCL_PRT) {
-
-							if (newsv(i, SM_VTMW, val)) {
-
-								if (recsw AND grpstat[i] AND
-								    (2 EQ (ancmsw ? varmode[1][i] : grpmode[i]))) {
-
-									if (E_NULL NE (ep = e_alc(E_SIZE2))) {
-
-										ep->e_time = t_cur;
-										ep->e_type = EV_ANVL;
-										ep->e_data1 = 0x0010 | i;
-										ep->e_dn = (struct s_entry *)((long)val << 16);
-										p_cur = e_ins(ep, ep_adj(p_cur, 0, t_cur))->e_fwd;
-										ctrsw = TRUE;
-										se_disp(ep, D_FWD, gdstbc, 1);
-										ctrsw = FALSE;
-									}
-
-								} else if ((angroup - 1) EQ i) {
-
-									dsanval(1);
-								}
-							}
-						}
-					}
-
-					break;
-
-				case 55:		/* cursor x */
-				
-					(*cx_key)();	break;
-
-				case 56:		/* cursor y */
-
-					(*cy_key)();	break;
-/* 
-*/
-				case 58:		/* longpot r */
-
-					val = SM_SCALE(aval);
-
-					for (i = 0; i < 12; i++) {
-
-						if (grp2prt[i][0] EQ LCL_PRT) {
-
-							if (newsv(i, SM_LPBR, val)) {
-
-								if (recsw AND grpstat[i] AND
-								    (2 EQ (ancmsw ? varmode[2][i] : grpmode[i]))) {
-
-									if (E_NULL NE (ep = e_alc(E_SIZE2))) {
-
-										ep->e_time = t_cur;
-										ep->e_type = EV_ANVL;
-										ep->e_data1 = 0x0020 | i;
-										ep->e_dn = (struct s_entry *)((long)val << 16);
-										p_cur = e_ins(ep, ep_adj(p_cur, 0, t_cur))->e_fwd;
-										ctrsw = TRUE;
-										se_disp(ep, D_FWD, gdstbc, 1);
-										ctrsw = FALSE;
-									}
-
-								} else if ((angroup - 1) EQ i) {
-
-									dsanval(2);
-								}
-							}
-						}
-					}
-
-					break;
+		    break;
 
 /* 
 */
-				case 59:		/* scroll wheel */
+		  case 59:	/* scroll wheel */
 
-					wheel();	break;
+		    wheel ();
+		    break;
 
-				case 70:		/* X key */
+		  case 70:	/* X key */
 
-					(*x_key)();	break;
+		    (*x_key) ();
+		    break;
 
-				case 71:		/* E key */
+		  case 71:	/* E key */
 
 #if	DEBUGIT
-	if (debugsw AND debugms)
-		printf("msl():  -> e_key ($%lX)  astat=%d  ndisp=%d\n",
-			e_key, astat, ndisp);
+		    if (debugsw AND debugms)
+		      printf ("msl():  -> e_key ($%lX)  astat=%d  ndisp=%d\n",
+			      e_key, astat, ndisp);
 #endif
-					(*e_key)();
+		    (*e_key) ();
 
 #if	DEBUGIT
-	if (debugsw AND debugms)
-		printf("msl():  <- e_key ($%lX)  astat=%d  ndisp=%d  runit=%d\n",
-			e_key, astat, ndisp, runit);
+		    if (debugsw AND debugms)
+		      printf
+			("msl():  <- e_key ($%lX)  astat=%d  ndisp=%d  runit=%d\n",
+			 e_key, astat, ndisp, runit);
 #endif
 
-					break;
+		    break;
 
-				case 72:		/* M key */
+		  case 72:	/* M key */
 
-					(*m_key)();	break;
+		    (*m_key) ();
+		    break;
 
-				case 73:		/* Tempo */
+		  case 73:	/* Tempo */
 
-					if (aval > 50)		/* dead band */
-						if (aval < 53)
-							aval = 50;
-						else
-							aval -= 2;
+		    if (aval > 50)	/* dead band */
+		      if (aval < 53)
+			aval = 50;
+		      else
+			aval -= 2;
 
-					tmpomlt = aval > 100 ? 100 : aval;
+		    tmpomlt = aval > 100 ? 100 : aval;
 #if	OLDTIME
-					ti  = ( (tmpomlt + 50) * tmpoval) / 100;
-					ti  = (short)( (192000L / ti) - 1);
+		    ti = ((tmpomlt + 50) * tmpoval) / 100;
+		    ti = (short) ((192000L / ti) - 1);
 #else
-					ti  = (tmpomlt + 50) * tmpoval;
-					ti  = (short)( (19200000L / ti) - 1);
+		    ti = (tmpomlt + 50) * tmpoval;
+		    ti = (short) ((19200000L / ti) - 1);
 #endif
-					TIME_T2H = ti >> 8;
-					TIME_T2L = ti & 0x00FF;
+		    TIME_T2H = ti >> 8;
+		    TIME_T2L = ti & 0x00FF;
 
-					if (tmpomlt EQ 50) {	/* 0 */
+		    if (tmpomlt EQ 50)
+		      {		/* 0 */
 
-						io_leds = 0x18;	/* green off */
-						io_leds = 0x19;	/* red off */
+			io_leds = 0x18;	/* green off */
+			io_leds = 0x19;	/* red off */
 
-					} else if (tmpomlt GT 50) {	/* hi */
+		      }
+		    else if (tmpomlt GT 50)
+		      {		/* hi */
 
-						io_leds = 0x98;	/* green on */
-						io_leds = 0x19;	/* red off */
+			io_leds = 0x98;	/* green on */
+			io_leds = 0x19;	/* red off */
 
-					} else {		/* lo */
+		      }
+		    else
+		      {		/* lo */
 
-						io_leds = 0x18;	/* green off */
-						io_leds = 0x99;	/* red on */
-					}
+			io_leds = 0x18;	/* green off */
+			io_leds = 0x99;	/* red on */
+		      }
 
-					break;
+		    break;
 /* 
 */
-				case 74:		/* Time */
+		  case 74:	/* Time */
 
-					if (aval > 50)		/* dead band */
-						if (aval < 53)
-							aval = 50;
-						else
-							aval -= 2;
+		    if (aval > 50)	/* dead band */
+		      if (aval < 53)
+			aval = 50;
+		      else
+			aval -= 2;
 
-					ti = aval > 100 ? 100 : aval;
-					timemlt = tmultab[ti];
+		    ti = aval > 100 ? 100 : aval;
+		    timemlt = tmultab[ti];
 
-					if (ti EQ 50) {		/* 0 */
+		    if (ti EQ 50)
+		      {		/* 0 */
 
-						io_leds = 0x1A;	/* green off */
-						io_leds = 0x1B;	/* red off */
+			io_leds = 0x1A;	/* green off */
+			io_leds = 0x1B;	/* red off */
 
-					} else if (ti GT 50) {	/* hi */
+		      }
+		    else if (ti GT 50)
+		      {		/* hi */
 
-						io_leds = 0x9A;	/* green on */
-						io_leds = 0x1B;	/* red off */
+			io_leds = 0x9A;	/* green on */
+			io_leds = 0x1B;	/* red off */
 
-					} else {		/* lo */
+		      }
+		    else
+		      {		/* lo */
 
-						io_leds = 0x1A;	/* green off */
-						io_leds = 0x9B;	/* red on */
-					}
+			io_leds = 0x1A;	/* green off */
+			io_leds = 0x9B;	/* red on */
+		      }
 
-					break;
-
-/* 
-*/
-				case 75:		/* Tuning */
-
-					if (aval > 50)		/* dead band */
-						if (aval < 53)
-							aval = 50;
-						else
-							aval -= 2;
-
-					i = (aval > 100) ? 100 : aval;
-					tuneval = (i - 50) << 2;
-					settune();
-
-					if (i EQ 50) {
-
-						io_leds = 0x1C;	/* green off */
-						io_leds = 0x1D;	/* red off */
-
-					} else if (i GT 50) {
-
-						io_leds = 0x9C;	/* green on */
-						io_leds = 0x1D;	/* red off */
-
-					} else {
-
-						io_leds = 0x1C;	/* green off */
-						io_leds = 0x9D;	/* red on */
-					}
-
-					break;
-/* 
-*/
-				case 76:		/* amplitude */
-
-				aval += aval >> 2;
-
-				if (aval > 127)
-					aval = 127;
-
-				amplval = (aval << 9) ^ 0x8000;
-					sendval(0, 0, amplval);
-					break;
-
-				case 77:		/* pedal 1 */
-
-					val = SM_SCALE(aval);
-
-					for (i = 0; i < 12; i++) {
-
-						if (grp2prt[i][0] EQ LCL_PRT) {
-
-							if (newsv(i, SM_PED1, val)) {
-
-								if (recsw AND grpstat[i] AND
-								    (2 EQ (ancmsw ? varmode[4][i] : grpmode[i]))) {
-
-									if (E_NULL NE (ep = e_alc(E_SIZE2))) {
-
-										ep->e_time = t_cur;
-										ep->e_type = EV_ANVL;
-										ep->e_data1 = 0x0040 | i;
-										ep->e_dn = (struct s_entry *)((long)val << 16);
-										p_cur = e_ins(ep, ep_adj(p_cur, 0, t_cur))->e_fwd;
-										ctrsw = TRUE;
-										se_disp(ep, D_FWD, gdstbc, 1);
-										ctrsw = FALSE;
-									}
-
-								} else if ((angroup - 1) EQ i) {
-
-									dsanval(4);
-								}
-							}
-						}
-					}
-
-					break;
+		    break;
 
 /* 
 */
-				case 79:		/* cv 1 */
+		  case 75:	/* Tuning */
 
-					val = SM_SCALE(aval);
+		    if (aval > 50)	/* dead band */
+		      if (aval < 53)
+			aval = 50;
+		      else
+			aval -= 2;
 
-					for (i = 0; i < 12; i++) {
+		    i = (aval > 100) ? 100 : aval;
+		    tuneval = (i - 50) << 2;
+		    settune ();
 
-						if (grp2prt[i][0] EQ LCL_PRT) {
+		    if (i EQ 50)
+		      {
 
-							if (newsv(i, SM_CTL1, val)) {
+			io_leds = 0x1C;	/* green off */
+			io_leds = 0x1D;	/* red off */
 
-								if (recsw AND grpstat[i] AND
-								    (2 EQ (ancmsw ? varmode[3][i] : grpmode[i]))) {
+		      }
+		    else if (i GT 50)
+		      {
 
-									if (E_NULL NE (ep = e_alc(E_SIZE2))) {
+			io_leds = 0x9C;	/* green on */
+			io_leds = 0x1D;	/* red off */
 
-										ep->e_time = t_cur;
-										ep->e_type = EV_ANVL;
-										ep->e_data1 = 0x0030 | i;
-										ep->e_dn = (struct s_entry *)((long)val << 16);
-										p_cur = e_ins(ep, ep_adj(p_cur, 0, t_cur))->e_fwd;
-										ctrsw = TRUE;
-										se_disp(ep, D_FWD, gdstbc, 1);
-										ctrsw = FALSE;
-									}
+		      }
+		    else
+		      {
 
-								} if ((angroup - 1)EQ i) {
+			io_leds = 0x1C;	/* green off */
+			io_leds = 0x9D;	/* red on */
+		      }
 
-									dsanval(3);
-								}
-							}
-						}
-					}
+		    break;
+/* 
+*/
+		  case 76:	/* amplitude */
 
-					break;
+		    aval += aval >> 2;
 
-				}
-			}
-		}
+		    if (aval > 127)
+		      aval = 127;
+
+		    amplval = (aval << 9) ^ 0x8000;
+		    sendval (0, 0, amplval);
+		    break;
+
+		  case 77:	/* pedal 1 */
+
+		    val = SM_SCALE (aval);
+
+		    for (i = 0; i < 12; i++)
+		      {
+
+			if (grp2prt[i][0] EQ LCL_PRT)
+			  {
+
+			    if (newsv (i, SM_PED1, val))
+			      {
+
+				if (recsw AND grpstat[i] AND
+				    (2
+				     EQ (ancmsw ? varmode[4][i] :
+					 grpmode[i])))
+				  {
+
+				    if (E_NULL NE (ep = e_alc (E_SIZE2)))
+				      {
+
+					ep->e_time = t_cur;
+					ep->e_type = EV_ANVL;
+					ep->e_data1 = 0x0040 | i;
+					ep->e_dn =
+					  (struct s_entry *) ((long) val <<
+							      16);
+					p_cur =
+					  e_ins (ep,
+						 ep_adj (p_cur, 0,
+							 t_cur))->e_fwd;
+					ctrsw = TRUE;
+					se_disp (ep, D_FWD, gdstbc, 1);
+					ctrsw = FALSE;
+				      }
+
+				  }
+				else if ((angroup - 1) EQ i)
+				  {
+
+				    dsanval (4);
+				  }
+			      }
+			  }
+		      }
+
+		    break;
+
+/* 
+*/
+		  case 79:	/* cv 1 */
+
+		    val = SM_SCALE (aval);
+
+		    for (i = 0; i < 12; i++)
+		      {
+
+			if (grp2prt[i][0] EQ LCL_PRT)
+			  {
+
+			    if (newsv (i, SM_CTL1, val))
+			      {
+
+				if (recsw AND grpstat[i] AND
+				    (2
+				     EQ (ancmsw ? varmode[3][i] :
+					 grpmode[i])))
+				  {
+
+				    if (E_NULL NE (ep = e_alc (E_SIZE2)))
+				      {
+
+					ep->e_time = t_cur;
+					ep->e_type = EV_ANVL;
+					ep->e_data1 = 0x0030 | i;
+					ep->e_dn =
+					  (struct s_entry *) ((long) val <<
+							      16);
+					p_cur =
+					  e_ins (ep,
+						 ep_adj (p_cur, 0,
+							 t_cur))->e_fwd;
+					ctrsw = TRUE;
+					se_disp (ep, D_FWD, gdstbc, 1);
+					ctrsw = FALSE;
+				      }
+
+				  }
+				if ((angroup - 1) EQ i)
+				  {
+
+				    dsanval (3);
+				  }
+			      }
+			  }
+		      }
+
+		    break;
+
+		  }
+	    }
+	}
 /* 
 */
 
 #if	DEBUGIT
-	if (debugsw AND debugms AND (NOT runit))
-		printf("msl():  end of asig cases -- dsp_ok = %d\n", dsp_ok);
+      if (debugsw AND debugms AND (NOT runit))
+	printf ("msl():  end of asig cases -- dsp_ok = %d\n", dsp_ok);
 #endif
 
-		/* memory allocation changed ? */
+      /* memory allocation changed ? */
 
-		if ((ndisp EQ 2) AND se_chg AND dsp_ok) {
+      if ((ndisp EQ 2) AND se_chg AND dsp_ok)
+	{
 
-			dsmem();		/* display memory remaining */
-			se_chg = FALSE;
-		}
+	  dsmem ();		/* display memory remaining */
+	  se_chg = FALSE;
+	}
 
-		nxtflag = FALSE;		/* clear 'next score' flag */
-		fctemp  = fc_val;		/* sample the frame clock */
+      nxtflag = FALSE;		/* clear 'next score' flag */
+      fctemp = fc_val;		/* sample the frame clock */
 
-		if (t_cur NE fctemp) {		/* see if frame clock changed */
+      if (t_cur NE fctemp)
+	{			/* see if frame clock changed */
 
-			if (t_cur LT fctemp) {		/* clock incremented */
+	  if (t_cur LT fctemp)
+	    {			/* clock incremented */
 
-				if (se EQ D_BAK)	/* change direction ? */
-					chgsef();
+	      if (se EQ D_BAK)	/* change direction ? */
+		chgsef ();
 
-				sc_trek(fctemp);	/* track frame clock */
+	      sc_trek (fctemp);	/* track frame clock */
 
-			} else {			/* clock decremented */
+	    }
+	  else
+	    {			/* clock decremented */
 
-				if (se EQ D_FWD)	/* change direction ? */
-					chgseb();
+	      if (se EQ D_FWD)	/* change direction ? */
+		chgseb ();
 
-				sc_trek(fctemp);	/* track frame clock */
-			}
+	      sc_trek (fctemp);	/* track frame clock */
+	    }
 
-		/* handle display update if there's time for it */
+	  /* handle display update if there's time for it */
 
-		} else if (dsp_ok AND (t_ctr NE t_cur)) {
+	}
+      else if (dsp_ok AND (t_ctr NE t_cur))
+	{
 
-			if (t_ctr LT t_cur) {	/* clock incremented */
+	  if (t_ctr LT t_cur)
+	    {			/* clock incremented */
 
-				if (sd EQ D_BAK)	/* change direction ? */
-					chgsdf();
+	      if (sd EQ D_BAK)	/* change direction ? */
+		chgsdf ();
 
-				sc_trak(t_ctr + 1);	/* track frame clock */
+	      sc_trak (t_ctr + 1);	/* track frame clock */
 
-			} else {		/* clock decremented */
+	    }
+	  else
+	    {			/* clock decremented */
 
-				if (sd EQ D_FWD)	/* change direction ? */
-					chgsdb();
+	      if (sd EQ D_FWD)	/* change direction ? */
+		chgsdb ();
 
-				sc_trak(t_ctr - 1);	/* track frame clock */
-			}
-		}
+	      sc_trak (t_ctr - 1);	/* track frame clock */
+	    }
+	}
 /* 
 */
 #if	DEBUGIT
-	if (debugsw AND debugms AND (NOT runit))
-		printf("msl():  end of clock processing -- dsp_ok = %d\n",
-			dsp_ok);
+      if (debugsw AND debugms AND (NOT runit))
+	printf ("msl():  end of clock processing -- dsp_ok = %d\n", dsp_ok);
 #endif
 
-		/* handle 'next score' flag */
+      /* handle 'next score' flag */
 
-		if (nxtflag AND (sd EQ D_FWD)) {	/* switch scores ? */
+      if (nxtflag AND (sd EQ D_FWD))
+	{			/* switch scores ? */
 
-			oldrec = recsw;
-			oldclk = clkrun;
+	  oldrec = recsw;
+	  oldclk = clkrun;
 
-			ti = curscor + 1;
+	  ti = curscor + 1;
 
-			if (ti GE N_SCORES)
-				ti = 0;
+	  if (ti GE N_SCORES)
+	    ti = 0;
 
-			for (i = 0; i < N_SCORES; i++) {
+	  for (i = 0; i < N_SCORES; i++)
+	    {
 
-				if (E_NULL NE scores[ti]) {
+	      if (E_NULL NE scores[ti])
+		{
 
-					selscor(ti);
-					break;
-				}
-
-				if (++ti GE N_SCORES)
-					ti = 0;
-			}
-
-			clkset(oldclk);		/* restore clock mode */
-			dsclk();
-			recsw = oldrec;		/* restore record/play mode */
-			dsrpmod();
-			nxtflag = FALSE;	/* clear 'next score' flag */
+		  selscor (ti);
+		  break;
 		}
 
-#if	DEBUGIT
-	if (debugsw AND debugms AND (NOT runit))
-		printf("msl():  curproc\n");
-#endif
+	      if (++ti GE N_SCORES)
+		ti = 0;
+	    }
 
-		curproc();			/* process wheel and ball */
-
-#if	DEBUGIT
-	if (debugsw AND debugms AND (NOT runit))
-		printf("msl():  seqproc\n");
-#endif
-
-		seqproc();			/* process sequences */
+	  clkset (oldclk);	/* restore clock mode */
+	  dsclk ();
+	  recsw = oldrec;	/* restore record/play mode */
+	  dsrpmod ();
+	  nxtflag = FALSE;	/* clear 'next score' flag */
 	}
 
 #if	DEBUGIT
-	if (debugsw AND debugms)
-		printf("msl():  EXIT  ndisp=%d\n", ndisp);
+      if (debugsw AND debugms AND (NOT runit))
+	printf ("msl():  curproc\n");
+#endif
+
+      curproc ();		/* process wheel and ball */
+
+#if	DEBUGIT
+      if (debugsw AND debugms AND (NOT runit))
+	printf ("msl():  seqproc\n");
+#endif
+
+      seqproc ();		/* process sequences */
+    }
+
+#if	DEBUGIT
+  if (debugsw AND debugms)
+    printf ("msl():  EXIT  ndisp=%d\n", ndisp);
 #endif
 }

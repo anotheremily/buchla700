@@ -7,26 +7,26 @@
 
 #define	PALETTE		((unsigned *)0x280000L)
 
-short	dfltpal[16][3] = {
+short dfltpal[16][3] = {
 
 /*	 R  G  B	  color */
 
-	{0, 0, 0},	/*  0: Black */
-	{0, 1, 0},	/*  1: Dark Gray */
-	{0, 0, 2},	/*  2: Dark Blue */
-	{0, 0, 3},	/*  3: Light Blue */
-	{0, 2, 0},	/*  4: Dark Green */
-	{0, 3, 0},	/*  5: Light Green */
-	{0, 2, 2},	/*  6: Dark Cyan */
-	{0, 3, 3},	/*  7: Light Cyan */
-	{3, 0, 0},	/*  8: Red */
-	{3, 1, 0},	/*  9: Orange */
-	{3, 0, 3},	/* 10: Purple */
-	{3, 1, 2},	/* 11: Magenta */
-	{3, 2, 0},	/* 12: Brown */
-	{2, 3, 0},	/* 13: Yellow */
-	{2, 2, 2},	/* 14: Light Gray */
-	{3, 3, 3},	/* 15: White */
+  {0, 0, 0},			/*  0: Black */
+  {0, 1, 0},			/*  1: Dark Gray */
+  {0, 0, 2},			/*  2: Dark Blue */
+  {0, 0, 3},			/*  3: Light Blue */
+  {0, 2, 0},			/*  4: Dark Green */
+  {0, 3, 0},			/*  5: Light Green */
+  {0, 2, 2},			/*  6: Dark Cyan */
+  {0, 3, 3},			/*  7: Light Cyan */
+  {3, 0, 0},			/*  8: Red */
+  {3, 1, 0},			/*  9: Orange */
+  {3, 0, 3},			/* 10: Purple */
+  {3, 1, 2},			/* 11: Magenta */
+  {3, 2, 0},			/* 12: Brown */
+  {2, 3, 0},			/* 13: Yellow */
+  {2, 2, 2},			/* 14: Light Gray */
+  {3, 3, 3},			/* 15: White */
 };
 
 /* 
@@ -43,20 +43,19 @@ short	dfltpal[16][3] = {
    =============================================================================
 */
 
-vsetpal(slot, red, grn, blu)
-register unsigned slot, red, grn, blu;
+vsetpal (slot, red, grn, blu)
+     register unsigned slot, red, grn, blu;
 {
-	register unsigned palval;
-	unsigned *pal;
+  register unsigned palval;
+  unsigned *pal;
 
-	pal = PALETTE;
+  pal = PALETTE;
 
-	palval = (slot << 6) |
-		 ((red & 1) << 5) | ((red & 2) << 1) |
-		 ((grn & 1) << 4) | (grn & 2) |
-		 ((blu & 1) << 3) | ((blu & 2) >> 1);
+  palval = (slot << 6) |
+    ((red & 1) << 5) | ((red & 2) << 1) |
+    ((grn & 1) << 4) | (grn & 2) | ((blu & 1) << 3) | ((blu & 2) >> 1);
 
-	*pal = palval ^ 0x003F;
+  *pal = palval ^ 0x003F;
 }
 
 /* 
@@ -77,11 +76,11 @@ register unsigned slot, red, grn, blu;
    =============================================================================
 */
 
-vsndpal(pp)
-short pp[16][3];
+vsndpal (pp)
+     short pp[16][3];
 {
-	register short i;
+  register short i;
 
-	for (i = 0; i < 16; i++)
-		vsetpal(i, pp[i][0], pp[i][1], pp[i][2]);
+  for (i = 0; i < 16; i++)
+    vsetpal (i, pp[i][0], pp[i][1], pp[i][2]);
 }

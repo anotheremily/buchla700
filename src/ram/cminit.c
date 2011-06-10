@@ -15,19 +15,19 @@
 
 #define	CM_DBLK		if (!QQanch) while (*QQip EQ ' ') ++QQip
 
-int	QQsw;		/* parser result switch */
-int	QQanch;		/* parser anchored match switch */
+int QQsw;			/* parser result switch */
+int QQanch;			/* parser anchored match switch */
 
-char	*QQin;		/* parser initial input pointer */
-char	*QQip;		/* parser current input pointer */
-char	*QQop;		/* parser string output pointer */
+char *QQin;			/* parser initial input pointer */
+char *QQip;			/* parser current input pointer */
+char *QQop;			/* parser string output pointer */
 
-long	QQnum;		/* parser numeric result */
-int	QQlnum;		/* parser list element number result */
-char	QQdig;		/* parser digit result */
-char	QQchr;		/* parser character result */
+long QQnum;			/* parser numeric result */
+int QQlnum;			/* parser list element number result */
+char QQdig;			/* parser digit result */
+char QQchr;			/* parser character result */
 
-char	QQstr[CM_MXSTR];	/* parser string result */
+char QQstr[CM_MXSTR];		/* parser string result */
 
 /* 
 */
@@ -39,24 +39,24 @@ char	QQstr[CM_MXSTR];	/* parser string result */
 */
 
 int
-CMinit(ip)
-char *ip;
+CMinit (ip)
+     char *ip;
 {
-	register int i;
-	register char *t;
+  register int i;
+  register char *t;
 
-	QQip = ip;
-	QQin = ip;
-	QQsw = TRUE;
-	QQanch = FALSE;
-	QQdig = '?';
-	QQchr = '?';
-	QQnum = 0;
-	QQop = QQstr;
-	t = QQstr;
+  QQip = ip;
+  QQin = ip;
+  QQsw = TRUE;
+  QQanch = FALSE;
+  QQdig = '?';
+  QQchr = '?';
+  QQnum = 0;
+  QQop = QQstr;
+  t = QQstr;
 
-	for (i = 0; i < CM_MXSTR; i++)
-		*t++ = '\0';
+  for (i = 0; i < CM_MXSTR; i++)
+    *t++ = '\0';
 }
 
 /* 
@@ -69,16 +69,16 @@ char *ip;
 */
 
 int
-CMchr(c)
-char c;
+CMchr (c)
+     char c;
 {
-	CM_DBLK;
+  CM_DBLK;
 
-	if (c NE *QQip)
-		return(QQsw = FALSE);
+  if (c NE * QQip)
+    return (QQsw = FALSE);
 
-	QQchr = *QQip++;
-	return(QQsw = TRUE);
+  QQchr = *QQip++;
+  return (QQsw = TRUE);
 }
 
 /* 
@@ -91,28 +91,28 @@ char c;
 */
 
 int
-CMuchr(c)
-register char c;
+CMuchr (c)
+     register char c;
 {
-	register char t;
+  register char t;
 
-	CM_DBLK;
+  CM_DBLK;
 
-	t = *QQip;
+  t = *QQip;
 
-	if (isascii(c))
-		if (isupper(c))
-			c = _tolower(c);
+  if (isascii (c))
+    if (isupper (c))
+      c = _tolower (c);
 
-	if (isascii(t))
-		if (isupper(t))
-			t = _tolower(t);
+  if (isascii (t))
+    if (isupper (t))
+      t = _tolower (t);
 
-	if (c NE t)
-		return(QQsw = FALSE);
+  if (c NE t)
+    return (QQsw = FALSE);
 
-	QQchr = *QQip++;
-	return(QQsw = TRUE);
+  QQchr = *QQip++;
+  return (QQsw = TRUE);
 }
 
 /* 
@@ -125,29 +125,30 @@ register char c;
 */
 
 int
-CMstr(s)
-char *s;
+CMstr (s)
+     char *s;
 {
-	register char *t;
-	char *q;
+  register char *t;
+  char *q;
 
-	CM_DBLK;
+  CM_DBLK;
 
-	t = QQip;
-	q = s;
+  t = QQip;
+  q = s;
 
-	while (*s) {
+  while (*s)
+    {
 
-		if (*t++ NE *s++)
-			return(QQsw = FALSE);
-	}
+      if (*t++ NE * s++)
+	return (QQsw = FALSE);
+    }
 
-	QQop = QQstr;
+  QQop = QQstr;
 
-	while (*QQop++ = *q++) ;
+  while (*QQop++ = *q++);
 
-	QQip = t;
-	return(QQsw = TRUE);
+  QQip = t;
+  return (QQsw = TRUE);
 }
 
 /* 
@@ -160,40 +161,41 @@ char *s;
 */
 
 int
-CMustr(s)
-register char *s;
+CMustr (s)
+     register char *s;
 {
-	register char *t, t1, t2;
-	char *q;
+  register char *t, t1, t2;
+  char *q;
 
-	CM_DBLK;
+  CM_DBLK;
 
-	t = QQip;
-	q = s;
+  t = QQip;
+  q = s;
 
-	while (*s) {
+  while (*s)
+    {
 
-		t1 = *t++;
-		t2 = *s++;
+      t1 = *t++;
+      t2 = *s++;
 
-		if (isascii(t1))
-			if (isupper(t1))
-				t1 = _tolower(t1);
+      if (isascii (t1))
+	if (isupper (t1))
+	  t1 = _tolower (t1);
 
-		if (isascii(t2))
-			if (isupper(t2))
-				t2 = _tolower(t2);
+      if (isascii (t2))
+	if (isupper (t2))
+	  t2 = _tolower (t2);
 
-		if (t1 NE t2)
-			return(QQsw = FALSE);
-	}
+      if (t1 NE t2)
+	return (QQsw = FALSE);
+    }
 
-	QQop = QQstr;
+  QQop = QQstr;
 
-	while (*QQop++ = *q++) ;
+  while (*QQop++ = *q++);
 
-	QQip = t;
-	return(QQsw = TRUE);
+  QQip = t;
+  return (QQsw = TRUE);
 }
 
 /* 
@@ -206,41 +208,42 @@ register char *s;
 */
 
 int
-CMlong()
+CMlong ()
 {
-	register char *p;
-	register long n;
-	register char c;
+  register char *p;
+  register long n;
+  register char c;
 
-	CM_DBLK;
+  CM_DBLK;
 
-	p = QQip;
-	n = 0L;
-	c = *p++;
+  p = QQip;
+  n = 0L;
+  c = *p++;
 
-	if (!isascii(c))
-		return(QQsw = FALSE);
+  if (!isascii (c))
+    return (QQsw = FALSE);
 
-	if (!isdigit(c))
-		return(QQsw = FALSE);
+  if (!isdigit (c))
+    return (QQsw = FALSE);
 
-	n = c - '0';
-		
-	while (c = *p) {
+  n = c - '0';
 
-		if (!isascii(c))
-			break;
+  while (c = *p)
+    {
 
-		if (!isdigit(c))
-			break;
+      if (!isascii (c))
+	break;
 
-		n = (n * 10) + (c - '0');
-		++p;
-	}
+      if (!isdigit (c))
+	break;
 
-	QQip = p;
-	QQnum = n;
-	return(QQsw = TRUE);
+      n = (n * 10) + (c - '0');
+      ++p;
+    }
+
+  QQip = p;
+  QQnum = n;
+  return (QQsw = TRUE);
 }
 
 /* 
@@ -253,23 +256,23 @@ CMlong()
 */
 
 int
-CMdig()
+CMdig ()
 {
-	register char c;
+  register char c;
 
-	CM_DBLK;
+  CM_DBLK;
 
-	c = *QQip;
+  c = *QQip;
 
-	if (!isascii(c))
-		return(QQsw = FALSE);
+  if (!isascii (c))
+    return (QQsw = FALSE);
 
-	if (!isdigit(c))
-		return(QQsw = FALSE);
+  if (!isdigit (c))
+    return (QQsw = FALSE);
 
-	QQdig = c;
-	++QQip;
-	return(QQsw = TRUE);
+  QQdig = c;
+  ++QQip;
+  return (QQsw = TRUE);
 }
 
 /* 
@@ -282,34 +285,36 @@ CMdig()
 */
 
 int
-CMlist(l)
-register char *l[];
+CMlist (l)
+     register char *l[];
 {
-	register int	n;
-	register char	*p, *q;
+  register int n;
+  register char *p, *q;
 
-	CM_DBLK;
+  CM_DBLK;
 
-	n = 0;
+  n = 0;
 
-	while (p = *l++) {
+  while (p = *l++)
+    {
 
-		q = p;
+      q = p;
 
-		if (CMstr(p)) {
+      if (CMstr (p))
+	{
 
-			QQop = QQstr;
+	  QQop = QQstr;
 
-			while (*QQop++ = *q++) ;
+	  while (*QQop++ = *q++);
 
-			QQlnum = n;
-			return(QQsw = TRUE);
-		}
-
-		++n;
+	  QQlnum = n;
+	  return (QQsw = TRUE);
 	}
 
-	return(QQsw = FALSE);
+      ++n;
+    }
+
+  return (QQsw = FALSE);
 }
 
 /* 
@@ -323,34 +328,36 @@ register char *l[];
 */
 
 int
-CMulist(l)
-register char *l[];
+CMulist (l)
+     register char *l[];
 {
-	register int	n;
-	register char	*p, *q;
+  register int n;
+  register char *p, *q;
 
-	CM_DBLK;
+  CM_DBLK;
 
-	n = 0;
+  n = 0;
 
-	while (p = *l++) {
+  while (p = *l++)
+    {
 
-		q = p;
+      q = p;
 
-		if (CMustr(p)) {
+      if (CMustr (p))
+	{
 
-			QQop = QQstr;
+	  QQop = QQstr;
 
-			while (*QQop++ = *q++) ;
+	  while (*QQop++ = *q++);
 
-			QQlnum = n;
-			return(QQsw = TRUE);
-		}
-
-		++n;
+	  QQlnum = n;
+	  return (QQsw = TRUE);
 	}
 
-	return(QQsw = FALSE);
+      ++n;
+    }
+
+  return (QQsw = FALSE);
 }
 
 /* 
@@ -363,25 +370,25 @@ register char *l[];
 */
 
 int
-CMstat(msg)
-char *msg;
+CMstat (msg)
+     char *msg;
 {
-	register char *tp;
+  register char *tp;
 
-	tp = QQin;
-	printf("%s\r\n", msg);
-	printf("  QQsw: %s, QQanch: %s, QQchr: 0x%02x <%c>, QQdig: %c\r\n",
-		(QQsw ? "OK" : "NOGO"), (QQanch ? "anchored" : "deblanked"),
-		QQchr, (isascii(QQchr) ? (isprint(QQchr) ? QQchr : ' ') : ' '),
-		QQdig);
-	printf("  QQnum: %ld, QQlnum: %d\r\n", QQnum, QQlnum);
-	printf("  QQstr: %s\r\n", QQstr);
-	printf("  {%s}\r\n", QQin);
-	printf("   ");
+  tp = QQin;
+  printf ("%s\r\n", msg);
+  printf ("  QQsw: %s, QQanch: %s, QQchr: 0x%02x <%c>, QQdig: %c\r\n",
+	  (QQsw ? "OK" : "NOGO"), (QQanch ? "anchored" : "deblanked"),
+	  QQchr, (isascii (QQchr) ? (isprint (QQchr) ? QQchr : ' ') : ' '),
+	  QQdig);
+  printf ("  QQnum: %ld, QQlnum: %d\r\n", QQnum, QQlnum);
+  printf ("  QQstr: %s\r\n", QQstr);
+  printf ("  {%s}\r\n", QQin);
+  printf ("   ");
 
-	while (tp++ NE QQip)
-		printf(" ");
+  while (tp++ NE QQip)
+    printf (" ");
 
-	printf("^\r\n");
-	return(QQsw);
+  printf ("^\r\n");
+  return (QQsw);
 }

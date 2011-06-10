@@ -35,28 +35,28 @@
 #include "vsddvars.h"
 #include "debug.h"
 
-typedef	unsigned short	UWORD16;	/* unsigned 16 bit word */
+typedef unsigned short UWORD16;	/* unsigned 16 bit word */
 
 /* 
 */
 
-#define	BOOTKEY		39		/* Boot panel key */
-#define	ROMPKEY		40		/* ROMP panel key */
+#define	BOOTKEY		39	/* Boot panel key */
+#define	ROMPKEY		40	/* ROMP panel key */
 
 #define	BOOTFILE	"midas.abs"	/* Boot file name */
 
 #define	BOOT_PRI	(MT_DfPri/2)	/* default boot priority */
 #define	DFRUNPRI	(MT_DfPri/2)	/* default 'run' priority */
 
-#define	KB_EI		2		/* Enable level for panel */
-#define	DEFIPL		2		/* Default internal processor level */
-#define	INITSR		0x2200		/* Default initial status register */
+#define	KB_EI		2	/* Enable level for panel */
+#define	DEFIPL		2	/* Default internal processor level */
+#define	INITSR		0x2200	/* Default initial status register */
 
-#define	LED_TIME	100		/* LED scan timer value (loops) */
-#define	FIFOLIM		60000		/* FIFO clear limit */
+#define	LED_TIME	100	/* LED scan timer value (loops) */
+#define	FIFOLIM		60000	/* FIFO clear limit */
 
-#define	NSTAX		5		/* Number of interrupt stacks */
-#define	STKLEN		256		/* Default / Int. stack size (words) */
+#define	NSTAX		5	/* Number of interrupt stacks */
+#define	STKLEN		256	/* Default / Int. stack size (words) */
 
 #define	USER_RAM	0x00010000L	/* Start of user RAM  (TPA) */
 #define	RAM_TOP		0x000FFFFEL	/* Default top word of memory */
@@ -65,50 +65,50 @@ typedef	unsigned short	UWORD16;	/* unsigned 16 bit word */
 #define	ROMADDR		0x00100000L	/* Start of PROM */
 #define	PRM_DATE	0x00100008L	/* PROM date address */
 #define	PRM_VERS	0x00100002L	/* PROM version address */
-#define	PDATELN		14		/* PROM date length */
+#define	PDATELN		14	/* PROM date length */
 
-#define	BARBASE		5120L		/* Base of bar display in VSDD RAM */
-#define	SWBASE		38400L		/* Base of switch display in VSDD RAM */
+#define	BARBASE		5120L	/* Base of bar display in VSDD RAM */
+#define	SWBASE		38400L	/* Base of switch display in VSDD RAM */
 
-#define	BAR_ON		P_WHT		/* color of bar when on */
-#define	BAR_OFF		P_BRN		/* color of bar when off */
-#define	SW_ON		P_DKGRN		/* color of switch when on */
-#define	SW_OFF		P_RED		/* color of switch when off */
+#define	BAR_ON		P_WHT	/* color of bar when on */
+#define	BAR_OFF		P_BRN	/* color of bar when off */
+#define	SW_ON		P_DKGRN	/* color of switch when on */
+#define	SW_OFF		P_RED	/* color of switch when off */
 
 /* 
 */
 
-#define	I_TABX		53		/* Tablet X */
-#define	I_TABY		54		/* Tablet Y */
-#define	I_CURX		55		/* Cursor X */
-#define	I_CURY		56		/* Cursor Y */
-#define	I_LONGL		57		/* LongPot Left */
-#define	I_LONGR		58		/* LongPot Right */
-#define	I_SCROLL	59		/* Scroll */
-#define	I_TEMPO		73		/* Tempo Multiplier */
-#define	I_TIME		74		/* Time Scaling */
-#define	I_TUNE		75		/* Fine Tuning */
-#define	I_LEVEL		76		/* Amplitude */
+#define	I_TABX		53	/* Tablet X */
+#define	I_TABY		54	/* Tablet Y */
+#define	I_CURX		55	/* Cursor X */
+#define	I_CURY		56	/* Cursor Y */
+#define	I_LONGL		57	/* LongPot Left */
+#define	I_LONGR		58	/* LongPot Right */
+#define	I_SCROLL	59	/* Scroll */
+#define	I_TEMPO		73	/* Tempo Multiplier */
+#define	I_TIME		74	/* Time Scaling */
+#define	I_TUNE		75	/* Fine Tuning */
+#define	I_LEVEL		76	/* Amplitude */
 
-#define	MARGIN		4		/* Offset from left edge of screen */
+#define	MARGIN		4	/* Offset from left edge of screen */
 
-#define	MAXFNLN		13		/* xxxxxxxx.xxx + CR */
-#define	MAXARGLN	80		/* maximum argument length */
-#define	MAXCMDLN	128		/* maximum command line length */
-#define	MAXHS		80		/* maximum help string length */
-#define	MAXID		90		/* maximum ID string length */
+#define	MAXFNLN		13	/* xxxxxxxx.xxx + CR */
+#define	MAXARGLN	80	/* maximum argument length */
+#define	MAXCMDLN	128	/* maximum command line length */
+#define	MAXHS		80	/* maximum help string length */
+#define	MAXID		90	/* maximum ID string length */
 
-#define	BPINST		0x4E4F		/* breakpoint instruction */
+#define	BPINST		0x4E4F	/* breakpoint instruction */
 
-#define	CRLF		"\r\n"		/* CR/LF constant */
+#define	CRLF		"\r\n"	/* CR/LF constant */
 
-#define	TACK		"K\r"		/* good response from load command */
-#define	NACK		"?\r"		/* bad response from load command */
+#define	TACK		"K\r"	/* good response from load command */
+#define	NACK		"?\r"	/* bad response from load command */
 #define	SREC9		"04000000FB"	/* tail of a type 9 Motorola S-Record */
 
-#define	MON_C		1		/* monitor code - character */
-#define	MON_S		2		/* monitor code - short */
-#define	MON_L		4		/* monitor code - long */
+#define	MON_C		1	/* monitor code - character */
+#define	MON_S		2	/* monitor code - short */
+#define	MON_L		4	/* monitor code - long */
 
 /* 
 */
@@ -119,51 +119,51 @@ typedef	unsigned short	UWORD16;	/* unsigned 16 bit word */
    ============================================================================
 */
 
-extern	UWORD16	setipl();
+extern UWORD16 setipl ();
 
-extern	short	_MTInt1(), _MTInt2(), _MTInt3(), _MTInt4(), _MTInt5();
+extern short _MTInt1 (), _MTInt2 (), _MTInt3 (), _MTInt4 (), _MTInt5 ();
 
-extern	int	rjumpto(), halt(), getln(), sjumpto();
-extern	int	trap15(), xtrap15();
-extern	int	hdvini(), booter(), vsndpal();
+extern int rjumpto (), halt (), getln (), sjumpto ();
+extern int trap15 (), xtrap15 ();
+extern int hdvini (), booter (), vsndpal ();
 
-extern	char	*MTPrFlg();
+extern char *MTPrFlg ();
 
 /* external variables */
 
-extern	TCB	*MT_ITT[];		/* interrupt TCB pointer table */
+extern TCB *MT_ITT[];		/* interrupt TCB pointer table */
 
-extern	short	wzcrsh, *crshpc, *crshsp, *crshus;
+extern short wzcrsh, *crshpc, *crshsp, *crshus;
 
-extern	int	B_log_s, B_dbg_s, _bpbin;
+extern int B_log_s, B_dbg_s, _bpbin;
 
-extern	char	*B_buf_a;
+extern char *B_buf_a;
 
-extern	short	dfltpal[16][3], crshst[16];
+extern short dfltpal[16][3], crshst[16];
 
-extern	UWORD16	crshsr;
-extern	long	crshrg[16];
-extern	char	crshvc[4];
+extern UWORD16 crshsr;
+extern long crshrg[16];
+extern char crshvc[4];
 
-extern	MBOX	MSG_Vid;
-extern	SEM	SemQuit;
+extern MBOX MSG_Vid;
+extern SEM SemQuit;
 
 /* forward references */
 
-int	cp_dump(), cp_fill(), cp_copy(), cp_null(), cp_ilev(), cp_ldmp();
-int	cp_go(),   cp_read(), cp_mset(), cp_rset(), cp_wset(), cp_mtst();
-int	cp_wdmp(), cp_wfil(), cp_vrst(), cp_monc(), cp_mons(), cp_monl();
-int	cp_chek(), cx_dini(), cx_mlod(), cp_boot(), cx_boot(), cx_adsp();
-int	cx_mtsn(), cp_run(),  cx_run(),  cx_wait(), cx_copy(), cx_rset();
-int	cx_dump(), cx_fill(), cx_load(), cx_go(),   cx_read(), cx_help();
-int	cx_exit(), cx_writ(), cx_regs(), cx_mset(), cx_omap(), cx_chek();
-int	cx_bpb(),  cx_wset(), cx_wdmp(), cx_wfil(), cx_rest(), cx_mtid();
-int	cx_vrst(), cx_vreg(), cx_mon(),  cx_next(), cx_ilev(), cp_mtsd();
-int	do_srec(), cx_crsh(), cx_mtst(), cx_zap(),  cx_ldmp(), cx_mtsd();
-int	cx_mtcb(), cp_mstp(), cx_mstp(), cx_mzap(), cp_mpri(), cx_mpri();
-int	cx_mtsk(), cx_mqry(), cx_mtcs(), cx_mtrq();
+int cp_dump (), cp_fill (), cp_copy (), cp_null (), cp_ilev (), cp_ldmp ();
+int cp_go (), cp_read (), cp_mset (), cp_rset (), cp_wset (), cp_mtst ();
+int cp_wdmp (), cp_wfil (), cp_vrst (), cp_monc (), cp_mons (), cp_monl ();
+int cp_chek (), cx_dini (), cx_mlod (), cp_boot (), cx_boot (), cx_adsp ();
+int cx_mtsn (), cp_run (), cx_run (), cx_wait (), cx_copy (), cx_rset ();
+int cx_dump (), cx_fill (), cx_load (), cx_go (), cx_read (), cx_help ();
+int cx_exit (), cx_writ (), cx_regs (), cx_mset (), cx_omap (), cx_chek ();
+int cx_bpb (), cx_wset (), cx_wdmp (), cx_wfil (), cx_rest (), cx_mtid ();
+int cx_vrst (), cx_vreg (), cx_mon (), cx_next (), cx_ilev (), cp_mtsd ();
+int do_srec (), cx_crsh (), cx_mtst (), cx_zap (), cx_ldmp (), cx_mtsd ();
+int cx_mtcb (), cp_mstp (), cx_mstp (), cx_mzap (), cp_mpri (), cx_mpri ();
+int cx_mtsk (), cx_mqry (), cx_mtcs (), cx_mtrq ();
 
-char	hs_mtst[];
+char hs_mtst[];
 
 /* 
 */
@@ -193,62 +193,63 @@ char	hs_mtst[];
    ============================================================================
 */
 
-struct cmdent {			/* command table entry */
+struct cmdent
+{				/* command table entry */
 
-	char	*cname;		/* command name pointer */
-	int	(*cp)();	/* command parser function pointer */
-	int	(*cx)();	/* command execution function pointer */
-	char	*hstr;		/* help string pointer */
+  char *cname;			/* command name pointer */
+  int (*cp) ();			/* command parser function pointer */
+  int (*cx) ();			/* command execution function pointer */
+  char *hstr;			/* help string pointer */
 };
 
 struct cmdent cmtab[] = {
 
-	{"adisp",	cp_null,	cx_adsp,	""},
-	{"boot",	cp_boot,	cx_boot,	""},
-	{"bpb",		cp_null,	cx_bpb,		""},
-	{"check",	cp_chek,	cx_chek,	"start,end"},
-	{"copy",	cp_copy,	cx_copy,	"from,to,len"},
-	{"crash",	cp_null,	cx_crsh,	""},
-	{"dinit",	cp_null,	cx_dini,	""},
-	{"dump",	cp_dump,	cx_dump,	"from[,[to=from][,width=16]]"},
-	{"fill",	cp_fill,	cx_fill,	"start,count,byte"},
-	{"go",		cp_go,		cx_go,		"[addr][,[brk1][,brk2]]"},
-	{"help",	cp_null,	cx_help,	""},
-	{"ipl",		cp_ilev,	cx_ilev,	"level"},
-	{"ldump",	cp_ldmp,	cx_ldmp,	"from[,[to=from][,width=4]]"},
-	{"load",	cp_null,	cx_load,	""},	
-	{"midas",	cp_null,	cx_mlod,	""},
-	{"monc",	cp_monc,	cx_mon,		"addr"},
-	{"mons",	cp_mons,	cx_mon,		"addr"},
-	{"monl",	cp_monl,	cx_mon,		"addr"},
-	{"mset",	cp_mset,	cx_mset,	"addr,b1[,...,bn]"},
-	{"mtidump",	cp_null,	cx_mtid,	""},
-	{"mtsetp",	cp_mpri,	cx_mpri,	"priority"},
-	{"mtsnap",	cp_null,	cx_mtsn,	""},
-	{"mtstat",	cp_mstp,	cx_mqry,	"taskid"},
-	{"mtstop",	cp_mstp,	cx_mstp,	"taskid"},
-	{"mtzap",	cp_mstp,	cx_mzap,	"taskid"},
-	{"next",	cp_null,	cx_next,	""},
-	{"obmap",	cp_null,	cx_omap,	""},
-	{"ramtest",	cp_mtst,	cx_mtst,	hs_mtst},
-	{"read",	cp_read,	cx_read,	"sector,buffer,count"},
-	{"readyq",	cp_null,	cx_mtrq,	""},
-	{"regs",	cp_null,	cx_regs,	""},
-	{"reset",	cp_null,	cx_rest,	""},
-	{"rset",	cp_rset,	cx_rset,	"register,value"},
-	{"run",		cp_run,		cx_run,		"addr[,pri]"},
-	{"sem",		cp_mtsd,	cx_mtsd,	"addr"},
-	{"tasks",	cp_null,	cx_mtsk,	"",},
-	{"tcb",		cp_mtsd,	cx_mtcb,	"addr"},
-	{"tcbs",	cp_null,	cx_mtcs,	""},
-	{"vregs",	cp_null,	cx_vreg,	""},
-	{"vrset",	cp_vrst,	cx_vrst,	"register,value"},
-	{"wait",	cp_null,	cx_wait,	""},
-	{"wdump",	cp_wdmp,	cx_wdmp,	"from[,[to=from][,width=8]]"},
-	{"wfill",	cp_wfil,	cx_wfil,	"loc,count,word"},
-	{"write",	cp_read,	cx_writ,	"sector,buffer,count"},
-	{"wset",	cp_wset,	cx_wset,	"addr,w1[,...,wn]"},
-	{"zap",		cp_null,	cx_zap,		""}
+  {"adisp", cp_null, cx_adsp, ""},
+  {"boot", cp_boot, cx_boot, ""},
+  {"bpb", cp_null, cx_bpb, ""},
+  {"check", cp_chek, cx_chek, "start,end"},
+  {"copy", cp_copy, cx_copy, "from,to,len"},
+  {"crash", cp_null, cx_crsh, ""},
+  {"dinit", cp_null, cx_dini, ""},
+  {"dump", cp_dump, cx_dump, "from[,[to=from][,width=16]]"},
+  {"fill", cp_fill, cx_fill, "start,count,byte"},
+  {"go", cp_go, cx_go, "[addr][,[brk1][,brk2]]"},
+  {"help", cp_null, cx_help, ""},
+  {"ipl", cp_ilev, cx_ilev, "level"},
+  {"ldump", cp_ldmp, cx_ldmp, "from[,[to=from][,width=4]]"},
+  {"load", cp_null, cx_load, ""},
+  {"midas", cp_null, cx_mlod, ""},
+  {"monc", cp_monc, cx_mon, "addr"},
+  {"mons", cp_mons, cx_mon, "addr"},
+  {"monl", cp_monl, cx_mon, "addr"},
+  {"mset", cp_mset, cx_mset, "addr,b1[,...,bn]"},
+  {"mtidump", cp_null, cx_mtid, ""},
+  {"mtsetp", cp_mpri, cx_mpri, "priority"},
+  {"mtsnap", cp_null, cx_mtsn, ""},
+  {"mtstat", cp_mstp, cx_mqry, "taskid"},
+  {"mtstop", cp_mstp, cx_mstp, "taskid"},
+  {"mtzap", cp_mstp, cx_mzap, "taskid"},
+  {"next", cp_null, cx_next, ""},
+  {"obmap", cp_null, cx_omap, ""},
+  {"ramtest", cp_mtst, cx_mtst, hs_mtst},
+  {"read", cp_read, cx_read, "sector,buffer,count"},
+  {"readyq", cp_null, cx_mtrq, ""},
+  {"regs", cp_null, cx_regs, ""},
+  {"reset", cp_null, cx_rest, ""},
+  {"rset", cp_rset, cx_rset, "register,value"},
+  {"run", cp_run, cx_run, "addr[,pri]"},
+  {"sem", cp_mtsd, cx_mtsd, "addr"},
+  {"tasks", cp_null, cx_mtsk, "",},
+  {"tcb", cp_mtsd, cx_mtcb, "addr"},
+  {"tcbs", cp_null, cx_mtcs, ""},
+  {"vregs", cp_null, cx_vreg, ""},
+  {"vrset", cp_vrst, cx_vrst, "register,value"},
+  {"wait", cp_null, cx_wait, ""},
+  {"wdump", cp_wdmp, cx_wdmp, "from[,[to=from][,width=8]]"},
+  {"wfill", cp_wfil, cx_wfil, "loc,count,word"},
+  {"write", cp_read, cx_writ, "sector,buffer,count"},
+  {"wset", cp_wset, cx_wset, "addr,w1[,...,wn]"},
+  {"zap", cp_null, cx_zap, ""}
 };
 
 #define	NCMDS	((sizeof cmtab) / (sizeof cmtab[0]))
@@ -256,55 +257,55 @@ struct cmdent cmtab[] = {
 /* 
 */
 
-char	ahex[] = "0123456789abcdefABCDEF";
+char ahex[] = "0123456789abcdefABCDEF";
 
-char	*rlist[] = {		/* register name list */
+char *rlist[] = {		/* register name list */
 
-	"d0", "d1", "d2", "d3", "d4", "d5", "d6", "d7",
-	"a0", "a1", "a2", "a3", "a4", "a5", "a6", "a7",
-	"sr", "pc", "sp",
-	(char *)0
+  "d0", "d1", "d2", "d3", "d4", "d5", "d6", "d7",
+  "a0", "a1", "a2", "a3", "a4", "a5", "a6", "a7",
+  "sr", "pc", "sp",
+  (char *) 0
 };
 
-char	*vrlist[] = {		/* video register name list */
+char *vrlist[] = {		/* video register name list */
 
-	"r0", "r1", "r2", "r3", "r4", "r5", "r6", "r7",
-	"r8", "r9", "r10", "r11", "r12", "r13", "r14", "r15",
-	"h0", "h1", "h2", "h3", "v0", "v1", "v2", "v3",
-	(char *)0
+  "r0", "r1", "r2", "r3", "r4", "r5", "r6", "r7",
+  "r8", "r9", "r10", "r11", "r12", "r13", "r14", "r15",
+  "h0", "h1", "h2", "h3", "v0", "v1", "v2", "v3",
+  (char *) 0
 };
 
-int	sigadr[] = {		/* display offsets for signals */
+int sigadr[] = {		/* display offsets for signals */
 
-	 0,  0,  0,  0,  0,   1,  1,  1,  1,  1,	/* keys	     */
-	 2,  2,  2,  2,  2,   3,  3,  3,  3,  3,
-	 4,  4,  4,  4,
-	 7,  7,  7,  7,  7,   8,  8,  8,  8,  8,	/* sliders   */
-	 9,  9,  9,  9,
-	12, 12, 12, 12, 12,  13, 13, 13, 13, 13,	/* switches  */
-	14, 14, 14, 14,
-	17, 17,						/* tablet    */
-	20, 20,						/* cursor    */
-	23, 23,						/* longpot   */
-	26,						/* scrollpot */
-	29, 29, 29, 29, 29,  30, 30, 30, 30, 30,	/* digits    */
-	32, 32, 32,					/* x, e, m   */
-	35, 35, 35, 35,					/* pots      */
-	37, 37,						/* pedals    */
-	39, 39, 39, 39					/* analog in */
+  0, 0, 0, 0, 0, 1, 1, 1, 1, 1,	/* keys      */
+  2, 2, 2, 2, 2, 3, 3, 3, 3, 3,
+  4, 4, 4, 4,
+  7, 7, 7, 7, 7, 8, 8, 8, 8, 8,	/* sliders   */
+  9, 9, 9, 9,
+  12, 12, 12, 12, 12, 13, 13, 13, 13, 13,	/* switches  */
+  14, 14, 14, 14,
+  17, 17,			/* tablet    */
+  20, 20,			/* cursor    */
+  23, 23,			/* longpot   */
+  26,				/* scrollpot */
+  29, 29, 29, 29, 29, 30, 30, 30, 30, 30,	/* digits    */
+  32, 32, 32,			/* x, e, m   */
+  35, 35, 35, 35,		/* pots      */
+  37, 37,			/* pedals    */
+  39, 39, 39, 39		/* analog in */
 };
 
 /* 
 */
 
-char	*tsmsg[] = {
+char *tsmsg[] = {
 
-	/* -3 */	"stopped,  waiting on a semaphore",
-	/* -2 */	"stopped,  not waiting",
-	/* -1 */	"not found",
-	/*  0 */	"running  (current task)",
-	/*  1 */	"ready to run",
-	/*  2 */	"waiting on a semaphore"
+  /* -3 */ "stopped,  waiting on a semaphore",
+  /* -2 */ "stopped,  not waiting",
+  /* -1 */ "not found",
+  /*  0 */ "running  (current task)",
+  /*  1 */ "ready to run",
+  /*  2 */ "waiting on a semaphore"
 };
 
 /* 
@@ -316,89 +317,89 @@ char	*tsmsg[] = {
    ============================================================================
 */
 
-char		argsep;			/* argument separator */
+char argsep;			/* argument separator */
 
-char		*aptr,			/* argument pointer */
-		*monptr,		/* monitored variable pointer */
-		*d_cur,			/* dump current from */
-		*d_next,		/* dump next from */
-		*d_last,		/* dump next to */
-		*p_end,			/* end parameter */
-		*p_from,		/* from parameter */
-		*p_goto,		/* goto parameter */
-		*p_to,			/* to parameter */
-		*sptr;			/* string scan pointer */
+char *aptr,			/* argument pointer */
+ *monptr,			/* monitored variable pointer */
+ *d_cur,			/* dump current from */
+ *d_next,			/* dump next from */
+ *d_last,			/* dump next to */
+ *p_end,			/* end parameter */
+ *p_from,			/* from parameter */
+ *p_goto,			/* goto parameter */
+ *p_to,				/* to parameter */
+ *sptr;				/* string scan pointer */
 
-short		argln,			/* argument length */
-		b0flag,			/* breakpoint 0 flag */
-		b1flag,			/* breakpoint 1 flag */
-		cmdunit,		/* command unit */
-		dflag,			/* dump limit flag */
-		exflag,			/* exit do_cmd flag */
-		first1,			/* first time flag */
-		goflag,			/* pc set flag */
-		ilast,			/* index of last command */
-		inext,			/* command index for "next" command */
-		iplev,			/* ROMP IPL level */
-		monsw,			/* monitor switch */
-		redo,			/* re-doable command flag */
-		rnum,			/* register number */
-		taskid,			/* task ID */
-		taskpri,		/* task priority */
-		vrnum;			/* video register number */
+short argln,			/* argument length */
+  b0flag,			/* breakpoint 0 flag */
+  b1flag,			/* breakpoint 1 flag */
+  cmdunit,			/* command unit */
+  dflag,			/* dump limit flag */
+  exflag,			/* exit do_cmd flag */
+  first1,			/* first time flag */
+  goflag,			/* pc set flag */
+  ilast,			/* index of last command */
+  inext,			/* command index for "next" command */
+  iplev,			/* ROMP IPL level */
+  monsw,			/* monitor switch */
+  redo,				/* re-doable command flag */
+  rnum,				/* register number */
+  taskid,			/* task ID */
+  taskpri,			/* task priority */
+  vrnum;			/* video register number */
 
 /* 
 */
 
-short		asig,			/* signal number */
-		aval,			/* signal value */
-		astat,			/* signal status */
-		aflag,			/* signal activity flag */
-		baseled,		/* base LED for scan */
-		ledcntr;		/* LED scan counter */
+short asig,			/* signal number */
+  aval,				/* signal value */
+  astat,			/* signal status */
+  aflag,			/* signal activity flag */
+  baseled,			/* base LED for scan */
+  ledcntr;			/* LED scan counter */
 
-short		sigtab[128][2];		/* signal table */
+short sigtab[128][2];		/* signal table */
 
-long		afi,			/* analog FIFO input */
-		ftimer;			/* analog FIFO clear timer */
+long afi,			/* analog FIFO input */
+  ftimer;			/* analog FIFO clear timer */
 
-unsigned	baron,			/* bar 'on' color */
-		baroff,			/* bar 'off' color */
-		swon,			/* switch 'on' color */
-		swoff,			/* switch 'off' color */
-		*obj0;			/* object pointer */
+unsigned baron,			/* bar 'on' color */
+  baroff,			/* bar 'off' color */
+  swon,				/* switch 'on' color */
+  swoff,			/* switch 'off' color */
+ *obj0;				/* object pointer */
 
-UWORD16		*tba0,			/* breakpoint 0 temporary */
-		*tba1;			/* breakpoint 1 temporary */
+UWORD16 *tba0,			/* breakpoint 0 temporary */
+ *tba1;				/* breakpoint 1 temporary */
 
-UWORD16		p_bv0,			/* breakpoint 0 value */
-		p_bv1;			/* breakpoint 1 value */
+UWORD16 p_bv0,			/* breakpoint 0 value */
+  p_bv1;			/* breakpoint 1 value */
 
-UWORD16		*p_ba0,			/* breakpoint 0 address */
-		*p_ba1;			/* breakpoint 1 address */
+UWORD16 *p_ba0,			/* breakpoint 0 address */
+ *p_ba1;			/* breakpoint 1 address */
 
-long		p_len,			/* length parameter */
-		p_value,		/* value parameter */
-		p_width,		/* width parameter */
-		p_pri,			/* task priority */
-		p_task;			/* task ID */
+long p_len,			/* length parameter */
+  p_value,			/* value parameter */
+  p_width,			/* width parameter */
+  p_pri,			/* task priority */
+  p_task;			/* task ID */
 
-struct	regs	*regptr;		/* register save area pointer */
+struct regs *regptr;		/* register save area pointer */
 
-char		argstr[MAXARGLN+1],	/* argument string */
-		cmdline[MAXCMDLN+1],	/* command line */
-		bfname[MAXFNLN+1],	/* boot file name */
-		hs_mtst[MAXHS+1],	/* mtest help string */
-		idbuf[MAXID+1],		/* ID string */
-		promdate[PDATELN+1];	/* PROM date area */
+char argstr[MAXARGLN + 1],	/* argument string */
+  cmdline[MAXCMDLN + 1],	/* command line */
+  bfname[MAXFNLN + 1],		/* boot file name */
+  hs_mtst[MAXHS + 1],		/* mtest help string */
+  idbuf[MAXID + 1],		/* ID string */
+  promdate[PDATELN + 1];	/* PROM date area */
 
-unsigned	runstak[STKLEN],	/* initial 'run' stack */
-		stax[NSTAX][STKLEN];	/* stacks for interrupt tasks */
+unsigned runstak[STKLEN],	/* initial 'run' stack */
+  stax[NSTAX][STKLEN];		/* stacks for interrupt tasks */
 
-struct _mt_def	*_MT_;			/* pointer to MTStruct */
+struct _mt_def *_MT_;		/* pointer to MTStruct */
 
-TCB		runtcb,			/* 'run' TCB */
-		ipltcb;			/* MIDAS boot TCB */
+TCB runtcb,			/* 'run' TCB */
+  ipltcb;			/* MIDAS boot TCB */
 
 /* 
 */
@@ -410,10 +411,10 @@ TCB		runtcb,			/* 'run' TCB */
 */
 
 int
-cx_rest()
+cx_rest ()
 {
-	setipl(7);
-	rjumpto(ROMADDR);
+  setipl (7);
+  rjumpto (ROMADDR);
 }
 
 /*
@@ -423,10 +424,10 @@ cx_rest()
 */
 
 int
-cx_mtsn()
+cx_mtsn ()
 {
-	MTSnap();
-	return(TRUE);
+  MTSnap ();
+  return (TRUE);
 }
 
 /*
@@ -436,10 +437,10 @@ cx_mtsn()
 */
 
 int
-cx_mtid()
+cx_mtid ()
 {
-	MTIDump();
-	return(TRUE);
+  MTIDump ();
+  return (TRUE);
 }
 
 /* 
@@ -452,35 +453,38 @@ cx_mtid()
 */
 
 int
-cx_mlod()
+cx_mlod ()
 {
-	register short i;
+  register short i;
 
-	B_log_s = TRUE;
-	B_dbg_s = FALSE;
-	redo = FALSE;
+  B_log_s = TRUE;
+  B_dbg_s = FALSE;
+  redo = FALSE;
 
-	hdvini();
-	_bpbin = FALSE;
+  hdvini ();
+  _bpbin = FALSE;
 
-	if (booter(BOOTFILE, 0L)) {
+  if (booter (BOOTFILE, 0L))
+    {
 
-		return(FALSE);
+      return (FALSE);
 
-	} else {
+    }
+  else
+    {
 
-		for (i = 0; i < 8; i++)		/* clear d0..d7 */
-			regptr->d_reg[i] = 0L;
+      for (i = 0; i < 8; i++)	/* clear d0..d7 */
+	regptr->d_reg[i] = 0L;
 
-		for (i = 0; i < 7; i++)		/* clear a0..a6 */
-			regptr->a_reg[i] = (char *)0L;
+      for (i = 0; i < 7; i++)	/* clear a0..a6 */
+	regptr->a_reg[i] = (char *) 0L;
 
-		regptr->a_reg[7] = ISTACK;	/* setup initial stack */
-		regptr->reg_sr = INITSR;	/* setup sr */
-		regptr->reg_pc = B_buf_a;	/* setup pc */
+      regptr->a_reg[7] = ISTACK;	/* setup initial stack */
+      regptr->reg_sr = INITSR;	/* setup sr */
+      regptr->reg_pc = B_buf_a;	/* setup pc */
 
-		return(TRUE);
-	}
+      return (TRUE);
+    }
 }
 
 /* 
@@ -493,37 +497,39 @@ cx_mlod()
 */
 
 int
-cp_boot()
+cp_boot ()
 {
-	register int i;
-	register char endc;
+  register int i;
+  register char endc;
 
-	redo = FALSE;
+  redo = FALSE;
 
-	for (;;) {
+  for (;;)
+    {
 
-		writeln(cmdunit, "File name: ");
-		endc = getln(cmdunit, MAXFNLN+1, bfname);
-		writeln(cmdunit, CRLF);
+      writeln (cmdunit, "File name: ");
+      endc = getln (cmdunit, MAXFNLN + 1, bfname);
+      writeln (cmdunit, CRLF);
 
-		if (endc EQ A_CR)
-			break;
+      if (endc EQ A_CR)
+	break;
 
-		if (endc EQ CTL('X')) {
+      if (endc EQ CTL ('X'))
+	{
 
-			writeln(cmdunit, CANNED);
-			return(FALSE);
-		}
-
-		if (endc EQ ERR01)
-			writeln(cmdunit, EMSG2);
+	  writeln (cmdunit, CANNED);
+	  return (FALSE);
 	}
 
-	for (i = 0; i < MAXFNLN+1; i++)
-		if (bfname[i] EQ A_CR)
-			bfname[i] = '\0';
-	
-	return(TRUE);
+      if (endc EQ ERR01)
+	writeln (cmdunit, EMSG2);
+    }
+
+  for (i = 0; i < MAXFNLN + 1; i++)
+    if (bfname[i] EQ A_CR)
+      bfname[i] = '\0';
+
+  return (TRUE);
 }
 
 /* 
@@ -536,35 +542,38 @@ cp_boot()
 */
 
 int
-cx_boot()
+cx_boot ()
 {
-	register short i;
+  register short i;
 
-	B_log_s = TRUE;
-	B_dbg_s = FALSE;
+  B_log_s = TRUE;
+  B_dbg_s = FALSE;
 
-	hdvini();
-	_bpbin = FALSE;
+  hdvini ();
+  _bpbin = FALSE;
 
-	if (booter(bfname, 0L)) {
+  if (booter (bfname, 0L))
+    {
 
-		return(FALSE);
+      return (FALSE);
 
-	} else {
+    }
+  else
+    {
 
-		for (i = 0; i < 8; i++)		/* clear d0..d7 */
-			regptr->d_reg[i] = 0L;
+      for (i = 0; i < 8; i++)	/* clear d0..d7 */
+	regptr->d_reg[i] = 0L;
 
-		for (i = 0; i < 7; i++)		/* clear a0..a6 */
-			regptr->a_reg[i] = (char *)0L;
+      for (i = 0; i < 7; i++)	/* clear a0..a6 */
+	regptr->a_reg[i] = (char *) 0L;
 
-		regptr->a_reg[7] = ISTACK;	/* setup initial stack */
+      regptr->a_reg[7] = ISTACK;	/* setup initial stack */
 
-		regptr->reg_sr = INITSR;	/* setup sr */
-		regptr->reg_pc = B_buf_a;	/* setup pc */
+      regptr->reg_sr = INITSR;	/* setup sr */
+      regptr->reg_pc = B_buf_a;	/* setup pc */
 
-		return(TRUE);
-	}
+      return (TRUE);
+    }
 }
 
 /* 
@@ -576,35 +585,39 @@ cx_boot()
    =============================================================================
 */
 
-dobar(nb, bv)
-register int nb, bv;
+dobar (nb, bv)
+     register int nb, bv;
 {
-	register unsigned *bp;
-	register int i;
+  register unsigned *bp;
+  register int i;
 
-	if ((nb LT 1) OR (nb GT 82))
-		return;
+  if ((nb LT 1) OR (nb GT 82))
+    return;
 
-	--nb;
-	bp = obj0 + BARBASE + (long)(sigadr[nb] + MARGIN + nb);
+  --nb;
+  bp = obj0 + BARBASE + (long) (sigadr[nb] + MARGIN + nb);
 
-	for (i = 127; i GE 0; --i) {
+  for (i = 127; i GE 0; --i)
+    {
 
-		if (i GT bv) {
+      if (i GT bv)
+	{
 
-			*bp = baroff;
-			bp += 128L;
-			*bp = baroff;
+	  *bp = baroff;
+	  bp += 128L;
+	  *bp = baroff;
 
-		} else {
-
-			*bp = baron;
-			bp += 128L;
-			*bp = baron;
-		}
-
-		bp += 128L;
 	}
+      else
+	{
+
+	  *bp = baron;
+	  bp += 128L;
+	  *bp = baron;
+	}
+
+      bp += 128L;
+    }
 }
 
 /* 
@@ -616,28 +629,29 @@ register int nb, bv;
    =============================================================================
 */
 
-dosw(nb, sv)
-register int nb, sv;
+dosw (nb, sv)
+     register int nb, sv;
 {
-	register unsigned *bp;
-	register int i, j;
+  register unsigned *bp;
+  register int i, j;
 
-	if ((nb LT 1) OR (nb GT 82))
-		return;
+  if ((nb LT 1) OR (nb GT 82))
+    return;
 
-	--nb;
-	bp = obj0 + SWBASE + (long)(sigadr[nb] + MARGIN + nb);
+  --nb;
+  bp = obj0 + SWBASE + (long) (sigadr[nb] + MARGIN + nb);
 
-	if (sv)
-		j = swon;
-	else
-		j = swoff;
+  if (sv)
+    j = swon;
+  else
+    j = swoff;
 
-	for (i = 0; i < 8; i++) {
+  for (i = 0; i < 8; i++)
+    {
 
-		*bp = j;
-		bp += 128L;
-	}
+      *bp = j;
+      bp += 128L;
+    }
 }
 
 /* 
@@ -650,14 +664,14 @@ register int nb, sv;
 */
 
 unsigned
-exp_c(c)
-unsigned c;
+exp_c (c)
+     unsigned c;
 {
-	c &= 0x000F;
-	c |= c << 4;
-	c |= c << 8;
+  c &= 0x000F;
+  c |= c << 4;
+  c |= c << 8;
 
-	return(c);
+  return (c);
 }
 
 /* 
@@ -669,128 +683,140 @@ unsigned c;
    =============================================================================
 */
 
-cx_adsp()
+cx_adsp ()
 {
-	register int xasig, xastat, xaval;
-	register long xafi;
-	register long lc;
-	register unsigned *bp;
-	int	i, j, k;
-	int	oldi;
+  register int xasig, xastat, xaval;
+  register long xafi;
+  register long lc;
+  register unsigned *bp;
+  int i, j, k;
+  int oldi;
 
-	memsetw(sigtab, 0, sizeof sigtab / 2);
+  memsetw (sigtab, 0, sizeof sigtab / 2);
 
-	VHinit();
-	VSinit();
-	vsndpal(dfltpal);
+  VHinit ();
+  VSinit ();
+  vsndpal (dfltpal);
 
-	obj0 = 0x200400L;
+  obj0 = 0x200400L;
 
-	SetObj(0, 0, 0, obj0, 512, 350, 0, 0, (V_RES3| V_TDE), -1);
+  SetObj (0, 0, 0, obj0, 512, 350, 0, 0, (V_RES3 | V_TDE), -1);
 
-	bp = obj0;
-	
-	for (lc = 0; lc < 44800; lc++)
-		*bp++ = 0x0000;
+  bp = obj0;
 
-	baron  = 0x0FFF & exp_c(BAR_ON);
-	baroff = 0x0FFF & exp_c(BAR_OFF);
-	swon   = 0x0FFF & exp_c(SW_ON);
-	swoff  = 0x0FFF & exp_c(SW_OFF);
+  for (lc = 0; lc < 44800; lc++)
+    *bp++ = 0x0000;
 
-	SetPri(0, 7);
+  baron = 0x0FFF & exp_c (BAR_ON);
+  baroff = 0x0FFF & exp_c (BAR_OFF);
+  swon = 0x0FFF & exp_c (SW_ON);
+  swoff = 0x0FFF & exp_c (SW_OFF);
 
-	for (i = 1; i < 83; i++) {
+  SetPri (0, 7);
 
-		dobar(i, 0);
-		dosw(i, 0);
-	}
+  for (i = 1; i < 83; i++)
+    {
 
-	oldi = setipl(2);
+      dobar (i, 0);
+      dosw (i, 0);
+    }
 
-/* 
-*/
-
-	while (0L EQ BIOS(B_RDAV, CON_DEV)) {
-
-		if (-1L NE (xafi = XBIOS(X_ANALOG))) {
-
-			xasig  = 0x007F & (xafi >> 8);
-			xastat = 0x0001 & (xafi >> 7);
-			xaval  = 0x007F & xafi;
-
-			if (xasig) {
-
-				sigtab[xasig][0] = xaval;
-				sigtab[xasig][1] = xastat;
-
-				if (xasig LT 83) {
-
-					dobar(xasig, xaval);
-					dosw(xasig, xastat);
-				}
-
-			} else {
-
-				for (i = 0; i < 83; i++)
-					sigtab[i][1] = 0;
-			}
-		}
-	}
+  oldi = setipl (2);
 
 /* 
 */
 
-	BIOS(B_GETC, CON_DEV);
+  while (0L EQ BIOS (B_RDAV, CON_DEV))
+    {
 
-	for (j = 1; j < 83; j++) {
+      if (-1L NE (xafi = XBIOS (X_ANALOG)))
+	{
 
-		dobar(j, sigtab[j][0]);
-		dosw(j, sigtab[j][1]);
-	}
+	  xasig = 0x007F & (xafi >> 8);
+	  xastat = 0x0001 & (xafi >> 7);
+	  xaval = 0x007F & xafi;
 
-	k = 0;
+	  if (xasig)
+	    {
 
-	printf("\n");
-	printf("       x0     x1     x2     x3     x4     x5     x6     x7     x8     x9\r\n");
-	printf("     -----  -----  -----  -----  -----  -----  -----  -----  -----  -----\r\n");
-		        
-	for (i = 0; i < 9; i++ ) {
+	      sigtab[xasig][0] = xaval;
+	      sigtab[xasig][1] = xastat;
 
-		printf("%01dx   ", k/10);
+	      if (xasig LT 83)
+		{
 
-		for (j = 0; j < 10; j++) {
-
-			if (k)
-				printf("%1d:%3d  ", sigtab[k][1], sigtab[k][0]);
-			else
-				printf("       ");
-
-			if (++k EQ 83)
-				goto outofit;
+		  dobar (xasig, xaval);
+		  dosw (xasig, xastat);
 		}
 
-		printf("\n");
+	    }
+	  else
+	    {
+
+	      for (i = 0; i < 83; i++)
+		sigtab[i][1] = 0;
+	    }
 	}
+    }
+
+/* 
+*/
+
+  BIOS (B_GETC, CON_DEV);
+
+  for (j = 1; j < 83; j++)
+    {
+
+      dobar (j, sigtab[j][0]);
+      dosw (j, sigtab[j][1]);
+    }
+
+  k = 0;
+
+  printf ("\n");
+  printf
+    ("       x0     x1     x2     x3     x4     x5     x6     x7     x8     x9\r\n");
+  printf
+    ("     -----  -----  -----  -----  -----  -----  -----  -----  -----  -----\r\n");
+
+  for (i = 0; i < 9; i++)
+    {
+
+      printf ("%01dx   ", k / 10);
+
+      for (j = 0; j < 10; j++)
+	{
+
+	  if (k)
+	    printf ("%1d:%3d  ", sigtab[k][1], sigtab[k][0]);
+	  else
+	    printf ("       ");
+
+	  if (++k EQ 83)
+	    goto outofit;
+	}
+
+      printf ("\n");
+    }
 
 outofit:
 
-	printf("\nTempo     = %3d,  Time      = %3d,  Tuning = %3d,  Level = %3d\n",
-		sigtab[I_TEMPO][0], sigtab[I_TIME][0],
-		sigtab[I_TUNE][0], sigtab[I_LEVEL][0]);
+  printf
+    ("\nTempo     = %3d,  Time      = %3d,  Tuning = %3d,  Level = %3d\n",
+     sigtab[I_TEMPO][0], sigtab[I_TIME][0], sigtab[I_TUNE][0],
+     sigtab[I_LEVEL][0]);
 
-	printf("LongPot L = %3d,  LongPot R = %3d,  Scroll = %3d\n",
-		sigtab[I_LONGL][0], sigtab[I_LONGR][0],
-		sigtab[I_SCROLL][0]);
+  printf ("LongPot L = %3d,  LongPot R = %3d,  Scroll = %3d\n",
+	  sigtab[I_LONGL][0], sigtab[I_LONGR][0], sigtab[I_SCROLL][0]);
 
-	printf("Tablet X  = %3d,  Tablet Y  = %3d\n",
-		sigtab[I_TABX][0], sigtab[I_TABY][0]);
+  printf ("Tablet X  = %3d,  Tablet Y  = %3d\n",
+	  sigtab[I_TABX][0], sigtab[I_TABY][0]);
 
-	printf("Cursor X  = %3d,  Cursor Y  = %3d\n",
-		sigtab[I_CURX][0], sigtab[I_CURY][0]);
+  printf ("Cursor X  = %3d,  Cursor Y  = %3d\n",
+	  sigtab[I_CURX][0], sigtab[I_CURY][0]);
 
-	setipl(oldi);
-	return(TRUE);
+  setipl (oldi);
+  return (TRUE);
 }
 
 /* 
@@ -805,19 +831,20 @@ outofit:
 */
 
 int
-waitcr()
+waitcr ()
 {
-	char	c;
+  char c;
 
-	BIOS(B_PUTC, CON_DEV, '\007');
+  BIOS (B_PUTC, CON_DEV, '\007');
 
-	while ('\r' NE (c = (0x7F & BIOS(B_GETC, CON_DEV)))) {
+  while ('\r' NE (c = (0x7F & BIOS (B_GETC, CON_DEV))))
+    {
 
-		if (c EQ '\007')
-			return(1);
-	}
+      if (c EQ '\007')
+	return (1);
+    }
 
-	return(0);
+  return (0);
 }
 
 /* 
@@ -830,20 +857,20 @@ waitcr()
 */
 
 int
-xdtoi(c)
-register int c;
+xdtoi (c)
+     register int c;
 {
-	register int i;
-	register char *ap = &ahex[0];
+  register int i;
+  register char *ap = &ahex[0];
 
-	for (i = 0; i < 22; i++)
-		if (c EQ *ap++)
-			if (i >15)
-				return(i - 6);
-			else
-				return(i);
+  for (i = 0; i < 22; i++)
+    if (c EQ * ap++)
+      if (i > 15)
+	return (i - 6);
+      else
+	return (i);
 
-	return(-1);
+  return (-1);
 }
 
 /* 
@@ -856,56 +883,59 @@ register int c;
 */
 
 int
-getcmd()
+getcmd ()
 {
-	register int c;
+  register int c;
 
-	sptr = cmdline;
-	argln = 0;
-	aptr = argstr;
-	memset(argstr, 0, MAXARGLN+1);
+  sptr = cmdline;
+  argln = 0;
+  aptr = argstr;
+  memset (argstr, 0, MAXARGLN + 1);
 
-	do {
+  do
+    {
 
-		switch (c = 0x00FF & *sptr) {
+      switch (c = 0x00FF & *sptr)
+	{
 
-		case '\0':
-		case A_CR:
-		case A_LF:
+	case '\0':
+	case A_CR:
+	case A_LF:
 
-			argsep = c;
-			return(argln);
+	  argsep = c;
+	  return (argln);
 
-		case ' ':
+	case ' ':
 
-			++sptr;
+	  ++sptr;
 
-			while (*sptr EQ ' ')
-				++sptr;
+	  while (*sptr EQ ' ')
+	    ++sptr;
 
-			if (*sptr EQ A_CR OR *sptr EQ A_LF OR *sptr EQ '\0')
-				c = 0x00FF & *sptr;
+	  if (*sptr EQ A_CR OR * sptr EQ A_LF OR * sptr EQ '\0')
+	    c = 0x00FF & *sptr;
 
-			argsep = c;
-			return(argln);
+	  argsep = c;
+	  return (argln);
 
 /* 
 */
 
-		default:
+	default:
 
-			if (isupper(c))
-				c = _tolower(c);
+	  if (isupper (c))
+	    c = _tolower (c);
 
-			*aptr++ = c;
-			++sptr;
-			++argln;
-		}
+	  *aptr++ = c;
+	  ++sptr;
+	  ++argln;
+	}
 
-	} while (*sptr);
+    }
+  while (*sptr);
 
-	argsep = 0;
-	return(argln);
+  argsep = 0;
+  return (argln);
 }
 
 /* 
@@ -927,58 +957,61 @@ getcmd()
 */
 
 int
-getarg()
+getarg ()
 {
-	register int c;
+  register int c;
 
-	argln = 0;
-	aptr = argstr;
-	memset(argstr, 0, MAXARGLN+1);
+  argln = 0;
+  aptr = argstr;
+  memset (argstr, 0, MAXARGLN + 1);
 
-	do {
+  do
+    {
 
-		switch (c = 0x00FF & *sptr) {
+      switch (c = 0x00FF & *sptr)
+	{
 
-		case '\0':
-		case A_CR:
-		case A_LF:
+	case '\0':
+	case A_CR:
+	case A_LF:
 
-			argsep = c;
-			return(argln);
+	  argsep = c;
+	  return (argln);
 
-		case ' ':
+	case ' ':
 
-			++sptr;
+	  ++sptr;
 
-			while (*sptr EQ ' ')
-				++sptr;
+	  while (*sptr EQ ' ')
+	    ++sptr;
 
-			if (*sptr EQ A_CR OR *sptr EQ A_LF OR *sptr EQ '\0')
-				c = 0x00FF & *sptr;
+	  if (*sptr EQ A_CR OR * sptr EQ A_LF OR * sptr EQ '\0')
+	    c = 0x00FF & *sptr;
 
-			argsep = c;
-			return(argln);
+	  argsep = c;
+	  return (argln);
 
-		case ',':
+	case ',':
 
-			++sptr;
-			argsep = c;
-			return(argln);
+	  ++sptr;
+	  argsep = c;
+	  return (argln);
 
 /* 
 */
 
-		default:
+	default:
 
-			*aptr++ = c;
-			++sptr;
-			++argln;
-		}
+	  *aptr++ = c;
+	  ++sptr;
+	  ++argln;
+	}
 
-	} while (*sptr);
+    }
+  while (*sptr);
 
-	argsep = 0;
-	return(argln);
+  argsep = 0;
+  return (argln);
 }
 
 /* 
@@ -994,36 +1027,40 @@ getarg()
 */
 
 int
-getlong(var)
-long *var;
+getlong (var)
+     long *var;
 {
-	register long	temp = 0L;
-	register int 	csw = FALSE,
-			c;
+  register long temp = 0L;
+  register int csw = FALSE, c;
 
-	if (*aptr EQ '$') {		/* leading $ makes it HEX */
+  if (*aptr EQ '$')
+    {				/* leading $ makes it HEX */
 
-		++aptr;
+      ++aptr;
 
-		while (isxdigit(c = *aptr++)) {
+      while (isxdigit (c = *aptr++))
+	{
 
-			temp = (temp << 4) + xdtoi(c);
-			csw = TRUE;
-		}
-
-	} else {			/* otherwise, it's decimal */
-
-		while (isdigit(c = *aptr++)) {
-
-			temp = (temp * 10) + (c - '0');
-			csw = TRUE;
-		}
+	  temp = (temp << 4) + xdtoi (c);
+	  csw = TRUE;
 	}
 
-	if (csw)		/* set the new value if we got one */
-		*var = temp;
+    }
+  else
+    {				/* otherwise, it's decimal */
 
-	return(c);		/* return character that stopped us */
+      while (isdigit (c = *aptr++))
+	{
+
+	  temp = (temp * 10) + (c - '0');
+	  csw = TRUE;
+	}
+    }
+
+  if (csw)			/* set the new value if we got one */
+    *var = temp;
+
+  return (c);			/* return character that stopped us */
 }
 
 /* 
@@ -1036,49 +1073,53 @@ long *var;
 */
 
 int
-setvar(var, deflt)
-long *var, deflt;
+setvar (var, deflt)
+     long *var, deflt;
 {
-	int rc;
-	long temp;
+  int rc;
+  long temp;
 
-	*var = deflt;		/* initialize with default value */
-	aptr = argstr;
+  *var = deflt;			/* initialize with default value */
+  aptr = argstr;
 
-	rc = getlong(var);	/* get first number in expression */
+  rc = getlong (var);		/* get first number in expression */
 
-	if (rc) {
+  if (rc)
+    {
 
-		do {
+      do
+	{
 
-			switch (rc) {
+	  switch (rc)
+	    {
 
-			case '+':		/* var + num */
+	    case '+':		/* var + num */
 
-				temp = 0L;
-				rc = getlong(&temp);
-				*var = *var + temp;
-				continue;
+	      temp = 0L;
+	      rc = getlong (&temp);
+	      *var = *var + temp;
+	      continue;
 
-			case '-':		/* var - num */
+	    case '-':		/* var - num */
 
-				temp = 0L;
-				rc = getlong(&temp);
-				*var = *var - temp;
-				continue;
+	      temp = 0L;
+	      rc = getlong (&temp);
+	      *var = *var - temp;
+	      continue;
 
-			default:		/* something else is an error */
+	    default:		/* something else is an error */
 
-				*var = deflt;
-				return(FALSE);
-			}
+	      *var = deflt;
+	      return (FALSE);
+	    }
 
-		} while (rc);
-
-		return(TRUE);
 	}
+      while (rc);
 
-	return(TRUE);
+      return (TRUE);
+    }
+
+  return (TRUE);
 }
 
 /* 
@@ -1090,22 +1131,22 @@ long *var, deflt;
    ============================================================================
 */
 
-putn(num, cw, unit)
-long num;
-int cw, unit;
+putn (num, cw, unit)
+     long num;
+     int cw, unit;
 {
-	register int	d;
+  register int d;
 
-	if (!cw)
-		return;
+  if (!cw)
+    return;
 
-	putn(num/10, cw-1, unit);
+  putn (num / 10, cw - 1, unit);
 
-	d =  num % 10;
+  d = num % 10;
 
-	BIOS(B_PUTC, unit, (d + '0'));	
+  BIOS (B_PUTC, unit, (d + '0'));
 
-	return;
+  return;
 }
 
 /* 
@@ -1117,25 +1158,25 @@ int cw, unit;
    ============================================================================
 */
 
-puthn(num, cw, unit)
-long num;
-int cw, unit;
+puthn (num, cw, unit)
+     long num;
+     int cw, unit;
 {
-	register int	d;
+  register int d;
 
-	if (!cw)
-		return;
+  if (!cw)
+    return;
 
-	puthn(num >> 4, cw-1, unit);
+  puthn (num >> 4, cw - 1, unit);
 
-	d = 0x0F & num;
+  d = 0x0F & num;
 
-	if (d > 9)
-		BIOS(B_PUTC, unit, (d - 10 + 'A'));
-	else
-		BIOS(B_PUTC, unit, (d + '0'));	
+  if (d > 9)
+    BIOS (B_PUTC, unit, (d - 10 + 'A'));
+  else
+    BIOS (B_PUTC, unit, (d + '0'));
 
-	return;
+  return;
 }
 
 /* 
@@ -1148,32 +1189,35 @@ int cw, unit;
 */
 
 int
-ddump(loc, lastloc, nwide, unit)
-register char *loc, *lastloc;
-register int nwide, unit;
+ddump (loc, lastloc, nwide, unit)
+     register char *loc, *lastloc;
+     register int nwide, unit;
 {
-	while (nwide--) {
+  while (nwide--)
+    {
 
-		puthn((long)(0xFF & *loc), 2, unit);
-		BIOS(B_PUTC, unit, ' ');
+      puthn ((long) (0xFF & *loc), 2, unit);
+      BIOS (B_PUTC, unit, ' ');
 
-		if (BIOS(B_RDAV, unit)) {
+      if (BIOS (B_RDAV, unit))
+	{
 
-			BIOS(B_GETC, unit);
-			return(TRUE);
-		}
-
-		if (loc EQ lastloc) {
-
-			dflag = TRUE;
-			return(FALSE);
-		}
-
-		++loc;
+	  BIOS (B_GETC, unit);
+	  return (TRUE);
 	}
 
+      if (loc EQ lastloc)
+	{
 
-	return(FALSE);
+	  dflag = TRUE;
+	  return (FALSE);
+	}
+
+      ++loc;
+    }
+
+
+  return (FALSE);
 }
 
 /* 
@@ -1185,14 +1229,14 @@ register int nwide, unit;
    ============================================================================
 */
 
-padr(adr, unit)
-long adr;
-int unit;
+padr (adr, unit)
+     long adr;
+     int unit;
 {
-	puthn(adr, 8, unit);
-	BIOS(B_PUTC, unit, ' ');
-	BIOS(B_PUTC, unit, '-');
-	BIOS(B_PUTC, unit, ' ');
+  puthn (adr, 8, unit);
+  BIOS (B_PUTC, unit, ' ');
+  BIOS (B_PUTC, unit, '-');
+  BIOS (B_PUTC, unit, ' ');
 }
 
 /* 
@@ -1205,42 +1249,45 @@ int unit;
 */
 
 int
-dtext(loc, lastloc, nwide, unit)
-register char *loc, *lastloc;
-register int nwide, unit;
+dtext (loc, lastloc, nwide, unit)
+     register char *loc, *lastloc;
+     register int nwide, unit;
 {
-	register int c;
+  register int c;
 
-	BIOS(B_PUTC, unit, ' ');
-	BIOS(B_PUTC, unit, '|');
+  BIOS (B_PUTC, unit, ' ');
+  BIOS (B_PUTC, unit, '|');
 
-	while (nwide--) {
+  while (nwide--)
+    {
 
-		c = 0xFF & *loc;
+      c = 0xFF & *loc;
 
-		if (isascii(c) AND isprint(c))
-			BIOS(B_PUTC, unit, c);
-		else
-			BIOS(B_PUTC, unit, '.');
+      if (isascii (c) AND isprint (c))
+	BIOS (B_PUTC, unit, c);
+      else
+	BIOS (B_PUTC, unit, '.');
 
-		if (BIOS(B_RDAV, unit)) {
+      if (BIOS (B_RDAV, unit))
+	{
 
-			BIOS(B_GETC, unit);
-			BIOS(B_PUTC, unit, '|');
-			return(TRUE);
-		}
-
-		if (loc EQ lastloc) {
-
-			BIOS(B_PUTC, unit, '|');
-			return(FALSE);
-		}
-
-		++loc;
+	  BIOS (B_GETC, unit);
+	  BIOS (B_PUTC, unit, '|');
+	  return (TRUE);
 	}
 
-	BIOS(B_PUTC, unit, '|');
-	return(FALSE);
+      if (loc EQ lastloc)
+	{
+
+	  BIOS (B_PUTC, unit, '|');
+	  return (FALSE);
+	}
+
+      ++loc;
+    }
+
+  BIOS (B_PUTC, unit, '|');
+  return (FALSE);
 }
 
 /* 
@@ -1253,20 +1300,20 @@ register int nwide, unit;
 */
 
 int
-cp_mset()
+cp_mset ()
 {
-	redo = FALSE;
+  redo = FALSE;
 
-	if (0 EQ getarg())
-		return(FALSE);
+  if (0 EQ getarg ())
+    return (FALSE);
 
-	if (argsep NE ',')
-		return(FALSE);
+  if (argsep NE ',')
+    return (FALSE);
 
-	if (setvar(&p_from, p_from) EQ FALSE)
-		return(FALSE);
+  if (setvar (&p_from, p_from) EQ FALSE)
+    return (FALSE);
 
-	return(TRUE);
+  return (TRUE);
 }
 
 /*
@@ -1276,23 +1323,25 @@ cp_mset()
 */
 
 int
-cx_mset()
+cx_mset ()
 {
-	while (TRUE) {
+  while (TRUE)
+    {
 
-		if (getarg())
-			if (setvar(&p_value, p_value) EQ FALSE)
-				return(FALSE);
+      if (getarg ())
+	if (setvar (&p_value, p_value) EQ FALSE)
+	  return (FALSE);
 
-		if (p_value & ~0xFFL)
-			return(FALSE);
+      if (p_value & ~0xFFL)
+	return (FALSE);
 
-		*p_from++ = 0xFF & p_value;
+      *p_from++ = 0xFF & p_value;
 
-		if (argsep EQ A_CR)
-			return(TRUE);
-	}
+      if (argsep EQ A_CR)
+	return (TRUE);
+    }
 }
+
 /* 
 */
 
@@ -1303,23 +1352,23 @@ cx_mset()
 */
 
 int
-cp_wset()
+cp_wset ()
 {
-	redo = FALSE;
+  redo = FALSE;
 
-	if (0 EQ getarg())
-		return(FALSE);
+  if (0 EQ getarg ())
+    return (FALSE);
 
-	if (argsep NE ',')
-		return(FALSE);
+  if (argsep NE ',')
+    return (FALSE);
 
-	if (setvar(&p_from, p_from) EQ FALSE)
-		return(FALSE);
+  if (setvar (&p_from, p_from) EQ FALSE)
+    return (FALSE);
 
-	if ((long)p_from & 1L)
-		return(FALSE);
+  if ((long) p_from & 1L)
+    return (FALSE);
 
-	return(TRUE);
+  return (TRUE);
 }
 
 /* 
@@ -1332,26 +1381,27 @@ cp_wset()
 */
 
 int
-cx_wset()
+cx_wset ()
 {
-	UWORD16	*p_uint;
+  UWORD16 *p_uint;
 
-	p_uint = (UWORD16 *)p_from;
+  p_uint = (UWORD16 *) p_from;
 
-	while (TRUE) {
+  while (TRUE)
+    {
 
-		if (getarg())
-			if (setvar(&p_value, p_value) EQ FALSE)
-				return(FALSE);
+      if (getarg ())
+	if (setvar (&p_value, p_value) EQ FALSE)
+	  return (FALSE);
 
-		if (p_value & ~0xFFFFL)
-			return(FALSE);
+      if (p_value & ~0xFFFFL)
+	return (FALSE);
 
-		*p_uint++ = 0xFFFF & p_value;
+      *p_uint++ = 0xFFFF & p_value;
 
-		if (argsep EQ A_CR)
-			return(TRUE);
-	}
+      if (argsep EQ A_CR)
+	return (TRUE);
+    }
 }
 
 /* 
@@ -1364,38 +1414,39 @@ cx_wset()
 */
 
 int
-cp_mtst()
+cp_mtst ()
 {
-	inext = ilast;
+  inext = ilast;
 
-	if (argsep EQ A_CR OR argsep EQ '\0') {
+  if (argsep EQ A_CR OR argsep EQ '\0')
+    {
 
-		p_from = (char *)0x00000008L;
-		p_to   = (char *)USER_RAM - 2L;
-		return(TRUE);
-	}
+      p_from = (char *) 0x00000008L;
+      p_to = (char *) USER_RAM - 2L;
+      return (TRUE);
+    }
 
-	if (getarg())
-		if (setvar(&p_from, USER_RAM) EQ FALSE)
-			return(FALSE);
+  if (getarg ())
+    if (setvar (&p_from, USER_RAM) EQ FALSE)
+      return (FALSE);
 
-	if (argsep NE ',')
-		return(FALSE);
+  if (argsep NE ',')
+    return (FALSE);
 
-	if (getarg())
-		if (setvar(&p_to, RAM_TOP) EQ FALSE)
-			return(FALSE);
+  if (getarg ())
+    if (setvar (&p_to, RAM_TOP) EQ FALSE)
+      return (FALSE);
 
-	if ((long)p_from & 1L)
-		return(FALSE);
+  if ((long) p_from & 1L)
+    return (FALSE);
 
-	if ((long)p_to & 1L)
-		return(FALSE);
+  if ((long) p_to & 1L)
+    return (FALSE);
 
-	if (p_from GT p_to)
-		return(FALSE);
+  if (p_from GT p_to)
+    return (FALSE);
 
-	return(TRUE);
+  return (TRUE);
 }
 
 /* 
@@ -1408,52 +1459,53 @@ cp_mtst()
 */
 
 int
-cx_mtst()
+cx_mtst ()
 {
-	register short	mask, was, *loc, *eloc, *oldloc;
+  register short mask, was, *loc, *eloc, *oldloc;
 
-	mask = 0x0001;
-	loc = (short *)p_from;
-	eloc = (short *)p_to;
-	oldloc = loc;
+  mask = 0x0001;
+  loc = (short *) p_from;
+  eloc = (short *) p_to;
+  oldloc = loc;
 
-	if (p_from LT (char *)USER_RAM)
-		setipl(7);
+  if (p_from LT (char *)USER_RAM)
+      setipl (7);
 
-	do {
+  do
+    {
 
-		while (mask) {
+      while (mask)
+	{
 
-			*loc = mask;
+	  *loc = mask;
 
-			if (mask NE (was = *loc))
-				if (p_from LT (char *)USER_RAM)
-					halt();
-				else
-					printf("%08lX was %04X, expected %04X\r\n",
-						loc, was, mask);
+	  if (mask NE (was = *loc))
+	    if (p_from LT (char *)USER_RAM)
+	        halt ();
+	    else
+	      printf ("%08lX was %04X, expected %04X\r\n", loc, was, mask);
 
-			*loc = ~mask;
+	  *loc = ~mask;
 
-			if (~mask NE (was = *loc))
-				if (p_from LT (char *)USER_RAM)
-					halt();
-				else
-					printf("%08lX was %04X, expected %04X\r\n",
-						loc, was, ~mask);
+	  if (~mask NE (was = *loc))
+	    if (p_from LT (char *)USER_RAM)
+	        halt ();
+	    else
+	      printf ("%08lX was %04X, expected %04X\r\n", loc, was, ~mask);
 
-			mask <<= 1;
-		}
+	  mask <<= 1;
+	}
 
-		mask = 0x0001;
-		loc++;
+      mask = 0x0001;
+      loc++;
 
-	} while (loc LE eloc);
+    }
+  while (loc LE eloc);
 
-	if (oldloc LT (short *)USER_RAM)
-		rjumpto((long)ROMADDR);
+  if (oldloc LT (short *)USER_RAM)
+      rjumpto ((long) ROMADDR);
 
-	return(TRUE);
+  return (TRUE);
 }
 
 /* 
@@ -1466,48 +1518,51 @@ cx_mtst()
 */
 
 int
-cp_go()
+cp_go ()
 {
-	redo = FALSE;
-	b0flag = FALSE;
-	b1flag = FALSE;
-	goflag = FALSE;
+  redo = FALSE;
+  b0flag = FALSE;
+  b1flag = FALSE;
+  goflag = FALSE;
 
-	if (getarg()) {
+  if (getarg ())
+    {
 
-		if (setvar(&p_goto, p_goto) EQ FALSE)
-			return(FALSE);
+      if (setvar (&p_goto, p_goto) EQ FALSE)
+	return (FALSE);
 
-		if (1L & (long)p_goto)
-			return(FALSE);
+      if (1L & (long) p_goto)
+	return (FALSE);
 
-		goflag = TRUE;
+      goflag = TRUE;
 
-	}
+    }
 
-	if (getarg()) {
+  if (getarg ())
+    {
 
-		if (setvar(&tba0, 0L) EQ FALSE)
-			return(FALSE);
+      if (setvar (&tba0, 0L) EQ FALSE)
+	return (FALSE);
 
-		if (1L & (long)tba0)
-			return(FALSE);
+      if (1L & (long) tba0)
+	return (FALSE);
 
-		b0flag = TRUE;
-	}
+      b0flag = TRUE;
+    }
 
-	if (getarg()) {
+  if (getarg ())
+    {
 
-		if (setvar(&tba1, 0L) EQ FALSE)
-			return(FALSE);
+      if (setvar (&tba1, 0L) EQ FALSE)
+	return (FALSE);
 
-		if (1L & (long)tba1)
-			return(FALSE);
+      if (1L & (long) tba1)
+	return (FALSE);
 
-		b1flag = TRUE;
-	}
+      b1flag = TRUE;
+    }
 
-	return(TRUE);
+  return (TRUE);
 }
 
 /* 
@@ -1520,20 +1575,21 @@ cp_go()
 */
 
 int
-cp_mtsd()
+cp_mtsd ()
 {
-	redo = TRUE;
+  redo = TRUE;
 
-	if (getarg()) {
+  if (getarg ())
+    {
 
-		if (setvar(&p_from, p_from) EQ FALSE)
-			return(FALSE);
+      if (setvar (&p_from, p_from) EQ FALSE)
+	return (FALSE);
 
-		if (1L & (long)p_from)
-			return(FALSE);
-	}
+      if (1L & (long) p_from)
+	return (FALSE);
+    }
 
-	return(TRUE);
+  return (TRUE);
 }
 
 /* 
@@ -1546,20 +1602,21 @@ cp_mtsd()
 */
 
 int
-cp_mpri()
+cp_mpri ()
 {
-	redo = FALSE;
+  redo = FALSE;
 
-	if (getarg()) {
+  if (getarg ())
+    {
 
-		if (setvar(&p_pri, p_pri) EQ FALSE)
-			return(FALSE);
+      if (setvar (&p_pri, p_pri) EQ FALSE)
+	return (FALSE);
 
-		taskpri = (unsigned)p_pri;
-		return(TRUE);
-	}
+      taskpri = (unsigned) p_pri;
+      return (TRUE);
+    }
 
-	return(FALSE);
+  return (FALSE);
 }
 
 /*
@@ -1569,20 +1626,21 @@ cp_mpri()
 */
 
 int
-cp_mstp()
+cp_mstp ()
 {
-	redo = FALSE;
+  redo = FALSE;
 
-	if (getarg()) {
+  if (getarg ())
+    {
 
-		if (setvar(&p_task, p_task) EQ FALSE)
-			return(FALSE);
+      if (setvar (&p_task, p_task) EQ FALSE)
+	return (FALSE);
 
-		taskid = (unsigned)p_task;
-		return(TRUE);
-	}
+      taskid = (unsigned) p_task;
+      return (TRUE);
+    }
 
-	return(FALSE);
+  return (FALSE);
 }
 
 /* 
@@ -1595,10 +1653,10 @@ cp_mstp()
 */
 
 int
-cx_mpri()
+cx_mpri ()
 {
-	MTSetP(taskpri);
-	return(TRUE);
+  MTSetP (taskpri);
+  return (TRUE);
 }
 
 /*
@@ -1608,20 +1666,21 @@ cx_mpri()
 */
 
 int
-cx_mqry()
+cx_mqry ()
 {
-	short rc;
+  short rc;
 
-	rc = MTStat(taskid);
+  rc = MTStat (taskid);
 
-	if ((rc < -3) OR (rc > 2)) {
+  if ((rc < -3) OR (rc > 2))
+    {
 
-		printf("unrecognized return code from MTStat:  %d\n", rc);
-		return(TRUE);
-	}
+      printf ("unrecognized return code from MTStat:  %d\n", rc);
+      return (TRUE);
+    }
 
-	printf("task %d status:  %s\n", taskid, tsmsg[rc + 3]); 
-	return(TRUE);
+  printf ("task %d status:  %s\n", taskid, tsmsg[rc + 3]);
+  return (TRUE);
 }
 
 /* 
@@ -1634,36 +1693,37 @@ cx_mqry()
 */
 
 int
-cx_mzap()
+cx_mzap ()
 {
-	short rc;
+  short rc;
 
-	rc = MTZap(taskid);
+  rc = MTZap (taskid);
 
-	switch (rc) {
+  switch (rc)
+    {
 
-	case -1:
+    case -1:
 
-		printf("task %d not deleted:  active or waiting\n", taskid);
-		break;
+      printf ("task %d not deleted:  active or waiting\n", taskid);
+      break;
 
-	case 0:
+    case 0:
 
-		printf("task %d deleted\n", taskid);
-		break;
+      printf ("task %d deleted\n", taskid);
+      break;
 
-	case 1:
+    case 1:
 
-		printf("task %d not found\n", taskid);
-		break;
+      printf ("task %d not found\n", taskid);
+      break;
 
-	default:
+    default:
 
-		printf("unrecognized return code from MTZap:  %d\n", rc);
-		break;
-	}
+      printf ("unrecognized return code from MTZap:  %d\n", rc);
+      break;
+    }
 
-	return(TRUE);
+  return (TRUE);
 }
 
 /* 
@@ -1676,52 +1736,53 @@ cx_mzap()
 */
 
 int
-cx_mstp()
+cx_mstp ()
 {
-	short rc;
+  short rc;
 
-	rc = MTStop(taskid);
+  rc = MTStop (taskid);
 
-	switch (rc) {
+  switch (rc)
+    {
 
-	case -3:
+    case -3:
 
-		printf("task %d not stopped:  current task\n", taskid);
-		break;
+      printf ("task %d not stopped:  current task\n", taskid);
+      break;
 
-	case -2:
+    case -2:
 
-		printf("task %d not stopped:  can't find it on the ready queue\n",
-			taskid);
-		break;
+      printf ("task %d not stopped:  can't find it on the ready queue\n",
+	      taskid);
+      break;
 
-	case -1:
+    case -1:
 
-		printf("task %d not stopped:  can't find its TCB\n", taskid);
-		break;
+      printf ("task %d not stopped:  can't find its TCB\n", taskid);
+      break;
 
-	case 0:
+    case 0:
 
-		printf("task %d stopped\n", taskid);
-		break;
+      printf ("task %d stopped\n", taskid);
+      break;
 
-	case 1:
+    case 1:
 
-		printf("task %d already stopped\n", taskid);
-		break;
+      printf ("task %d already stopped\n", taskid);
+      break;
 
-	case 2:
+    case 2:
 
-		printf("task %d flagged to stop\n", taskid);
-		break;
+      printf ("task %d flagged to stop\n", taskid);
+      break;
 
-	default:
+    default:
 
-		printf("unrecognized return code from MTStop:  %d\n", rc);
-		break;
-	}
+      printf ("unrecognized return code from MTStop:  %d\n", rc);
+      break;
+    }
 
-	return(TRUE);
+  return (TRUE);
 }
 
 /* 
@@ -1734,10 +1795,10 @@ cx_mstp()
 */
 
 int
-cx_mtsk()
+cx_mtsk ()
 {
-	MTPrTS();
-	return(TRUE);
+  MTPrTS ();
+  return (TRUE);
 }
 
 /*
@@ -1747,10 +1808,10 @@ cx_mtsk()
 */
 
 int
-cx_mtcs()
+cx_mtcs ()
 {
-	MTPrTL();
-	return(TRUE);
+  MTPrTL ();
+  return (TRUE);
 }
 
 /*
@@ -1760,10 +1821,10 @@ cx_mtcs()
 */
 
 int
-cx_mtrq()
+cx_mtrq ()
 {
-	MTPrRq();
-	return(TRUE);
+  MTPrRq ();
+  return (TRUE);
 }
 
 /* 
@@ -1776,10 +1837,10 @@ cx_mtrq()
 */
 
 int
-cx_mtsd()
+cx_mtsd ()
 {
-	MTSDump(p_from, (char *)0L);
-	return(TRUE);
+  MTSDump (p_from, (char *) 0L);
+  return (TRUE);
 }
 
 /*
@@ -1789,10 +1850,10 @@ cx_mtsd()
 */
 
 int
-cx_mtcb()
+cx_mtcb ()
 {
-	MTPrTCB(p_from, (char *)0L);
-	return(TRUE);
+  MTPrTCB (p_from, (char *) 0L);
+  return (TRUE);
 }
 
 /* 
@@ -1805,29 +1866,31 @@ cx_mtcb()
 */
 
 int
-cp_run()
+cp_run ()
 {
-	redo = FALSE;
+  redo = FALSE;
 
-	if (getarg()) {
+  if (getarg ())
+    {
 
-		if (setvar(&p_goto, p_goto) EQ FALSE)
-			return(FALSE);
+      if (setvar (&p_goto, p_goto) EQ FALSE)
+	return (FALSE);
 
-		if (1L & (long)p_goto)
-			return(FALSE);
-	}
+      if (1L & (long) p_goto)
+	return (FALSE);
+    }
 
-	if (getarg()) {
+  if (getarg ())
+    {
 
-		if (setvar(&p_pri, (long)DFRUNPRI) EQ FALSE)
-			return(FALSE);
+      if (setvar (&p_pri, (long) DFRUNPRI) EQ FALSE)
+	return (FALSE);
 
-		if (0xFFFF0000L & (long)p_pri)
-			return(FALSE);
-	}
+      if (0xFFFF0000L & (long) p_pri)
+	return (FALSE);
+    }
 
-	return(TRUE);
+  return (TRUE);
 }
 
 /* 
@@ -1840,24 +1903,24 @@ cp_run()
 */
 
 int
-cx_run()
+cx_run ()
 {
-	register unsigned task;
+  register unsigned task;
 
-	if ((struct _mt_def *)NIL EQ _MT_)
-		_MT_ = (struct _mt_def *)XBIOS(X_MTDEFS);
+  if ((struct _mt_def *) NIL EQ _MT_)
+    _MT_ = (struct _mt_def *) XBIOS (X_MTDEFS);
 
-	task = MTID();
+  task = MTID ();
 
-	MTSetT(&runtcb, task, (unsigned)(0x0000FFFFL & p_pri), 0x2200, -1L,
-		&runstak[STKLEN], p_goto, _MT_);
+  MTSetT (&runtcb, task, (unsigned) (0x0000FFFFL & p_pri), 0x2200, -1L,
+	  &runstak[STKLEN], p_goto, _MT_);
 
-	printf("TCB setup - TID = %d ... Swapping ...\n", task);
+  printf ("TCB setup - TID = %d ... Swapping ...\n", task);
 
-	MTSwap();
+  MTSwap ();
 
-	printf("Task %d initiated\n", task);
-	return(TRUE);
+  printf ("Task %d initiated\n", task);
+  return (TRUE);
 }
 
 
@@ -1868,12 +1931,12 @@ cx_run()
 */
 
 int
-cx_wait()
+cx_wait ()
 {
-	printf("Waiting on \"SemQuit\" ...\n");
-	SMWait(&SemQuit);
-	printf("Task signalled \"SemQuit\"\n");
-	return(TRUE);
+  printf ("Waiting on \"SemQuit\" ...\n");
+  SMWait (&SemQuit);
+  printf ("Task signalled \"SemQuit\"\n");
+  return (TRUE);
 }
 
 /* 
@@ -1886,11 +1949,11 @@ cx_wait()
 */
 
 int
-cx_dini()
+cx_dini ()
 {
-	redo = TRUE;
-	hdvini();
-	return(TRUE);
+  redo = TRUE;
+  hdvini ();
+  return (TRUE);
 }
 
 /*
@@ -1900,19 +1963,19 @@ cx_dini()
 */
 
 int
-cx_zap()
+cx_zap ()
 {
-	register short *p, *q;
+  register short *p, *q;
 
-	p = (short *)USER_RAM;
-	q = (short *)RAM_TOP;
+  p = (short *) USER_RAM;
+  q = (short *) RAM_TOP;
 
-	setipl(7);
+  setipl (7);
 
-	while (p LE q)
-		*p++ = 0;
+  while (p LE q)
+    *p++ = 0;
 
-	rjumpto(ROMADDR);
+  rjumpto (ROMADDR);
 }
 
 /* 
@@ -1925,31 +1988,30 @@ cx_zap()
 */
 
 int
-cx_omap()
+cx_omap ()
 {
-	register short i, width, xloc;
+  register short i, width, xloc;
 
-	printf("Pr B/C Locn      Wd Xloc Flags\r\n");
+  printf ("Pr B/C Locn      Wd Xloc Flags\r\n");
 
-	for (i = 0; i < 16; i++) {
+  for (i = 0; i < 16; i++)
+    {
 
-		xloc = v_odtab[i][1] & 0x03FF;
+      xloc = v_odtab[i][1] & 0x03FF;
 
-		if (xloc & 0x0200)		/* sign extend xloc */
-			xloc |= 0xFC00;
+      if (xloc & 0x0200)	/* sign extend xloc */
+	xloc |= 0xFC00;
 
-		width = (v_odtab[i][1] >> 10) & 0x003F;
+      width = (v_odtab[i][1] >> 10) & 0x003F;
 
-		printf("%2d %s ",
-			i, ((v_odtab[i][0] & V_CBS) ? "Chr" : "Bit"));
+      printf ("%2d %s ", i, ((v_odtab[i][0] & V_CBS) ? "Chr" : "Bit"));
 
-		printf("$%08lX %2d %4d ",
-			((long)v_odtab[i][2] << 1), width, xloc);
+      printf ("$%08lX %2d %4d ", ((long) v_odtab[i][2] << 1), width, xloc);
 
-		printf("$%04X\r\n", v_odtab[i][0]);
-	}
+      printf ("$%04X\r\n", v_odtab[i][0]);
+    }
 
-	return(TRUE);
+  return (TRUE);
 }
 
 /* 
@@ -1962,33 +2024,35 @@ cx_omap()
 */
 
 int
-cx_help()
+cx_help ()
 {
-	int	i, j;
+  int i, j;
 
-	j = 0;
+  j = 0;
 
-	writeln(cmdunit, CRLF);
+  writeln (cmdunit, CRLF);
 
-	for (i = 0; i < NCMDS; i++) {
+  for (i = 0; i < NCMDS; i++)
+    {
 
-		if (j++ EQ 22) {
+      if (j++ EQ 22)
+	{
 
-			j = 0;
+	  j = 0;
 
-			if (waitcr())
-				return(TRUE);
-		}
-
-		writeln(cmdunit, "     ");
-		writeln(cmdunit, cmtab[i].cname);
-		writeln(cmdunit, "  ");
-		writeln(cmdunit, cmtab[i].hstr);
-		writeln(cmdunit, CRLF);
+	  if (waitcr ())
+	    return (TRUE);
 	}
 
-	writeln(cmdunit, CRLF);
-	return(TRUE);
+      writeln (cmdunit, "     ");
+      writeln (cmdunit, cmtab[i].cname);
+      writeln (cmdunit, "  ");
+      writeln (cmdunit, cmtab[i].hstr);
+      writeln (cmdunit, CRLF);
+    }
+
+  writeln (cmdunit, CRLF);
+  return (TRUE);
 }
 
 /* 
@@ -2001,49 +2065,52 @@ cx_help()
 */
 
 int
-cx_bpb()
+cx_bpb ()
 {
-	register struct bpb *bpp;
+  register struct bpb *bpp;
 
-	if (0L EQ (bpp = (struct bpb *)BIOS(B_GBPB, 0) ) ) {
+  if (0L EQ (bpp = (struct bpb *) BIOS (B_GBPB, 0)))
+    {
 
-		writeln(cmdunit, "\r\n\nERROR -- Unable to read BPB\r\n\n");
-		return(FALSE);
+      writeln (cmdunit, "\r\n\nERROR -- Unable to read BPB\r\n\n");
+      return (FALSE);
 
-	} else {
+    }
+  else
+    {
 
-		writeln(cmdunit, "\r\n\nBPB values:\r\n");
-		writeln(cmdunit, "\r\n   recsiz   ");
-		putn((long)bpp->recsiz, 5, cmdunit);
-		writeln(cmdunit, "\r\n   clsiz     ");
-		putn((long)bpp->clsiz, 4, cmdunit);
-		writeln(cmdunit, "\r\n   clsizb   ");
-		putn((long)bpp->clsizb, 5, cmdunit);
-		writeln(cmdunit, "\r\n   rdlen     ");
-		putn((long)bpp->rdlen, 4, cmdunit);
-		writeln(cmdunit, "\r\n   fsiz      ");
-		putn((long)bpp->fsiz, 4, cmdunit);
-		writeln(cmdunit, "\r\n   fatrec   ");
-		putn((long)bpp->fatrec, 5, cmdunit);
-		writeln(cmdunit, "\r\n   datrec   ");
-		putn((long)bpp->datrec, 5, cmdunit);
-		writeln(cmdunit, "\r\n   numcl    ");
-		putn((long)bpp->numcl, 5, cmdunit);
-		writeln(cmdunit, "\r\n   bflags    ");
-		puthn((long)bpp->bflags, 4, cmdunit);
-		writeln(cmdunit, "\r\n   ntracks   ");
-		putn((long)bpp->ntracks, 4, cmdunit);
-		writeln(cmdunit, "\r\n   nsides    ");
-		putn((long)bpp->nsides, 4, cmdunit);
-		writeln(cmdunit, "\r\n   sec/cyl  ");
-		putn((long)bpp->dspc, 5, cmdunit);
-		writeln(cmdunit, "\r\n   sec/trk  ");
-		putn((long)bpp->dspt, 5, cmdunit);
-		writeln(cmdunit, "\r\n   hidden    ");
-		putn((long)bpp->hidden, 4, cmdunit);
-		writeln(cmdunit, "\r\n\n");
-		return(TRUE);
-	}
+      writeln (cmdunit, "\r\n\nBPB values:\r\n");
+      writeln (cmdunit, "\r\n   recsiz   ");
+      putn ((long) bpp->recsiz, 5, cmdunit);
+      writeln (cmdunit, "\r\n   clsiz     ");
+      putn ((long) bpp->clsiz, 4, cmdunit);
+      writeln (cmdunit, "\r\n   clsizb   ");
+      putn ((long) bpp->clsizb, 5, cmdunit);
+      writeln (cmdunit, "\r\n   rdlen     ");
+      putn ((long) bpp->rdlen, 4, cmdunit);
+      writeln (cmdunit, "\r\n   fsiz      ");
+      putn ((long) bpp->fsiz, 4, cmdunit);
+      writeln (cmdunit, "\r\n   fatrec   ");
+      putn ((long) bpp->fatrec, 5, cmdunit);
+      writeln (cmdunit, "\r\n   datrec   ");
+      putn ((long) bpp->datrec, 5, cmdunit);
+      writeln (cmdunit, "\r\n   numcl    ");
+      putn ((long) bpp->numcl, 5, cmdunit);
+      writeln (cmdunit, "\r\n   bflags    ");
+      puthn ((long) bpp->bflags, 4, cmdunit);
+      writeln (cmdunit, "\r\n   ntracks   ");
+      putn ((long) bpp->ntracks, 4, cmdunit);
+      writeln (cmdunit, "\r\n   nsides    ");
+      putn ((long) bpp->nsides, 4, cmdunit);
+      writeln (cmdunit, "\r\n   sec/cyl  ");
+      putn ((long) bpp->dspc, 5, cmdunit);
+      writeln (cmdunit, "\r\n   sec/trk  ");
+      putn ((long) bpp->dspt, 5, cmdunit);
+      writeln (cmdunit, "\r\n   hidden    ");
+      putn ((long) bpp->hidden, 4, cmdunit);
+      writeln (cmdunit, "\r\n\n");
+      return (TRUE);
+    }
 }
 
 /* 
@@ -2056,65 +2123,71 @@ cx_bpb()
 */
 
 int
-cx_go()
+cx_go ()
 {
-	redo = FALSE;
-	exflag = TRUE;
-	wzcrsh = FALSE;
+  redo = FALSE;
+  exflag = TRUE;
+  wzcrsh = FALSE;
 
-	if (goflag)
-		regptr->reg_pc = p_goto;
+  if (goflag)
+    regptr->reg_pc = p_goto;
 
-	if (b0flag ) {
+  if (b0flag)
+    {
 
-		if (p_ba0) {
+      if (p_ba0)
+	{
 
-			if (*p_ba0 NE (UWORD16)BPINST) {
+	  if (*p_ba0 NE (UWORD16) BPINST)
+	    {
 
-				writeln(cmdunit, "\r\n\n** Breakpoint 0 at ");
-				puthn((long)p_ba0, 8, cmdunit);
-				writeln(cmdunit, " was ");
-				puthn(0xFFFFL & (long)(*p_ba0), 4, cmdunit);
-				writeln(cmdunit, " instead of ");
-				puthn(0xFFFFL & (long)BPINST, 4, cmdunit);
-				writeln(cmdunit, " **\r\n\n");
-			}
+	      writeln (cmdunit, "\r\n\n** Breakpoint 0 at ");
+	      puthn ((long) p_ba0, 8, cmdunit);
+	      writeln (cmdunit, " was ");
+	      puthn (0xFFFFL & (long) (*p_ba0), 4, cmdunit);
+	      writeln (cmdunit, " instead of ");
+	      puthn (0xFFFFL & (long) BPINST, 4, cmdunit);
+	      writeln (cmdunit, " **\r\n\n");
+	    }
 
-			*p_ba0 = p_bv0;
-		}
-
-		p_ba0 = tba0;
-		p_bv0 = *p_ba0;
-		*p_ba0 = (UWORD16)BPINST;
+	  *p_ba0 = p_bv0;
 	}
+
+      p_ba0 = tba0;
+      p_bv0 = *p_ba0;
+      *p_ba0 = (UWORD16) BPINST;
+    }
 
 /* 
 */
 
-	if (b1flag ) {
+  if (b1flag)
+    {
 
-		if (p_ba1) {
+      if (p_ba1)
+	{
 
-			if (*p_ba1 NE (UWORD16)BPINST) {
+	  if (*p_ba1 NE (UWORD16) BPINST)
+	    {
 
-				writeln(cmdunit, "\r\n\n** Breakpoint 1 at ");
-				puthn((long)p_ba1, 8, cmdunit);
-				writeln(cmdunit, " was ");
-				puthn(0xFFFFL & (long)(*p_ba1), 4, cmdunit);
-				writeln(cmdunit, " instead of ");
-				puthn(0xFFFFL & (long)BPINST, 4, cmdunit);
-				writeln(cmdunit, " **\r\n\n");
-			}
+	      writeln (cmdunit, "\r\n\n** Breakpoint 1 at ");
+	      puthn ((long) p_ba1, 8, cmdunit);
+	      writeln (cmdunit, " was ");
+	      puthn (0xFFFFL & (long) (*p_ba1), 4, cmdunit);
+	      writeln (cmdunit, " instead of ");
+	      puthn (0xFFFFL & (long) BPINST, 4, cmdunit);
+	      writeln (cmdunit, " **\r\n\n");
+	    }
 
-			*p_ba1 = p_bv1;
-		}
-
-		p_ba1 = tba1;
-		p_bv1 = *p_ba1;
-		*p_ba1 = (UWORD16)BPINST;
+	  *p_ba1 = p_bv1;
 	}
 
-	return(TRUE);
+      p_ba1 = tba1;
+      p_bv1 = *p_ba1;
+      *p_ba1 = (UWORD16) BPINST;
+    }
+
+  return (TRUE);
 }
 
 /* 
@@ -2127,55 +2200,61 @@ cx_go()
 */
 
 int
-cp_dump()
+cp_dump ()
 {
-	inext = ilast;
+  inext = ilast;
 
-	if (getarg())
-		if (setvar(&p_from, p_from) EQ FALSE) {
+  if (getarg ())
+    if (setvar (&p_from, p_from) EQ FALSE)
+      {
 
-			redo = FALSE;
-			return(FALSE);
-		}
+	redo = FALSE;
+	return (FALSE);
+      }
 
-	if (argsep EQ A_CR OR argsep EQ '\0') {
+  if (argsep EQ A_CR OR argsep EQ '\0')
+    {
 
-		p_to = p_from;
-		p_width = 16L;
-		redo = TRUE;
-		return(TRUE);
-	}
+      p_to = p_from;
+      p_width = 16L;
+      redo = TRUE;
+      return (TRUE);
+    }
 
-	if (getarg())
-		if (setvar(&p_to, p_to) EQ FALSE) {
+  if (getarg ())
+    if (setvar (&p_to, p_to) EQ FALSE)
+      {
 
-			redo = FALSE;
-			return(FALSE);
-	}
+	redo = FALSE;
+	return (FALSE);
+      }
 
-	if (argsep EQ A_CR OR argsep EQ '\0') {
+  if (argsep EQ A_CR OR argsep EQ '\0')
+    {
 
-		p_width = 16L;
-		redo = TRUE;
-		return(TRUE);
-	}
+      p_width = 16L;
+      redo = TRUE;
+      return (TRUE);
+    }
 
-	if (getarg())
-		if (setvar(&p_width, p_width) EQ FALSE) {
+  if (getarg ())
+    if (setvar (&p_width, p_width) EQ FALSE)
+      {
 
-			redo = FALSE;
-			return(FALSE);
-	}
+	redo = FALSE;
+	return (FALSE);
+      }
 
-	if ((p_width LE 0L) OR (p_width GT 16L)) {
+  if ((p_width LE 0L) OR (p_width GT 16L))
+    {
 
-		p_width = 16L;
-		redo = FALSE;
-		return(FALSE);
-	}
+      p_width = 16L;
+      redo = FALSE;
+      return (FALSE);
+    }
 
-	redo = TRUE;
-	return(TRUE);
+  redo = TRUE;
+  return (TRUE);
 }
 
 /* 
@@ -2188,26 +2267,26 @@ cp_dump()
 */
 
 int
-cp_fill()
+cp_fill ()
 {
-	redo = FALSE;
+  redo = FALSE;
 
-	if (getarg())
-		if (setvar(&p_from, p_from) EQ FALSE)
-			return(FALSE);
+  if (getarg ())
+    if (setvar (&p_from, p_from) EQ FALSE)
+      return (FALSE);
 
-	if (getarg())
-		if (setvar(&p_len, p_len) EQ FALSE)
-			return(FALSE);
+  if (getarg ())
+    if (setvar (&p_len, p_len) EQ FALSE)
+      return (FALSE);
 
-	if (getarg())
-		if (setvar(&p_value, p_value) EQ FALSE)
-			return(FALSE);
+  if (getarg ())
+    if (setvar (&p_value, p_value) EQ FALSE)
+      return (FALSE);
 
-	if (p_value & ~0xFFL)
-		return(FALSE);
+  if (p_value & ~0xFFL)
+    return (FALSE);
 
-	return(TRUE);
+  return (TRUE);
 }
 
 /* 
@@ -2220,29 +2299,29 @@ cp_fill()
 */
 
 int
-cp_wfil()
+cp_wfil ()
 {
-	redo = FALSE;
+  redo = FALSE;
 
-	if (getarg())
-		if (setvar(&p_from, p_from) EQ FALSE)
-			return(FALSE);
+  if (getarg ())
+    if (setvar (&p_from, p_from) EQ FALSE)
+      return (FALSE);
 
-	if (getarg())
-		if (setvar(&p_len, p_len) EQ FALSE)
-			return(FALSE);
+  if (getarg ())
+    if (setvar (&p_len, p_len) EQ FALSE)
+      return (FALSE);
 
-	if (getarg())
-		if (setvar(&p_value, p_value) EQ FALSE)
-			return(FALSE);
+  if (getarg ())
+    if (setvar (&p_value, p_value) EQ FALSE)
+      return (FALSE);
 
-	if ((long)p_from & 1L)
-		return(FALSE);
+  if ((long) p_from & 1L)
+    return (FALSE);
 
-	if (p_value & ~0xFFFFL)
-		return(FALSE);
+  if (p_value & ~0xFFFFL)
+    return (FALSE);
 
-	return(TRUE);
+  return (TRUE);
 }
 
 /* 
@@ -2255,24 +2334,25 @@ cp_wfil()
 */
 
 int
-cp_copy()
+cp_copy ()
 {
-	redo = FALSE;
+  redo = FALSE;
 
-	if (getarg())
-		if (setvar(&p_from, p_from) EQ FALSE)
-			return(FALSE);
+  if (getarg ())
+    if (setvar (&p_from, p_from) EQ FALSE)
+      return (FALSE);
 
-	if (getarg())
-		if (setvar(&p_to, p_to) EQ FALSE)
-			return(FALSE);
+  if (getarg ())
+    if (setvar (&p_to, p_to) EQ FALSE)
+      return (FALSE);
 
-	if (getarg())
-		if (setvar(&p_len, p_len) EQ FALSE)
-			return(FALSE);
+  if (getarg ())
+    if (setvar (&p_len, p_len) EQ FALSE)
+      return (FALSE);
 
-	return(TRUE);
+  return (TRUE);
 }
+
 /* 
 */
 
@@ -2283,19 +2363,19 @@ cp_copy()
 */
 
 int
-cp_chek()
+cp_chek ()
 {
-	redo = FALSE;
+  redo = FALSE;
 
-	if (getarg())
-		if (setvar(&p_from, p_from) EQ FALSE)
-			return(FALSE);
+  if (getarg ())
+    if (setvar (&p_from, p_from) EQ FALSE)
+      return (FALSE);
 
-	if (getarg())
-		if (setvar(&p_to, p_to) EQ FALSE)
-			return(FALSE);
+  if (getarg ())
+    if (setvar (&p_to, p_to) EQ FALSE)
+      return (FALSE);
 
-	return(TRUE);
+  return (TRUE);
 }
 
 /* 
@@ -2308,29 +2388,29 @@ cp_chek()
 */
 
 int
-cp_read()
+cp_read ()
 {
-	redo = FALSE;
+  redo = FALSE;
 
-	if (getarg())
-		if (setvar(&p_from, p_from) EQ FALSE)
-			return(FALSE);
+  if (getarg ())
+    if (setvar (&p_from, p_from) EQ FALSE)
+      return (FALSE);
 
-	if (getarg())
-		if (setvar(&p_to, p_to) EQ FALSE)
-			return(FALSE);
+  if (getarg ())
+    if (setvar (&p_to, p_to) EQ FALSE)
+      return (FALSE);
 
-	if (getarg())
-		if (setvar(&p_len, p_len) EQ FALSE)
-			return(FALSE);
+  if (getarg ())
+    if (setvar (&p_len, p_len) EQ FALSE)
+      return (FALSE);
 
-	if ((~0x7FFFL) & p_len)
-		return(FALSE);
+  if ((~0x7FFFL) & p_len)
+    return (FALSE);
 
-	if ((~0xFFFFL) & (long)p_from)
-		return(FALSE);
+  if ((~0xFFFFL) & (long) p_from)
+    return (FALSE);
 
-	return(TRUE);
+  return (TRUE);
 }
 
 /*
@@ -2340,9 +2420,9 @@ cp_read()
 */
 
 int
-cp_null()
+cp_null ()
 {
-	return(TRUE);
+  return (TRUE);
 }
 
 /* 
@@ -2355,29 +2435,29 @@ cp_null()
 */
 
 int
-cp_rset()
+cp_rset ()
 {
-	int	rc;
+  int rc;
 
-	rc = 0;
-	redo = FALSE;
+  rc = 0;
+  redo = FALSE;
 
-	if (0 EQ getarg())
-		return(FALSE);
+  if (0 EQ getarg ())
+    return (FALSE);
 
-	str2lc(argstr);
+  str2lc (argstr);
 
-	if (0 EQ (rc = strlcmp(argstr, rlist)))
-		return(FALSE);
+  if (0 EQ (rc = strlcmp (argstr, rlist)))
+    return (FALSE);
 
-	if (0 EQ getarg())
-		return(FALSE);
+  if (0 EQ getarg ())
+    return (FALSE);
 
-	if (FALSE EQ setvar(&p_value, 0L))
-		return(FALSE);
+  if (FALSE EQ setvar (&p_value, 0L))
+    return (FALSE);
 
-	rnum = rc;
-	return(TRUE);
+  rnum = rc;
+  return (TRUE);
 }
 
 /* 
@@ -2389,20 +2469,20 @@ cp_rset()
 */
 
 int
-cx_chek()
+cx_chek ()
 {
-	register long csum;
-	register char *cp;
+  register long csum;
+  register char *cp;
 
-	redo = FALSE;
-	csum = 0L;
+  redo = FALSE;
+  csum = 0L;
 
-	for (cp = p_from; cp LE p_to; cp++)
-		csum += 0x000000FFL & *cp;
+  for (cp = p_from; cp LE p_to; cp++)
+    csum += 0x000000FFL & *cp;
 
-	printf("Checksum = 0x%08lX\r\n", csum);
+  printf ("Checksum = 0x%08lX\r\n", csum);
 
-	return(TRUE);
+  return (TRUE);
 }
 
 /* 
@@ -2415,56 +2495,61 @@ cx_chek()
 */
 
 int
-cx_rset()
+cx_rset ()
 {
-	redo = FALSE;
+  redo = FALSE;
 
-	if (rnum < 1)
-		return(FALSE);
+  if (rnum < 1)
+    return (FALSE);
 
-	if (rnum < 9) {		/* d0..d7 -- data register */
+  if (rnum < 9)
+    {				/* d0..d7 -- data register */
 
-		regptr->d_reg[rnum-1] = p_value;
-		return(TRUE);
-	}
+      regptr->d_reg[rnum - 1] = p_value;
+      return (TRUE);
+    }
 
-	if (rnum < 17) {	/* a0..a7 -- address register */
+  if (rnum < 17)
+    {				/* a0..a7 -- address register */
 
-		regptr->a_reg[rnum-9] = (char *)p_value;
-		return(TRUE);
-	}
+      regptr->a_reg[rnum - 9] = (char *) p_value;
+      return (TRUE);
+    }
 
 /* 
 */
 
-	if (rnum EQ 17) {	/* sr -- status register */
+  if (rnum EQ 17)
+    {				/* sr -- status register */
 
-		if ((~0xFFFFL) & p_value)
-			return(FALSE);
+      if ((~0xFFFFL) & p_value)
+	return (FALSE);
 
-		regptr->reg_sr = (UWORD16)p_value;
-		return(TRUE);
-	}
+      regptr->reg_sr = (UWORD16) p_value;
+      return (TRUE);
+    }
 
-	if (rnum EQ 18) {	/* pc -- program counter */
+  if (rnum EQ 18)
+    {				/* pc -- program counter */
 
-		if (1L & p_value)
-			return(FALSE);
+      if (1L & p_value)
+	return (FALSE);
 
-		regptr->reg_pc = (char *)p_value;
-		return(TRUE);
-	}
+      regptr->reg_pc = (char *) p_value;
+      return (TRUE);
+    }
 
-	if (rnum EQ 19) {	/* sp -- stack pointer */
+  if (rnum EQ 19)
+    {				/* sp -- stack pointer */
 
-		if (1L & p_value)
-			return(FALSE);
+      if (1L & p_value)
+	return (FALSE);
 
-		regptr->a_reg[7] = (char *)p_value;
-		return(TRUE);
-	}
+      regptr->a_reg[7] = (char *) p_value;
+      return (TRUE);
+    }
 
-	return(FALSE);
+  return (FALSE);
 }
 
 /* 
@@ -2477,52 +2562,55 @@ cx_rset()
 */
 
 int
-cp_vrst()
+cp_vrst ()
 {
-	int	rc;
+  int rc;
 
-	rc = 0;
-	redo = FALSE;
+  rc = 0;
+  redo = FALSE;
 
-	if (0 EQ getarg())
-		return(FALSE);
+  if (0 EQ getarg ())
+    return (FALSE);
 
-	str2lc(argstr);
+  str2lc (argstr);
 
-	if (0 EQ (rc = strlcmp(argstr, vrlist)))
-		return(FALSE);
+  if (0 EQ (rc = strlcmp (argstr, vrlist)))
+    return (FALSE);
 
-	if (0 EQ getarg())
-		return(FALSE);
+  if (0 EQ getarg ())
+    return (FALSE);
 
-	if (FALSE EQ setvar(&p_value, 0L))
-		return(FALSE);
+  if (FALSE EQ setvar (&p_value, 0L))
+    return (FALSE);
 
-	if (vrnum < 17) {	/* complete register */
+  if (vrnum < 17)
+    {				/* complete register */
 
-		vrnum = rc;
-		return(TRUE);
-	}
+      vrnum = rc;
+      return (TRUE);
+    }
 
-	if (vrnum < 21) {	/* horizontal register */
+  if (vrnum < 21)
+    {				/* horizontal register */
 
-		if (p_value & ~0x003F)
-			return(FALSE);
+      if (p_value & ~0x003F)
+	return (FALSE);
 
-		vrnum = rc;
-		return(TRUE);
-	}
+      vrnum = rc;
+      return (TRUE);
+    }
 
-	if (vrnum < 25) {	/* vertical register */
+  if (vrnum < 25)
+    {				/* vertical register */
 
-		if (p_value & ~0x03FF)
-			return(FALSE);
+      if (p_value & ~0x03FF)
+	return (FALSE);
 
-		vrnum = rc;
-		return(TRUE);
-	}
+      vrnum = rc;
+      return (TRUE);
+    }
 
-	return(FALSE);
+  return (FALSE);
 }
 
 /* 
@@ -2535,33 +2623,36 @@ cp_vrst()
 */
 
 int
-cx_vrst()
+cx_vrst ()
 {
-	redo = FALSE;
+  redo = FALSE;
 
-	if (vrnum < 1)
-		return(FALSE);
+  if (vrnum < 1)
+    return (FALSE);
 
-	if (vrnum < 17) {	/* 1..16 -- r0..r15 -- complete register */
+  if (vrnum < 17)
+    {				/* 1..16 -- r0..r15 -- complete register */
 
-		v_regs[vrnum-1] = p_value;
-		return(TRUE);
-	}
+      v_regs[vrnum - 1] = p_value;
+      return (TRUE);
+    }
 
-	if (vrnum < 21) {	/* 17..20 -- h0..h3 -- horizontal register */
+  if (vrnum < 21)
+    {				/* 17..20 -- h0..h3 -- horizontal register */
 
-		v_regs[vrnum-5] = (v_regs[vrnum-5] & 0x03FF) |
-			((p_value << 10) & 0xFC00);
-		return(TRUE);
-	}
+      v_regs[vrnum - 5] = (v_regs[vrnum - 5] & 0x03FF) |
+	((p_value << 10) & 0xFC00);
+      return (TRUE);
+    }
 
-	if (vrnum < 25) {	/* 21..24 -- v0..v3 -- vertical register */
+  if (vrnum < 25)
+    {				/* 21..24 -- v0..v3 -- vertical register */
 
-		v_regs[vrnum-9] = (v_regs[vrnum-9] & 0xFC00) | p_value;
-		return(TRUE);
-	}
+      v_regs[vrnum - 9] = (v_regs[vrnum - 9] & 0xFC00) | p_value;
+      return (TRUE);
+    }
 
-	return(FALSE);
+  return (FALSE);
 }
 
 /* 
@@ -2574,33 +2665,36 @@ cx_vrst()
 */
 
 int
-cx_vreg()
+cx_vreg ()
 {
-	register int	i, j, k, l;
-	register unsigned *rp;
+  register int i, j, k, l;
+  register unsigned *rp;
 
-	rp = &v_regs[0];
-	l = 0;
+  rp = &v_regs[0];
+  l = 0;
 
-	for (i = 0; i  < 2; i++) {
+  for (i = 0; i < 2; i++)
+    {
 
-		for (j = 0; j < 2; j++) {
+      for (j = 0; j < 2; j++)
+	{
 
-			for (k = 0; k < 4; k++) {
+	  for (k = 0; k < 4; k++)
+	    {
 
-				writeln(cmdunit, "  ");
-				putn((long)l++, 2, cmdunit);
-				writeln(cmdunit, ":");
-				puthn((long)*rp++, 4, cmdunit);
-			}
+	      writeln (cmdunit, "  ");
+	      putn ((long) l++, 2, cmdunit);
+	      writeln (cmdunit, ":");
+	      puthn ((long) *rp++, 4, cmdunit);
+	    }
 
-			writeln(cmdunit, "  ");
-		}
-
-		writeln(cmdunit, "\r\n");
+	  writeln (cmdunit, "  ");
 	}
 
-	return(TRUE);
+      writeln (cmdunit, "\r\n");
+    }
+
+  return (TRUE);
 }
 
 /* 
@@ -2613,103 +2707,106 @@ cx_vreg()
 */
 
 int
-do_srec(line)
-register char *line;
+do_srec (line)
+     register char *line;
 {
-	register char *ldadr;
-	register int c, csum, i, len;
-	register unsigned val;
+  register char *ldadr;
+  register int c, csum, i, len;
+  register unsigned val;
 
-	if ('S' NE (c = *line++))
-		return(-1);		/* error 1 = missing initial S */
+  if ('S' NE (c = *line++))
+    return (-1);		/* error 1 = missing initial S */
 
-	switch (c = *line++) {
+  switch (c = *line++)
+    {
 
-	case '2':
+    case '2':
 
-		csum = 0;
+      csum = 0;
 
-		if (isxdigit(c = *line++))
-			len = xdtoi(c);
-		else
-			return(-2);	/* error 2 = bad length byte */
+      if (isxdigit (c = *line++))
+	len = xdtoi (c);
+      else
+	return (-2);		/* error 2 = bad length byte */
 
-		if (isxdigit(c = *line++))
-			len = (len << 4) + xdtoi(c);
-		else
-			return(-2);
+      if (isxdigit (c = *line++))
+	len = (len << 4) + xdtoi (c);
+      else
+	return (-2);
 
-		csum += (len & 0xFF);
-		ldadr = (char *)0;
-		len -= 4;
+      csum += (len & 0xFF);
+      ldadr = (char *) 0;
+      len -= 4;
 
-		for (i = 0; i < 3; i++) {
+      for (i = 0; i < 3; i++)
+	{
 
-			if (isxdigit(c = *line++))
-				val = xdtoi(c);
-			else
-				return(-3);	/* error 3 = bad address byte */
+	  if (isxdigit (c = *line++))
+	    val = xdtoi (c);
+	  else
+	    return (-3);	/* error 3 = bad address byte */
 
-			if (isxdigit(c = *line++))
-				val = (val << 4) + xdtoi(c);
-			else
-				return(-3);
+	  if (isxdigit (c = *line++))
+	    val = (val << 4) + xdtoi (c);
+	  else
+	    return (-3);
 
-			ldadr = (char *)(((long)ldadr << 8) + (long)val);
-			csum += (val & 0xFF);
-		}
-
-		for (i = 0; i < len; i++) {
-
-			if (isxdigit(c = *line++))
-				val = xdtoi(c);
-			else
-				return(-4);	/* error 4 = bad data byte */
-
-			if (isxdigit(c = *line++))
-				val = (val << 4) + xdtoi(c);
-			else
-				return(-4);
-
-			csum += (val & 0xFF);
-			*ldadr = val & 0xFF;
-
-			if ((*ldadr & 0xFF) NE (val & 0xFF))
-				return(-5);	/* error 5 = store failed */
-
-			ldadr++;
-		}
-
-		csum = 0xFF & ~csum;
-
-		if (isxdigit(c = *line++))
-			val = xdtoi(c);
-		else
-			return(-6);		/* error 6 = bad checksum byte */
-
-		if (isxdigit(c = *line++))
-			val = (val << 4) + xdtoi(c);
-		else
-			return(-6);
-
-		if (csum NE (val & 0xFF))
-			return(-7);		/* error 7 = bad checksum */
-
-		return(1);
-
-	case '9':
-
-		if (memcmpu(line, SREC9, 10) EQ 0)
-			return(0);
-		else
-			return(-8);		/* error 8 = bad end record */
-
-	default:
-
-		return(-9);			/* error 9 = unknown s type */
+	  ldadr = (char *) (((long) ldadr << 8) + (long) val);
+	  csum += (val & 0xFF);
 	}
 
-	return(-10);			/* error 10 = switch failed */
+      for (i = 0; i < len; i++)
+	{
+
+	  if (isxdigit (c = *line++))
+	    val = xdtoi (c);
+	  else
+	    return (-4);	/* error 4 = bad data byte */
+
+	  if (isxdigit (c = *line++))
+	    val = (val << 4) + xdtoi (c);
+	  else
+	    return (-4);
+
+	  csum += (val & 0xFF);
+	  *ldadr = val & 0xFF;
+
+	  if ((*ldadr & 0xFF) NE (val & 0xFF))
+	    return (-5);	/* error 5 = store failed */
+
+	  ldadr++;
+	}
+
+      csum = 0xFF & ~csum;
+
+      if (isxdigit (c = *line++))
+	val = xdtoi (c);
+      else
+	return (-6);		/* error 6 = bad checksum byte */
+
+      if (isxdigit (c = *line++))
+	val = (val << 4) + xdtoi (c);
+      else
+	return (-6);
+
+      if (csum NE (val & 0xFF))
+	return (-7);		/* error 7 = bad checksum */
+
+      return (1);
+
+    case '9':
+
+      if (memcmpu (line, SREC9, 10) EQ 0)
+	return (0);
+      else
+	return (-8);		/* error 8 = bad end record */
+
+    default:
+
+      return (-9);		/* error 9 = unknown s type */
+    }
+
+  return (-10);			/* error 10 = switch failed */
 }
 
 /* 
@@ -2722,57 +2819,63 @@ register char *line;
 */
 
 int
-cx_load()
+cx_load ()
 {
-	register int rc;
+  register int rc;
 
-	do {
+  do
+    {
 
-		rc = getrln(cmdunit, MAXCMDLN, cmdline);
+      rc = getrln (cmdunit, MAXCMDLN, cmdline);
 
-		switch (rc) {
+      switch (rc)
+	{
 
-		case A_CR:
+	case A_CR:
 
-			rc = do_srec(cmdline);
+	  rc = do_srec (cmdline);
 
-			if (rc LT 0) {
+	  if (rc LT 0)
+	    {
 
-				rc =  -rc;
-				writeln(cmdunit, NACK);
-				writeln(cmdunit, "** Load error ");
-				putn((long)rc, 3, cmdunit);
-				writeln(cmdunit, " **\r\n\n");
-				return(FALSE);
+	      rc = -rc;
+	      writeln (cmdunit, NACK);
+	      writeln (cmdunit, "** Load error ");
+	      putn ((long) rc, 3, cmdunit);
+	      writeln (cmdunit, " **\r\n\n");
+	      return (FALSE);
 
-			} else {
+	    }
+	  else
+	    {
 
-				writeln(cmdunit, TACK);
-			}
+	      writeln (cmdunit, TACK);
+	    }
 
-			continue;
+	  continue;
 
-		case CTL('X'):
+	case CTL ('X'):
 
-			rc = 1;
-			writeln(cmdunit, TACK);
-			continue;
+	  rc = 1;
+	  writeln (cmdunit, TACK);
+	  continue;
 
 /* 
 */
 
-		default:
+	default:
 
-			writeln(cmdunit, NACK);
-			writeln(cmdunit, "** Load aborted on ");
-			puthn(rc, 2, cmdunit);
-			writeln(cmdunit, " **\r\n\n");
-			return(FALSE);
-		}
+	  writeln (cmdunit, NACK);
+	  writeln (cmdunit, "** Load aborted on ");
+	  puthn (rc, 2, cmdunit);
+	  writeln (cmdunit, " **\r\n\n");
+	  return (FALSE);
+	}
 
-	} while (rc);
+    }
+  while (rc);
 
-	return(TRUE);
+  return (TRUE);
 }
 
 /* 
@@ -2785,29 +2888,31 @@ cx_load()
 */
 
 int
-cx_fill()
+cx_fill ()
 {
-	register char *cp = p_from;
-	register long count;
+  register char *cp = p_from;
+  register long count;
 
-	redo = FALSE;
+  redo = FALSE;
 
-	for (count = p_len; count > 0L; count--) {
+  for (count = p_len; count > 0L; count--)
+    {
 
-		*cp = (char)(0xFFL & p_value);
+      *cp = (char) (0xFFL & p_value);
 
-		if (*cp NE (char)(0xFFL & p_value)) {
+      if (*cp NE (char) (0xFFL & p_value))
+	{
 
-			writeln(cmdunit, "\r\n** FILL failed at ");
-			puthn((long)cp, 8, cmdunit);
-			writeln(cmdunit, " **\r\n");
-			return(FALSE);
-		}
-
-		++cp;
+	  writeln (cmdunit, "\r\n** FILL failed at ");
+	  puthn ((long) cp, 8, cmdunit);
+	  writeln (cmdunit, " **\r\n");
+	  return (FALSE);
 	}
 
-	return(TRUE);
+      ++cp;
+    }
+
+  return (TRUE);
 }
 
 /* 
@@ -2820,17 +2925,17 @@ cx_fill()
 */
 
 int
-cx_wfil()
+cx_wfil ()
 {
-	register UWORD16 *cp = (UWORD16 *)p_from;
-	register long count;
+  register UWORD16 *cp = (UWORD16 *) p_from;
+  register long count;
 
-	redo = FALSE;
+  redo = FALSE;
 
-	for (count = p_len; count > 0L; count--)
-		*cp++ = (UWORD16)(0xFFFFL & p_value);
+  for (count = p_len; count > 0L; count--)
+    *cp++ = (UWORD16) (0xFFFFL & p_value);
 
-	return(TRUE);
+  return (TRUE);
 }
 
 /* 
@@ -2843,71 +2948,77 @@ cx_wfil()
 */
 
 int
-cx_copy()
+cx_copy ()
 {
-	register char	*from = p_from,
-			*to = p_to;
-	register long	count = p_len;
+  register char *from = p_from, *to = p_to;
+  register long count = p_len;
 
-	redo = FALSE;
+  redo = FALSE;
 
-	if (to GT from) {
+  if (to GT from)
+    {
 
-		from = from + count;
-		to = to + count;
+      from = from + count;
+      to = to + count;
 
-		while (count--) {
+      while (count--)
+	{
 
-			--from;
-			--to;
-			*to = *from;
+	  --from;
+	  --to;
+	  *to = *from;
 
-			if (*from NE *to) {
+	  if (*from NE * to)
+	    {
 
-				writeln(cmdunit, "\r\n** COPY failed from ");
-				puthn((long)from, 8, cmdunit);
-				writeln(cmdunit, " to ");
-				puthn((long)to, 8, cmdunit);
-				writeln(cmdunit, " with (from) = ");
-				puthn((long)(*from), 2, cmdunit);
-				writeln(cmdunit, " and (to) = ");
-				puthn((long)(*to), 2, cmdunit);
-				writeln(cmdunit, " **\r\n");
-				return(FALSE);
-			}
-		}
+	      writeln (cmdunit, "\r\n** COPY failed from ");
+	      puthn ((long) from, 8, cmdunit);
+	      writeln (cmdunit, " to ");
+	      puthn ((long) to, 8, cmdunit);
+	      writeln (cmdunit, " with (from) = ");
+	      puthn ((long) (*from), 2, cmdunit);
+	      writeln (cmdunit, " and (to) = ");
+	      puthn ((long) (*to), 2, cmdunit);
+	      writeln (cmdunit, " **\r\n");
+	      return (FALSE);
+	    }
+	}
 
 /* 
 */
 
-	} else {
+    }
+  else
+    {
 
-		while (count--) {
+      while (count--)
+	{
 
-			*to = *from;
+	  *to = *from;
 
-			if (*from NE *to) {
+	  if (*from NE * to)
+	    {
 
-				writeln(cmdunit, "\r\n** COPY failed from ");
-				puthn((long)from, 8, cmdunit);
-				writeln(cmdunit, " to ");
-				puthn((long)to, 8, cmdunit);
-				writeln(cmdunit, " with (from) = ");
-				puthn((long)(*from), 2, cmdunit);
-				writeln(cmdunit, " and (to) = ");
-				puthn((long)(*to), 2, cmdunit);
-				writeln(cmdunit, " **\r\n");
-				return(FALSE);
-			}
+	      writeln (cmdunit, "\r\n** COPY failed from ");
+	      puthn ((long) from, 8, cmdunit);
+	      writeln (cmdunit, " to ");
+	      puthn ((long) to, 8, cmdunit);
+	      writeln (cmdunit, " with (from) = ");
+	      puthn ((long) (*from), 2, cmdunit);
+	      writeln (cmdunit, " and (to) = ");
+	      puthn ((long) (*to), 2, cmdunit);
+	      writeln (cmdunit, " **\r\n");
+	      return (FALSE);
+	    }
 
-			++from;
-			++to;
-		}
+	  ++from;
+	  ++to;
 	}
+    }
 
-	return(TRUE);
+  return (TRUE);
 }
-			
+
 /* 
 */
 
@@ -2918,44 +3029,46 @@ cx_copy()
 */
 
 int
-cx_dump()
+cx_dump ()
 {
-	register int	nw, rc;
+  register int nw, rc;
 
-	redo= TRUE;
-	d_cur = p_from;
-	d_next = p_to + 1;
-	d_last = ((long)p_to - (long)p_from) + d_next;
-	nw = p_width;
-	rc = TRUE;
+  redo = TRUE;
+  d_cur = p_from;
+  d_next = p_to + 1;
+  d_last = ((long) p_to - (long) p_from) + d_next;
+  nw = p_width;
+  rc = TRUE;
 
-	do {
+  do
+    {
 
-		writeln(cmdunit, CRLF);
-		padr(p_from, cmdunit);
+      writeln (cmdunit, CRLF);
+      padr (p_from, cmdunit);
 
-		dflag = FALSE;
+      dflag = FALSE;
 
-		if (ddump(p_from, p_to, nw, cmdunit))
-			rc = FALSE;
+      if (ddump (p_from, p_to, nw, cmdunit))
+	rc = FALSE;
 
-		if (rc)
-			if (dtext(p_from, p_to, nw, cmdunit))
-				rc = FALSE;
+      if (rc)
+	if (dtext (p_from, p_to, nw, cmdunit))
+	  rc = FALSE;
 
-		p_from = p_from + p_width;
+      p_from = p_from + p_width;
 
-		if (dflag)
-			rc = FALSE;
+      if (dflag)
+	rc = FALSE;
 
-	} while (rc);
+    }
+  while (rc);
 
-	p_from = d_cur;
+  p_from = d_cur;
 
-	writeln(cmdunit, CRLF);
-	writeln(cmdunit, CRLF);
+  writeln (cmdunit, CRLF);
+  writeln (cmdunit, CRLF);
 
-	return(TRUE);
+  return (TRUE);
 }
 
 /* 
@@ -2968,28 +3081,30 @@ cx_dump()
 */
 
 int
-wdump(loc, lastloc, nwide, unit)
-register UWORD16 *loc, *lastloc;
-int nwide, unit;
+wdump (loc, lastloc, nwide, unit)
+     register UWORD16 *loc, *lastloc;
+     int nwide, unit;
 {
-	while (nwide--) {
+  while (nwide--)
+    {
 
-		puthn((long)(0xFFFFL & *loc), 4, unit);
-		BIOS(B_PUTC,unit, ' ');
+      puthn ((long) (0xFFFFL & *loc), 4, unit);
+      BIOS (B_PUTC, unit, ' ');
 
-		if (BIOS(B_RDAV, unit))
-			return(TRUE);
+      if (BIOS (B_RDAV, unit))
+	return (TRUE);
 
-		if (loc EQ lastloc) {
+      if (loc EQ lastloc)
+	{
 
-			dflag = TRUE;
-			return(FALSE);
-		}
-
-		++loc;
+	  dflag = TRUE;
+	  return (FALSE);
 	}
 
-	return(FALSE);
+      ++loc;
+    }
+
+  return (FALSE);
 }
 
 /* 
@@ -3002,28 +3117,30 @@ int nwide, unit;
 */
 
 int
-ldump(loc, lastloc, nwide, unit)
-register long *loc, *lastloc;
-int nwide, unit;
+ldump (loc, lastloc, nwide, unit)
+     register long *loc, *lastloc;
+     int nwide, unit;
 {
-	while (nwide--) {
+  while (nwide--)
+    {
 
-		puthn(*loc, 8, unit);
-		BIOS(B_PUTC,unit, ' ');
+      puthn (*loc, 8, unit);
+      BIOS (B_PUTC, unit, ' ');
 
-		if (BIOS(B_RDAV, unit))
-			return(TRUE);
+      if (BIOS (B_RDAV, unit))
+	return (TRUE);
 
-		if (loc EQ lastloc) {
+      if (loc EQ lastloc)
+	{
 
-			dflag = TRUE;
-			return(FALSE);
-		}
-
-		++loc;
+	  dflag = TRUE;
+	  return (FALSE);
 	}
 
-	return(FALSE);
+      ++loc;
+    }
+
+  return (FALSE);
 }
 
 /* 
@@ -3036,60 +3153,67 @@ int nwide, unit;
 */
 
 int
-cp_wdmp()
+cp_wdmp ()
 {
-	inext = ilast;
+  inext = ilast;
 
-	if (getarg())
-		if (setvar(&p_from, p_from) EQ FALSE) {
+  if (getarg ())
+    if (setvar (&p_from, p_from) EQ FALSE)
+      {
 
-			redo = FALSE;
-			return(FALSE);
-		}
+	redo = FALSE;
+	return (FALSE);
+      }
 
-	if ((long)p_from & 1L) {
+  if ((long) p_from & 1L)
+    {
 
-		redo = FALSE;
-		return(FALSE);
-	}
+      redo = FALSE;
+      return (FALSE);
+    }
 
-	if (argsep EQ A_CR OR argsep EQ '\0') {
+  if (argsep EQ A_CR OR argsep EQ '\0')
+    {
 
-		p_to = p_from;
-		p_width = 8;
-		redo = TRUE;
-		return(TRUE);
-	}
+      p_to = p_from;
+      p_width = 8;
+      redo = TRUE;
+      return (TRUE);
+    }
 
-	if (getarg())
-		if (setvar(&p_to, p_to) EQ FALSE) {
+  if (getarg ())
+    if (setvar (&p_to, p_to) EQ FALSE)
+      {
 
-			redo = FALSE;
-			return(FALSE);
-		}
+	redo = FALSE;
+	return (FALSE);
+      }
 
-	if ((long)p_to & 1L) {
+  if ((long) p_to & 1L)
+    {
 
-		redo = FALSE;
-		return(FALSE);
-	}
+      redo = FALSE;
+      return (FALSE);
+    }
 
-	if (argsep EQ A_CR OR argsep EQ '\0') {
+  if (argsep EQ A_CR OR argsep EQ '\0')
+    {
 
-		p_width = 8;
-		redo = TRUE;
-		return(TRUE);
-	}
+      p_width = 8;
+      redo = TRUE;
+      return (TRUE);
+    }
 
-	if (getarg())
-		if (setvar(&p_width, p_width) EQ FALSE) {
+  if (getarg ())
+    if (setvar (&p_width, p_width) EQ FALSE)
+      {
 
-			redo = FALSE;
-			return(FALSE);
-		}
+	redo = FALSE;
+	return (FALSE);
+      }
 
-	redo = TRUE;
-	return(TRUE);
+  redo = TRUE;
+  return (TRUE);
 }
 
 /* 
@@ -3102,60 +3226,67 @@ cp_wdmp()
 */
 
 int
-cp_ldmp()
+cp_ldmp ()
 {
-	inext = ilast;
+  inext = ilast;
 
-	if (getarg())
-		if (setvar(&p_from, p_from) EQ FALSE) {
+  if (getarg ())
+    if (setvar (&p_from, p_from) EQ FALSE)
+      {
 
-			redo = FALSE;
-			return(FALSE);
-		}
+	redo = FALSE;
+	return (FALSE);
+      }
 
-	if ((long)p_from & 1L) {
+  if ((long) p_from & 1L)
+    {
 
-		redo = FALSE;
-		return(FALSE);
-	}
+      redo = FALSE;
+      return (FALSE);
+    }
 
-	if (argsep EQ A_CR OR argsep EQ '\0') {
+  if (argsep EQ A_CR OR argsep EQ '\0')
+    {
 
-		p_to = p_from;
-		p_width = 4;
-		redo = TRUE;
-		return(TRUE);
-	}
+      p_to = p_from;
+      p_width = 4;
+      redo = TRUE;
+      return (TRUE);
+    }
 
-	if (getarg())
-		if (setvar(&p_to, p_to) EQ FALSE) {
+  if (getarg ())
+    if (setvar (&p_to, p_to) EQ FALSE)
+      {
 
-			redo = FALSE;
-			return(FALSE);
-		}
+	redo = FALSE;
+	return (FALSE);
+      }
 
-	if ((long)p_to & 1L) {
+  if ((long) p_to & 1L)
+    {
 
-		redo = FALSE;
-		return(FALSE);
-	}
+      redo = FALSE;
+      return (FALSE);
+    }
 
-	if (argsep EQ A_CR OR argsep EQ '\0') {
+  if (argsep EQ A_CR OR argsep EQ '\0')
+    {
 
-		p_width = 4;
-		redo = TRUE;
-		return(TRUE);
-	}
+      p_width = 4;
+      redo = TRUE;
+      return (TRUE);
+    }
 
-	if (getarg())
-		if (setvar(&p_width, p_width) EQ FALSE) {
+  if (getarg ())
+    if (setvar (&p_width, p_width) EQ FALSE)
+      {
 
-			redo = FALSE;
-			return(FALSE);
-		}
+	redo = FALSE;
+	return (FALSE);
+      }
 
-	redo = TRUE;
-	return(TRUE);
+  redo = TRUE;
+  return (TRUE);
 }
 
 /* 
@@ -3168,23 +3299,23 @@ cp_ldmp()
 */
 
 int
-cp_ilev()
+cp_ilev ()
 {
-	long	iplevl;
+  long iplevl;
 
-	if (argsep EQ A_CR OR argsep EQ '\0')
-		return(TRUE);
+  if (argsep EQ A_CR OR argsep EQ '\0')
+    return (TRUE);
 
-	if (getarg())
-		if (setvar(&iplevl, iplevl) EQ FALSE)
-			return(FALSE);
+  if (getarg ())
+    if (setvar (&iplevl, iplevl) EQ FALSE)
+      return (FALSE);
 
-	if (iplevl GT 7)
-		return(FALSE);
+  if (iplevl GT 7)
+    return (FALSE);
 
-	iplev = iplevl;
+  iplev = iplevl;
 
-	return(TRUE);
+  return (TRUE);
 }
 
 /*
@@ -3194,16 +3325,18 @@ cp_ilev()
 */
 
 int
-cx_ilev()
+cx_ilev ()
 {
-	if (-1 EQ setipl(iplev)) {
+  if (-1 EQ setipl (iplev))
+    {
 
-		printf("ERROR -- Could not set IPL to %d\r\n", iplev);
-		return(FALSE);
-	} else
-		printf("ROMP IPL now set to %d\r\n", iplev);
+      printf ("ERROR -- Could not set IPL to %d\r\n", iplev);
+      return (FALSE);
+    }
+  else
+    printf ("ROMP IPL now set to %d\r\n", iplev);
 
-	return(TRUE);
+  return (TRUE);
 }
 
 /* 
@@ -3216,15 +3349,15 @@ cx_ilev()
 */
 
 int
-cp_monc()
+cp_monc ()
 {
-	if (getarg())
-		if (setvar(&monptr, monptr) EQ FALSE)
-			return(FALSE);
+  if (getarg ())
+    if (setvar (&monptr, monptr) EQ FALSE)
+      return (FALSE);
 
-	monsw = MON_C;
-	redo = TRUE;
-	return(TRUE);
+  monsw = MON_C;
+  redo = TRUE;
+  return (TRUE);
 }
 
 /*
@@ -3234,15 +3367,15 @@ cp_monc()
 */
 
 int
-cp_mons()
+cp_mons ()
 {
-	if (getarg())
-		if (setvar(&monptr, monptr) EQ FALSE)
-			return(FALSE);
+  if (getarg ())
+    if (setvar (&monptr, monptr) EQ FALSE)
+      return (FALSE);
 
-	monsw = MON_S;
-	redo = TRUE;
-	return(TRUE);
+  monsw = MON_S;
+  redo = TRUE;
+  return (TRUE);
 }
 
 /* 
@@ -3255,15 +3388,15 @@ cp_mons()
 */
 
 int
-cp_monl()
+cp_monl ()
 {
-	if (getarg())
-		if (setvar(&monptr, monptr) EQ FALSE)
-			return(FALSE);
+  if (getarg ())
+    if (setvar (&monptr, monptr) EQ FALSE)
+      return (FALSE);
 
-	monsw = MON_L;
-	redo = TRUE;
-	return(TRUE);
+  monsw = MON_L;
+  redo = TRUE;
+  return (TRUE);
 }
 
 /* 
@@ -3276,86 +3409,93 @@ cp_monl()
 */
 
 int
-cx_mon()
+cx_mon ()
 {
-	register char vc, vcc;
-	register short vs, vss, *vsp;
-	register long vl, vll, *vlp;
+  register char vc, vcc;
+  register short vs, vss, *vsp;
+  register long vl, vll, *vlp;
 
-	switch (monsw) {
+  switch (monsw)
+    {
 
-	case MON_C:
+    case MON_C:
 
-		vc = *monptr & 0x0FF;
-		puthn((long)vc, 2, cmdunit);
-		writeln(cmdunit, "\r\n");
+      vc = *monptr & 0x0FF;
+      puthn ((long) vc, 2, cmdunit);
+      writeln (cmdunit, "\r\n");
 
-		while (!(0xFFFFL & BIOS(B_RDAV, CON_DEV))) {
+      while (!(0xFFFFL & BIOS (B_RDAV, CON_DEV)))
+	{
 
-			vcc = *monptr & 0x0FF;
+	  vcc = *monptr & 0x0FF;
 
-			if (vc NE vcc) {
+	  if (vc NE vcc)
+	    {
 
-				vc = vcc;
-				puthn((long)vc, 2, cmdunit);
-				writeln(cmdunit, "\r\n");
-			}
-		}
+	      vc = vcc;
+	      puthn ((long) vc, 2, cmdunit);
+	      writeln (cmdunit, "\r\n");
+	    }
+	}
 
-		BIOS(B_GETC, CON_DEV);
-		return(TRUE);
+      BIOS (B_GETC, CON_DEV);
+      return (TRUE);
 
-	case MON_S:
+    case MON_S:
 
-		vsp = (short *)monptr;
-		vs = *vsp;
-		puthn((long)vs, 4, cmdunit);
-		writeln(cmdunit, "\r\n");
+      vsp = (short *) monptr;
+      vs = *vsp;
+      puthn ((long) vs, 4, cmdunit);
+      writeln (cmdunit, "\r\n");
 
-		while (!(0xFFFFL & BIOS(B_RDAV, CON_DEV))) {
+      while (!(0xFFFFL & BIOS (B_RDAV, CON_DEV)))
+	{
 
-			vss = *vsp;
+	  vss = *vsp;
 
-			if (vs NE vss) {
+	  if (vs NE vss)
+	    {
 
-				vs = vss;
-				puthn((long)vs, 4, cmdunit);
-				writeln(cmdunit, "\r\n");
-			}
-		}
+	      vs = vss;
+	      puthn ((long) vs, 4, cmdunit);
+	      writeln (cmdunit, "\r\n");
+	    }
+	}
 
-		BIOS(B_GETC, CON_DEV);
-		return(TRUE);
+      BIOS (B_GETC, CON_DEV);
+      return (TRUE);
 
 /* 
 */
-	case MON_L:
+    case MON_L:
 
-		vlp = (long *)monptr;
-		vl = *vlp;
-		puthn(vl, 8, cmdunit);
-		writeln(cmdunit, "\r\n");
+      vlp = (long *) monptr;
+      vl = *vlp;
+      puthn (vl, 8, cmdunit);
+      writeln (cmdunit, "\r\n");
 
-		while (!(0xFFFFL & BIOS(B_RDAV, CON_DEV))) {
+      while (!(0xFFFFL & BIOS (B_RDAV, CON_DEV)))
+	{
 
-			vll = *vlp;
+	  vll = *vlp;
 
-			if (vl NE vll) {
+	  if (vl NE vll)
+	    {
 
-				vl = vll;
-				puthn(vl, 8, cmdunit);
-				writeln(cmdunit, "\r\n");
-			}
-		}
-
-		BIOS(B_GETC, CON_DEV);
-		return(TRUE);
-
-	default:
-		return(FALSE);
+	      vl = vll;
+	      puthn (vl, 8, cmdunit);
+	      writeln (cmdunit, "\r\n");
+	    }
 	}
+
+      BIOS (B_GETC, CON_DEV);
+      return (TRUE);
+
+    default:
+      return (FALSE);
+    }
 }
-		
+
 /* 
 */
 
@@ -3366,37 +3506,39 @@ cx_mon()
 */
 
 int
-cx_wdmp()
+cx_wdmp ()
 {
-	int	nw, rc;
+  int nw, rc;
 
-	d_cur = p_from;
-	d_next = p_to + 2;
-	d_last = ((long)p_to - (long)p_from) + d_next;
-	nw = p_width;
-	rc = TRUE;
+  d_cur = p_from;
+  d_next = p_to + 2;
+  d_last = ((long) p_to - (long) p_from) + d_next;
+  nw = p_width;
+  rc = TRUE;
 
-	do {
+  do
+    {
 
-		writeln(cmdunit, CRLF);
-		padr(p_from, cmdunit);
-		dflag = FALSE;
+      writeln (cmdunit, CRLF);
+      padr (p_from, cmdunit);
+      dflag = FALSE;
 
-		if (wdump(p_from, p_to, nw, cmdunit))
-			rc = FALSE;
+      if (wdump (p_from, p_to, nw, cmdunit))
+	rc = FALSE;
 
-		p_from = p_from + (p_width << 1);
+      p_from = p_from + (p_width << 1);
 
-		if (dflag)
-			rc = FALSE;
+      if (dflag)
+	rc = FALSE;
 
-	} while (rc);
+    }
+  while (rc);
 
-	p_from = d_cur;
+  p_from = d_cur;
 
-	writeln(cmdunit, CRLF);
-	writeln(cmdunit, CRLF);
-	return(TRUE);
+  writeln (cmdunit, CRLF);
+  writeln (cmdunit, CRLF);
+  return (TRUE);
 }
 
 /* 
@@ -3409,37 +3551,39 @@ cx_wdmp()
 */
 
 int
-cx_ldmp()
+cx_ldmp ()
 {
-	int	nw, rc;
+  int nw, rc;
 
-	d_cur = p_from;
-	d_next = p_to + 4;
-	d_last = ((long)p_to - (long)p_from) + d_next;
-	nw = p_width;
-	rc = TRUE;
+  d_cur = p_from;
+  d_next = p_to + 4;
+  d_last = ((long) p_to - (long) p_from) + d_next;
+  nw = p_width;
+  rc = TRUE;
 
-	do {
+  do
+    {
 
-		writeln(cmdunit, CRLF);
-		padr(p_from, cmdunit);
-		dflag = FALSE;
+      writeln (cmdunit, CRLF);
+      padr (p_from, cmdunit);
+      dflag = FALSE;
 
-		if (ldump(p_from, p_to, nw, cmdunit))
-			rc = FALSE;
+      if (ldump (p_from, p_to, nw, cmdunit))
+	rc = FALSE;
 
-		p_from = p_from + (p_width << 2);
+      p_from = p_from + (p_width << 2);
 
-		if (dflag)
-			rc = FALSE;
+      if (dflag)
+	rc = FALSE;
 
-	} while (rc);
+    }
+  while (rc);
 
-	p_from = d_cur;
+  p_from = d_cur;
 
-	writeln(cmdunit, CRLF);
-	writeln(cmdunit, CRLF);
-	return(TRUE);
+  writeln (cmdunit, CRLF);
+  writeln (cmdunit, CRLF);
+  return (TRUE);
 }
 
 /* 
@@ -3451,85 +3595,97 @@ cx_ldmp()
    ============================================================================
 */
 
-do_cmd()
+do_cmd ()
 {
-	int	rc, i;
+  int rc, i;
 
-	/* prompt for a command line */
+  /* prompt for a command line */
 
-	writeln(cmdunit, "ROMP: ");
+  writeln (cmdunit, "ROMP: ");
 
-	/*  get a command line */
+  /*  get a command line */
 
-	rc = getln(cmdunit, MAXCMDLN, cmdline);
-
-/* 
-*/
-
-	/* dispatch based on rc */
-
-	switch (rc) {
-
-	case A_CR:
-
-		writeln(cmdunit, CRLF);
-
-		if (getcmd()) {
-
-			for (i = 0; i < NCMDS; i++) {
-
-				if (0 EQ strcmp(argstr, cmtab[i].cname)) {
-
-					ilast = i;
-
-					if ((*cmtab[i].cp)()) {
-
-						if (FALSE EQ (*cmtab[i].cx)())
-							writeln(cmdunit, EMSG1);
-
-					} else {
-
-						writeln(cmdunit, EMSG2);
-					}
-
-					return;
-				}
-			}
-
-			writeln(cmdunit, EMSG3);
-			return;
-
-		} else {
+  rc = getln (cmdunit, MAXCMDLN, cmdline);
 
 /* 
 */
 
-			if (redo) {
+  /* dispatch based on rc */
 
-				if (FALSE EQ (*cmtab[ilast].cx)())
-					writeln(cmdunit, EMSG1);
+  switch (rc)
+    {
 
-			} else {
+    case A_CR:
 
-				writeln(cmdunit, EMSG5);
-			}
+      writeln (cmdunit, CRLF);
 
-			return;
+      if (getcmd ())
+	{
+
+	  for (i = 0; i < NCMDS; i++)
+	    {
+
+	      if (0 EQ strcmp (argstr, cmtab[i].cname))
+		{
+
+		  ilast = i;
+
+		  if ((*cmtab[i].cp) ())
+		    {
+
+		      if (FALSE EQ (*cmtab[i].cx) ())
+			writeln (cmdunit, EMSG1);
+
+		    }
+		  else
+		    {
+
+		      writeln (cmdunit, EMSG2);
+		    }
+
+		  return;
 		}
+	    }
 
-	case CTL('X'):
+	  writeln (cmdunit, EMSG3);
+	  return;
 
-		writeln(cmdunit, CANNED);
-		return;
+	}
+      else
+	{
 
-	default:
+/* 
+*/
 
-		writeln(cmdunit, EMSG6);
-		return;
+	  if (redo)
+	    {
+
+	      if (FALSE EQ (*cmtab[ilast].cx) ())
+		writeln (cmdunit, EMSG1);
+
+	    }
+	  else
+	    {
+
+	      writeln (cmdunit, EMSG5);
+	    }
+
+	  return;
 	}
 
-	writeln(cmdunit, EMSG7);
-	return;
+    case CTL ('X'):
+
+      writeln (cmdunit, CANNED);
+      return;
+
+    default:
+
+      writeln (cmdunit, EMSG6);
+      return;
+    }
+
+  writeln (cmdunit, EMSG7);
+  return;
 }
 
 /* 
@@ -3542,11 +3698,11 @@ do_cmd()
 */
 
 int
-cx_next()
+cx_next ()
 {
-	p_to = d_last;	
-	p_from = d_next;
-	return((*cmtab[inext].cx)());
+  p_to = d_last;
+  p_from = d_next;
+  return ((*cmtab[inext].cx) ());
 }
 
 /* 
@@ -3559,27 +3715,30 @@ cx_next()
 */
 
 int
-cx_read()
+cx_read ()
 {
-	long	rc;
-	int	ns, recno;
+  long rc;
+  int ns, recno;
 
-	ns = p_len & 0x7FFFL;
-	recno = (long)p_from & 0xFFFFL;
+  ns = p_len & 0x7FFFL;
+  recno = (long) p_from & 0xFFFFL;
 
-	rc = BIOS(B_RDWR, 2, p_to, ns, recno, 0);
+  rc = BIOS (B_RDWR, 2, p_to, ns, recno, 0);
 
-	if (rc & 0xFFFFL) {
+  if (rc & 0xFFFFL)
+    {
 
-		writeln(cmdunit, "\r\nERROR reading disk:  ");
-		puthn(rc, 8, cmdunit);
-		writeln(cmdunit, "\r\n\n");
-		return(FALSE);
+      writeln (cmdunit, "\r\nERROR reading disk:  ");
+      puthn (rc, 8, cmdunit);
+      writeln (cmdunit, "\r\n\n");
+      return (FALSE);
 
-	} else {
+    }
+  else
+    {
 
-		return(TRUE);
-	}
+      return (TRUE);
+    }
 }
 
 /* 
@@ -3592,27 +3751,30 @@ cx_read()
 */
 
 int
-cx_writ()
+cx_writ ()
 {
-	long	rc;
-	int	ns, recno;
+  long rc;
+  int ns, recno;
 
-	ns = p_len & 0x7FFFL;
-	recno = (long)p_from & 0xFFFFL;
+  ns = p_len & 0x7FFFL;
+  recno = (long) p_from & 0xFFFFL;
 
-	rc = BIOS(B_RDWR, 3, p_to, ns, recno, 0);
+  rc = BIOS (B_RDWR, 3, p_to, ns, recno, 0);
 
-	if (rc & 0xFFFFL) {
+  if (rc & 0xFFFFL)
+    {
 
-		writeln(cmdunit, "\r\nERROR writing disk:  ");
-		puthn(rc, 8, cmdunit);
-		writeln(cmdunit, "\r\n\n");
-		return(FALSE);
+      writeln (cmdunit, "\r\nERROR writing disk:  ");
+      puthn (rc, 8, cmdunit);
+      writeln (cmdunit, "\r\n\n");
+      return (FALSE);
 
-	} else {
+    }
+  else
+    {
 
-		return(TRUE);
-	}
+      return (TRUE);
+    }
 }
 
 /* 
@@ -3624,89 +3786,92 @@ cx_writ()
    ============================================================================
 */
 
-showrs(rp)
-struct regs *rp;
+showrs (rp)
+     struct regs *rp;
 {
-	int	i;
-	UWORD16	srtemp;
+  int i;
+  UWORD16 srtemp;
 
-	writeln(cmdunit, "       ");
+  writeln (cmdunit, "       ");
 
-	for (i = 0; i < 8; i++) {
+  for (i = 0; i < 8; i++)
+    {
 
-		BIOS(B_PUTC, cmdunit, ' ');
-		BIOS(B_PUTC, cmdunit, '0'+i);
-		writeln(cmdunit, "_______");
-	}
+      BIOS (B_PUTC, cmdunit, ' ');
+      BIOS (B_PUTC, cmdunit, '0' + i);
+      writeln (cmdunit, "_______");
+    }
 
-	writeln(cmdunit, "\r\nd0..d7 ");
+  writeln (cmdunit, "\r\nd0..d7 ");
 
-	for (i = 0; i < 8; i++) {
+  for (i = 0; i < 8; i++)
+    {
 
-		BIOS(B_PUTC, cmdunit, ' ');
-		puthn(rp->d_reg[i], 8, cmdunit);
-	}
+      BIOS (B_PUTC, cmdunit, ' ');
+      puthn (rp->d_reg[i], 8, cmdunit);
+    }
 
-	writeln(cmdunit, "\r\na0..a7 ");
+  writeln (cmdunit, "\r\na0..a7 ");
 
-	for (i = 0; i < 8; i++) {
+  for (i = 0; i < 8; i++)
+    {
 
-		BIOS(B_PUTC, cmdunit, ' ');
-		puthn(rp->a_reg[i], 8, cmdunit);
-	}
+      BIOS (B_PUTC, cmdunit, ' ');
+      puthn (rp->a_reg[i], 8, cmdunit);
+    }
 
-	writeln(cmdunit, "\r\nPC =  ");
-	puthn((long)rp->reg_pc, 8, cmdunit);
+  writeln (cmdunit, "\r\nPC =  ");
+  puthn ((long) rp->reg_pc, 8, cmdunit);
 
-	srtemp = rp->reg_sr;
-	writeln(cmdunit, ",    SR = ");
-	puthn( (long)srtemp & 0xFFFFL, 4, cmdunit);
+  srtemp = rp->reg_sr;
+  writeln (cmdunit, ",    SR = ");
+  puthn ((long) srtemp & 0xFFFFL, 4, cmdunit);
 
 /* 
 */
 
-	writeln(cmdunit, "  (IPL = ");
-	puthn( (long)(srtemp >> 8) & 0x7L, 1, cmdunit);
-	writeln(cmdunit, ", ");
+  writeln (cmdunit, "  (IPL = ");
+  puthn ((long) (srtemp >> 8) & 0x7L, 1, cmdunit);
+  writeln (cmdunit, ", ");
 
-	if (srtemp & 0x8000)
-		BIOS(B_PUTC, cmdunit, 'T');
-	else
-		BIOS(B_PUTC, cmdunit, '-');
+  if (srtemp & 0x8000)
+    BIOS (B_PUTC, cmdunit, 'T');
+  else
+    BIOS (B_PUTC, cmdunit, '-');
 
-	if (srtemp & 0x2000)
-		BIOS(B_PUTC, cmdunit, 'S');
-	else
-		BIOS(B_PUTC, cmdunit, '-');
+  if (srtemp & 0x2000)
+    BIOS (B_PUTC, cmdunit, 'S');
+  else
+    BIOS (B_PUTC, cmdunit, '-');
 
-	BIOS(B_PUTC, cmdunit, ' ');
+  BIOS (B_PUTC, cmdunit, ' ');
 
-	if (srtemp & 0x10)
-		BIOS(B_PUTC, cmdunit, 'X');
-	else
-		BIOS(B_PUTC, cmdunit, '-');
+  if (srtemp & 0x10)
+    BIOS (B_PUTC, cmdunit, 'X');
+  else
+    BIOS (B_PUTC, cmdunit, '-');
 
-	if (srtemp & 0x8)
-		BIOS(B_PUTC, cmdunit, 'N');
-	else
-		BIOS(B_PUTC, cmdunit, '-');
+  if (srtemp & 0x8)
+    BIOS (B_PUTC, cmdunit, 'N');
+  else
+    BIOS (B_PUTC, cmdunit, '-');
 
-	if (srtemp & 0x4)
-		BIOS(B_PUTC, cmdunit, 'Z');
-	else
-		BIOS(B_PUTC, cmdunit, '-');
+  if (srtemp & 0x4)
+    BIOS (B_PUTC, cmdunit, 'Z');
+  else
+    BIOS (B_PUTC, cmdunit, '-');
 
-	if (srtemp & 0x2)
-		BIOS(B_PUTC, cmdunit, 'V');
-	else
-		BIOS(B_PUTC, cmdunit, '-');
+  if (srtemp & 0x2)
+    BIOS (B_PUTC, cmdunit, 'V');
+  else
+    BIOS (B_PUTC, cmdunit, '-');
 
-	if (srtemp & 0x1)
-		BIOS(B_PUTC, cmdunit, 'C');
-	else
-		BIOS(B_PUTC, cmdunit, '-');
+  if (srtemp & 0x1)
+    BIOS (B_PUTC, cmdunit, 'C');
+  else
+    BIOS (B_PUTC, cmdunit, '-');
 
-	writeln(cmdunit, " )\r\n");
+  writeln (cmdunit, " )\r\n");
 }
 
 /* 
@@ -3718,199 +3883,203 @@ struct regs *rp;
    ============================================================================
 */
 
-showcr()
+showcr ()
 {
-	register int	i;
-	register char	*cause;
-	register UWORD16	srtemp;
+  register int i;
+  register char *cause;
+  register UWORD16 srtemp;
 
-	writeln(cmdunit, "BIOS Crash Area Dump\r\n");
-	writeln(cmdunit, "       ");
+  writeln (cmdunit, "BIOS Crash Area Dump\r\n");
+  writeln (cmdunit, "       ");
 
-	for (i = 0; i < 8; i++) {
+  for (i = 0; i < 8; i++)
+    {
 
-		BIOS(B_PUTC, cmdunit, ' ');
-		BIOS(B_PUTC, cmdunit, '0'+i);
-		writeln(cmdunit, "_______");
-	}
+      BIOS (B_PUTC, cmdunit, ' ');
+      BIOS (B_PUTC, cmdunit, '0' + i);
+      writeln (cmdunit, "_______");
+    }
 
-	writeln(cmdunit, "\r\nd0..d7 ");
+  writeln (cmdunit, "\r\nd0..d7 ");
 
-	for (i = 0; i < 8; i++) {
+  for (i = 0; i < 8; i++)
+    {
 
-		BIOS(B_PUTC, cmdunit, ' ');
-		puthn(crshrg[i], 8, cmdunit);
-	}
+      BIOS (B_PUTC, cmdunit, ' ');
+      puthn (crshrg[i], 8, cmdunit);
+    }
 
-	writeln(cmdunit, "\r\na0..a7 ");
+  writeln (cmdunit, "\r\na0..a7 ");
 
-	for (i = 8; i < 16; i++) {
+  for (i = 8; i < 16; i++)
+    {
 
-		BIOS(B_PUTC, cmdunit, ' ');
-		puthn(crshrg[i], 8, cmdunit);
-	}
+      BIOS (B_PUTC, cmdunit, ' ');
+      puthn (crshrg[i], 8, cmdunit);
+    }
 
-	writeln(cmdunit, "\r\n\nPC =  ");
-	puthn((long)crshpc, 8, cmdunit);
+  writeln (cmdunit, "\r\n\nPC =  ");
+  puthn ((long) crshpc, 8, cmdunit);
 
-	srtemp = crshsr;
-	writeln(cmdunit, ",    SR = ");
-	puthn((long)srtemp & 0xFFFFL, 4, cmdunit);
-
-/* 
-*/
-
-	writeln(cmdunit, "  (IPL = ");
-	puthn((long)(srtemp >> 8) & 0x7L, 1, cmdunit);
-	writeln(cmdunit, ", ");
-
-	if (srtemp & 0x8000)
-		BIOS(B_PUTC, cmdunit, 'T');
-	else
-		BIOS(B_PUTC, cmdunit, '-');
-
-	if (srtemp & 0x2000)
-		BIOS(B_PUTC, cmdunit, 'S');
-	else
-		BIOS(B_PUTC, cmdunit, '-');
-
-	BIOS(B_PUTC, cmdunit, ' ');
-
-	if (srtemp & 0x10)
-		BIOS(B_PUTC, cmdunit, 'X');
-	else
-		BIOS(B_PUTC, cmdunit, '-');
-
-	if (srtemp & 0x8)
-		BIOS(B_PUTC, cmdunit, 'N');
-	else
-		BIOS(B_PUTC, cmdunit, '-');
-
-	if (srtemp & 0x4)
-		BIOS(B_PUTC, cmdunit, 'Z');
-	else
-		BIOS(B_PUTC, cmdunit, '-');
-
-	if (srtemp & 0x2)
-		BIOS(B_PUTC, cmdunit, 'V');
-	else
-		BIOS(B_PUTC, cmdunit, '-');
-
-	if (srtemp & 0x1)
-		BIOS(B_PUTC, cmdunit, 'C');
-	else
-		BIOS(B_PUTC, cmdunit, '-');
-
-	writeln(cmdunit, " )\r\n");
+  srtemp = crshsr;
+  writeln (cmdunit, ",    SR = ");
+  puthn ((long) srtemp & 0xFFFFL, 4, cmdunit);
 
 /* 
 */
-	writeln(cmdunit, "TRAP vector number = ");
-	putn((long)crshvc[0], 2, cmdunit);
 
-	cause = "  (no handler for interrupt)";
+  writeln (cmdunit, "  (IPL = ");
+  puthn ((long) (srtemp >> 8) & 0x7L, 1, cmdunit);
+  writeln (cmdunit, ", ");
 
-	switch (crshvc[0] & 0xFF) {
+  if (srtemp & 0x8000)
+    BIOS (B_PUTC, cmdunit, 'T');
+  else
+    BIOS (B_PUTC, cmdunit, '-');
 
-	case 2:		/* 2:  bus error */
+  if (srtemp & 0x2000)
+    BIOS (B_PUTC, cmdunit, 'S');
+  else
+    BIOS (B_PUTC, cmdunit, '-');
 
-		cause = "  (Bus error)";
-		break;
+  BIOS (B_PUTC, cmdunit, ' ');
 
-	case 3:		/* 3:  address error */
+  if (srtemp & 0x10)
+    BIOS (B_PUTC, cmdunit, 'X');
+  else
+    BIOS (B_PUTC, cmdunit, '-');
 
-		cause = "  (Address error)";
-		break;
+  if (srtemp & 0x8)
+    BIOS (B_PUTC, cmdunit, 'N');
+  else
+    BIOS (B_PUTC, cmdunit, '-');
 
-	case 4:		/* 4:  illegal instruction */
+  if (srtemp & 0x4)
+    BIOS (B_PUTC, cmdunit, 'Z');
+  else
+    BIOS (B_PUTC, cmdunit, '-');
 
-		cause = "  (Illegal instruction)";
-		break;
+  if (srtemp & 0x2)
+    BIOS (B_PUTC, cmdunit, 'V');
+  else
+    BIOS (B_PUTC, cmdunit, '-');
 
-	case 5:		/* 5:  zero divide */
+  if (srtemp & 0x1)
+    BIOS (B_PUTC, cmdunit, 'C');
+  else
+    BIOS (B_PUTC, cmdunit, '-');
 
-		cause = "  (Zero divide)";
-		break;
+  writeln (cmdunit, " )\r\n");
 
-	case 6:		/* 6:  CHK instruction */
+/* 
+*/
+  writeln (cmdunit, "TRAP vector number = ");
+  putn ((long) crshvc[0], 2, cmdunit);
 
-		cause = "  (CHK instruction)";
-		break;
+  cause = "  (no handler for interrupt)";
 
-	case 7:		/* 7:  TRAPV instruction */
+  switch (crshvc[0] & 0xFF)
+    {
 
-		cause = "  (TRAPV instruction)";
-		break;
+    case 2:			/* 2:  bus error */
 
-	case 8:		/* 8:  privilege violation */
+      cause = "  (Bus error)";
+      break;
 
-		cause = "  (Privilege violation)";
-		break;
+    case 3:			/* 3:  address error */
 
-	case 9:		/* 9:  trace */
+      cause = "  (Address error)";
+      break;
 
-		cause = "  (Trace -- not implemented)";
-		break;
+    case 4:			/* 4:  illegal instruction */
 
-	case 10:	/* 10:  line 1010 emulator */
+      cause = "  (Illegal instruction)";
+      break;
 
-		cause = "  (Line 1010 Emulator -- not implemented)";
-		break;
+    case 5:			/* 5:  zero divide */
 
-	case 11:	/* 11:  line 1111 emulator */
+      cause = "  (Zero divide)";
+      break;
 
-		cause = "  (Line 1111 Emulator -- not implemented";
-		break;
+    case 6:			/* 6:  CHK instruction */
 
-	case 15:	/* 15:  uninitialized interrupt vector */
+      cause = "  (CHK instruction)";
+      break;
 
-		cause = "  (Uninitialized interrupt)";
-		break;
+    case 7:			/* 7:  TRAPV instruction */
 
-	case 24:	/* 24:  spurious interrupt */
+      cause = "  (TRAPV instruction)";
+      break;
 
-		cause = "  (Spurious interrupt)";
-		break;
+    case 8:			/* 8:  privilege violation */
 
-	case 25:	/* 25:  Autovector Level 1*/
+      cause = "  (Privilege violation)";
+      break;
 
-		cause = "  (Level 1 Interrupt -- unimplmented)";
-		break;
+    case 9:			/* 9:  trace */
 
-	case 26:	/* 26:  Autovector Level 2 */
+      cause = "  (Trace -- not implemented)";
+      break;
 
-		cause = "  (Level 2 Interrupt -- unimplmented)";
-		break;
+    case 10:			/* 10:  line 1010 emulator */
 
-	case 27:	/* 27:  Autovector Level 3 */
+      cause = "  (Line 1010 Emulator -- not implemented)";
+      break;
 
-		cause = "  (Level 3 Interrupt -- unimplmented)";
-		break;
+    case 11:			/* 11:  line 1111 emulator */
 
-	case 28:	/* 28:  Autovector Level 4 */
+      cause = "  (Line 1111 Emulator -- not implemented";
+      break;
 
-		cause = "  (Level 4 Interrupt -- unimplmented)";
-		break;
+    case 15:			/* 15:  uninitialized interrupt vector */
 
-	case 29:	/* 29:  Autovector Level 5 */
+      cause = "  (Uninitialized interrupt)";
+      break;
 
-		cause = "  (Level 5 Interrupt -- unimplmented)";
-		break;
+    case 24:			/* 24:  spurious interrupt */
 
-	case 30:	/* 30:  Autovector Level 6 */
+      cause = "  (Spurious interrupt)";
+      break;
 
-		cause = "  (Level 6 Interrupt -- unimplmented)";
-		break;
+    case 25:			/* 25:  Autovector Level 1 */
 
-	case 31:	/* 31:  Autovector Level 7 */
+      cause = "  (Level 1 Interrupt -- unimplmented)";
+      break;
 
-		cause = "  (Level 7 Interrupt -- unimplmented)";
-		break;
+    case 26:			/* 26:  Autovector Level 2 */
 
-	}
+      cause = "  (Level 2 Interrupt -- unimplmented)";
+      break;
 
-	writeln(cmdunit, cause);
-	writeln(cmdunit, "\r\n");
+    case 27:			/* 27:  Autovector Level 3 */
+
+      cause = "  (Level 3 Interrupt -- unimplmented)";
+      break;
+
+    case 28:			/* 28:  Autovector Level 4 */
+
+      cause = "  (Level 4 Interrupt -- unimplmented)";
+      break;
+
+    case 29:			/* 29:  Autovector Level 5 */
+
+      cause = "  (Level 5 Interrupt -- unimplmented)";
+      break;
+
+    case 30:			/* 30:  Autovector Level 6 */
+
+      cause = "  (Level 6 Interrupt -- unimplmented)";
+      break;
+
+    case 31:			/* 31:  Autovector Level 7 */
+
+      cause = "  (Level 7 Interrupt -- unimplmented)";
+      break;
+
+    }
+
+  writeln (cmdunit, cause);
+  writeln (cmdunit, "\r\n");
 }
 
 /* 
@@ -3923,14 +4092,14 @@ showcr()
 */
 
 int
-cx_crsh()
+cx_crsh ()
 {
-	if (!wzcrsh)
-		printf("** Crash switch NOT set **\r\n");
+  if (!wzcrsh)
+    printf ("** Crash switch NOT set **\r\n");
 
-	redo = FALSE;
-	showcr();
-	return(TRUE);
+  redo = FALSE;
+  showcr ();
+  return (TRUE);
 }
 
 /* 
@@ -3943,112 +4112,128 @@ cx_crsh()
 */
 
 int
-bphit()
+bphit ()
 {
-	int	rc;
+  int rc;
 
-	rc = FALSE;
+  rc = FALSE;
 
-	if ((char *)p_ba0 EQ regptr->reg_pc) {
+  if ((char *) p_ba0 EQ regptr->reg_pc)
+    {
 
-		if (*p_ba0 EQ BPINST) {
+      if (*p_ba0 EQ BPINST)
+	{
 
-			*p_ba0 = p_bv0;
-			p_ba0 = 0L;
-			p_bv0 = BPINST;
-			rc = TRUE;
+	  *p_ba0 = p_bv0;
+	  p_ba0 = 0L;
+	  p_bv0 = BPINST;
+	  rc = TRUE;
 
-		} else {
-
-			writeln(cmdunit, "** Breakpoint word at ");
-			puthn(p_ba0, 8 , cmdunit);
-			writeln(cmdunit, " was ");
-			puthn(0xFFFFL & (long)(*p_ba0), 4, cmdunit);
-			writeln(cmdunit, " instead of ");
-			puthn((long)BPINST, 4, cmdunit);
-			writeln(cmdunit, " **\r\n\n");
-			rc = TRUE;
-		}
 	}
+      else
+	{
+
+	  writeln (cmdunit, "** Breakpoint word at ");
+	  puthn (p_ba0, 8, cmdunit);
+	  writeln (cmdunit, " was ");
+	  puthn (0xFFFFL & (long) (*p_ba0), 4, cmdunit);
+	  writeln (cmdunit, " instead of ");
+	  puthn ((long) BPINST, 4, cmdunit);
+	  writeln (cmdunit, " **\r\n\n");
+	  rc = TRUE;
+	}
+    }
 
 /* 
 */
 
-	if ((char *)p_ba1 EQ regptr->reg_pc) {
+  if ((char *) p_ba1 EQ regptr->reg_pc)
+    {
 
-		if (*p_ba1 EQ BPINST) {
+      if (*p_ba1 EQ BPINST)
+	{
 
-			*p_ba1 = p_bv1;
-			p_ba1 = 0L;
-			p_bv1 = BPINST;
-			rc = TRUE;
+	  *p_ba1 = p_bv1;
+	  p_ba1 = 0L;
+	  p_bv1 = BPINST;
+	  rc = TRUE;
 
-		} else {
-
-			writeln(cmdunit, "** Breakpoint word at ");
-			puthn((long)p_ba0, 8 , cmdunit);
-			writeln(cmdunit, " was ");
-			puthn(0xFFFFL & (long)(*p_ba1), 4, cmdunit);
-			writeln(cmdunit, " instead of ");
-			puthn((long)BPINST, 4, cmdunit);
-			writeln(cmdunit, " **\r\n\n");
-			rc = TRUE;
-		}
 	}
+      else
+	{
+
+	  writeln (cmdunit, "** Breakpoint word at ");
+	  puthn ((long) p_ba0, 8, cmdunit);
+	  writeln (cmdunit, " was ");
+	  puthn (0xFFFFL & (long) (*p_ba1), 4, cmdunit);
+	  writeln (cmdunit, " instead of ");
+	  puthn ((long) BPINST, 4, cmdunit);
+	  writeln (cmdunit, " **\r\n\n");
+	  rc = TRUE;
+	}
+    }
 /* 
 */
-	if (p_ba0) {
+  if (p_ba0)
+    {
 
-		if (*p_ba0 EQ BPINST) {
+      if (*p_ba0 EQ BPINST)
+	{
 
-			*p_ba0 = p_bv0;
-			p_ba0 = 0L;
-			p_bv0 = BPINST;
-			rc = TRUE;
+	  *p_ba0 = p_bv0;
+	  p_ba0 = 0L;
+	  p_bv0 = BPINST;
+	  rc = TRUE;
 
-		} else {
-
-			writeln(cmdunit, "** Breakpoint word at ");
-			puthn(p_ba0, 8 , cmdunit);
-			writeln(cmdunit, " was ");
-			puthn(0xFFFFL & (long)(*p_ba0), 4, cmdunit);
-			writeln(cmdunit, " instead of ");
-			puthn((long)BPINST, 4, cmdunit);
-			writeln(cmdunit, " **\r\n\n");
-			rc = TRUE;
-		}
 	}
+      else
+	{
+
+	  writeln (cmdunit, "** Breakpoint word at ");
+	  puthn (p_ba0, 8, cmdunit);
+	  writeln (cmdunit, " was ");
+	  puthn (0xFFFFL & (long) (*p_ba0), 4, cmdunit);
+	  writeln (cmdunit, " instead of ");
+	  puthn ((long) BPINST, 4, cmdunit);
+	  writeln (cmdunit, " **\r\n\n");
+	  rc = TRUE;
+	}
+    }
 
 /* 
 */
 
-	if (p_ba1) {
+  if (p_ba1)
+    {
 
-		if (*p_ba1 EQ BPINST) {
+      if (*p_ba1 EQ BPINST)
+	{
 
-			*p_ba1 = p_bv1;
-			p_ba1 = 0L;
-			p_bv1 = BPINST;
-			rc = TRUE;
+	  *p_ba1 = p_bv1;
+	  p_ba1 = 0L;
+	  p_bv1 = BPINST;
+	  rc = TRUE;
 
-		} else {
-
-			writeln(cmdunit, "** Breakpoint word at ");
-			puthn((long)p_ba0, 8 , cmdunit);
-			writeln(cmdunit, " was ");
-			puthn(0xFFFFL & (long)(*p_ba1), 4, cmdunit);
-			writeln(cmdunit, " instead of ");
-			puthn((long)BPINST, 4, cmdunit);
-			writeln(cmdunit, " **\r\n\n");
-			rc = TRUE;
-		}
 	}
+      else
+	{
 
-	if (rc)
-		return(rc);
+	  writeln (cmdunit, "** Breakpoint word at ");
+	  puthn ((long) p_ba0, 8, cmdunit);
+	  writeln (cmdunit, " was ");
+	  puthn (0xFFFFL & (long) (*p_ba1), 4, cmdunit);
+	  writeln (cmdunit, " instead of ");
+	  puthn ((long) BPINST, 4, cmdunit);
+	  writeln (cmdunit, " **\r\n\n");
+	  rc = TRUE;
+	}
+    }
 
-	writeln(cmdunit, "\r\n** Program invoked ROMP trap **\r\n");
-	return(FALSE);
+  if (rc)
+    return (rc);
+
+  writeln (cmdunit, "\r\n** Program invoked ROMP trap **\r\n");
+  return (FALSE);
 }
 
 /* 
@@ -4061,10 +4246,10 @@ bphit()
 */
 
 int
-cx_regs()
+cx_regs ()
 {
-	showrs(regptr);
-	return(TRUE);
+  showrs (regptr);
+  return (TRUE);
 }
 
 /* 
@@ -4076,53 +4261,59 @@ cx_regs()
    ============================================================================
 */
 
-rompbp(d0,d1,d2,d3,d4,d5,d6,d7, a0,a1,a2,a3,a4,a5,a6,a7, sr0,sr, pc)
-long	d0,d1,d2,d3,d4,d5,d6,d7;
-char	*a0,*a1,*a2,*a3,*a4,*a5,*a6,*a7, *pc;
-UWORD16	sr0,sr;
+rompbp (d0, d1, d2, d3, d4, d5, d6, d7, a0, a1, a2, a3, a4, a5, a6, a7, sr0,
+	sr, pc)
+     long d0, d1, d2, d3, d4, d5, d6, d7;
+     char *a0, *a1, *a2, *a3, *a4, *a5, *a6, *a7, *pc;
+     UWORD16 sr0, sr;
 {
-	register int i;
+  register int i;
 
-	regptr = (struct regs *)&d0;	/* make registers accessable */
-	pc -= 2L;			/* adjust pc */
+  regptr = (struct regs *) &d0;	/* make registers accessable */
+  pc -= 2L;			/* adjust pc */
 
-	if (-1 EQ setipl(iplev))		/* enable interrupts */
-		writeln(cmdunit, "\r\n\n***** setipl() failed *****\r\n\n");
+  if (-1 EQ setipl (iplev))	/* enable interrupts */
+    writeln (cmdunit, "\r\n\n***** setipl() failed *****\r\n\n");
 
-	if (first1) {			/* initial entry from xtrap15() */
+  if (first1)
+    {				/* initial entry from xtrap15() */
 
-		for (i = 0; i < 8; i++)		/* clear d0..d7 */
-			regptr->d_reg[i] = 0L;
+      for (i = 0; i < 8; i++)	/* clear d0..d7 */
+	regptr->d_reg[i] = 0L;
 
-		for (i = 0; i < 7; i++)		/* clear a0..a6 */
-			regptr->a_reg[i] = (char *)0L;
+      for (i = 0; i < 7; i++)	/* clear a0..a6 */
+	regptr->a_reg[i] = (char *) 0L;
 
-		regptr->a_reg[7] = ISTACK;	/* setup initial stack */
+      regptr->a_reg[7] = ISTACK;	/* setup initial stack */
 
-		sr = INITSR;		/* setup sr */
-		pc += 2L;		/* adjust pc past TRAP 15 */
+      sr = INITSR;		/* setup sr */
+      pc += 2L;			/* adjust pc past TRAP 15 */
 
-	} else {			/* breakpoint */
+    }
+  else
+    {				/* breakpoint */
 
-		writeln(cmdunit, "\r\n\n** ROMP Breakpoint TRAP **\r\n");
+      writeln (cmdunit, "\r\n\n** ROMP Breakpoint TRAP **\r\n");
 
-		showrs(regptr);		/* show registers */
+      showrs (regptr);		/* show registers */
 
-		if (bphit() EQ FALSE)	/* fixup breakpoints */
-			pc += 2L;	/* and maybe the pc */
+      if (bphit ()EQ FALSE)	/* fixup breakpoints */
+	pc += 2L;		/* and maybe the pc */
 
-	}
+    }
 
-	first1 = FALSE;			/* not first time any more */
-	exflag = FALSE;			/* clear exit flag */
+  first1 = FALSE;		/* not first time any more */
+  exflag = FALSE;		/* clear exit flag */
 
-	do {
+  do
+    {
 
-		do_cmd();		/* process commands ... */
+      do_cmd ();		/* process commands ... */
 
-	} while (!exflag);		/* ... until exit flag is set */
+    }
+  while (!exflag);		/* ... until exit flag is set */
 
-	return;				/* return to xtrap15 */
+  return;			/* return to xtrap15 */
 }
 
 /* 
@@ -4134,19 +4325,19 @@ UWORD16	sr0,sr;
    ============================================================================
 */
 
-progid()
+progid ()
 {
-	register char *pcptr;
+  register char *pcptr;
 
-	writeln(cmdunit, "\r\n\nBuchla 700 Multi-Tasking BIOS / Debug PROM\r\n");
-	writeln(cmdunit, "  Multi-Tasking ROMP Version ");
-	writeln(cmdunit, ROMPVER);
-	writeln(cmdunit, "\r\n  Multi-Tasking BIOS Version ");
-	pcptr = (char *)PRM_VERS;
-	putn((long)*pcptr++, 2, cmdunit);
-	BIOS(B_PUTC, cmdunit, '.');
-	putn((long)*pcptr++, 2, cmdunit);
-	writeln(cmdunit, promdate);
+  writeln (cmdunit, "\r\n\nBuchla 700 Multi-Tasking BIOS / Debug PROM\r\n");
+  writeln (cmdunit, "  Multi-Tasking ROMP Version ");
+  writeln (cmdunit, ROMPVER);
+  writeln (cmdunit, "\r\n  Multi-Tasking BIOS Version ");
+  pcptr = (char *) PRM_VERS;
+  putn ((long) *pcptr++, 2, cmdunit);
+  BIOS (B_PUTC, cmdunit, '.');
+  putn ((long) *pcptr++, 2, cmdunit);
+  writeln (cmdunit, promdate);
 }
 
 /* 
@@ -4159,40 +4350,44 @@ progid()
 */
 
 short
-pclr()
+pclr ()
 {
-	register short i;
+  register short i;
 
-	DB_ENTR("pclr");
-	ftimer = FIFOLIM;
+  DB_ENTR ("pclr");
+  ftimer = FIFOLIM;
 
-	while (XBIOS(X_APICHK)) {
+  while (XBIOS (X_APICHK))
+    {
 
-		afi = XBIOS(X_ANALOG);		/* check panel inputs */
-		asig = 0x007F & (afi >> 8);	/* signal number */
+      afi = XBIOS (X_ANALOG);	/* check panel inputs */
+      asig = 0x007F & (afi >> 8);	/* signal number */
 
-		if (0 EQ asig) {
+      if (0 EQ asig)
+	{
 
-			/* all keys up */
+	  /* all keys up */
 
-			for (i = 0; i < 128; i++) {
+	  for (i = 0; i < 128; i++)
+	    {
 
-				sigtab[i][0] = 0;
-				sigtab[i][1] = 0;
-			}
+	      sigtab[i][0] = 0;
+	      sigtab[i][1] = 0;
+	    }
 
-			break;
-		}
-
-		if (ftimer-- < 0) {
-
-			DB_EXIT("pclr - timed out");
-			return(FAILURE);
-		}
+	  break;
 	}
 
-	DB_EXIT("pclr - panel clear");
-	return(SUCCESS);
+      if (ftimer-- < 0)
+	{
+
+	  DB_EXIT ("pclr - timed out");
+	  return (FAILURE);
+	}
+    }
+
+  DB_EXIT ("pclr - panel clear");
+  return (SUCCESS);
 }
 
 /* 
@@ -4205,127 +4400,141 @@ pclr()
 */
 
 short
-pscan()
+pscan ()
 {
-	register short i, c;
+  register short i, c;
 
-	DB_ENTR("pscan");
+  DB_ENTR ("pscan");
 
-	if (0 GE ledcntr--) {
+  if (0 GE ledcntr--)
+    {
 
-		if ((baseled + 3) > 23)		/* turn on a LED */
-			io_leds = baseled - 21;
-		else
-			io_leds = baseled + 3;
+      if ((baseled + 3) > 23)	/* turn on a LED */
+	io_leds = baseled - 21;
+      else
+	io_leds = baseled + 3;
 
-		io_leds = 0x80 + baseled;	/* turn off a LED */
+      io_leds = 0x80 + baseled;	/* turn off a LED */
 
-		if (++baseled > 23)		/* update LED number */
-			baseled = 0;
+      if (++baseled > 23)	/* update LED number */
+	baseled = 0;
 
-		ledcntr = LED_TIME;
+      ledcntr = LED_TIME;
+    }
+
+  DB_CMNT ("pscan - checking panel");
+
+  aflag = FALSE;
+
+  if (XBIOS (X_APICHK))
+    {				/* check panel inputs */
+
+      afi = XBIOS (X_ANALOG);	/* get the signal */
+      asig = 0x007F & (afi >> 8);	/* signal number */
+      astat = 0x0001 & (afi >> 7);	/* status */
+      aval = 0x007F & afi;	/* value */
+
+      if (asig)
+	{			/* active signal */
+
+	  aflag = TRUE;
+
+	  sigtab[asig][0] = aval;
+	  sigtab[asig][1] = astat;
+
 	}
+      else
+	{			/* all keys up */
 
-	DB_CMNT("pscan - checking panel");
+	  aflag = FALSE;
 
-	aflag = FALSE;
-
-	if (XBIOS(X_APICHK)) {			/* check panel inputs */
-
-		afi   = XBIOS(X_ANALOG);	/* get the signal */
-		asig  = 0x007F & (afi >> 8);	/* signal number */
-		astat = 0x0001 & (afi >> 7);	/* status */
-		aval  = 0x007F & afi;		/* value */
-
-		if (asig) {	/* active signal */
-
-			aflag = TRUE;
-
-			sigtab[asig][0] = aval;
-			sigtab[asig][1] = astat;
-
-		} else {	/* all keys up */
-
-			aflag = FALSE;
-
-			for (i = 0; i < 128; i++)
-				sigtab[i][1] = 0;
-		}
+	  for (i = 0; i < 128; i++)
+	    sigtab[i][1] = 0;
 	}
+    }
 /* 
 */
-	if (aflag) {	/* anything changed ? */
+  if (aflag)
+    {				/* anything changed ? */
 
-		if (astat AND (asig EQ BOOTKEY)) {		/* BOOT key */
+      if (astat AND (asig EQ BOOTKEY))
+	{			/* BOOT key */
 
-			DB_CMNT("pscan - booting");
+	  DB_CMNT ("pscan - booting");
 
-			for (i = 0; i < 24; i++)	/* turn off LEDs */
-				io_leds = 0x80 + i;
+	  for (i = 0; i < 24; i++)	/* turn off LEDs */
+	    io_leds = 0x80 + i;
 
-			/* load and run BOOTFILE */
+	  /* load and run BOOTFILE */
 
-			B_log_s = FALSE;
-			B_dbg_s = FALSE;
+	  B_log_s = FALSE;
+	  B_dbg_s = FALSE;
 
-			hdvini();
-			_bpbin = FALSE;
+	  hdvini ();
+	  _bpbin = FALSE;
 
-			if (booter(BOOTFILE, 0L)) {
+	  if (booter (BOOTFILE, 0L))
+	    {
 
-				DB_EXIT("pscan - boot failed");
-				return(FALSE);
+	      DB_EXIT ("pscan - boot failed");
+	      return (FALSE);
 
-			} else {
+	    }
+	  else
+	    {
 
-				DB_CMNT("pscan - initializing MIDAS TCB");
+	      DB_CMNT ("pscan - initializing MIDAS TCB");
 
-				if ((struct _mt_def *)NIL EQ _MT_)
-					_MT_ = (struct _mt_def *)XBIOS(X_MTDEFS);
+	      if ((struct _mt_def *) NIL EQ _MT_)
+		_MT_ = (struct _mt_def *) XBIOS (X_MTDEFS);
 
-				MTSetT(&ipltcb, MTID(), BOOT_PRI, 0x2200, -1L,
-					ISTACK,	B_buf_a, _MT_);
+	      MTSetT (&ipltcb, MTID (), BOOT_PRI, 0x2200, -1L,
+		      ISTACK, B_buf_a, _MT_);
 
-				DB_CMNT("pscan - swapping to midas");
+	      DB_CMNT ("pscan - swapping to midas");
 
-				MTSwap();
-				SMWait(&SemQuit);
+	      MTSwap ();
+	      SMWait (&SemQuit);
 
-				DB_EXIT("pscan - returned from MIDAS");
-				return(FALSE);
-			}
+	      DB_EXIT ("pscan - returned from MIDAS");
+	      return (FALSE);
+	    }
 
-		} else if (astat AND (asig EQ ROMPKEY)) {	/* ROMP key */
-
-			for (i = 0; i < 24; i++)	/* turn off LEDs */
-				io_leds = 0x80 + i;
-
-			DB_EXIT("pscan - ROMP selected - panel");
-			return(TRUE);
-		}
 	}
+      else if (astat AND (asig EQ ROMPKEY))
+	{			/* ROMP key */
+
+	  for (i = 0; i < 24; i++)	/* turn off LEDs */
+	    io_leds = 0x80 + i;
+
+	  DB_EXIT ("pscan - ROMP selected - panel");
+	  return (TRUE);
+	}
+    }
 
 /* 
 */
 
-	DB_CMNT("pscan - checking SIO");
+  DB_CMNT ("pscan - checking SIO");
 
-	if (BIOS(B_RDAV, CON_DEV)) {
+  if (BIOS (B_RDAV, CON_DEV))
+    {
 
-		c = 0x007F & BIOS(B_GETC, CON_DEV);
+      c = 0x007F & BIOS (B_GETC, CON_DEV);
 
-		if ((c EQ 'r') OR (c EQ 'R')) {
+      if ((c EQ 'r') OR (c EQ 'R'))
+	{
 
-			for (i = 0; i < 24; i++)	/* turn off LEDs */
-				io_leds = 0x80 + i;
+	  for (i = 0; i < 24; i++)	/* turn off LEDs */
+	    io_leds = 0x80 + i;
 
-			DB_EXIT("pscan - ROMP selected - SIO");
-			return(TRUE);
-		}
+	  DB_EXIT ("pscan - ROMP selected - SIO");
+	  return (TRUE);
 	}
+    }
 
-	DB_EXIT("pscan - no inputs");
-	return(FALSE);
+  DB_EXIT ("pscan - no inputs");
+  return (FALSE);
 }
 
 /* 
@@ -4337,52 +4546,52 @@ pscan()
    ============================================================================
 */
 
-mtsetup()
+mtsetup ()
 {
-	DB_ENTR("mtsetup");
+  DB_ENTR ("mtsetup");
 
-	_MT_ = (struct _mt_def *)XBIOS(X_MTDEFS);	/* intialize _MT_ */
+  _MT_ = (struct _mt_def *) XBIOS (X_MTDEFS);	/* intialize _MT_ */
 
-	MTInit();		/* initialize Multi-Tasker */
-	MBInit(&MSG_Vid);	/* initialize video mailbox */
-	SMInit(&SemQuit, 0L);	/* initialize termination semaphore */
+  MTInit ();			/* initialize Multi-Tasker */
+  MBInit (&MSG_Vid);		/* initialize video mailbox */
+  SMInit (&SemQuit, 0L);	/* initialize termination semaphore */
 
-	/* setup interrupt level 5 (serial I/O) handler */
+  /* setup interrupt level 5 (serial I/O) handler */
 
-	MTSetT(MT_ITT[5], MTID(), 0x8005, 0x2500, -1L,
-		&stax[4][STKLEN], _MTInt5, 0L);
+  MTSetT (MT_ITT[5], MTID (), 0x8005, 0x2500, -1L,
+	  &stax[4][STKLEN], _MTInt5, 0L);
 
-	DB_CMNT("mtsetup - level 5");
+  DB_CMNT ("mtsetup - level 5");
 
-	/* setup interrupt level 4 (timer) handler */
+  /* setup interrupt level 4 (timer) handler */
 
-	MTSetT(MT_ITT[4], MTID(), 0x8004, 0x2400, -1L,
-		&stax[3][STKLEN], _MTInt4, 0L);
+  MTSetT (MT_ITT[4], MTID (), 0x8004, 0x2400, -1L,
+	  &stax[3][STKLEN], _MTInt4, 0L);
 
-	DB_CMNT("mtsetup - level 4");
+  DB_CMNT ("mtsetup - level 4");
 
-	/* setup interrupt level 3 (panel) handler */
+  /* setup interrupt level 3 (panel) handler */
 
-	MTSetT(MT_ITT[3], MTID(), 0x8003, 0x2300, -1L,
-		&stax[2][STKLEN], _MTInt3, 0L);
+  MTSetT (MT_ITT[3], MTID (), 0x8003, 0x2300, -1L,
+	  &stax[2][STKLEN], _MTInt3, 0L);
 
-	DB_CMNT("mtsetup - level 3");
+  DB_CMNT ("mtsetup - level 3");
 
-	/* setup interrupt level 2 (FPU) handler */
+  /* setup interrupt level 2 (FPU) handler */
 
-	MTSetT(MT_ITT[2], MTID(), 0x8002, 0x2200, -1L,
-		&stax[1][STKLEN], _MTInt2, 0L);
+  MTSetT (MT_ITT[2], MTID (), 0x8002, 0x2200, -1L,
+	  &stax[1][STKLEN], _MTInt2, 0L);
 
-	DB_CMNT("mtsetup - level 2");
+  DB_CMNT ("mtsetup - level 2");
 
-	/* setup interrupt level 1 (Video) handler */
+  /* setup interrupt level 1 (Video) handler */
 
-	MTSetT(MT_ITT[1], MTID(), 0x8001, 0x2100, -1L,
-		&stax[0][STKLEN], _MTInt1, 0L);
+  MTSetT (MT_ITT[1], MTID (), 0x8001, 0x2100, -1L,
+	  &stax[0][STKLEN], _MTInt1, 0L);
 
-	DB_CMNT("mtsetup - level 1");
+  DB_CMNT ("mtsetup - level 1");
 
-	DB_EXIT("mtsetup");
+  DB_EXIT ("mtsetup");
 }
 
 /* 
@@ -4394,30 +4603,30 @@ mtsetup()
    ============================================================================
 */
 
-put_ID()
+put_ID ()
 {
-	DB_ENTR("put_ID");
-	GLCinit();				/* reset LCD display */
-	GLCcurs(G_ON);
+  DB_ENTR ("put_ID");
+  GLCinit ();			/* reset LCD display */
+  GLCcurs (G_ON);
 
-	GLCtext(0,  1, "Load  GoTo");
-	GLCtext(1,  1, "Disk  ROMP");
+  GLCtext (0, 1, "Load  GoTo");
+  GLCtext (1, 1, "Disk  ROMP");
 
-	GLCtext(3, 10, "Buchla 700 -- System Firmware by D.N. Lynx Crowe");
+  GLCtext (3, 10, "Buchla 700 -- System Firmware by D.N. Lynx Crowe");
 
-	sprintf(idbuf, "Multi-Tasking BIOS -- Version %02d.%02d%s",
-		*(char *)PRM_VERS, *(char *)(PRM_VERS+1), promdate);
+  sprintf (idbuf, "Multi-Tasking BIOS -- Version %02d.%02d%s",
+	   *(char *) PRM_VERS, *(char *) (PRM_VERS + 1), promdate);
 
-	GLCtext(5, 10, idbuf);
+  GLCtext (5, 10, idbuf);
 
-	sprintf(idbuf, "Multi-Tasking ROMP -- Version %s", ROMPVER);
+  sprintf (idbuf, "Multi-Tasking ROMP -- Version %s", ROMPVER);
 
-	GLCtext(6, 10, idbuf);
+  GLCtext (6, 10, idbuf);
 
-	GLCcrc(0, 0);
-	GLCcurs(G_OFF);
+  GLCcrc (0, 0);
+  GLCcurs (G_OFF);
 
-	DB_EXIT("put_ID");
+  DB_EXIT ("put_ID");
 }
 
 /* 
@@ -4429,113 +4638,115 @@ put_ID()
    ============================================================================
 */
 
-main()
+main ()
 {
-	register short i;
-	register char *pdptr, *pcptr;
+  register short i;
+  register char *pdptr, *pcptr;
 
-	DB_ENTR("main");
-	baseled = 21;			/* setup LED scan */
-	ledcntr = 0;			/* ... */
-	io_leds = 0x9F;			/* turn on LCD lamp */
+  DB_ENTR ("main");
+  baseled = 21;			/* setup LED scan */
+  ledcntr = 0;			/* ... */
+  io_leds = 0x9F;		/* turn on LCD lamp */
 
-	/* unpack PROM date */
+  /* unpack PROM date */
 
-	pcptr = (char *)PRM_DATE;	/* prom date: yyyymmdd */
-	pdptr = promdate;		/*  -- yyyy-mm-dd */
-	*pdptr++ = ' ';
-	*pdptr++ = '-';
-	*pdptr++ = '-';
-	*pdptr++ = ' ';
-	*pdptr++ = ((*pcptr >> 4) & 0x0F) + '0';
-	*pdptr++ = (*pcptr++ & 0x0F) + '0';
-	*pdptr++ = ((*pcptr >> 4) & 0x0F) + '0';
-	*pdptr++ = (*pcptr++ & 0x0F) + '0';
-	*pdptr++ = '-';
-	*pdptr++ = ((*pcptr >> 4) & 0x0F) + '0';
-	*pdptr++ = (*pcptr++ & 0x0F) + '0';
-	*pdptr++ = '-';
-	*pdptr++ = ((*pcptr >> 4) & 0x0F) + '0';
-	*pdptr++ = (*pcptr++ & 0x0F) + '0';
-	*pdptr++ = '\0';
+  pcptr = (char *) PRM_DATE;	/* prom date: yyyymmdd */
+  pdptr = promdate;		/*  -- yyyy-mm-dd */
+  *pdptr++ = ' ';
+  *pdptr++ = '-';
+  *pdptr++ = '-';
+  *pdptr++ = ' ';
+  *pdptr++ = ((*pcptr >> 4) & 0x0F) + '0';
+  *pdptr++ = (*pcptr++ & 0x0F) + '0';
+  *pdptr++ = ((*pcptr >> 4) & 0x0F) + '0';
+  *pdptr++ = (*pcptr++ & 0x0F) + '0';
+  *pdptr++ = '-';
+  *pdptr++ = ((*pcptr >> 4) & 0x0F) + '0';
+  *pdptr++ = (*pcptr++ & 0x0F) + '0';
+  *pdptr++ = '-';
+  *pdptr++ = ((*pcptr >> 4) & 0x0F) + '0';
+  *pdptr++ = (*pcptr++ & 0x0F) + '0';
+  *pdptr++ = '\0';
 
-	/* initialize variables */
+  /* initialize variables */
 
-	sprintf(hs_mtst, "[[start=$%lX],[end=$%lx]]  (or $8..$%lX)",
-		USER_RAM, RAM_TOP, (USER_RAM - 2L));
+  sprintf (hs_mtst, "[[start=$%lX],[end=$%lx]]  (or $8..$%lX)",
+	   USER_RAM, RAM_TOP, (USER_RAM - 2L));
 
-	cmdunit = CON_DEV;
+  cmdunit = CON_DEV;
 
-	ilast = 0;
-	inext = 0;
-	iplev = DEFIPL;
+  ilast = 0;
+  inext = 0;
+  iplev = DEFIPL;
 
-	dflag  = FALSE;
-	exflag = FALSE;
-	redo   = FALSE;
-	goflag = FALSE;
-	b0flag = FALSE;
-	b1flag = FALSE;
+  dflag = FALSE;
+  exflag = FALSE;
+  redo = FALSE;
+  goflag = FALSE;
+  b0flag = FALSE;
+  b1flag = FALSE;
 
-	p_goto  = (char *)ROMADDR;
-	p_len   = 0L;
-	p_width = 16L;
-	p_value = 0L;
+  p_goto = (char *) ROMADDR;
+  p_len = 0L;
+  p_width = 16L;
+  p_value = 0L;
 
-	p_ba0 = 0L;
-	p_bv0 = BPINST;
+  p_ba0 = 0L;
+  p_bv0 = BPINST;
 
-	p_ba1 = 0L;
-	p_bv1 = BPINST;
+  p_ba1 = 0L;
+  p_bv1 = BPINST;
 
-	tba0 = 0L;
-	tba1 = 0L;
+  tba0 = 0L;
+  tba1 = 0L;
 
-	inext = 0;
+  inext = 0;
 
-	put_ID();
+  put_ID ();
 
-	BIOS(B_SETV, 47, trap15);	/* set ROMP trap vec */
+  BIOS (B_SETV, 47, trap15);	/* set ROMP trap vec */
 
-	for (i = 0; i < 128; i++) {	/* clear analog I/O status */
+  for (i = 0; i < 128; i++)
+    {				/* clear analog I/O status */
 
-		sigtab[i][0] = 0;
-		sigtab[i][1] = 0;
-	}
+      sigtab[i][0] = 0;
+      sigtab[i][1] = 0;
+    }
 
-	mtsetup();				/* setup multi-tasking */
+  mtsetup ();			/* setup multi-tasking */
 
-	DB_CMNT("main - TCBs setup - starting multitasker");
-	MTSwap();
+  DB_CMNT ("main - TCBs setup - starting multitasker");
+  MTSwap ();
 
-	DB_CMNT("main - clearing panel FIFO");
-	XBIOS(X_CLRAFI);			/* clear the panel FIFO */
+  DB_CMNT ("main - clearing panel FIFO");
+  XBIOS (X_CLRAFI);		/* clear the panel FIFO */
 
-	DB_CMNT("main - turning on ints");
-	setipl(KB_EI);				/* enable interrupts */
+  DB_CMNT ("main - turning on ints");
+  setipl (KB_EI);		/* enable interrupts */
 
-	DB_CMNT("main - emptying panel FIFO");
-	pclr();					/* empty the panel FIFO */
+  DB_CMNT ("main - emptying panel FIFO");
+  pclr ();			/* empty the panel FIFO */
 
-	DB_CMNT("main - clearing panel FIFO");
-	XBIOS(X_CLRAFI);			/* clear the panel FIFO */
+  DB_CMNT ("main - clearing panel FIFO");
+  XBIOS (X_CLRAFI);		/* clear the panel FIFO */
 
-	DB_CMNT("main - scanning panel");
-	while (FALSE EQ pscan()) ;		/* do the panel scan */
+  DB_CMNT ("main - scanning panel");
+  while (FALSE EQ pscan ());	/* do the panel scan */
 
 /* 
 */
-	progid();			/* identify the program */
+  progid ();			/* identify the program */
 
-	writeln(cmdunit, "\r\n\n");
+  writeln (cmdunit, "\r\n\n");
 
-	/* process commands */
+  /* process commands */
 
-	first1 = TRUE;			/* set break init flag */
+  first1 = TRUE;		/* set break init flag */
 
-	while (TRUE) {
+  while (TRUE)
+    {
 
-		xtrap15();		/* trap into ROMP bp processor */
-		writeln(cmdunit, "\r\n** xtrap15() returned to ROMP **\r\n\n");
-	}
+      xtrap15 ();		/* trap into ROMP bp processor */
+      writeln (cmdunit, "\r\n** xtrap15() returned to ROMP **\r\n\n");
+    }
 }

@@ -7,7 +7,7 @@
    =============================================================================
 */
 
-typedef	short	(*PFS)();	/* pointer to a function returning a short */
+typedef short (*PFS) ();	/* pointer to a function returning a short */
 
 #define	SM_SCALE(x)	(((x) * 252) & 0x7FE0)
 #define	ART_VAL(x)	(((((x)-5) > 100) ? 100 : (((x)-5) < 0 ? 0 : ((x)-5)))*320)
@@ -19,38 +19,38 @@ typedef	short	(*PFS)();	/* pointer to a function returning a short */
 #define	XTOC(X)		((X) >> 3)	/* x pixel value to column */
 #define	YTOR(Y)		((Y) / 14)	/* y pixel value to row */
 
-#define	AMP_TIME	200		/* amplitude pot interpolate time */
+#define	AMP_TIME	200	/* amplitude pot interpolate time */
 
-#define	GCPRI	15			/* graphic cursor priority */
-#define	GCURS	0			/* graphic cursor object number */
+#define	GCPRI	15		/* graphic cursor priority */
+#define	GCURS	0		/* graphic cursor object number */
 
-#define	BIT2	(V_RES2)		/* graphics - 2 bit pixels */
-#define	BIT3	(V_RES3)		/* graphics - 4 bit pixels */
-#define	CHR2	(0)			/* characters - no attributes */
-#define	CHR3	(V_FAD | V_HCR)		/* characters - full attributes */
+#define	BIT2	(V_RES2)	/* graphics - 2 bit pixels */
+#define	BIT3	(V_RES3)	/* graphics - 4 bit pixels */
+#define	CHR2	(0)		/* characters - no attributes */
+#define	CHR3	(V_FAD | V_HCR)	/* characters - full attributes */
 
-#define	OBFL_00	(BIT3 | V_TDE)		/* cursor - arrow */
+#define	OBFL_00	(BIT3 | V_TDE)	/* cursor - arrow */
 
 #define	LIBRFL		(V_RES3)	/* librarian display object flags */
 
-#define	TTCURS		2		/* typewriter cursor object */
-#define	TTCPRI		14		/* typewriter cursor priority */
+#define	TTCURS		2	/* typewriter cursor object */
+#define	TTCPRI		14	/* typewriter cursor priority */
 #define	TTCCFL		(V_RES3 | V_OBL | V_TDE)
 
-#define	XYCENTRE	50		/* center of range of cursor pots */
+#define	XYCENTRE	50	/* center of range of cursor pots */
 
-#define	SMYRATE		4		/* smooth scroll vertical rate */
+#define	SMYRATE		4	/* smooth scroll vertical rate */
 
-#define	HCWVAL		30		/* graphics cursor x wait time */
-#define	VCWVAL		30		/* graphics cursor y wait time */
-#define	THCWVAL		60		/* text cursor h wait time */
-#define	TVCWVAL		120		/* text cursor v wait time */
-#define	CURHOLD		300		/* cursor motion startup delay */
+#define	HCWVAL		30	/* graphics cursor x wait time */
+#define	VCWVAL		30	/* graphics cursor y wait time */
+#define	THCWVAL		60	/* text cursor h wait time */
+#define	TVCWVAL		120	/* text cursor v wait time */
+#define	CURHOLD		300	/* cursor motion startup delay */
 
-#define	CXMAX		XMAX		/* cursor x maximum */
-#define	CYMAX		YMAX		/* cursor y maximum */
+#define	CXMAX		XMAX	/* cursor x maximum */
+#define	CYMAX		YMAX	/* cursor y maximum */
 
-#define	FN_NULL		0L		/* null for address entries */
+#define	FN_NULL		0L	/* null for address entries */
 
 /* 
 */
@@ -68,7 +68,7 @@ typedef	short	(*PFS)();	/* pointer to a function returning a short */
 #define	NFINST		13	/* number of functions in an instrument */
 #define	NUMCFG		12	/* number of oscillator configurations */
 
-#define	NUMWAVS		20	/* number of waveshapes in memory or on disk*/
+#define	NUMWAVS		20	/* number of waveshapes in memory or on disk */
 #define	NUMWIDS		8	/* number of waveshape cursor widths */
 #define	NUMHARM		32	/* number of waveshape harmonics */
 #define	NUMWPNT		254	/* number of waveshape points stored */
@@ -102,8 +102,8 @@ typedef	short	(*PFS)();	/* pointer to a function returning a short */
 #define	M_CHNHLD	0x80	/* MIDI channel hold status */
 #define	MKEYHELD	(M_CHNHLD | M_LCLHLD)	/* key held */
 
-#define	PITCHMIN	320		/* C0 in 1/2 cents (160 cents) */
-#define	PITCHMAX	21920		/* C9 in 1/2 cents (10960 cents) */
+#define	PITCHMIN	320	/* C0 in 1/2 cents (160 cents) */
+#define	PITCHMAX	21920	/* C9 in 1/2 cents (10960 cents) */
 
 #define	GTAG1		0x0100
 #define	GTAG2		0x0200

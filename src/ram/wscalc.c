@@ -17,15 +17,15 @@
 #define	WAVESMAX	1023
 #define	WAVESMIN	1023
 
-extern	short	curwhrm;
+extern short curwhrm;
 
-extern	long	hwave[NUMWPCAL];
+extern long hwave[NUMWPCAL];
 
-extern	short	offsets[NUMWPCAL];
-extern	short	vmtab[NUMHARM];
-extern	short	wsbuf[NUMWPCAL];
+extern short offsets[NUMWPCAL];
+extern short vmtab[NUMHARM];
+extern short wsbuf[NUMWPCAL];
 
-extern	long	vknm[NUMHARM][NUMWPCAL];
+extern long vknm[NUMHARM][NUMWPCAL];
 
 #include "knmtab.h"		/* short knmtab[NUMHARM][NUMWPCAL]; */
 
@@ -38,30 +38,33 @@ extern	long	vknm[NUMHARM][NUMWPCAL];
    =============================================================================
 */
 
-adj(wshar)
-register short wshar;
+adj (wshar)
+     register short wshar;
 {
-	register short wspnt;
-	register long harval;
-	register short *kp;
-	register long *vp;
+  register short wspnt;
+  register long harval;
+  register short *kp;
+  register long *vp;
 
-	vp = &vknm[wshar][0];
+  vp = &vknm[wshar][0];
 
-	harval = vmtab[wshar];
+  harval = vmtab[wshar];
 
-	if (harval) {
+  if (harval)
+    {
 
-		kp = &knmtab[wshar][0];
+      kp = &knmtab[wshar][0];
 
-		for (wspnt = 0; wspnt < NUMWPCAL; wspnt++)
-			*vp++ = *kp++ * harval;
+      for (wspnt = 0; wspnt < NUMWPCAL; wspnt++)
+	*vp++ = *kp++ * harval;
 
-	} else {
+    }
+  else
+    {
 
-		for (wspnt = 0; wspnt < NUMWPCAL; wspnt++)
-			*vp++ = 0;
-	}
+      for (wspnt = 0; wspnt < NUMWPCAL; wspnt++)
+	*vp++ = 0;
+    }
 }
 
 /* 
@@ -73,12 +76,12 @@ register short wshar;
    =============================================================================
 */
 
-wadj()
+wadj ()
 {
-	register short wshar;
+  register short wshar;
 
-	for (wshar = 0; wshar < NUMHARM; wshar++)
-		adj(wshar);
+  for (wshar = 0; wshar < NUMHARM; wshar++)
+    adj (wshar);
 }
 
 /*
@@ -87,11 +90,11 @@ wadj()
    =============================================================================
 */
 
-clrwsa()
+clrwsa ()
 {
-	memsetw(offsets, 0, NUMWPCAL);
-	memsetw(vknm,    0, (NUMHARM * NUMWPCAL) << 1);
-	memsetw(vmtab,   0, NUMHARM);
+  memsetw (offsets, 0, NUMWPCAL);
+  memsetw (vknm, 0, (NUMHARM * NUMWPCAL) << 1);
+  memsetw (vmtab, 0, NUMHARM);
 }
 
 /* 
@@ -103,36 +106,37 @@ clrwsa()
    =============================================================================
 */
 
-wscalc()
+wscalc ()
 {
-	register short wspnt, wshar;
-	register long hfac, hmax, temp;
+  register short wspnt, wshar;
+  register long hfac, hmax, temp;
 
-	hmax = WAVESMIN;	/* set minimum scaling value */
+  hmax = WAVESMIN;		/* set minimum scaling value */
 
-	for (wspnt = 0; wspnt < NUMWPCAL; wspnt++) {
+  for (wspnt = 0; wspnt < NUMWPCAL; wspnt++)
+    {
 
-		temp = 0;	/* sum up the harmonics */
+      temp = 0;			/* sum up the harmonics */
 
-		for (wshar = 0; wshar < NUMHARM; wshar++)
-			temp += vknm[wshar][wspnt];
+      for (wshar = 0; wshar < NUMHARM; wshar++)
+	temp += vknm[wshar][wspnt];
 
-		/* add in the offsets */
+      /* add in the offsets */
 
-		hwave[wspnt] = (temp / 100) + offsets[wspnt];
+      hwave[wspnt] = (temp / 100) + offsets[wspnt];
 
-		/* adjust the maximum value seen */
+      /* adjust the maximum value seen */
 
-		if ((temp = abs(hwave[wspnt])) > hmax)
-			hmax = temp;
-	}
+      if ((temp = abs (hwave[wspnt])) > hmax)
+	hmax = temp;
+    }
 
-	/* calculate the scale factor */
+  /* calculate the scale factor */
 
-	hfac = ((long)WAVESMAX << 16) / hmax;
+  hfac = ((long) WAVESMAX << 16) / hmax;
 
-	/* scale the waveshape */
+  /* scale the waveshape */
 
-	for (wspnt = 0; wspnt < NUMWPCAL; wspnt++)
-		wsbuf[wspnt] = (hwave[wspnt] * hfac) >> 16;
+  for (wspnt = 0; wspnt < NUMWPCAL; wspnt++)
+    wsbuf[wspnt] = (hwave[wspnt] * hfac) >> 16;
 }

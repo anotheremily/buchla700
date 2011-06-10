@@ -17,15 +17,15 @@
 #include "instdsp.h"
 #include "wsdsp.h"
 
-extern	unsigned	*instob;
+extern unsigned *instob;
 
-extern	short	stcrow, stccol, curvce;
-extern	short	idbox[][8];
+extern short stcrow, stccol, curvce;
+extern short idbox[][8];
 
-extern	char	dspbuf[];
+extern char dspbuf[];
 
-extern	struct	instdef	vbufs[];
-extern	struct	wstbl	wslib[];
+extern struct instdef vbufs[];
+extern struct wstbl wslib[];
 
 /* 
 */
@@ -37,18 +37,18 @@ extern	struct	wstbl	wslib[];
 */
 
 short
-et_iwsn(nn)
-short nn;
+et_iwsn (nn)
+     short nn;
 {
-	register short m;
+  register short m;
 
-	m = nn >> 8;
+  m = nn >> 8;
 
-	sprintf(ebuf, "%02d", m ? vbufs[curvce].idhwsb + 1
-		: vbufs[curvce].idhwsa + 1);
-	ebflag = TRUE;
+  sprintf (ebuf, "%02d", m ? vbufs[curvce].idhwsb + 1
+	   : vbufs[curvce].idhwsa + 1);
+  ebflag = TRUE;
 
-	return(SUCCESS);
+  return (SUCCESS);
 }
 
 /* 
@@ -61,59 +61,62 @@ short nn;
 */
 
 short
-ef_iwsn(nn)
-short nn;
+ef_iwsn (nn)
+     short nn;
 {
-	register short i, tmpval, m;
-	register short *fpuws;
+  register short i, tmpval, m;
+  register short *fpuws;
 
-	m = nn >> 8;
-	ebuf[2] = '\0';			/* terminate the string in ebuf */
-	ebflag = FALSE;
+  m = nn >> 8;
+  ebuf[2] = '\0';		/* terminate the string in ebuf */
+  ebflag = FALSE;
 
-	tmpval = 0;
+  tmpval = 0;
 
-	for (i = 0; i < 2; i++)		/* convert from ASCII to binary */
-		tmpval = (tmpval * 10) + (ebuf[i] - '0');
+  for (i = 0; i < 2; i++)	/* convert from ASCII to binary */
+    tmpval = (tmpval * 10) + (ebuf[i] - '0');
 
-	if ((tmpval EQ 0) OR (tmpval GT NUMWAVS))
-		return(FAILURE);
+  if ((tmpval EQ 0) OR (tmpval GT NUMWAVS))
+    return (FAILURE);
 
-	if (m) {
+  if (m)
+    {
 
-		/* slot B */
-		vbufs[curvce].idhwsb = tmpval - 1;
+      /* slot B */
+      vbufs[curvce].idhwsb = tmpval - 1;
 
-		memcpyw(vbufs[curvce].idhwvbf, &wslib[tmpval - 1],
-			NUMHARM + (2 * NUMWPNT));
+      memcpyw (vbufs[curvce].idhwvbf, &wslib[tmpval - 1],
+	       NUMHARM + (2 * NUMWPNT));
 
-		fpuws = io_fpu + FPU_OWST + (curvce << 9) + 1;
+      fpuws = io_fpu + FPU_OWST + (curvce << 9) + 1;
 
-		memcpyw(fpuws, vbufs[curvce].idhwvbf, NUMWPNT);
+      memcpyw (fpuws, vbufs[curvce].idhwvbf, NUMWPNT);
 
-		*(fpuws - 1) = vbufs[curvce].idhwvbf[0];
-		*(fpuws + NUMWPNT) = vbufs[curvce].idhwvbf[NUMWPNT - 1];
+      *(fpuws - 1) = vbufs[curvce].idhwvbf[0];
+      *(fpuws + NUMWPNT) = vbufs[curvce].idhwvbf[NUMWPNT - 1];
 
-	} else {
+    }
+  else
+    {
 
-		/* slot A */
+      /* slot A */
 
-		vbufs[curvce].idhwsa = tmpval - 1;
+      vbufs[curvce].idhwsa = tmpval - 1;
 
-		memcpyw(vbufs[curvce].idhwvaf, &wslib[tmpval - 1],
-			NUMHARM + (2 * NUMWPNT));
+      memcpyw (vbufs[curvce].idhwvaf, &wslib[tmpval - 1],
+	       NUMHARM + (2 * NUMWPNT));
 
-		fpuws = io_fpu + FPU_OWST + (curvce << 9) + 0x100 + 1;
+      fpuws = io_fpu + FPU_OWST + (curvce << 9) + 0x100 + 1;
 
-		memcpyw(fpuws, vbufs[curvce].idhwvaf, NUMWPNT);
+      memcpyw (fpuws, vbufs[curvce].idhwvaf, NUMWPNT);
 
-		*(fpuws - 1) = vbufs[curvce].idhwvaf[0];
-		*(fpuws + NUMWPNT) = vbufs[curvce].idhwvaf[NUMWPNT - 1];
-	}
+      *(fpuws - 1) = vbufs[curvce].idhwvaf[0];
+      *(fpuws + NUMWPNT) = vbufs[curvce].idhwvaf[NUMWPNT - 1];
+    }
 
-	dswin(21);
-	modinst();
-	return(SUCCESS);
+  dswin (21);
+  modinst ();
+  return (SUCCESS);
 }
 
 /* 
@@ -126,23 +129,23 @@ short nn;
 */
 
 short
-rd_iwsn(nn)
-short nn;
+rd_iwsn (nn)
+     short nn;
 {
-	register short m, n;
+  register short m, n;
 
-	m = (nn >> 8) & 0x00FF;
-	n = nn & 0x00FF;
+  m = (nn >> 8) & 0x00FF;
+  n = nn & 0x00FF;
 
-	sprintf(dspbuf, "%02d", m ? vbufs[curvce].idhwsb + 1
-			: vbufs[curvce].idhwsa + 1);
+  sprintf (dspbuf, "%02d", m ? vbufs[curvce].idhwsb + 1
+	   : vbufs[curvce].idhwsa + 1);
 
-	vbank(0);
+  vbank (0);
 
-	vcputsv(instob, 64, (m ? WSBFC : WSAFC), idbox[n][5],
-		cfetp->frow, cfetp->flcol, dspbuf, 14);
+  vcputsv (instob, 64, (m ? WSBFC : WSAFC), idbox[n][5],
+	   cfetp->frow, cfetp->flcol, dspbuf, 14);
 
-	return(SUCCESS);
+  return (SUCCESS);
 }
 
 /* 
@@ -155,26 +158,25 @@ short nn;
 */
 
 short
-nd_iwsn(nn, k)
-short nn;
-register short  k;
+nd_iwsn (nn, k)
+     short nn;
+     register short k;
 {
-	register short ec, c, n;
+  register short ec, c, n;
 
-	n = nn & 0x00FF;
+  n = nn & 0x00FF;
 
-	ec = stccol - cfetp->flcol;	/* setup edit buffer column */
-	ebuf[ec] = k + '0';		/* enter new data in buffer */
-	ebuf[2] = '\0';			/* make sure string is terminated */
+  ec = stccol - cfetp->flcol;	/* setup edit buffer column */
+  ebuf[ec] = k + '0';		/* enter new data in buffer */
+  ebuf[2] = '\0';		/* make sure string is terminated */
 
-	dspbuf[0] = k + '0';		/* setup for display */
-	dspbuf[1] = '\0';
+  dspbuf[0] = k + '0';		/* setup for display */
+  dspbuf[1] = '\0';
 
-	vbank(0);			/* display the new data */
-	vcputsv(instob, 64, ID_ENTRY, idbox[n][5], stcrow, stccol, dspbuf, 14);
+  vbank (0);			/* display the new data */
+  vcputsv (instob, 64, ID_ENTRY, idbox[n][5], stcrow, stccol, dspbuf, 14);
 
-	advicur();			/* advance cursor */
+  advicur ();			/* advance cursor */
 
-	return(SUCCESS);
+  return (SUCCESS);
 }
-

@@ -6,18 +6,18 @@
 */
 
 char *
-rindex(str, c)
-register char *str;
-char c;
+rindex (str, c)
+     register char *str;
+     char c;
 {
-	register char *cp;
+  register char *cp;
 
-	for (cp = str ;*cp++ ; )
-		;
+  for (cp = str; *cp++;)
+    ;
 
-	while (cp > str)
-		if (*--cp == c)
-			return(cp);
+  while (cp > str)
+    if (*--cp == c)
+      return (cp);
 
-	return((char *)0);
+  return ((char *) 0);
 }

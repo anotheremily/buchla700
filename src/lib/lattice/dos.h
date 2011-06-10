@@ -112,29 +112,29 @@ typedef unsigned char byte;
 *
 */
 struct FCB
-	{
-	char fcbdrv;		/* drive code */
-	char fcbnam[8]; 	/* file name */
-	char fcbext[3]; 	/* file name extension */
+{
+  char fcbdrv;			/* drive code */
+  char fcbnam[8];		/* file name */
+  char fcbext[3];		/* file name extension */
 #if MSDOS
-	short fcbcb;		/* current block number */
-	short fcblrs;		/* logical record size */
-	long fcblfs;		/* logical file size */
-	short fcbdat;		/* create/change date */
-	char fcbsys[10];	/* reserved */
-	char fcbcr;		/* current record number */
-	long fcbrec;		/* random record number */
+  short fcbcb;			/* current block number */
+  short fcblrs;			/* logical record size */
+  long fcblfs;			/* logical file size */
+  short fcbdat;			/* create/change date */
+  char fcbsys[10];		/* reserved */
+  char fcbcr;			/* current record number */
+  long fcbrec;			/* random record number */
 #else
-	char fcbexn;		/* extent number */
-	char fcbs1;		/* reserved */
-	char fcbs2;		/* reserved */
-	char fcbrc;		/* record count */
-	char fcbsys[16];	/* reserved */
-	char fcbcr;		/* current record number */
-	short fcbrec;		/* random record number */
-	char fcbovf;		/* random record overflow */
+  char fcbexn;			/* extent number */
+  char fcbs1;			/* reserved */
+  char fcbs2;			/* reserved */
+  char fcbrc;			/* record count */
+  char fcbsys[16];		/* reserved */
+  char fcbcr;			/* current record number */
+  short fcbrec;			/* random record number */
+  char fcbovf;			/* random record overflow */
 #endif
-	};
+};
 
 #define FCBSIZ sizeof(struct FCB)
 
@@ -148,8 +148,8 @@ struct FCB
 #define FNSIZE 16
 #define FMSIZE 64
 #else
-#define FNSIZE 16	/* maximum file node name size */
-#define FMSIZE 16	/* maximum file name size */
+#define FNSIZE 16		/* maximum file node name size */
+#define FMSIZE 16		/* maximum file name size */
 #endif
 #endif
 
@@ -167,25 +167,25 @@ struct FCB
 */
 #if I8086
 struct XREG
-	{
-	short ax,bx,cx,dx,si,di;
-	};
+{
+  short ax, bx, cx, dx, si, di;
+};
 
 struct HREG
-	{
-	byte al,ah,bl,bh,cl,ch,dl,dh;
-	};
+{
+  byte al, ah, bl, bh, cl, ch, dl, dh;
+};
 
 union REGS
-	{
-	struct XREG x;
-	struct HREG h;
-	};
+{
+  struct XREG x;
+  struct HREG h;
+};
 
 struct SREGS
-	{
-	short es,cs,ss,ds;
-	};
+{
+  short es, cs, ss, ds;
+};
 #endif
 
 /**
@@ -223,14 +223,14 @@ struct SREGS
 */
 #if MSDOS
 #define E_FUNC 1		/* invalid function code */
-#define E_FNF 2 		/* file not found */
-#define E_PNF 3 		/* path not found */
-#define E_NMH 4 		/* no more file handles */
-#define E_ACC 5 		/* access denied */
-#define E_IFH 6 		/* invalid file handle */
-#define E_MCB 7 		/* memory control block problem */
-#define E_MEM 8 		/* insufficient memory */
-#define E_MBA 9 		/* invalid memory block address */
+#define E_FNF 2			/* file not found */
+#define E_PNF 3			/* path not found */
+#define E_NMH 4			/* no more file handles */
+#define E_ACC 5			/* access denied */
+#define E_IFH 6			/* invalid file handle */
+#define E_MCB 7			/* memory control block problem */
+#define E_MEM 8			/* insufficient memory */
+#define E_MBA 9			/* invalid memory block address */
 #define E_ENV 10		/* invalid environment */
 #define E_FMT 11		/* invalid format */
 #define E_IAC 12		/* invalid access code */
@@ -245,12 +245,10 @@ struct MELT
 {
   struct MELT *fwd;
 #if FPTR
-  unsigned size; /* number of MELTs in the block */
+  unsigned size;		/* number of MELTs in the block */
 #else
   long size;
 #endif
 };
 
 #define MELTSIZE sizeof (struct MELT)
-
-

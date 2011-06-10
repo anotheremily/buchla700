@@ -10,9 +10,9 @@
 #include "biosdefs.h"
 #include "mtdefs.h"
 
-extern	short		setipl();	/* set processor IPL function */
+extern short setipl ();		/* set processor IPL function */
 
-extern	struct	_mt_def	*_MT_;
+extern struct _mt_def *_MT_;
 
 /*
    =============================================================================
@@ -23,23 +23,22 @@ extern	struct	_mt_def	*_MT_;
 */
 
 unsigned
-MTSetP(pri)
-unsigned pri;
+MTSetP (pri)
+     unsigned pri;
 {
-	register short oldipl;
-	register unsigned oldpri;
+  register short oldipl;
+  register unsigned oldpri;
 
-	if ((struct _mt_def *)NIL EQ _MT_)
-		_MT_ = (struct _mt_def *)XBIOS(X_MTDEFS);
+  if ((struct _mt_def *) NIL EQ _MT_)
+    _MT_ = (struct _mt_def *) XBIOS (X_MTDEFS);
 
-	oldipl = setipl(7);	/* DISABLE INTERRUPTS */
+  oldipl = setipl (7);		/* DISABLE INTERRUPTS */
 
-	oldpri = _MT_->mtp->CurP->pri;	/* get old task priority */
-	_MT_->mtp->CurP->pri = pri;	/* set new priority for task */
+  oldpri = _MT_->mtp->CurP->pri;	/* get old task priority */
+  _MT_->mtp->CurP->pri = pri;	/* set new priority for task */
 
-	setipl(oldipl);		/* RESTORE INTERRUPTS */
+  setipl (oldipl);		/* RESTORE INTERRUPTS */
 
-	MTSwap();		/* swap to highest priority ready task */
-	return(oldpri);		/* return old task priority */
+  MTSwap ();			/* swap to highest priority ready task */
+  return (oldpri);		/* return old task priority */
 }
-

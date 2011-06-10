@@ -5,10 +5,10 @@
    =============================================================================
 */
 
-extern	int	optind;		/* Index into nargv */
-extern	char	*optarg;	/* Pointer to option argument or NULL */
+extern int optind;		/* Index into nargv */
+extern char *optarg;		/* Pointer to option argument or NULL */
 
-extern	int	opterr;		/* Error output flag */
-extern	int	optopt;		/* Most recently parsed option letter */
+extern int opterr;		/* Error output flag */
+extern int optopt;		/* Most recently parsed option letter */
 
-extern	int	getopt();
+extern int getopt ();

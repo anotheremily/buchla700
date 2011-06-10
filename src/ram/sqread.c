@@ -14,7 +14,7 @@
 #include "midas.h"
 #include "libdsp.h"
 
-extern	short	errno;			/* system error number */
+extern short errno;		/* system error number */
 
 
 /*
@@ -23,16 +23,15 @@ extern	short	errno;			/* system error number */
    =============================================================================
 */
 
-sqioerr()
+sqioerr ()
 {
-	char erms[40];
+  char erms[40];
 
-	clrlsel();
+  clrlsel ();
 
-	sprintf(erms, "  errno = %d", errno);
+  sprintf (erms, "  errno = %d", errno);
 
-	ldermsg("Couldn't read", " the sequence table", erms,
-		LD_EMCF, LD_EMCB);
+  ldermsg ("Couldn't read", " the sequence table", erms, LD_EMCF, LD_EMCB);
 }
 
 /* 
@@ -45,67 +44,78 @@ sqioerr()
 */
 
 short
-sqread(fp)
-register FILE *fp;
+sqread (fp)
+     register FILE *fp;
 {
-	char cb;
-	short seq;
+  char cb;
+  short seq;
 
-	ldwmsg(" Busy -- please stand by", (char *)NULL, "  Reading sequences",
-		LCFBX10, LCBBX10);
+  ldwmsg (" Busy -- please stand by", (char *) NULL, "  Reading sequences",
+	  LCFBX10, LCBBX10);
 
-	for (;;) {
+  for (;;)
+    {
 
-		if (rd_ec(fp, &cb, 1L)) {	/* get control byte */
+      if (rd_ec (fp, &cb, 1L))
+	{			/* get control byte */
 
-			sqioerr();
-			return(FAILURE);
-		}
+	  sqioerr ();
+	  return (FAILURE);
+	}
 
-		if (0 EQ cb)			/* zero control byte is end */
-			return(SUCCESS);
+      if (0 EQ cb)		/* zero control byte is end */
+	return (SUCCESS);
 
-		if (rd_ec(fp, &seq, 2L)) {	/* get Line number */
+      if (rd_ec (fp, &seq, 2L))
+	{			/* get Line number */
 
-			sqioerr();
-			return(FAILURE);
-		}
+	  sqioerr ();
+	  return (FAILURE);
+	}
 
-		if (cb & 0x08) {		/* get Time */
+      if (cb & 0x08)
+	{			/* get Time */
 
-			if (rd_ec(fp, &seqtab[seq].seqtime, 2L)) {
+	  if (rd_ec (fp, &seqtab[seq].seqtime, 2L))
+	    {
 
-				sqioerr();
-				return(FAILURE);
-			}
-		}
+	      sqioerr ();
+	      return (FAILURE);
+	    }
+	}
 /* 
 */
-		if (cb & 0x04) {		/* get Action 1 */
+      if (cb & 0x04)
+	{			/* get Action 1 */
 
-			if (rd_ec(fp, &seqtab[seq].seqact1, 4L)) {
+	  if (rd_ec (fp, &seqtab[seq].seqact1, 4L))
+	    {
 
-				sqioerr();
-				return(FAILURE);
-			}
-		}
-
-		if (cb & 0x02) {		/* get Action 2 */
-
-			if (rd_ec(fp, &seqtab[seq].seqact2, 4L)) {
-
-				sqioerr();
-				return(FAILURE);
-			}
-		}
-
-		if (cb & 0x01) {		/* get Action 3 */
-
-			if (rd_ec(fp, &seqtab[seq].seqact3, 4L)) {
-
-				sqioerr();
-				return(FAILURE);
-			}
-		}
+	      sqioerr ();
+	      return (FAILURE);
+	    }
 	}
+
+      if (cb & 0x02)
+	{			/* get Action 2 */
+
+	  if (rd_ec (fp, &seqtab[seq].seqact2, 4L))
+	    {
+
+	      sqioerr ();
+	      return (FAILURE);
+	    }
+	}
+
+      if (cb & 0x01)
+	{			/* get Action 3 */
+
+	  if (rd_ec (fp, &seqtab[seq].seqact3, 4L))
+	    {
+
+	      sqioerr ();
+	      return (FAILURE);
+	    }
+	}
+    }
 }

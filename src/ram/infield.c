@@ -8,7 +8,7 @@
 #include "fields.h"
 #include "stddefs.h"
 
-extern	short	stcrow, stccol;
+extern short stcrow, stccol;
 
 /*
    =============================================================================
@@ -19,28 +19,28 @@ extern	short	stcrow, stccol;
 */
 
 short
-infield(row, col, fetp)
-register short row, col;
-register struct fet *fetp;
+infield (row, col, fetp)
+     register short row, col;
+     register struct fet *fetp;
 {
-	infetp = (struct fet *)NULL;	/* setup for NULL infetp return */
+  infetp = (struct fet *) NULL;	/* setup for NULL infetp return */
 
-	if ((struct fet *)NULL EQ fetp)	/* handle NULL fet pointer */
-		return(FALSE);
+  if ((struct fet *) NULL EQ fetp)	/* handle NULL fet pointer */
+    return (FALSE);
 
-	while (fetp->redisp) {		/* redisp EQ NULL is end of table */
+  while (fetp->redisp)
+    {				/* redisp EQ NULL is end of table */
 
-		if ((row EQ fetp->frow) AND	/* check the entry */
-		     (col GE fetp->flcol) AND
-		     (col LE fetp->frcol)) {
+      if ((row EQ fetp->frow) AND	/* check the entry */
+	  (col GE fetp->flcol) AND (col LE fetp->frcol))
+	{
 
-			infetp = fetp;		/* set new fet pointer */
-			return(TRUE);		/* return 'found' */
-		}
-
-		++fetp;				/* advance field pointer */
+	  infetp = fetp;	/* set new fet pointer */
+	  return (TRUE);	/* return 'found' */
 	}
 
-	return(FALSE);				/* return 'not found' */
-}
+      ++fetp;			/* advance field pointer */
+    }
 
+  return (FALSE);		/* return 'not found' */
+}

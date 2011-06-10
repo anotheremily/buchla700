@@ -10,7 +10,7 @@
 #define	PK_PFRM		0	/* performance keys */
 #define	PK_NOTE		1	/* note weight */
 #define	PK_GOTO		2	/* go to (sectn / score) */
-#define	PK_INST		3	/* instrument selection (01..20 / 21..40)*/
+#define	PK_INST		3	/* instrument selection (01..20 / 21..40) */
 #define	PK_ASGN		4	/* assignment selection */
 #define	PK_LIBR		5	/* library selection */
 #define	PK_NGRP		6	/* group selection */

@@ -9,13 +9,13 @@
 */
 
 short *
-memsetw(sp, w, n)
-register short *sp, w, n;
+memsetw (sp, w, n)
+     register short *sp, w, n;
 {
-        register short *sp0 = sp;
+  register short *sp0 = sp;
 
-        while (--n >= 0)
-                *sp++ = w;
+  while (--n >= 0)
+    *sp++ = w;
 
-        return(sp0);
+  return (sp0);
 }

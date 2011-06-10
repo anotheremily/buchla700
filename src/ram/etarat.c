@@ -14,14 +14,14 @@
 #include "midas.h"
 #include "asgdsp.h"
 
-extern	unsigned	*asgob;
+extern unsigned *asgob;
 
-extern	short	stcrow, stccol;
-extern	short	ps_rate;
+extern short stcrow, stccol;
+extern short ps_rate;
 
-extern	short	adbox[][8];
+extern short adbox[][8];
 
-extern	char	dspbuf[];
+extern char dspbuf[];
 
 /* 
 */
@@ -33,13 +33,13 @@ extern	char	dspbuf[];
 */
 
 short
-et_arat(n)
-short n;
+et_arat (n)
+     short n;
 {
-	sprintf(ebuf, "%02d", ps_rate);
-	ebflag = TRUE;
+  sprintf (ebuf, "%02d", ps_rate);
+  ebflag = TRUE;
 
-	return(SUCCESS);
+  return (SUCCESS);
 }
 
 /*
@@ -49,22 +49,22 @@ short n;
 */
 
 short
-ef_arat(n)
-short n;
+ef_arat (n)
+     short n;
 {
-	register short i, tmpval;
+  register short i, tmpval;
 
-	ebuf[2] = '\0';			/* terminate the string in ebuf */
-	ebflag = FALSE;
-	tmpval = 0;
+  ebuf[2] = '\0';		/* terminate the string in ebuf */
+  ebflag = FALSE;
+  tmpval = 0;
 
-	for (i = 0; i < 2; i++)		/* convert from ASCII to binary */
-		tmpval = (tmpval * 10) + (ebuf[i] - '0');
+  for (i = 0; i < 2; i++)	/* convert from ASCII to binary */
+    tmpval = (tmpval * 10) + (ebuf[i] - '0');
 
-	ps_rate = tmpval;
-	sendval(2, 0, ((ps_rate * 10) << 5));
-	modasg();
-	return(SUCCESS);
+  ps_rate = tmpval;
+  sendval (2, 0, ((ps_rate * 10) << 5));
+  modasg ();
+  return (SUCCESS);
 }
 
 /* 
@@ -77,19 +77,19 @@ short n;
 */
 
 short
-rd_arat(nn)
-short nn;
+rd_arat (nn)
+     short nn;
 {
-	register short n;
+  register short n;
 
-	n = nn & 0xFF;
-	sprintf(dspbuf, "%02.2d", ps_rate);
+  n = nn & 0xFF;
+  sprintf (dspbuf, "%02.2d", ps_rate);
 
-	vbank(0);
-	vcputsv(asgob, 64, adbox[n][4], adbox[n][5],
-		adbox[n][6] + 2, adbox[n][7] + 8, dspbuf, 14);
+  vbank (0);
+  vcputsv (asgob, 64, adbox[n][4], adbox[n][5],
+	   adbox[n][6] + 2, adbox[n][7] + 8, dspbuf, 14);
 
-	return(SUCCESS);
+  return (SUCCESS);
 }
 
 /*
@@ -99,26 +99,25 @@ short nn;
 */
 
 short
-nd_arat(nn, k)
-short nn;
-register short  k;
+nd_arat (nn, k)
+     short nn;
+     register short k;
 {
-	register short ec, n;
+  register short ec, n;
 
-	n = nn & 0xFF;
+  n = nn & 0xFF;
 
-	ec = stccol - cfetp->flcol;	/* setup edit buffer column */
+  ec = stccol - cfetp->flcol;	/* setup edit buffer column */
 
-	ebuf[ec] = k + '0';
-	ebuf[2] = '\0';
+  ebuf[ec] = k + '0';
+  ebuf[2] = '\0';
 
-	dspbuf[0] = k + '0';
-	dspbuf[1] = '\0';
+  dspbuf[0] = k + '0';
+  dspbuf[1] = '\0';
 
-	vbank(0);
-	vcputsv(asgob, 64, AK_ENTRY, adbox[n][5], stcrow, stccol, dspbuf, 14);
+  vbank (0);
+  vcputsv (asgob, 64, AK_ENTRY, adbox[n][5], stcrow, stccol, dspbuf, 14);
 
-	advacur();
-	return(SUCCESS);
+  advacur ();
+  return (SUCCESS);
 }
-

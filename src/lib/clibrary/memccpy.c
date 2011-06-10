@@ -11,13 +11,13 @@
 */
 
 char *
-memccpy(s1, s2, c, n)
-register char *s1, *s2;
-register char c;
-register int n;
+memccpy (s1, s2, c, n)
+     register char *s1, *s2;
+     register char c;
+     register int n;
 {
-        while (--n >= 0)
-                if ((*s1++ = *s2++) == c)
-                        return(s1);
-        return((char *)0);
+  while (--n >= 0)
+    if ((*s1++ = *s2++) == c)
+      return (s1);
+  return ((char *) 0);
 }

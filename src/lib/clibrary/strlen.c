@@ -9,13 +9,13 @@
 
 
 int
-strlen(s)
-register char *s;
+strlen (s)
+     register char *s;
 {
-        register int n = 0;
+  register int n = 0;
 
-        while (*s++ != '\0')
-               ++n;
+  while (*s++ != '\0')
+    ++n;
 
-        return (n);
+  return (n);
 }

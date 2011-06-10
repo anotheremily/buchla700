@@ -10,7 +10,7 @@
 #include "biosdefs.h"
 #include "mtdefs.h"
 
-extern	struct _mtdef	*_MT_;		/* Multi-Tasker structure pointer */
+extern struct _mtdef *_MT_;	/* Multi-Tasker structure pointer */
 
 /*
    =============================================================================
@@ -19,10 +19,10 @@ extern	struct _mtdef	*_MT_;		/* Multi-Tasker structure pointer */
 */
 
 unsigned
-MTGetID()
+MTGetID ()
 {
-	if ((struct _mt_def *)NIL EQ _MT_)
-		_MT_ = (struct _mt_def *)XBIOS(X_MTDEFS);
+  if ((struct _mt_def *) NIL EQ _MT_)
+    _MT_ = (struct _mt_def *) XBIOS (X_MTDEFS);
 
-	return(_MT_->CurP->tid);	/* return current task ID */
+  return (_MT_->CurP->tid);	/* return current task ID */
 }

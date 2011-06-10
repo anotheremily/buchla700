@@ -16,13 +16,13 @@
 #include "scdsp.h"
 #include "instdsp.h"
 
-extern	unsigned	*obj8;
+extern unsigned *obj8;
 
-extern	short	clkrun;
-extern	short	insmode;
-extern	short	stccol;
+extern short clkrun;
+extern short insmode;
+extern short stccol;
 
-extern	long	t_cur;
+extern long t_cur;
 
 /* 
 */
@@ -34,24 +34,25 @@ extern	long	t_cur;
 */
 
 short
-et_snbt(n)
-short n;
+et_snbt (n)
+     short n;
 {
-	register long curfr, beat;
+  register long curfr, beat;
 
-	if (clkrun) {
+  if (clkrun)
+    {
 
-		ebflag = FALSE;
-		return(FAILURE);
-	}
+      ebflag = FALSE;
+      return (FAILURE);
+    }
 
-	curfr = t_cur;
-	beat  = curfr / 48;
+  curfr = t_cur;
+  beat = curfr / 48;
 
-	sprintf(ebuf, "%05ld", beat);
-	ebflag = TRUE;
+  sprintf (ebuf, "%05ld", beat);
+  ebflag = TRUE;
 
-	return(SUCCESS);
+  return (SUCCESS);
 }
 
 /*
@@ -61,30 +62,31 @@ short n;
 */
 
 short
-ef_snbt(n)
-short n;
+ef_snbt (n)
+     short n;
 {
-	register long ival;
-	register short i;
+  register long ival;
+  register short i;
 
-	if (clkrun)
-		return(FAILURE);
+  if (clkrun)
+    return (FAILURE);
 
-	ival = 0L;
+  ival = 0L;
 
-	for (i = 0; i < 5; i++)
-		ival = (ival * 10) + (ebuf[i] - '0');
+  for (i = 0; i < 5; i++)
+    ival = (ival * 10) + (ebuf[i] - '0');
 
-	ebflag = FALSE;
+  ebflag = FALSE;
 
-	if (insmode) {
+  if (insmode)
+    {
 
-		icancel();
-		dsimode();
-	}
+      icancel ();
+      dsimode ();
+    }
 
-	sc_goto(fc_val = ival * 48L);
-	return(SUCCESS);
+  sc_goto (fc_val = ival * 48L);
+  return (SUCCESS);
 }
 
 /* 
@@ -97,22 +99,22 @@ short n;
 */
 
 short
-rd_snbt(n)
-short n;
+rd_snbt (n)
+     short n;
 {
-	register long curfr, beat;
-	char	buf[8];
+  register long curfr, beat;
+  char buf[8];
 
-	curfr = t_cur;
-	beat  = curfr / 48;
-	sprintf(buf, "%05ld", beat);
+  curfr = t_cur;
+  beat = curfr / 48;
+  sprintf (buf, "%05ld", beat);
 
-	if (v_regs[5] & 0x0180)
-		vbank(0);
+  if (v_regs[5] & 0x0180)
+    vbank (0);
 
-	vputs(obj8, 0, 11, buf, SDW00ATR);
+  vputs (obj8, 0, 11, buf, SDW00ATR);
 
-	return(SUCCESS);
+  return (SUCCESS);
 }
 
 /* 
@@ -125,22 +127,22 @@ short n;
 */
 
 short
-nd_snbt(n, k)
-register short n, k;
+nd_snbt (n, k)
+     register short n, k;
 {
-	register short ec;
+  register short ec;
 
-	if (clkrun)
-		return(FAILURE);
+  if (clkrun)
+    return (FAILURE);
 
-	ec = stccol - cfetp->flcol;
-	ebuf[ec]  = k + '0';
+  ec = stccol - cfetp->flcol;
+  ebuf[ec] = k + '0';
 
-	if (v_regs[5] & 0x0180)
-		vbank(0);
+  if (v_regs[5] & 0x0180)
+    vbank (0);
 
-	vputc(obj8, 0, stccol, k + '0', SDW00DEA);
-	advscur();
+  vputc (obj8, 0, stccol, k + '0', SDW00DEA);
+  advscur ();
 
-	return(SUCCESS);
+  return (SUCCESS);
 }

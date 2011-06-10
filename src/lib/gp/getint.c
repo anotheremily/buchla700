@@ -8,7 +8,7 @@
 #include "ctype.h"
 #include "stddefs.h"
 
-extern	long	atol();
+extern long atol ();
 
 /*
    =============================================================================
@@ -17,45 +17,51 @@ extern	long	atol();
 */
 
 int
-get_int(str, ap)
-register char *str;
-int *ap;
+get_int (str, ap)
+     register char *str;
+     int *ap;
 {
-	register int i, sign, c;
-	long arg;
-	char *s;
+  register int i, sign, c;
+  long arg;
+  char *s;
 
-	s = str;
+  s = str;
 
-	while (*str EQ ' ')
-		++str;
+  while (*str EQ ' ')
+    ++str;
 
-	while ('\0' NE (c = 0x00FF & *str++)) {
+  while ('\0' NE (c = 0x00FF & *str++))
+    {
 
-		if (c EQ '+') {
+      if (c EQ '+')
+	{
 
-			if (++sign > 1)
-				return(FAILURE);
+	  if (++sign > 1)
+	    return (FAILURE);
 
-		} else if (c EQ '-') {
-
-			if (++sign > 1)
-				return(FAILURE);
-
-		} else {
-
-			if (NOT isascii(c))
-				return(FAILURE);
-
-			if (NOT isdigit(c))
-				return(FAILURE);
-		}
 	}
+      else if (c EQ '-')
+	{
 
-	if ((arg = atol(s)) > 65535L)
-		return(FAILURE);
+	  if (++sign > 1)
+	    return (FAILURE);
 
-	*ap = arg;
+	}
+      else
+	{
 
-	return(SUCCESS);
+	  if (NOT isascii (c))
+	    return (FAILURE);
+
+	  if (NOT isdigit (c))
+	    return (FAILURE);
+	}
+    }
+
+  if ((arg = atol (s)) > 65535L)
+    return (FAILURE);
+
+  *ap = arg;
+
+  return (SUCCESS);
 }

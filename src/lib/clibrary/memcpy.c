@@ -9,13 +9,13 @@
  */
 
 char *
-memcpy(s1, s2, n)
-register char *s1, *s2;
-register int n;
+memcpy (s1, s2, n)
+     register char *s1, *s2;
+     register int n;
 {
-        register char *os1 = s1;
+  register char *os1 = s1;
 
-        while (--n >= 0)
-                *s1++ = *s2++;
-        return (os1);
+  while (--n >= 0)
+    *s1++ = *s2++;
+  return (os1);
 }

@@ -8,7 +8,7 @@
 #include "stddefs.h"
 #include "biosdefs.h"
 
-extern	int	sprintf();
+extern int sprintf ();
 
 static char atrcons[] = "ADVSHR";
 
@@ -19,46 +19,47 @@ static char atrcons[] = "ADVSHR";
 */
 
 char *
-atrstr(atr, s)
-register short atr;
-register char s[];
+atrstr (atr, s)
+     register short atr;
+     register char s[];
 {
-	register short	i, j;
+  register short i, j;
 
-	i = 0x20;
+  i = 0x20;
 
-	for (j = 0; j < 6; j++) {
+  for (j = 0; j < 6; j++)
+    {
 
-		if (atr & i)
-			s[j] = atrcons[j];
-		else
-			s[j] = '-';
+      if (atr & i)
+	s[j] = atrcons[j];
+      else
+	s[j] = '-';
 
-		i >>= 1;
-	}
+      i >>= 1;
+    }
 
-	s[j] = '\0';
-	return(s);
+  s[j] = '\0';
+  return (s);
 }
 
 /*  */
 
 static char *mnames[] = {
 
-	"???",
-	"Jan",
-	"Feb",
-	"Mar",
-	"Apr",
-	"May",
-	"Jun",
-	"Jul",
-	"Aug",
-	"Sep",
-	"Oct",
-	"Nov",
-	"Dec"
-	};
+  "???",
+  "Jan",
+  "Feb",
+  "Mar",
+  "Apr",
+  "May",
+  "Jun",
+  "Jul",
+  "Aug",
+  "Sep",
+  "Oct",
+  "Nov",
+  "Dec"
+};
 
 /*
    =============================================================================
@@ -67,10 +68,10 @@ static char *mnames[] = {
 */
 
 char *
-mname(n)
-short n;
+mname (n)
+     short n;
 {
-	return((n < 1 || n > 12) ? mnames[0] : mnames[n]);
+  return ((n < 1 || n > 12) ? mnames[0] : mnames[n]);
 }
 
 /*  */
@@ -84,59 +85,52 @@ short n;
 */
 
 char *
-dtunpk(din, tin, s, fmt)
-short din, tin, fmt;
-char *s;
+dtunpk (din, tin, s, fmt)
+     short din, tin, fmt;
+     char *s;
 {
-	register short	ftm, fdt;
+  register short ftm, fdt;
 
-	ftm = ((tin << 8) & 0xFF00) | ((tin >> 8) & 0x00FF);
-	fdt = ((din << 8) & 0xFF00) | ((din >> 8) & 0x00FF);
+  ftm = ((tin << 8) & 0xFF00) | ((tin >> 8) & 0x00FF);
+  fdt = ((din << 8) & 0xFF00) | ((din >> 8) & 0x00FF);
 
-	switch (fmt) {
+  switch (fmt)
+    {
 
-	case 0:		/* yyyy-mm-dd hh:mm format */
+    case 0:			/* yyyy-mm-dd hh:mm format */
 
-		sprintf(s, "%04d-%02d-%02d %02d:%02d",
-			1980 + ((fdt >> 9) & 0x7F),
-			(fdt >> 5) & 0xF,
-			fdt & 0x1F,
-			(ftm >> 11) & 0x1F,
-			(ftm >> 5) & 0x3F
-			);
+      sprintf (s, "%04d-%02d-%02d %02d:%02d",
+	       1980 + ((fdt >> 9) & 0x7F),
+	       (fdt >> 5) & 0xF,
+	       fdt & 0x1F, (ftm >> 11) & 0x1F, (ftm >> 5) & 0x3F);
 
-		s[16] = '\0';
-		break;
+      s[16] = '\0';
+      break;
 
-	case 1:		/* yyyy mmm dd hh:mm format */
-	default:
+    case 1:			/* yyyy mmm dd hh:mm format */
+    default:
 
-		sprintf(s, "%04d %s %-2d %02d:%02d",
-			1980 + ((fdt >> 9) & 0x7F),
-			mname((fdt >> 5) & 0xF),
-			fdt & 0x1F,
-			(ftm >> 11) & 0x1F,
-			(ftm >> 5) & 0x3F
-			);
+      sprintf (s, "%04d %s %-2d %02d:%02d",
+	       1980 + ((fdt >> 9) & 0x7F),
+	       mname ((fdt >> 5) & 0xF),
+	       fdt & 0x1F, (ftm >> 11) & 0x1F, (ftm >> 5) & 0x3F);
 
-		s[17] = '\0';
-		break;
+      s[17] = '\0';
+      break;
 
 /*  */
 
-	case 2:		/* mmm dd yyyy hh:mm format */
+    case 2:			/* mmm dd yyyy hh:mm format */
 
-		sprintf(s, "%s %2d %04d %02d:%02d",
-			mname((fdt >> 5) & 0xF),
-			fdt & 0x1F,
-			1980 + ((fdt >> 9) & 0x7F),
-			(ftm >> 11) & 0x1F,
-			(ftm >> 5) & 0x3F
-			);
+      sprintf (s, "%s %2d %04d %02d:%02d",
+	       mname ((fdt >> 5) & 0xF),
+	       fdt & 0x1F,
+	       1980 + ((fdt >> 9) & 0x7F),
+	       (ftm >> 11) & 0x1F, (ftm >> 5) & 0x3F);
 
-		s[17] = '\0';
-		break;
-	}
+      s[17] = '\0';
+      break;
+    }
 
-	return(s);
+  return (s);
 }

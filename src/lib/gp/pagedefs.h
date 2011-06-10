@@ -5,13 +5,12 @@
    ============================================================================
 */
 
-extern	int newsub, minlines, npage, nline, nlpage, martop, marbot, marsize;
+extern int newsub, minlines, npage, nline, nlpage, martop, marbot, marsize;
 
-extern	int (*prhead)();
-extern	int newline(), margin(), pgmhdr(), skipnl(), subhdr(), newsect(),
-	heading();
+extern int (*prhead) ();
+extern int newline (), margin (), pgmhdr (), skipnl (), subhdr (), newsect (),
+heading ();
 
-extern	char *hdr, *verstr, *subhdg;
+extern char *hdr, *verstr, *subhdg;
 
-extern	FILE *printer;
-
+extern FILE *printer;

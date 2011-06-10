@@ -9,29 +9,31 @@
 #include "stddefs.h"
 
 int
-getc(ptr)
-register FILE *ptr;
+getc (ptr)
+     register FILE *ptr;
 {
-	register int len;
+  register int len;
 
-	if (ptr->_bp >= ptr->_bend) {		/* see if the buffer is empty */
+  if (ptr->_bp >= ptr->_bend)
+    {				/* see if the buffer is empty */
 
-		if (ptr->_flags & _EOF)		/* check EOF status */
-			return(EOF);
+      if (ptr->_flags & _EOF)	/* check EOF status */
+	return (EOF);
 
-		ptr->_flags &= ~_DIRTY;		/* reset the dirty buffer bit */
+      ptr->_flags &= ~_DIRTY;	/* reset the dirty buffer bit */
 
-		if (ptr->_buff EQ NULL)		/* get a buffer if none exists */
-			getbuff(ptr);
+      if (ptr->_buff EQ NULL)	/* get a buffer if none exists */
+	getbuff (ptr);
 
-		if ((len = read(ptr->_unit, ptr->_buff, ptr->_buflen)) LE 0) {
+      if ((len = read (ptr->_unit, ptr->_buff, ptr->_buflen)) LE 0)
+	{
 
-			ptr->_flags |= ((len EQ 0) ? _EOF : _IOERR);
-			return(EOF);
-		}
-
-		ptr->_bend = (ptr->_bp = ptr->_buff) + len;
+	  ptr->_flags |= ((len EQ 0) ? _EOF : _IOERR);
+	  return (EOF);
 	}
 
-	return(*ptr->_bp++ & 0xFF);
+      ptr->_bend = (ptr->_bp = ptr->_buff) + len;
+    }
+
+  return (*ptr->_bp++ & 0xFF);
 }

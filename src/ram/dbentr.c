@@ -31,36 +31,37 @@
 
 #include "stddefs.h"
 
-#define	DB_DEPTH	256		/* depth of the debug buffer */
+#define	DB_DEPTH	256	/* depth of the debug buffer */
 
-#define	DB_entr		0		/* entry tag */
-#define	DB_exit		1		/* exit tag */
-#define	DB_cmnt		2		/* comment tag */
+#define	DB_entr		0	/* entry tag */
+#define	DB_exit		1	/* exit tag */
+#define	DB_cmnt		2	/* comment tag */
 
-struct	DB_Data {			/* debug buffer entry structure */
+struct DB_Data
+{				/* debug buffer entry structure */
 
-	char	*str;
-	short	tag;
+  char *str;
+  short tag;
 };
 
 /* 
 */
 
-short	DB_In;				/* debug buffer 'in' pointer */
-short	DB_Out;				/* debug buffer 'out' pointer */
-short	DB_Flag;			/* ROMP trap disable flag */
+short DB_In;			/* debug buffer 'in' pointer */
+short DB_Out;			/* debug buffer 'out' pointer */
+short DB_Flag;			/* ROMP trap disable flag */
 
-long	DB_Levl;			/* debug function call level */
+long DB_Levl;			/* debug function call level */
 
-char	*DB_Last;			/* last debug string pointer */
+char *DB_Last;			/* last debug string pointer */
 
-struct	DB_Data	DB_Ents[DB_DEPTH];	/* debug buffer */
+struct DB_Data DB_Ents[DB_DEPTH];	/* debug buffer */
 
-char	*DB_Type[] = {			/* debug buffer entry types */
+char *DB_Type[] = {		/* debug buffer entry types */
 
-	"-->>",		/* 0 - DB_entr */
-	"<<--",		/* 1 - DB_exit */
-	"Note"		/* 2 - DB_cmnt */
+  "-->>",			/* 0 - DB_entr */
+  "<<--",			/* 1 - DB_exit */
+  "Note"			/* 2 - DB_cmnt */
 };
 
 /* 
@@ -72,24 +73,25 @@ char	*DB_Type[] = {			/* debug buffer entry types */
    =============================================================================
 */
 
-DB_Entr(str)
-char *str;
+DB_Entr (str)
+     char *str;
 {
-	DB_Ents[DB_In].tag = DB_entr;	/* tag an entry */
-	DB_Ents[DB_In].str = str;
+  DB_Ents[DB_In].tag = DB_entr;	/* tag an entry */
+  DB_Ents[DB_In].str = str;
 
-	DB_Last = str;
+  DB_Last = str;
 
-	++DB_Levl;
+  ++DB_Levl;
 
-	if (++DB_In GE DB_DEPTH)	/* update the 'in' pointer */
-		DB_In = 0;
+  if (++DB_In GE DB_DEPTH)	/* update the 'in' pointer */
+    DB_In = 0;
 
-	if (DB_In EQ DB_Out) {		/* bump the output pointer if full */
+  if (DB_In EQ DB_Out)
+    {				/* bump the output pointer if full */
 
-		if (++DB_Out GE DB_DEPTH)
-			DB_Out = 0;
-	}
+      if (++DB_Out GE DB_DEPTH)
+	DB_Out = 0;
+    }
 }
 
 /* 
@@ -101,27 +103,28 @@ char *str;
    =============================================================================
 */
 
-DB_Exit(str)
-char *str;
+DB_Exit (str)
+     char *str;
 {
-	DB_Ents[DB_In].tag = DB_exit;	/* tag an exit */
-	DB_Ents[DB_In].str = str;
+  DB_Ents[DB_In].tag = DB_exit;	/* tag an exit */
+  DB_Ents[DB_In].str = str;
 
-	DB_Last = str;
+  DB_Last = str;
 
-	if (DB_Levl > 0)
-		--DB_Levl;
-	else
-		DB_Levl = 0L;
+  if (DB_Levl > 0)
+    --DB_Levl;
+  else
+    DB_Levl = 0L;
 
-	if (++DB_In GE DB_DEPTH)	/* update the 'in' pointer */
-		DB_In = 0;
+  if (++DB_In GE DB_DEPTH)	/* update the 'in' pointer */
+    DB_In = 0;
 
-	if (DB_In EQ DB_Out) {		/* bump the output pointer if full */
+  if (DB_In EQ DB_Out)
+    {				/* bump the output pointer if full */
 
-		if (++DB_Out GE DB_DEPTH)
-			DB_Out = 0;
-	}
+      if (++DB_Out GE DB_DEPTH)
+	DB_Out = 0;
+    }
 }
 
 /* 
@@ -133,22 +136,23 @@ char *str;
    =============================================================================
 */
 
-DB_Cmnt(str)
-char *str;
+DB_Cmnt (str)
+     char *str;
 {
-	DB_Ents[DB_In].tag = DB_cmnt;	/* tag a comment */
-	DB_Ents[DB_In].str = str;
+  DB_Ents[DB_In].tag = DB_cmnt;	/* tag a comment */
+  DB_Ents[DB_In].str = str;
 
-	DB_Last = str;
+  DB_Last = str;
 
-	if (++DB_In GE DB_DEPTH)	/* update the 'in' pointer */
-		DB_In = 0;
+  if (++DB_In GE DB_DEPTH)	/* update the 'in' pointer */
+    DB_In = 0;
 
-	if (DB_In EQ DB_Out) {		/* bump the output pointer if full */
+  if (DB_In EQ DB_Out)
+    {				/* bump the output pointer if full */
 
-		if (++DB_Out GE DB_DEPTH)
-			DB_Out = 0;
-	}
+      if (++DB_Out GE DB_DEPTH)
+	DB_Out = 0;
+    }
 }
 
 /* 
@@ -160,21 +164,22 @@ char *str;
    =============================================================================
 */
 
-DB_Clr()
+DB_Clr ()
 {
-	register short i;
+  register short i;
 
-	DB_In  = 0;
-	DB_Out = 0;
+  DB_In = 0;
+  DB_Out = 0;
 
-	for (i = 0; i < DB_DEPTH; i++) {
+  for (i = 0; i < DB_DEPTH; i++)
+    {
 
-		DB_Ents[i].tag = 0;
-		DB_Ents[i].str = (char *)0L;
-	}
+      DB_Ents[i].tag = 0;
+      DB_Ents[i].str = (char *) 0L;
+    }
 
-	DB_Levl = 0L;
-	DB_Last = (char *)0L;
+  DB_Levl = 0L;
+  DB_Last = (char *) 0L;
 }
 
 /* 
@@ -186,90 +191,96 @@ DB_Clr()
    =============================================================================
 */
 
-DB_Dump()
+DB_Dump ()
 {
-	register short tag;
-	register long i, lev;
+  register short tag;
+  register long i, lev;
 
-	if ((DB_In GE DB_DEPTH) OR (DB_In < 0)) {	/* check DB_In */
+  if ((DB_In GE DB_DEPTH) OR (DB_In < 0))
+    {				/* check DB_In */
 
-		printf("DB_In was corrupt:  %d\n", DB_In);
+      printf ("DB_In was corrupt:  %d\n", DB_In);
 
-		xtrap15();		/* trap to ROMP */
-		
-		DB_Clr();		/* clear the buffer */
-		return;
-	}
+      xtrap15 ();		/* trap to ROMP */
 
-	if ((DB_Out GE DB_DEPTH) OR (DB_Out < 0)) {	/* check DB_Out */
+      DB_Clr ();		/* clear the buffer */
+      return;
+    }
 
-		printf("DB_Out was corrupt:  %d\n", DB_Out);
+  if ((DB_Out GE DB_DEPTH) OR (DB_Out < 0))
+    {				/* check DB_Out */
 
-		xtrap15();		/* trap to ROMP */
-		
-		DB_Clr();		/* clear the buffer */
-		return;
-	}
+      printf ("DB_Out was corrupt:  %d\n", DB_Out);
 
-	if (DB_In EQ DB_Out) {		/* check for an emtpy buffer */
+      xtrap15 ();		/* trap to ROMP */
 
-		printf("Debug buffer is empty:  In = Out = %d\n", DB_In);
+      DB_Clr ();		/* clear the buffer */
+      return;
+    }
 
-		if (DB_Levl)
-			printf("Debug trace level = %ld\n", DB_Levl);
+  if (DB_In EQ DB_Out)
+    {				/* check for an emtpy buffer */
 
-		if (DB_Last)
-			printf("Latest entry = \"%s\"\n", DB_Last);
+      printf ("Debug buffer is empty:  In = Out = %d\n", DB_In);
 
-		if (DB_Flag EQ 0)	/* trap to ROMP */
-			xtrap15();
+      if (DB_Levl)
+	printf ("Debug trace level = %ld\n", DB_Levl);
 
-		DB_Clr();		/* clear the buffer */
-		return;
-	}
+      if (DB_Last)
+	printf ("Latest entry = \"%s\"\n", DB_Last);
+
+      if (DB_Flag EQ 0)		/* trap to ROMP */
+	xtrap15 ();
+
+      DB_Clr ();		/* clear the buffer */
+      return;
+    }
 /* 
 */
-	printf("Debug trace level = %ld\n\n", DB_Levl);
+  printf ("Debug trace level = %ld\n\n", DB_Levl);
 
-	lev = 0L;
+  lev = 0L;
 
-	while (DB_Out NE DB_In) {	/* print the buffer entries */
+  while (DB_Out NE DB_In)
+    {				/* print the buffer entries */
 
-		for (i = 0L; i < lev; i++)
-			printf("|");
+      for (i = 0L; i < lev; i++)
+	printf ("|");
 
-		tag = DB_Ents[DB_Out].tag;
+      tag = DB_Ents[DB_Out].tag;
 
-		printf("%s:  %s\n", DB_Type[tag], DB_Ents[DB_Out].str);
+      printf ("%s:  %s\n", DB_Type[tag], DB_Ents[DB_Out].str);
 
-		switch (tag) {
+      switch (tag)
+	{
 
-		case DB_entr:
+	case DB_entr:
 
-			++lev;
-			break;
+	  ++lev;
+	  break;
 
-		case DB_exit:
+	case DB_exit:
 
-			if (--lev < 0L) {
+	  if (--lev < 0L)
+	    {
 
-				lev = 0L;
-				printf("\n");
-			}
+	      lev = 0L;
+	      printf ("\n");
+	    }
 
-			break;
-		}
-
-		if (++DB_Out GE DB_DEPTH)
-			DB_Out = 0;
+	  break;
 	}
 
-	printf("\n----- End of debug buffer -----\n\n");
+      if (++DB_Out GE DB_DEPTH)
+	DB_Out = 0;
+    }
 
-	DB_Clr();			/* clear the buffer */
+  printf ("\n----- End of debug buffer -----\n\n");
 
-	if (DB_Flag EQ 0)
-		xtrap15();
+  DB_Clr ();			/* clear the buffer */
 
-	return;
+  if (DB_Flag EQ 0)
+    xtrap15 ();
+
+  return;
 }

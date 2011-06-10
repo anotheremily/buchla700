@@ -12,7 +12,7 @@
    =============================================================================
 */
 
-#ifndef	O_RDONLY	/* only define these once */
+#ifndef	O_RDONLY		/* only define these once */
 
 #define	O_RDONLY	0x0000	/* Read-only value  */
 #define	O_WRONLY	0x0001	/* Write-only value */
@@ -35,10 +35,10 @@
    =============================================================================
 */
 
-#define	F_DUPFD	0	/* Duplicate file descriptor */
+#define	F_DUPFD	0		/* Duplicate file descriptor */
 
-#define	F_GETFD	1	/* Get file descriptor flags */
-#define	F_SETFD	2	/* Set file descriptor flags */
+#define	F_GETFD	1		/* Get file descriptor flags */
+#define	F_SETFD	2		/* Set file descriptor flags */
 
-#define	F_GETFL	3	/* Get file flags */
-#define	F_SETFL	4	/* Set file flags */
+#define	F_GETFL	3		/* Get file flags */
+#define	F_SETFL	4		/* Set file flags */

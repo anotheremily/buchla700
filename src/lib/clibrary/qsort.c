@@ -7,8 +7,8 @@
 
 #include "stddefs.h"
 
-static	unsigned	qscnt;		/* size of an element */
-static	int		(*qscmp)();	/* comparison function */
+static unsigned qscnt;		/* size of an element */
+static int (*qscmp) ();		/* comparison function */
 
 /*
    =============================================================================
@@ -17,20 +17,22 @@ static	int		(*qscmp)();	/* comparison function */
 */
 
 static
-qsexch(ip, jp)
-register char *ip, *jp;
+qsexch (ip, jp)
+     register char *ip, *jp;
 {
-	register unsigned n;
-	register char c;
+  register unsigned n;
+  register char c;
 
-	n = qscnt;
+  n = qscnt;
 
-	do {
-		c = *ip;
-		*ip++ = *jp;
-		*jp++ = c;
+  do
+    {
+      c = *ip;
+      *ip++ = *jp;
+      *jp++ = c;
 
-	} while (--n);
+    }
+  while (--n);
 }
 
 /* 
@@ -43,22 +45,24 @@ register char *ip, *jp;
 */
 
 static
-qstexc(ip, jp, kp)
-register char *ip, *jp, *kp;
+qstexc (ip, jp, kp)
+     register char *ip, *jp, *kp;
 {
-	register unsigned n;
-	register char c;
+  register unsigned n;
+  register char c;
 
-	n = qscnt;
+  n = qscnt;
 
-	do {
+  do
+    {
 
-		c = *ip;
-		*ip++ = *kp;
-		*kp++ = *jp;
-		*jp++ = c;
+      c = *ip;
+      *ip++ = *kp;
+      *kp++ = *jp;
+      *jp++ = c;
 
-	} while (--n);
+    }
+  while (--n);
 }
 
 /* 
@@ -71,92 +75,104 @@ register char *ip, *jp, *kp;
 */
 
 static
-qsort1(a, l)
-char *a, *l;
+qsort1 (a, l)
+     char *a, *l;
 {
-	register char *hp, *i, *j;
-	register unsigned es, n;
-	register int c;
-	char *lp;
+  register char *hp, *i, *j;
+  register unsigned es, n;
+  register int c;
+  char *lp;
 
-	es = qscnt;
+  es = qscnt;
 
 start:
-	if ((n = (long)l - (long)a) LE es)
-		return;
+  if ((n = (long) l - (long) a) LE es)
+    return;
 
-	n = es * (n / (2 * es));
-	hp = lp = a + n;
-	i = a;
-	j = l - es;
+  n = es * (n / (2 * es));
+  hp = lp = a + n;
+  i = a;
+  j = l - es;
 
-	while (TRUE) {
+  while (TRUE)
+    {
 
-		if (i < lp) {
+      if (i < lp)
+	{
 
-			if ((c = (*qscmp)(i, lp)) EQ 0) {
+	  if ((c = (*qscmp) (i, lp)) EQ 0)
+	    {
 
-				qsexch(i, lp -= es);
-				continue;
-			}
+	      qsexch (i, lp -= es);
+	      continue;
+	    }
 
-			if (c < 0) {
+	  if (c < 0)
+	    {
 
-				i += es;
-				continue;
-			}
-		}
+	      i += es;
+	      continue;
+	    }
+	}
 
 /* 
 */
 
-loop:
-		if (j > hp) {
+    loop:
+      if (j > hp)
+	{
 
-			if ((c = (*qscmp)(hp, j)) EQ 0) {
+	  if ((c = (*qscmp) (hp, j)) EQ 0)
+	    {
 
-				qsexch(hp += es, j);
-				goto loop;
-			}
+	      qsexch (hp += es, j);
+	      goto loop;
+	    }
 
-			if (c > 0) {
+	  if (c > 0)
+	    {
 
-				if (i EQ lp) {
+	      if (i EQ lp)
+		{
 
-					qstexc(i, hp += es, j);
-					i = lp += es;
-					goto loop;
-				}
-
-				qsexch(i, j);
-				j -= es;
-				i += es;
-				continue;
-			}
-
-			j -= es;
-			goto loop;
+		  qstexc (i, hp += es, j);
+		  i = lp += es;
+		  goto loop;
 		}
 
-		if (i EQ lp) {
+	      qsexch (i, j);
+	      j -= es;
+	      i += es;
+	      continue;
+	    }
 
-			if (((long)lp - (long)a) GE ((long)l - (long)hp)) {
-
-				qsort1(hp + es, l);
-				l = lp;
-
-			} else {
-
-				qsort1(a, lp);
-				a = hp + es;
-			}
-
-			goto start;
-		}
-
-		qstexc(j, lp -= es, i);
-		j = hp -= es;
+	  j -= es;
+	  goto loop;
 	}
+
+      if (i EQ lp)
+	{
+
+	  if (((long) lp - (long) a) GE ((long) l - (long) hp))
+	    {
+
+	      qsort1 (hp + es, l);
+	      l = lp;
+
+	    }
+	  else
+	    {
+
+	      qsort1 (a, lp);
+	      a = hp + es;
+	    }
+
+	  goto start;
+	}
+
+      qstexc (j, lp -= es, i);
+      j = hp -= es;
+    }
 }
 
 /* 
@@ -188,13 +204,13 @@ loop:
    =============================================================================
 */
 
-qsort(base, n, esize, fc)
-char *base;
-unsigned n;
-unsigned esize;
-int (*fc)();
+qsort (base, n, esize, fc)
+     char *base;
+     unsigned n;
+     unsigned esize;
+     int (*fc) ();
 {
-	qscmp = fc;
-	qscnt = esize;
-	qsort1(base, base + ((long)n * (long)esize));
+  qscmp = fc;
+  qscnt = esize;
+  qsort1 (base, base + ((long) n * (long) esize));
 }

@@ -18,9 +18,9 @@
    =============================================================================
 */
 
-typedef	unsigned int	uint;
+typedef unsigned int uint;
 
-extern	int	vputc();
+extern int vputc ();
 
 /*
    =============================================================================
@@ -29,24 +29,25 @@ extern	int	vputc();
    =============================================================================
 */
 
-vmput(sbase, row, col, ms, ma)
-uint *sbase, row, col, ma;
-char *ms[];
+vmput (sbase, row, col, ms, ma)
+     uint *sbase, row, col, ma;
+     char *ms[];
 {
-	register uint c, tc, tr;
-	char *cp;
+  register uint c, tc, tr;
+  char *cp;
 
-	tr = row;
+  tr = row;
 
-	while (cp = *ms++) {
+  while (cp = *ms++)
+    {
 
-		tc = col;
+      tc = col;
 
-		while (c = *cp++)
-			vputc(sbase, tr, tc++, c, ma);
+      while (c = *cp++)
+	vputc (sbase, tr, tc++, c, ma);
 
-		tr++;
-	}
+      tr++;
+    }
 }
 
 /*  */
@@ -58,24 +59,25 @@ char *ms[];
    =============================================================================
 */
 
-vmputa(sbase, row, col, ms, ma)
-uint *sbase, row, col, *ma[];
-char *ms[];
+vmputa (sbase, row, col, ms, ma)
+     uint *sbase, row, col, *ma[];
+     char *ms[];
 {
-	register uint c, tc, tr;
-	uint *tm;
-	char *cp;
+  register uint c, tc, tr;
+  uint *tm;
+  char *cp;
 
-	tr = row;
+  tr = row;
 
-	while (cp = *ms++) {
+  while (cp = *ms++)
+    {
 
-		tc = col;
-		tm = *ma++;
+      tc = col;
+      tm = *ma++;
 
-		while (c = *cp++)
-			vputc(sbase, tr, tc++, c, *tm++);
+      while (c = *cp++)
+	vputc (sbase, tr, tc++, c, *tm++);
 
-		tr++;
-	}
+      tr++;
+    }
 }

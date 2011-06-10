@@ -30,36 +30,36 @@
 #include "wsdsp.h"
 
 #if	DEBUGIT
-extern	short	debugsw;
+extern short debugsw;
 
-short	debugen = 1;
+short debugen = 1;
 #endif
 
-extern	short	(*cx_key)(), (*cy_key)(), (*cx_upd)(), (*cy_upd)();
-extern	short	(*xy_up)(), (*xy_dn)(), (*not_fld)();
-extern	short	(*x_key)(), (*e_key)(), (*m_key)(), (*d_key)();
-extern	short	(*premove)(), (*pstmove)(), (*curtype)();
+extern short (*cx_key) (), (*cy_key) (), (*cx_upd) (), (*cy_upd) ();
+extern short (*xy_up) (), (*xy_dn) (), (*not_fld) ();
+extern short (*x_key) (), (*e_key) (), (*m_key) (), (*d_key) ();
+extern short (*premove) (), (*pstmove) (), (*curtype) ();
 
-extern	short	*cratex;
-extern	short	*cratey;
+extern short *cratex;
+extern short *cratey;
 
-extern	short	asig, aval, astat, aflag;
-extern	short	xkstat, ykstat, xkcount, ykcount;
-extern	short	cmtype, cmfirst, xycntr, curpos;
-extern	short	cxrate, cyrate, cxval, cyval;
-extern	short	ncvwait, nchwait, chwait, cvwait, cvtime, chtime;
-extern	short	stcrow, stccol, runit, submenu, vtcrow, vtccol;
-extern	short	trkball, tkctrl, txflag, tyflag;
-extern	short	curhold, hcwval, thcwval, tvcwval, vcwval;
+extern short asig, aval, astat, aflag;
+extern short xkstat, ykstat, xkcount, ykcount;
+extern short cmtype, cmfirst, xycntr, curpos;
+extern short cxrate, cyrate, cxval, cyval;
+extern short ncvwait, nchwait, chwait, cvwait, cvtime, chtime;
+extern short stcrow, stccol, runit, submenu, vtcrow, vtccol;
+extern short trkball, tkctrl, txflag, tyflag;
+extern short curhold, hcwval, thcwval, tvcwval, vcwval;
 
-extern	short	sigtab[128][2];
+extern short sigtab[128][2];
 
-extern	short	crate0[];
+extern short crate0[];
 
-short	syrate = SMYRATE;		/* smooth scroll vertical rate */
+short syrate = SMYRATE;		/* smooth scroll vertical rate */
 
-short	LastRow = -1;
-short	LastCol = -1;
+short LastRow = -1;
+short LastCol = -1;
 
 /* 
 */
@@ -70,32 +70,33 @@ short	LastCol = -1;
    =============================================================================
 */
 
-enterit()
+enterit ()
 {
-	if (NOT astat)					/* only on closures */
-		return;
+  if (NOT astat)		/* only on closures */
+    return;
 
 #if	DEBUGIT
-	if (debugsw AND debugen)
-		printf("enterit():  ENTRY  row = %d  col = %d  curfet =$%lX\n",
-			stcrow, stccol, curfet);
+  if (debugsw AND debugen)
+    printf ("enterit():  ENTRY  row = %d  col = %d  curfet =$%lX\n",
+	    stcrow, stccol, curfet);
 #endif
 
-	if (infield(stcrow, stccol, curfet)) {		/* in a field ? */
+  if (infield (stcrow, stccol, curfet))
+    {				/* in a field ? */
 
-		cfetp = infetp;				/* set fet pointer */
+      cfetp = infetp;		/* set fet pointer */
 
-		if ((cfetp) AND (NOT ebflag))
-			(*cfetp->ebto)(cfetp->ftags);	/* load ebuf */
+      if ((cfetp) AND (NOT ebflag))
+	(*cfetp->ebto) (cfetp->ftags);	/* load ebuf */
 
-		if (cfetp)
-			(*cfetp->ebfrom)(cfetp->ftags);	/* process ebuf */
+      if (cfetp)
+	(*cfetp->ebfrom) (cfetp->ftags);	/* process ebuf */
 
-		if (cfetp)
-			(*cfetp->redisp)(cfetp->ftags);	/* redisplay */
+      if (cfetp)
+	(*cfetp->redisp) (cfetp->ftags);	/* redisplay */
 
-		ebflag = FALSE;
-	}
+      ebflag = FALSE;
+    }
 }
 
 /* 
@@ -108,9 +109,9 @@ enterit()
 */
 
 short
-nokey()
+nokey ()
 {
-	return(FALSE);
+  return (FALSE);
 }
 
 /* 
@@ -122,101 +123,104 @@ nokey()
    =============================================================================
 */
 
-cmvgen()
+cmvgen ()
 {
-	register short nc, newrow, newcol, newpos;
+  register short nc, newrow, newcol, newpos;
 
-	(*premove)();				/* handle PRE-MOVE functions */
+  (*premove) ();		/* handle PRE-MOVE functions */
 
-	nc = (*curtype)();			/* get new CURSOR TYPE wanted */
+  nc = (*curtype) ();		/* get new CURSOR TYPE wanted */
 
-	newrow = YTOR(cyval);			/* setup new row */
-	newcol = XTOC(cxval);			/* setup new column */
+  newrow = YTOR (cyval);	/* setup new row */
+  newcol = XTOC (cxval);	/* setup new column */
 
-	if (cmtype NE nc) {			/* if changed ... */
+  if (cmtype NE nc)
+    {				/* if changed ... */
 
-		nchwait = curhold;			/* set hold time */
-		ncvwait = curhold;
+      nchwait = curhold;	/* set hold time */
+      ncvwait = curhold;
 
-		LastRow = -1;				/* reset last position */
-		LastCol = -1;
+      LastRow = -1;		/* reset last position */
+      LastCol = -1;
+    }
+
+  /* see if we've got a new text cursor position */
+
+  if ((newrow NE LastRow) OR (newcol NE LastCol))
+    newpos = TRUE;
+  else
+    newpos = FALSE;
+
+  /* setup horizontal and vertical timer counts */
+
+  chtime = (nc EQ CT_GRAF) ? hcwval : thcwval;
+  cvtime = (nc EQ CT_GRAF) ? vcwval : ((nc EQ CT_SMTH) ? syrate : tvcwval);
+
+  switch (nc)
+    {				/* switch on new cursor type */
+
+    case CT_GRAF:		/* GRAPHIC CURSOR */
+
+      if (cmtype EQ CT_SCOR)
+	{			/* change from score text */
+
+	  stcoff ();		/* turn off text */
+	  sgcon ();		/* turn on graphics */
 	}
 
-	/* see if we've got a new text cursor position */
-
-	if ((newrow NE LastRow) OR (newcol NE LastCol))
-		newpos = TRUE;
-	else
-		newpos = FALSE;
-
-	/* setup horizontal and vertical timer counts */
-
-	chtime = (nc EQ CT_GRAF) ? hcwval : thcwval;
-	cvtime = (nc EQ CT_GRAF) ? vcwval : ((nc EQ CT_SMTH) ? syrate : tvcwval);
-
-	switch (nc) {			/* switch on new cursor type */
-
-	case CT_GRAF:				/* GRAPHIC CURSOR */
-
-		if (cmtype EQ CT_SCOR) {		/* change from score text */
-
-			stcoff();			/* turn off text */
-			sgcon();			/* turn on graphics */
-		}
-
-		cmtype = nc;				/* set cursor type */
-		gcurpos(cxval, cyval);			/* position cursor */
-		break;
+      cmtype = nc;		/* set cursor type */
+      gcurpos (cxval, cyval);	/* position cursor */
+      break;
 
 /* 
 */
-	case CT_TEXT:				/* TEXT CURSOR */
+    case CT_TEXT:		/* TEXT CURSOR */
 
-		cmtype = nc;				/* set cursor type */
+      cmtype = nc;		/* set cursor type */
 
-		if (newpos)
-			itcpos(newrow, newcol);		/* position cursor */
+      if (newpos)
+	itcpos (newrow, newcol);	/* position cursor */
 
-		break;
+      break;
 
-	case CT_VIRT:				/* VIRTUAL TYPEWRITER CURSOR */
+    case CT_VIRT:		/* VIRTUAL TYPEWRITER CURSOR */
 
-		cmtype = nc;				/* set cursor type */
-		ttcpos(vtcrow, vtccol);			/* position cursor */
-		break;
+      cmtype = nc;		/* set cursor type */
+      ttcpos (vtcrow, vtccol);	/* position cursor */
+      break;
 
-	case CT_SCOR:				/* SCORE TEXT CURSOR */
+    case CT_SCOR:		/* SCORE TEXT CURSOR */
 
-		if (cmtype EQ CT_GRAF)			/* change from graphics */
-			sgcoff();			/* turn off graphics */
+      if (cmtype EQ CT_GRAF)	/* change from graphics */
+	sgcoff ();		/* turn off graphics */
 
-		cmtype = nc;				/* set cursor type */
+      cmtype = nc;		/* set cursor type */
 
-		if (newpos)
-			stcpos(newrow, newcol);		/* position cursor */
+      if (newpos)
+	stcpos (newrow, newcol);	/* position cursor */
 
-		break;
+      break;
 
-	case CT_SMTH:				/* SMOOTH SCROLL TEXT CURSOR */
+    case CT_SMTH:		/* SMOOTH SCROLL TEXT CURSOR */
 
-		cmtype = nc;				/* set cursor type */
+      cmtype = nc;		/* set cursor type */
 
-		if (newpos)
-			ctcpos(newrow, newcol);		/* position cursor */
+      if (newpos)
+	ctcpos (newrow, newcol);	/* position cursor */
 
-		break;
+      break;
 
-	case CT_MENU:				/* SUBMENU CURSOR */
+    case CT_MENU:		/* SUBMENU CURSOR */
 
-		cmtype = nc;				/* set cursor type */
-		mtcpos(vtcrow, vtccol);			/* position cursor */
-		break;
-	}
+      cmtype = nc;		/* set cursor type */
+      mtcpos (vtcrow, vtccol);	/* position cursor */
+      break;
+    }
 
-	LastRow = newrow;
-	LastCol = newcol;
+  LastRow = newrow;
+  LastCol = newcol;
 
-	(*pstmove)();				/* handle POST-MOVE functions */
+  (*pstmove) ();		/* handle POST-MOVE functions */
 }
 
 /* 
@@ -229,28 +233,31 @@ cmvgen()
 */
 
 short
-crxrate(cv)
-register short cv;
+crxrate (cv)
+     register short cv;
 {
-	register short cs;
+  register short cs;
 
-	if (cv GE xycntr) {
+  if (cv GE xycntr)
+    {
 
-		cv -= xycntr;
-		cs = 1;
-		curpos = -cv;
+      cv -= xycntr;
+      cs = 1;
+      curpos = -cv;
 
-	} else {
+    }
+  else
+    {
 
-		cv = xycntr - cv;
-		cs = 0;
-		curpos = cv;
-	}
+      cv = xycntr - cv;
+      cs = 0;
+      curpos = cv;
+    }
 
-	if (cv > 127)
-		cv = 127;
+  if (cv > 127)
+    cv = 127;
 
-	return(cs ? -cratex[cv] : cratex[cv]);
+  return (cs ? -cratex[cv] : cratex[cv]);
 }
 
 /* 
@@ -263,28 +270,31 @@ register short cv;
 */
 
 short
-cryrate(cv)
-register short cv;
+cryrate (cv)
+     register short cv;
 {
-	register short cs;
+  register short cs;
 
-	if (cv GE xycntr) {
+  if (cv GE xycntr)
+    {
 
-		cv -= xycntr;
-		cs = 1;
-		curpos = -cv;
+      cv -= xycntr;
+      cs = 1;
+      curpos = -cv;
 
-	} else {
+    }
+  else
+    {
 
-		cv = xycntr - cv;
-		cs = 0;
-		curpos = cv;
-	}
+      cv = xycntr - cv;
+      cs = 0;
+      curpos = cv;
+    }
 
-	if (cv > 127)
-		cv = 127;
+  if (cv > 127)
+    cv = 127;
 
-	return(cs ? -cratey[cv] : cratey[cv]);
+  return (cs ? -cratey[cv] : cratey[cv]);
 }
 
 /* 
@@ -296,48 +306,54 @@ register short cv;
    =============================================================================
 */
 
-cmfix()
+cmfix ()
 {
-	register short acx, acy, scx, scy;
+  register short acx, acy, scx, scy;
 
-	crxrate(sigtab[55][0]);		/* get cursor x value */
-	acx = abs(curpos);
+  crxrate (sigtab[55][0]);	/* get cursor x value */
+  acx = abs (curpos);
 
-	cryrate(sigtab[56][0]);		/* get cursor y value */
-	acy = abs(curpos);
+  cryrate (sigtab[56][0]);	/* get cursor y value */
+  acy = abs (curpos);
 
-	scx = sign(cxrate, 1);
-	scy = sign(cyrate, 1);
+  scx = sign (cxrate, 1);
+  scy = sign (cyrate, 1);
 
-	if (cmfirst) {			/* first motion ? */
+  if (cmfirst)
+    {				/* first motion ? */
 
-		if (acx GE acy) {	/* vertical movement */
+      if (acx GE acy)
+	{			/* vertical movement */
 
-			cyrate = 0;
-			cxrate = scx;
-			nchwait = curhold;
-			ncvwait = cvtime;
+	  cyrate = 0;
+	  cxrate = scx;
+	  nchwait = curhold;
+	  ncvwait = cvtime;
 
-		} else {		/* horizontal movement */
-
-			cxrate = 0;
-			cyrate = scy;
-			ncvwait = curhold;
-			nchwait = chtime;
-		}
-
-		cmfirst = FALSE;
-
-	} else {
-
-		/* limit text movement to 1 axis */
-
-		if (cmtype NE CT_GRAF)
-			if (acx GE acy)
-				cyrate = 0;
-			else
-				cxrate = 0;
 	}
+      else
+	{			/* horizontal movement */
+
+	  cxrate = 0;
+	  cyrate = scy;
+	  ncvwait = curhold;
+	  nchwait = chtime;
+	}
+
+      cmfirst = FALSE;
+
+    }
+  else
+    {
+
+      /* limit text movement to 1 axis */
+
+      if (cmtype NE CT_GRAF)
+	if (acx GE acy)
+	  cyrate = 0;
+	else
+	  cxrate = 0;
+    }
 }
 
 /* 
@@ -349,56 +365,62 @@ cmfix()
    =============================================================================
 */
 
-cxkstd()
+cxkstd ()
 {
-	trkball = FALSE;
-	tkctrl  = FALSE;
-	txflag  = FALSE;
-	tyflag  = FALSE;
+  trkball = FALSE;
+  tkctrl = FALSE;
+  txflag = FALSE;
+  tyflag = FALSE;
 
-	if (astat) {		/* contact */
+  if (astat)
+    {				/* contact */
 
-		if (xkstat EQ FALSE) {
+      if (xkstat EQ FALSE)
+	{
 
-			if (xkcount) {		/* debounce */
+	  if (xkcount)
+	    {			/* debounce */
 
-				xkcount--;
-				return;
-			}
+	      xkcount--;
+	      return;
+	    }
 
-			xkstat  = TRUE;
-			chwait  = 1;
-			nchwait = curhold;
+	  xkstat = TRUE;
+	  chwait = 1;
+	  nchwait = curhold;
 
-			if (ykstat)
-				(*xy_dn)();
-		}
-
-		cxrate = -crxrate(aval);
-/* 
-*/
-	} else {		/* release */
-
-		if (xkstat AND ykstat)
-			(*xy_up)();
-
-		xkstat  = FALSE;
-		xkcount = 1;
-		cxrate  = 0;
-
-		if (ykstat EQ FALSE) {
-
-			cyrate  = 0;
-			ykcount = 1;
-			nchwait = chtime;
-			ncvwait = cvtime;
-			chwait  = 1;
-			cvwait  = 1;
-			cmfirst = TRUE;
-		}
+	  if (ykstat)
+	    (*xy_dn) ();
 	}
 
-	return;
+      cxrate = -crxrate (aval);
+/* 
+*/
+    }
+  else
+    {				/* release */
+
+      if (xkstat AND ykstat)
+	(*xy_up) ();
+
+      xkstat = FALSE;
+      xkcount = 1;
+      cxrate = 0;
+
+      if (ykstat EQ FALSE)
+	{
+
+	  cyrate = 0;
+	  ykcount = 1;
+	  nchwait = chtime;
+	  ncvwait = cvtime;
+	  chwait = 1;
+	  cvwait = 1;
+	  cmfirst = TRUE;
+	}
+    }
+
+  return;
 }
 
 /* 
@@ -410,56 +432,62 @@ cxkstd()
    =============================================================================
 */
 
-cykstd()
+cykstd ()
 {
-	trkball = FALSE;
-	tkctrl  = FALSE;
-	txflag  = FALSE;
-	tyflag  = FALSE;
+  trkball = FALSE;
+  tkctrl = FALSE;
+  txflag = FALSE;
+  tyflag = FALSE;
 
-	if (astat) {		/* contact */
+  if (astat)
+    {				/* contact */
 
-		if (ykstat EQ FALSE) {
+      if (ykstat EQ FALSE)
+	{
 
-			if (ykcount) {		/* debounce */
+	  if (ykcount)
+	    {			/* debounce */
 
-				ykcount--;
-				return;
-			}
+	      ykcount--;
+	      return;
+	    }
 
-			ykstat  = TRUE;
-			cvwait  = 1;
-			ncvwait = curhold;
+	  ykstat = TRUE;
+	  cvwait = 1;
+	  ncvwait = curhold;
 
-			if (xkstat)
-				(*xy_dn)();
-		}
-
-		cyrate = cryrate(aval);
-/* 
-*/
-	} else {		/* release */
-
-		if (xkstat AND ykstat)
-			(*xy_up)();
-
-		ykstat  = FALSE;
-		ykcount = 1;
-		cyrate  = 0;
-
-		if (xkstat EQ FALSE) {
-
-			cxrate  = 0;
-			xkcount = 1;
-			nchwait = chtime;
-			ncvwait = cvtime;
-			chwait  = 1;
-			cvwait  = 1;
-			cmfirst = TRUE;
-		}
+	  if (xkstat)
+	    (*xy_dn) ();
 	}
 
-	return;
+      cyrate = cryrate (aval);
+/* 
+*/
+    }
+  else
+    {				/* release */
+
+      if (xkstat AND ykstat)
+	(*xy_up) ();
+
+      ykstat = FALSE;
+      ykcount = 1;
+      cyrate = 0;
+
+      if (xkstat EQ FALSE)
+	{
+
+	  cxrate = 0;
+	  xkcount = 1;
+	  nchwait = chtime;
+	  ncvwait = cvtime;
+	  chwait = 1;
+	  cvwait = 1;
+	  cmfirst = TRUE;
+	}
+    }
+
+  return;
 }
 
 /* 
@@ -471,13 +499,14 @@ cykstd()
    =============================================================================
 */
 
-stdmkey()
+stdmkey ()
 {
-	if (astat) {
+  if (astat)
+    {
 
-		runit = FALSE;
-		submenu = FALSE;
-	}
+      runit = FALSE;
+      submenu = FALSE;
+    }
 }
 
 /*
@@ -486,25 +515,29 @@ stdmkey()
    =============================================================================
 */
 
-stddkey()
+stddkey ()
 {
-	if (infield(stcrow, stccol, curfet)) {
+  if (infield (stcrow, stccol, curfet))
+    {
 
-		cfetp = infetp;		/* set field pointer */
+      cfetp = infetp;		/* set field pointer */
 
-		if (astat) {		/* only do action on closures */
+      if (astat)
+	{			/* only do action on closures */
 
-			if (!ebflag)
-				(*cfetp->ebto)(cfetp->ftags);	/* setup ebuf */
+	  if (!ebflag)
+	    (*cfetp->ebto) (cfetp->ftags);	/* setup ebuf */
 
-			(*cfetp->datain)(cfetp->ftags, asig - 60);	/* enter */
-		}
-
-	} else {
-
-		if (astat)
-			(*not_fld)(asig - 60);		/* not in field */
+	  (*cfetp->datain) (cfetp->ftags, asig - 60);	/* enter */
 	}
+
+    }
+  else
+    {
+
+      if (astat)
+	(*not_fld) (asig - 60);	/* not in field */
+    }
 }
 
 /* 
@@ -516,16 +549,16 @@ stddkey()
    =============================================================================
 */
 
-cxgen()
+cxgen ()
 {
-	cxval += cxrate;
+  cxval += cxrate;
 
-	if (cxval > CXMAX)
-		cxval = CXMAX;
-	else if (cxval < 0)
-		cxval = 0;
-				
-	return;
+  if (cxval > CXMAX)
+    cxval = CXMAX;
+  else if (cxval < 0)
+    cxval = 0;
+
+  return;
 }
 
 /*
@@ -534,14 +567,14 @@ cxgen()
    =============================================================================
 */
 
-cygen()
+cygen ()
 {
-	cyval += cyrate;
+  cyval += cyrate;
 
-	if (cyval > CYMAX)
-		cyval = CYMAX;
-	else if (cyval < 0)
-		cyval = 0;
+  if (cyval > CYMAX)
+    cyval = CYMAX;
+  else if (cyval < 0)
+    cyval = 0;
 
-	return;
+  return;
 }

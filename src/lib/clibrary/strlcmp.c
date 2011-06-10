@@ -15,20 +15,21 @@
 */
 
 int
-strlcmp(s,l)
-char *s, *l[];
+strlcmp (s, l)
+     char *s, *l[];
 {
-	int	rc;
+  int rc;
 
-	rc = 0;
+  rc = 0;
 
-	while (l[rc]) {
+  while (l[rc])
+    {
 
-		if (0 == strcmp(s, l[rc]))
-			return(++rc);
+      if (0 == strcmp (s, l[rc]))
+	return (++rc);
 
-		rc++;
-	}
+      rc++;
+    }
 
-	return(0);
+  return (0);
 }

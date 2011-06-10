@@ -5,10 +5,11 @@
    ============================================================================
 */
 
-extern	char	*strccpy(), *strcpy(), *strncpy(), *strcat(), *strncat();
-extern	char	*strchr(), *strrchr(), *strpbrk(), *strtok();
-extern	char	*index(), *rindex(), *str2lc(), *str2uc();
+extern char *strccpy (), *strcpy (), *strncpy (), *strcat (), *strncat ();
+extern char *strchr (), *strrchr (), *strpbrk (), *strtok ();
+extern char *index (), *rindex (), *str2lc (), *str2uc ();
 
-extern	int	strcmp(), strlcmp(), strncmp(), strlen(), strspn(), strcspn();
+extern int strcmp (), strlcmp (), strncmp (), strlen (), strspn (),
+strcspn ();
 
-extern	long	strtol();
+extern long strtol ();

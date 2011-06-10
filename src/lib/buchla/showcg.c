@@ -14,12 +14,12 @@
 
 #include "cg2.c"
 
-int	bitmask[] = {
+int bitmask[] = {
 
-	0x0001, 0x0002, 0x0004, 0x0008,
-	0x0010, 0x0020, 0x0040, 0x0080,
-	0x0100, 0x0200, 0x0400, 0x0800,
-	0x1000, 0x2000, 0x4000, 0x8000
+  0x0001, 0x0002, 0x0004, 0x0008,
+  0x0010, 0x0020, 0x0040, 0x0080,
+  0x0100, 0x0200, 0x0400, 0x0800,
+  0x1000, 0x2000, 0x4000, 0x8000
 };
 
 /*  */
@@ -33,18 +33,18 @@ int	bitmask[] = {
 */
 
 int
-bitrev(bitsin, nbits)
-register int bitsin, nbits;
+bitrev (bitsin, nbits)
+     register int bitsin, nbits;
 {
-	register int	n, m;
+  register int n, m;
 
-	n = 0;
+  n = 0;
 
-	for (m = 0; m < nbits; m++)
-		if (bitsin & bitmask[m])
-			n |= bitmask[nbits-1-m];
+  for (m = 0; m < nbits; m++)
+    if (bitsin & bitmask[m])
+      n |= bitmask[nbits - 1 - m];
 
-	return(n);
+  return (n);
 }
 
 /*  */
@@ -55,59 +55,62 @@ register int bitsin, nbits;
    =============================================================================
 */
 
-pbits(row, bits)
-register int row, bits;
+pbits (row, bits)
+     register int row, bits;
 {
-	register int	j, k;
+  register int j, k;
 
-	k = bits;
+  k = bits;
 
-	for (j = 0; j < NPIXELS; j++) {
+  for (j = 0; j < NPIXELS; j++)
+    {
 
-		if (bits & 1)
-			putchar('*');
-		else
-			putchar(' ');
+      if (bits & 1)
+	putchar ('*');
+      else
+	putchar (' ');
 
-		bits = bits >> 1;
-	}
+      bits = bits >> 1;
+    }
 
-	bits = bitrev(k, NPIXELS);
+  bits = bitrev (k, NPIXELS);
 
-	printf(" %1x %02x  ", row, bits);
+  printf (" %1x %02x  ", row, bits);
 }
-			
+
 /*  */
 
-main()
+main ()
 {
-	register int	ch, irow, ich;
+  register int ch, irow, ich;
 
-	for (ch = 0; ch < NCHARS; ch += 4) {
+  for (ch = 0; ch < NCHARS; ch += 4)
+    {
 
-		printf("\n\n\t");
+      printf ("\n\n\t");
 
-		for (ich = 0; ich < 4; ich++)
-			printf("Ch %03d/%02x/%03o  ", ch+ich, ch+ich, ch+ich);
+      for (ich = 0; ich < 4; ich++)
+	printf ("Ch %03d/%02x/%03o  ", ch + ich, ch + ich, ch + ich);
 
-		printf("\n\t");
+      printf ("\n\t");
 
-		for (ich = 0; ich < 4; ich++)
-			printf("76543210   DA  ");
+      for (ich = 0; ich < 4; ich++)
+	printf ("76543210   DA  ");
 
-		printf("\n");
+      printf ("\n");
 
-		for (irow = cg_rows - 1; irow GE 0; irow--) {
+      for (irow = cg_rows - 1; irow GE 0; irow--)
+	{
 
-			printf("\t");
-			pbits(irow, cgtable[irow][ch]);
-			pbits(irow, cgtable[irow][ch+1]);
-			pbits(irow, cgtable[irow][ch+2]);
-			pbits(irow, cgtable[irow][ch+3]);
-			printf("\n");
-		}
-
-		if ((ch & 0x0F) EQ 12)
-			printf("\f");
+	  printf ("\t");
+	  pbits (irow, cgtable[irow][ch]);
+	  pbits (irow, cgtable[irow][ch + 1]);
+	  pbits (irow, cgtable[irow][ch + 2]);
+	  pbits (irow, cgtable[irow][ch + 3]);
+	  printf ("\n");
 	}
+
+      if ((ch & 0x0F) EQ 12)
+	printf ("\f");
+    }
 }

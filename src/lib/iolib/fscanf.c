@@ -11,39 +11,40 @@
 static int scnlast;
 static FILE *scnfp;
 
-static
-int
-gchar(what)
+static int
+gchar (what)
 {
-	if (what EQ 0) {
+  if (what EQ 0)
+    {
 
-		if (feof(scnfp))
-			scnlast = EOF;
-		else
-			scnlast = agetc(scnfp);
-	} else
-		scnlast = ungetc(scnlast, scnfp);
+      if (feof (scnfp))
+	scnlast = EOF;
+      else
+	scnlast = agetc (scnfp);
+    }
+  else
+    scnlast = ungetc (scnlast, scnfp);
 
-	return(scnlast);
+  return (scnlast);
 }
 
 int
-scanf(fmt, args)
-char *fmt;
-int *args;
+scanf (fmt, args)
+     char *fmt;
+     int *args;
 {
-	scnfp = stdin;
-	scnlast = 0;
-	return(scanfmt(gchar, fmt, &args));
+  scnfp = stdin;
+  scnlast = 0;
+  return (scanfmt (gchar, fmt, &args));
 }
 
 int
-fscanf(fp, fmt, args)
-FILE *fp;
-char *fmt;
-int *args;
+fscanf (fp, fmt, args)
+     FILE *fp;
+     char *fmt;
+     int *args;
 {
-	scnfp = fp;
-	scnlast = 0;
-	return(scanfmt(gchar, fmt, &args));
+  scnfp = fp;
+  scnlast = 0;
+  return (scanfmt (gchar, fmt, &args));
 }

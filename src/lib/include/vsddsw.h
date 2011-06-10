@@ -8,12 +8,12 @@
 
 /* functions */
 
-extern	unsigned	vbank();
-extern	int	vputp(), vwputp();
+extern unsigned vbank ();
+extern int vputp (), vwputp ();
 
 /* these should be voids ... */
 
-extern	int	vfwait(), vputs(), vputsa(), vputc(), VHinit();
-extern	int	objclr(), objon(), objoff();
-extern	int	vcputs(), vwputs(), vwputm(), vmput(), vmputa(), VSinit();
-extern	int	SelObj(), SetPri(), SetObj(), CpyObj();
+extern int vfwait (), vputs (), vputsa (), vputc (), VHinit ();
+extern int objclr (), objon (), objoff ();
+extern int vcputs (), vwputs (), vwputm (), vmput (), vmputa (), VSinit ();
+extern int SelObj (), SetPri (), SetObj (), CpyObj ();

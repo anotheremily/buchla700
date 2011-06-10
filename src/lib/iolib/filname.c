@@ -20,32 +20,36 @@
 */
 
 char *
-FilName(s, p)
-register char *s, *p;
+FilName (s, p)
+     register char *s, *p;
 {
-	register char	*tp;
-	register int i;
+  register char *tp;
+  register int i;
 
-	tp = p;
+  tp = p;
 
-	for (i = 0; i < MAX_NAME; i++) {	/* scan the name */
+  for (i = 0; i < MAX_NAME; i++)
+    {				/* scan the name */
 
-		if (*s) {			/* ... until we hit a '\0' */
+      if (*s)
+	{			/* ... until we hit a '\0' */
 
-			if (*s EQ '.')		/* ... or a '.' */
-				break;
+	  if (*s EQ '.')	/* ... or a '.' */
+	    break;
 
-			*p++ = *s++;		/* ... copying as we go */
+	  *p++ = *s++;		/* ... copying as we go */
 
-		} else {			/* stop at '\0' */
-
-			*p = '\0';		/* terminate the string */
-			return(tp);		/* return a pointer to it */
-		}
 	}
+      else
+	{			/* stop at '\0' */
 
-	*p = '\0';		/* copied MAX_NAME bytes - that's all folks */
-	return(tp);
+	  *p = '\0';		/* terminate the string */
+	  return (tp);		/* return a pointer to it */
+	}
+    }
+
+  *p = '\0';			/* copied MAX_NAME bytes - that's all folks */
+  return (tp);
 }
 
 /* 
@@ -60,44 +64,52 @@ register char *s, *p;
 */
 
 char *
-FilExt(s, p)
-register char *s, *p;
+FilExt (s, p)
+     register char *s, *p;
 {
-	register char c, *tp;
-	register int i;
+  register char c, *tp;
+  register int i;
 
-	tp = p;
+  tp = p;
 
-	while (c = *s) {		/* scan the string */
+  while (c = *s)
+    {				/* scan the string */
 
-		if (c EQ '.') {		/* ... until we hit the dot */
+      if (c EQ '.')
+	{			/* ... until we hit the dot */
 
-			++s;		/* point past the dot */
+	  ++s;			/* point past the dot */
 
-			for (i = 0; i < MAX_EXT; i++) {	/* scan the extension ... */
+	  for (i = 0; i < MAX_EXT; i++)
+	    {			/* scan the extension ... */
 
-				if (*s) {		/* ... until we hit a '\0' */
+	      if (*s)
+		{		/* ... until we hit a '\0' */
 
-					*p++ = *s++;	/* ... copying as we go */
+		  *p++ = *s++;	/* ... copying as we go */
 
-				} else {		/* stop at '\0' */
-
-					*p = '\0';	/* terminate the string */
-					return(tp);	/* return a pointer to it */
-				}
-			}
-
-			*p = '\0';	/* copied MAX_EXT bytes - that's all folks */
-			return(tp);	/* return a pointer to the result */
-				
-		} else {
-
-			++s;		/* advance the pointer */
 		}
-	}
+	      else
+		{		/* stop at '\0' */
 
-	*p = '\0';	/* terminate the string */
-	return(tp);	/* return a pointer to the result */
+		  *p = '\0';	/* terminate the string */
+		  return (tp);	/* return a pointer to it */
+		}
+	    }
+
+	  *p = '\0';		/* copied MAX_EXT bytes - that's all folks */
+	  return (tp);		/* return a pointer to the result */
+
+	}
+      else
+	{
+
+	  ++s;			/* advance the pointer */
+	}
+    }
+
+  *p = '\0';			/* terminate the string */
+  return (tp);			/* return a pointer to the result */
 }
 
 /* 
@@ -105,41 +117,41 @@ register char *s, *p;
 
 #if	TESTER
 
-char	*fn[] = {		/* test cases */
+char *fn[] = {			/* test cases */
 
-	"FILE.NAM",
-	"FILE",
-	"FILE.",
-	".NAM",
-	".",
-	"",
-	"fartoolonganame.longextension",
-	"fartoolonganame",
-	"fartoolonganame.",
-	".longextension"
+  "FILE.NAM",
+  "FILE",
+  "FILE.",
+  ".NAM",
+  ".",
+  "",
+  "fartoolonganame.longextension",
+  "fartoolonganame",
+  "fartoolonganame.",
+  ".longextension"
 };
 
 #define	NCASES	((sizeof fn) / (sizeof (char *)))
 
-char	temp1[MAX_NAME+1], temp2[MAX_EXT+1];
+char temp1[MAX_NAME + 1], temp2[MAX_EXT + 1];
 
-fnt(s)		/* test both functions and print the result */
-char *s;
+fnt (s)				/* test both functions and print the result */
+     char *s;
 {
-	printf("[%s] gave [%s] [%s]\r\n",
-		s, FilName(s, temp1), FilExt(s, temp2));
+  printf ("[%s] gave [%s] [%s]\r\n",
+	  s, FilName (s, temp1), FilExt (s, temp2));
 }
 
-main()
+main ()
 {
-	int	i;
+  int i;
 
-	/* hand the functions each of the test cases */
+  /* hand the functions each of the test cases */
 
-	for (i = 0; i < NCASES; i++)
-		fnt(fn[i]);
+  for (i = 0; i < NCASES; i++)
+    fnt (fn[i]);
 
-	exit(0);
+  exit (0);
 }
 
 #endif

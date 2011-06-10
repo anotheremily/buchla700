@@ -22,15 +22,15 @@
 #include "fspars.h"
 
 #if	DEBUGIT
-extern	short	fsdebug;
+extern short fsdebug;
 #endif
 
 #if	TBUFFER
-extern	long	_secrd();
+extern long _secrd ();
 #endif
 
-extern	long	_berrno;
-extern	int	_seek();
+extern long _berrno;
+extern int _seek ();
 
 /* 
 */
@@ -43,41 +43,46 @@ extern	int	_seek();
 */
 
 int
-ReadRN(fcp, buf)
-struct fcb *fcp;
-char *buf;
+ReadRN (fcp, buf)
+     struct fcb *fcp;
+     char *buf;
 {
-	int	sv;		/* seek return code */
-	long	brc;		/* bios return code */
+  int sv;			/* seek return code */
+  long brc;			/* bios return code */
 
-	if (sv = _seek(fcp))		/* try to find the sector we want */
-		if (sv < 0) {
+  if (sv = _seek (fcp))		/* try to find the sector we want */
+    if (sv < 0)
+      {
 
-			errno = EIO;		/* I/O error */
-			return(-1);		/* return:  ERROR */
+	errno = EIO;		/* I/O error */
+	return (-1);		/* return:  ERROR */
 
-		} else {
+      }
+    else
+      {
 
-			errno = EINVAL;		/* invalid argument */
-			return(1);		/* return:  EOF */
-		}
+	errno = EINVAL;		/* invalid argument */
+	return (1);		/* return:  EOF */
+      }
 
 #if	DEBUGIT
-	if (fsdebug)
-		printf("ReadRN():  curlsn=%ld, curdsn=%ld, offset=%u\n",
-			fcp->curlsn, fcp->curdsn, fcp->offset);
+  if (fsdebug)
+    printf ("ReadRN():  curlsn=%ld, curdsn=%ld, offset=%u\n",
+	    fcp->curlsn, fcp->curdsn, fcp->offset);
 #endif
 
 #if	TBUFFER
-	if (brc = _secrd(buf, (short)fcp->curdsn)) {
+  if (brc = _secrd (buf, (short) fcp->curdsn))
+    {
 #else
-	if (brc = BIOS(B_RDWR, 0, buf, 1, (short)fcp->curdsn, 0)) {
+  if (brc = BIOS (B_RDWR, 0, buf, 1, (short) fcp->curdsn, 0))
+    {
 #endif
 
-		_berrno = brc;			/* log the error */
-		errno = EIO;			/* ... as an I/O error */
-		return(FAILURE);		/* return:  ERROR */
-	}
+      _berrno = brc;		/* log the error */
+      errno = EIO;		/* ... as an I/O error */
+      return (FAILURE);		/* return:  ERROR */
+    }
 
-	return(SUCCESS);		/* return:  SUCCESS */
+  return (SUCCESS);		/* return:  SUCCESS */
 }

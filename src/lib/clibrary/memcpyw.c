@@ -9,13 +9,13 @@
 */
 
 short *
-memcpyw(s1, s2, n)
-register short *s1, *s2;
-register int n;
+memcpyw (s1, s2, n)
+     register short *s1, *s2;
+     register int n;
 {
-        register short *os1 = s1;
+  register short *os1 = s1;
 
-        while (--n >= 0)
-                *s1++ = *s2++;
-        return (os1);
+  while (--n >= 0)
+    *s1++ = *s2++;
+  return (os1);
 }

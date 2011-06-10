@@ -8,7 +8,7 @@
 #include "stddefs.h"
 #include "vsddsw.h"
 
-static 	char cl[81];
+static char cl[81];
 
 /*
    =============================================================================
@@ -28,38 +28,40 @@ static 	char cl[81];
 /* 
 */
 
-vspray4(vobj, vwid, fg, ml, vb, pitch)
-unsigned *vobj;
-short vwid, fg, vb, pitch;
-char *ml[];
+vspray4 (vobj, vwid, fg, ml, vb, pitch)
+     unsigned *vobj;
+     short vwid, fg, vb, pitch;
+     char *ml[];
 {
-	register char *cp, *lp, c;
-	register short j, k, row;
+  register char *cp, *lp, c;
+  register short j, k, row;
 
-	row = 0;
+  row = 0;
 
-	fg &= 0x000F;
-	fg |= fg << 4;
-	fg |= fg << 8;
+  fg &= 0x000F;
+  fg |= fg << 4;
+  fg |= fg << 8;
 
-	if (-1 NE vb)
-		vbank(vb);
+  if (-1 NE vb)
+    vbank (vb);
 
-	while (NULL NE (cp = *ml++)) {
+  while (NULL NE (cp = *ml++))
+    {
 
-		lp = cl;
+      lp = cl;
 
-		while (-1 NE (j = *cp++)) {
+      while (-1 NE (j = *cp++))
+	{
 
-			j &= 0x00FF;
-			c = *cp++;
+	  j &= 0x00FF;
+	  c = *cp++;
 
-			for (k = 0; k < j; k++)
-				*lp++ = c;
-		}
-
-		*lp = '\0';
-
-		tsplot4(vobj, vwid, fg, row++, 0, cl, pitch);
+	  for (k = 0; k < j; k++)
+	    *lp++ = c;
 	}
+
+      *lp = '\0';
+
+      tsplot4 (vobj, vwid, fg, row++, 0, cl, pitch);
+    }
 }

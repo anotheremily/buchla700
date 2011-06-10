@@ -5,7 +5,7 @@
    =============================================================================
 */
 
-typedef	char	*caddr_t;
-typedef	unsigned int	uint;
-typedef	unsigned short	ushort;
-typedef	long	time_t;
+typedef char *caddr_t;
+typedef unsigned int uint;
+typedef unsigned short ushort;
+typedef long time_t;

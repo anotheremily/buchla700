@@ -10,13 +10,15 @@
 #define NULL    0
 
 char *
-strchr(sp, c)
-register char *sp, c;
+strchr (sp, c)
+     register char *sp, c;
 {
-	do {
-		if(*sp == c)
-			return(sp);
-	} while(*sp++);
+  do
+    {
+      if (*sp == c)
+	return (sp);
+    }
+  while (*sp++);
 
-	return((char *)NULL);
+  return ((char *) NULL);
 }

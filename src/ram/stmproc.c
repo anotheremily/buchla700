@@ -11,7 +11,7 @@
 #define	DEBUGFP		0
 #define	DEBUGSR		0
 
-#define	PATCHDEF			/* so patch.h gets it right */
+#define	PATCHDEF		/* so patch.h gets it right */
 
 #include "stddefs.h"
 #include "graphdef.h"
@@ -23,70 +23,70 @@
 #include "midas.h"
 #include "ptdisp.h"
 
-extern	short	ptegood, ptedfok, ptestok, ptedsok, ptedtok;
+extern short ptegood, ptedfok, ptestok, ptedsok, ptedtok;
 
-extern	short	ptedef, ptestm, ptespec, ptesuba, ptedat1;
+extern short ptedef, ptestm, ptespec, ptesuba, ptedat1;
 
-extern	short	pteset;
+extern short pteset;
 
-extern	short	ptecpos, ptepred, ptesucc;
+extern short ptecpos, ptepred, ptesucc;
 
-extern	struct patch	ptebuf;
+extern struct patch ptebuf;
 
-extern	char	ptdebuf[];
+extern char ptdebuf[];
 
 #if	DEBUGDP
-short	debugdp = 1;
+short debugdp = 1;
 #endif
 
 #if	DEBUGEP
-short	debugep = 0;
-short	snapep  = 1;
+short debugep = 0;
+short snapep = 1;
 #endif
 
 #if	DEBUGFD
-short	debugfd = 0;
+short debugfd = 0;
 #endif
 
 #if	DEBUGFP
-short	debugfp = 1;
+short debugfp = 1;
 #endif
 
 #if	DEBUGSR
-short	debugsr = 1;
-short	snapsr  = 1;
+short debugsr = 1;
+short snapsr = 1;
 #endif
 
 #if	(DEBUGDP|DEBUGEP|DEBUGFD|DEBUGFP|DEBUGSR)
-extern	short	debugsw;
+extern short debugsw;
 #endif
 
-unsigned short	dtfree;			/* defent free list index */
-unsigned short	ptfree;			/* patch free list index */
+unsigned short dtfree;		/* defent free list index */
+unsigned short ptfree;		/* patch free list index */
 
-unsigned short	dpepred;		/* defent predecessor index */
-unsigned short	dpecpos;		/* current defent index */
-unsigned short	dpesucc;		/* defent successor index */
+unsigned short dpepred;		/* defent predecessor index */
+unsigned short dpecpos;		/* current defent index */
+unsigned short dpesucc;		/* defent successor index */
 
-char	ptdsbuf[50];			/* patch display build buffer */
+char ptdsbuf[50];		/* patch display build buffer */
 
-char	defptr[NDEFSTMS];		/* definition index table */
-char	stmptr[NDEFSTMS];		/* stimulus index table */
+char defptr[NDEFSTMS];		/* definition index table */
+char stmptr[NDEFSTMS];		/* stimulus index table */
 
-struct	defent	defents[RAWDEFS];	/* definition control table */
+struct defent defents[RAWDEFS];	/* definition control table */
 
-struct	patch	patches[MAXPATCH];	/* patch table */
+struct patch patches[MAXPATCH];	/* patch table */
 
-struct	wordq	ptefifo;		/* patch trigger fifo header */
+struct wordq ptefifo;		/* patch trigger fifo header */
 
-unsigned short	ptewrds[NPTEQELS];	/* patch trigger fifo entries */
+unsigned short ptewrds[NPTEQELS];	/* patch trigger fifo entries */
 
-char	dmatch[] = {			/* addat1 match tags */
+char dmatch[] = {		/* addat1 match tags */
 
-	0, 0, 0, 0, 0, 0, 0, 0,		/*  0 ..  7 */
-	0, 0, 0, 1, 0, 0, 0, 0,		/*  8 .. 15 */
-	1, 1, 1, 1, 1, 1, 1, 1,		/* 16 .. 23 */
-	1, 1, 1				/* 24 .. 26 */
+  0, 0, 0, 0, 0, 0, 0, 0,	/*  0 ..  7 */
+  0, 0, 0, 1, 0, 0, 0, 0,	/*  8 .. 15 */
+  1, 1, 1, 1, 1, 1, 1, 1,	/* 16 .. 23 */
+  1, 1, 1			/* 24 .. 26 */
 };
 
 /* 
@@ -98,36 +98,36 @@ char	dmatch[] = {			/* addat1 match tags */
    =============================================================================
 */
 
-initpt()
+initpt ()
 {
-	register unsigned short i;
+  register unsigned short i;
 
-	/* initialize the trigger fifo */
+  /* initialize the trigger fifo */
 
-	setwq(&ptefifo, ptewrds, NPTEQELS, NPTEQHI, NPTEQLO);
+  setwq (&ptefifo, ptewrds, NPTEQELS, NPTEQHI, NPTEQLO);
 
-	/* clear DEF / STM index tables */
+  /* clear DEF / STM index tables */
 
-	memset(defptr, 0, sizeof defptr);
-	memset(stmptr, 0, sizeof stmptr);
+  memset (defptr, 0, sizeof defptr);
+  memset (stmptr, 0, sizeof stmptr);
 
-	/* setup patch free chain */
+  /* setup patch free chain */
 
-	memset(patches, 0, sizeof patches);
+  memset (patches, 0, sizeof patches);
 
-	for (i = 1; i < 255; i++)
-		patches[i].nextstm = 1 + i;
+  for (i = 1; i < 255; i++)
+    patches[i].nextstm = 1 + i;
 
-	ptfree = 1;
+  ptfree = 1;
 
-	/* setup defent free chain */
+  /* setup defent free chain */
 
-	memset(defents, 0, sizeof defents);
+  memset (defents, 0, sizeof defents);
 
-	for (i = 1; i < 255; i++)
-		defents[i].nextdef = 1 + i;
+  for (i = 1; i < 255; i++)
+    defents[i].nextdef = 1 + i;
 
-	dtfree = 1;
+  dtfree = 1;
 }
 
 /* 
@@ -140,14 +140,14 @@ initpt()
 */
 
 unsigned short
-pt_alc()
+pt_alc ()
 {
-	register unsigned short pe;
+  register unsigned short pe;
 
-	if (0 NE (pe = ptfree))
-		ptfree = patches[pe].nextstm;
+  if (0 NE (pe = ptfree))
+    ptfree = patches[pe].nextstm;
 
-	return(pe);
+  return (pe);
 }
 
 /*
@@ -156,11 +156,11 @@ pt_alc()
    =============================================================================
 */
 
-pt_del(pe)
-register unsigned short pe;
+pt_del (pe)
+     register unsigned short pe;
 {
-	patches[pe].nextstm = ptfree;
-	ptfree = pe;
+  patches[pe].nextstm = ptfree;
+  ptfree = pe;
 }
 
 /* 
@@ -173,14 +173,14 @@ register unsigned short pe;
 */
 
 unsigned short
-dt_alc()
+dt_alc ()
 {
-	register unsigned short de;
+  register unsigned short de;
 
-	if (0 NE (de = dtfree))
-		dtfree = defents[de].nextdef;
+  if (0 NE (de = dtfree))
+    dtfree = defents[de].nextdef;
 
-	return(de);
+  return (de);
 }
 
 /*
@@ -189,11 +189,11 @@ dt_alc()
    =============================================================================
 */
 
-dt_del(de)
-register unsigned short de;
+dt_del (de)
+     register unsigned short de;
 {
-	defents[de].nextdef = dtfree;
-	dtfree = de;
+  defents[de].nextdef = dtfree;
+  dtfree = de;
 }
 
 /* 
@@ -211,49 +211,52 @@ register unsigned short de;
 */
 
 short
-cprdpe(np)
-unsigned short np;
+cprdpe (np)
+     unsigned short np;
 {
-	register unsigned short ca, cb, ct;
-	register struct defent *pp;
+  register unsigned short ca, cb, ct;
+  register struct defent *pp;
 
-	pp = &defents[np];
+  pp = &defents[np];
 
-	if ((cb = ptestm) < (ct = pp->stm))
-		return(-1);
+  if ((cb = ptestm) < (ct = pp->stm))
+    return (-1);
 
-	if (cb > ct)
-		return(1);
+  if (cb > ct)
+    return (1);
 
-	if ((ca = (PE_SPEC & ptespec)) < (ct = (PE_SPEC & pp->adspec)))
-		return(-1);
+  if ((ca = (PE_SPEC & ptespec)) < (ct = (PE_SPEC & pp->adspec)))
+    return (-1);
 
-	if (ca > ct)
-		return(1);
+  if (ca > ct)
+    return (1);
 
-	if ((cb = ptesuba) < (ct = pp->adsuba))
-		return(-1);
+  if ((cb = ptesuba) < (ct = pp->adsuba))
+    return (-1);
 
-	if (cb > ct)
-		return(1);
+  if (cb > ct)
+    return (1);
 /* 
 */
-	/* check for extended destinations -- they need further testing */
+  /* check for extended destinations -- they need further testing */
 
-	if (dmatch[ca]) {		/* check destination type */
+  if (dmatch[ca])
+    {				/* check destination type */
 
-		if ((cb = ptedat1) < (ct = pp->addat1))
-			return(-1);
+      if ((cb = ptedat1) < (ct = pp->addat1))
+	return (-1);
 
-		if (cb > ct)
-			return(1);
-		else
-			return(0);
+      if (cb > ct)
+	return (1);
+      else
+	return (0);
 
-	} else {
+    }
+  else
+    {
 
-		return(0);
-	}
+      return (0);
+    }
 }
 
 /* 
@@ -274,84 +277,92 @@ unsigned short np;
 */
 
 short
-finddpe()
+finddpe ()
 {
-	register unsigned short c, idef;
+  register unsigned short c, idef;
 
-	dpepred = 0;		/* initialize dpepred = 0  (no predecessor) */
-	dpecpos = 0;		/* initialize dpecpos = 0  (no current defent */
-	dpesucc = 0;		/* initialize dpesucc = 0  (no successor) */
+  dpepred = 0;			/* initialize dpepred = 0  (no predecessor) */
+  dpecpos = 0;			/* initialize dpecpos = 0  (no current defent */
+  dpesucc = 0;			/* initialize dpesucc = 0  (no successor) */
 
 #if	DEBUGFD
-	if (debugsw AND debugfd) {
+  if (debugsw AND debugfd)
+    {
 
-		printf("finddpe():  entry\n");
+      printf ("finddpe():  entry\n");
 
-		printf("  ptb  $%04.4X $%04.4X   $%04.4X $%04.4X   $%04.4X $%04.4X\n",
-			ptebuf.defnum, ptebuf.stmnum, ptebuf.paspec,
-			ptebuf.pasuba, ptebuf.padat1, ptebuf.padat2);
+      printf ("  ptb  $%04.4X $%04.4X   $%04.4X $%04.4X   $%04.4X $%04.4X\n",
+	      ptebuf.defnum, ptebuf.stmnum, ptebuf.paspec,
+	      ptebuf.pasuba, ptebuf.padat1, ptebuf.padat2);
+    }
+#endif
+
+  /* try to find the DEF chain index for the defent in defptr[] */
+
+  if (0 EQ (idef = defptr[TRG_MASK & ptebuf.defnum]))
+    {
+
+#if	DEBUGFD
+      if (debugsw AND debugfd)
+	{
+
+	  printf ("finddpe():   1 -- NO DEF -- ");
+	  printf ("dpe pred: %3d  cpos: %3d  succ: %3d\n",
+		  dpepred, dpecpos, dpesucc);
 	}
 #endif
 
-	/* try to find the DEF chain index for the defent in defptr[] */
-
-	if (0 EQ (idef = defptr[TRG_MASK & ptebuf.defnum])) {
-
-#if	DEBUGFD
-	if (debugsw AND debugfd) {
-
-		printf("finddpe():   1 -- NO DEF -- ");
-		printf("dpe pred: %3d  cpos: %3d  succ: %3d\n",
-			dpepred, dpecpos, dpesucc);
-	}
-#endif
-
-		return(1);	/* +1 = new defent -- no DEF entry yet */
-	}
+      return (1);		/* +1 = new defent -- no DEF entry yet */
+    }
 
 /* 
 */
 
-	while (idef) {		/* search the DEF chain */
+  while (idef)
+    {				/* search the DEF chain */
 
-		/* compare ptebuf to defents[idef] */
+      /* compare ptebuf to defents[idef] */
 
-		if (1 NE (c = cprdpe(idef))) {
+      if (1 NE (c = cprdpe (idef)))
+	{
 
-			if (c EQ 0) {	/* if we find the defent ... */
+	  if (c EQ 0)
+	    {			/* if we find the defent ... */
 
-				dpecpos = idef;	/* ... point at it */
-				dpesucc = defents[idef].nextdef;
+	      dpecpos = idef;	/* ... point at it */
+	      dpesucc = defents[idef].nextdef;
 
-			}
-
-#if	DEBUGFD
-	if (debugsw AND debugfd) {
-
-		printf("finddpe():  %d --  %s -- ", c,
-			c ? "NOT FOUND (>)" : "FOUND");
-
-		printf("dpe pred: %3d  cpos: %3d  succ: %3d\n",
-			dpepred, dpecpos, dpesucc);
-	}
-#endif
-			return(c);	/* return search result */
-		}
-
-		dpepred = idef;	/* point at next entry in DEF chain */
-		idef   = defents[idef].nextdef;
-	}
+	    }
 
 #if	DEBUGFD
-	if (debugsw AND debugfd) {
+	  if (debugsw AND debugfd)
+	    {
 
-		printf("finddpe(): -1 -- NOT FOUND (<) -- ");
-		printf("dpe pred: %3d  cpos: %3d  succ: %3d\n",
-			dpepred, dpecpos, dpesucc);
+	      printf ("finddpe():  %d --  %s -- ", c,
+		      c ? "NOT FOUND (>)" : "FOUND");
+
+	      printf ("dpe pred: %3d  cpos: %3d  succ: %3d\n",
+		      dpepred, dpecpos, dpesucc);
+	    }
+#endif
+	  return (c);		/* return search result */
 	}
+
+      dpepred = idef;		/* point at next entry in DEF chain */
+      idef = defents[idef].nextdef;
+    }
+
+#if	DEBUGFD
+  if (debugsw AND debugfd)
+    {
+
+      printf ("finddpe(): -1 -- NOT FOUND (<) -- ");
+      printf ("dpe pred: %3d  cpos: %3d  succ: %3d\n",
+	      dpepred, dpecpos, dpesucc);
+    }
 #endif
 
-	return(-1);	/* -1 = new defent -- entry not in DEF chain */
+  return (-1);			/* -1 = new defent -- entry not in DEF chain */
 }
 
 /* 
@@ -369,56 +380,59 @@ finddpe()
 */
 
 short
-cprpte(np)
-unsigned short np;
+cprpte (np)
+     unsigned short np;
 {
-	register unsigned short ca, cb, ct;
-	register struct patch *pb, *pp;
+  register unsigned short ca, cb, ct;
+  register struct patch *pb, *pp;
 
-	pb = &ptebuf;
-	pp = &patches[np];
+  pb = &ptebuf;
+  pp = &patches[np];
 
-	if ((cb = pb->stmnum) < (ct = pp->stmnum))
-		return(-1);
+  if ((cb = pb->stmnum) < (ct = pp->stmnum))
+    return (-1);
 
-	if (cb > ct)
-		return(1);
+  if (cb > ct)
+    return (1);
 
-	if ((cb = pb->defnum) < (ct = pp->defnum))
-		return(-1);
+  if ((cb = pb->defnum) < (ct = pp->defnum))
+    return (-1);
 
-	if (cb > ct)
-		return(1);
+  if (cb > ct)
+    return (1);
 
-	if ((ca = (PE_SPEC & pb->paspec)) < (ct = (PE_SPEC & pp->paspec)))
-		return(-1);
+  if ((ca = (PE_SPEC & pb->paspec)) < (ct = (PE_SPEC & pp->paspec)))
+    return (-1);
 
-	if (ca > ct)
-		return(1);
+  if (ca > ct)
+    return (1);
 
-	if ((cb = pb->pasuba) < (ct = pp->pasuba))
-		return(-1);
+  if ((cb = pb->pasuba) < (ct = pp->pasuba))
+    return (-1);
 
-	if (cb > ct)
-		return(1);
+  if (cb > ct)
+    return (1);
 /* 
 */
-	/* check for extended destinations -- they need further testing */
+  /* check for extended destinations -- they need further testing */
 
-	if (dmatch[ca]) {		/* check destination type */
+  if (dmatch[ca])
+    {				/* check destination type */
 
-		if ((cb = pb->padat1) < (ct = pp->padat1))
-			return(-1);
+      if ((cb = pb->padat1) < (ct = pp->padat1))
+	return (-1);
 
-		if (cb > ct)
-			return(1);
-		else
-			return(0);
+      if (cb > ct)
+	return (1);
+      else
+	return (0);
 
-	} else {
+    }
+  else
+    {
 
-		return(0);
-	}
+      return (0);
+    }
 }
 
 /* 
@@ -439,84 +453,92 @@ unsigned short np;
 */
 
 short
-findpte()
+findpte ()
 {
-	register unsigned short c, istim;
+  register unsigned short c, istim;
 
-	ptepred = 0;		/* initialize ptepred = 0  (no predecessor) */
-	ptecpos = 0;		/* initialize ptecpos = 0  (no current patch */
-	ptesucc = 0;		/* initialize ptesucc = 0  (no successor) */
+  ptepred = 0;			/* initialize ptepred = 0  (no predecessor) */
+  ptecpos = 0;			/* initialize ptecpos = 0  (no current patch */
+  ptesucc = 0;			/* initialize ptesucc = 0  (no successor) */
 
 #if	DEBUGFP
-	if (debugsw AND debugfp) {
+  if (debugsw AND debugfp)
+    {
 
-		printf("findpte():  entry\n");
+      printf ("findpte():  entry\n");
 
-		printf("  ptb  $%04.4X $%04.4X   $%04.4X $%04.4X   $%04.4X $%04.4X\n",
-			ptebuf.defnum, ptebuf.stmnum, ptebuf.paspec,
-			ptebuf.pasuba, ptebuf.padat1, ptebuf.padat2);
+      printf ("  ptb  $%04.4X $%04.4X   $%04.4X $%04.4X   $%04.4X $%04.4X\n",
+	      ptebuf.defnum, ptebuf.stmnum, ptebuf.paspec,
+	      ptebuf.pasuba, ptebuf.padat1, ptebuf.padat2);
+    }
+#endif
+
+  /* try to find the STM chain index for the patch in stmptr[] */
+
+  if (0 EQ (istim = stmptr[TRG_MASK & ptebuf.stmnum]))
+    {
+
+#if	DEBUGFP
+      if (debugsw AND debugfp)
+	{
+
+	  printf ("findpte():   1 -- NO STM -- ");
+	  printf ("pte pred: %3d  cpos: %3d  succ: %3d\n",
+		  ptepred, ptecpos, ptesucc);
 	}
 #endif
 
-	/* try to find the STM chain index for the patch in stmptr[] */
-
-	if (0 EQ (istim = stmptr[TRG_MASK & ptebuf.stmnum])) {
-
-#if	DEBUGFP
-	if (debugsw AND debugfp) {
-
-		printf("findpte():   1 -- NO STM -- ");
-		printf("pte pred: %3d  cpos: %3d  succ: %3d\n",
-			ptepred, ptecpos, ptesucc);
-	}
-#endif
-
-		return(1);	/* +1 = new patch -- no STM entry yet */
-	}
+      return (1);		/* +1 = new patch -- no STM entry yet */
+    }
 
 /* 
 */
 
-	while (istim) {		/* search the STM chain */
+  while (istim)
+    {				/* search the STM chain */
 
-		/* compare ptebuf to patches[istim] */
+      /* compare ptebuf to patches[istim] */
 
-		if (1 NE (c = cprpte(istim))) {
+      if (1 NE (c = cprpte (istim)))
+	{
 
-			if (c EQ 0) {	/* if we find the patch ... */
+	  if (c EQ 0)
+	    {			/* if we find the patch ... */
 
-				ptecpos = istim;	/* ... point at it */
-				ptesucc = patches[istim].nextstm;
+	      ptecpos = istim;	/* ... point at it */
+	      ptesucc = patches[istim].nextstm;
 
-			}
-
-#if	DEBUGFP
-	if (debugsw AND debugfp) {
-
-		printf("findpte():  %d --  %s -- ", c,
-			c ? "NOT FOUND (>)" : "FOUND");
-
-		printf("pte pred: %3d  cpos: %3d  succ: %3d\n",
-			ptepred, ptecpos, ptesucc);
-	}
-#endif
-			return(c);	/* return search result */
-		}
-
-		ptepred = istim;	/* point at next entry in STM chain */
-		istim   = patches[istim].nextstm;
-	}
+	    }
 
 #if	DEBUGFP
-	if (debugsw AND debugfp) {
+	  if (debugsw AND debugfp)
+	    {
 
-		printf("findpte(): -1 -- NOT FOUND (<) -- ");
-		printf("pte pred: %3d  cpos: %3d  succ: %3d\n",
-			ptepred, ptecpos, ptesucc);
+	      printf ("findpte():  %d --  %s -- ", c,
+		      c ? "NOT FOUND (>)" : "FOUND");
+
+	      printf ("pte pred: %3d  cpos: %3d  succ: %3d\n",
+		      ptepred, ptecpos, ptesucc);
+	    }
+#endif
+	  return (c);		/* return search result */
 	}
+
+      ptepred = istim;		/* point at next entry in STM chain */
+      istim = patches[istim].nextstm;
+    }
+
+#if	DEBUGFP
+  if (debugsw AND debugfp)
+    {
+
+      printf ("findpte(): -1 -- NOT FOUND (<) -- ");
+      printf ("pte pred: %3d  cpos: %3d  succ: %3d\n",
+	      ptepred, ptecpos, ptesucc);
+    }
 #endif
 
-	return(-1);	/* -1 = new patch -- entry not in STM chain */
+  return (-1);			/* -1 = new patch -- entry not in STM chain */
 }
 
 /* 
@@ -528,170 +550,192 @@ findpte()
    =============================================================================
 */
 
-entrpte()
+entrpte ()
 {
-	register short c;
-	register unsigned short np, stim;
+  register short c;
+  register unsigned short np, stim;
 
-	ptegood = ptedfok AND ptestok AND ptedsok AND ptedtok;
+  ptegood = ptedfok AND ptestok AND ptedsok AND ptedtok;
 
-	if (ptegood) {
+  if (ptegood)
+    {
 
-		buf2pte();
+      buf2pte ();
 
-		c = findpte();
+      c = findpte ();
 
-		if (c EQ 0) {		/* old patch -- just update it */
+      if (c EQ 0)
+	{			/* old patch -- just update it */
 
-			memcpyw(&patches[ptecpos].defnum, &ptebuf.defnum, 6);
+	  memcpyw (&patches[ptecpos].defnum, &ptebuf.defnum, 6);
 
-			patches[ptecpos].paspec |= PE_TBIT;	/* define it */
+	  patches[ptecpos].paspec |= PE_TBIT;	/* define it */
 
 #if	DEBUGEP
-	if (debugsw AND debugep) {
+	  if (debugsw AND debugep)
+	    {
 
-		if (snapep)
-			SnapPTV("entrpte");
+	      if (snapep)
+		SnapPTV ("entrpte");
 
-		printf("entrpte():  UPDATED\n");
-	}
+	      printf ("entrpte():  UPDATED\n");
+	    }
 #endif
 
-			return;
-		}
+	  return;
+	}
 /* 
 */
-		/* allocate a patch entry and fill it in */
+      /* allocate a patch entry and fill it in */
 
-		if (0 EQ (ptecpos = pt_alc())) {
+      if (0 EQ (ptecpos = pt_alc ()))
+	{
 
 #if	DEBUGEP
-	if (debugsw AND debugep)
-		printf("entrpte():  patch table FULL\n");
+	  if (debugsw AND debugep)
+	    printf ("entrpte():  patch table FULL\n");
 #endif
-			return;		/* no patch entries left */
-		}
+	  return;		/* no patch entries left */
+	}
 
-		memcpyw(&patches[ptecpos].defnum, &ptebuf.defnum, 6);
-		patches[ptecpos].paspec |= PE_TBIT;	/* define it */
-		stim = TRG_MASK & ptebuf.stmnum;
+      memcpyw (&patches[ptecpos].defnum, &ptebuf.defnum, 6);
+      patches[ptecpos].paspec |= PE_TBIT;	/* define it */
+      stim = TRG_MASK & ptebuf.stmnum;
 
-		if (c EQ 1) {		/* new patch -- no STM entry yet */
+      if (c EQ 1)
+	{			/* new patch -- no STM entry yet */
 
-			ptepred = 0;
-			stmptr[stim] = ptecpos;
-		}
+	  ptepred = 0;
+	  stmptr[stim] = ptecpos;
+	}
 /* 
 */
-		/* put patch in STM chain */
+      /* put patch in STM chain */
 
-		if (ptepred) {		/* predecessor exits */
+      if (ptepred)
+	{			/* predecessor exits */
 
-			ptesucc = patches[ptepred].nextstm;
+	  ptesucc = patches[ptepred].nextstm;
 
-			patches[ptecpos].nextstm = ptesucc;
-			patches[ptecpos].prevstm = ptepred;
+	  patches[ptecpos].nextstm = ptesucc;
+	  patches[ptecpos].prevstm = ptepred;
 
-			patches[ptepred].nextstm = ptecpos;
+	  patches[ptepred].nextstm = ptecpos;
 
-			if (ptesucc)
-				patches[ptesucc].prevstm = ptecpos;
+	  if (ptesucc)
+	    patches[ptesucc].prevstm = ptecpos;
 
-		} else {		/* no predecessor */
+	}
+      else
+	{			/* no predecessor */
 
-			patches[ptecpos].prevstm = 0;
+	  patches[ptecpos].prevstm = 0;
 
-			if (c EQ -1) {
+	  if (c EQ - 1)
+	    {
 
-				ptesucc = stmptr[stim];
+	      ptesucc = stmptr[stim];
 
-				patches[ptecpos].nextstm = ptesucc;
+	      patches[ptecpos].nextstm = ptesucc;
 
-				patches[ptesucc].prevstm = ptecpos;
+	      patches[ptesucc].prevstm = ptecpos;
 
-				stmptr[stim] = ptecpos;
+	      stmptr[stim] = ptecpos;
 
-			} else {
+	    }
+	  else
+	    {
 
-				patches[ptecpos].nextstm = 0;
-			}
-		}
+	      patches[ptecpos].nextstm = 0;
+	    }
+	}
 /* 
 */
-		/* update DEF table */
+      /* update DEF table */
 
-		if (0 EQ (c = finddpe())) {
+      if (0 EQ (c = finddpe ()))
+	{
 
 #if	DEBUGEP
-	if (debugsw AND debugep)
-		printf("entrpte():  defent already exists\n");
+	  if (debugsw AND debugep)
+	    printf ("entrpte():  defent already exists\n");
 #endif
-			return;		/* defent already exists */
-		}
-
-		if (0 EQ (dpecpos = dt_alc())) {
-
-#if	DEBUGEP
-	if (debugsw AND debugep)
-		printf("entrpte():  defent table FULL\n");
-#endif
-			return;		/* no defents left */
-		}
-
-		defents[dpecpos].nextdef = 0;
-		defents[dpecpos].stm     = ptestm;
-		defents[dpecpos].adspec  = ptespec;
-		defents[dpecpos].adsuba  = ptesuba;
-		defents[dpecpos].addat1  = ptedat1;
-
-		np = TRG_MASK & ptebuf.defnum;
-
-		if (c EQ 1) {
-
-			dpepred = 0;
-			defptr[np] = dpecpos;
-		}
-
-		if (dpepred) {
-
-			dpesucc = defents[dpepred].nextdef;
-			defents[dpecpos].nextdef = dpesucc;
-			defents[dpepred].nextdef = dpecpos;
-
-		} else {
-
-			if (c EQ -1) {
-
-				dpesucc = defptr[np];
-				defents[dpecpos].nextdef = dpesucc;
-				defptr[np] = dpecpos;
-
-			} else {
-
-				defents[dpecpos].nextdef = 0;
-			}
-		}
-
-#if	DEBUGEP
-	if (debugsw AND debugep) {
-
-		if (snapep)
-			SnapPTV("entrpte");
-
-		printf("entrpte():  ENTERED\n");
+	  return;		/* defent already exists */
 	}
+
+      if (0 EQ (dpecpos = dt_alc ()))
+	{
+
+#if	DEBUGEP
+	  if (debugsw AND debugep)
+	    printf ("entrpte():  defent table FULL\n");
 #endif
-		return;
+	  return;		/* no defents left */
+	}
+
+      defents[dpecpos].nextdef = 0;
+      defents[dpecpos].stm = ptestm;
+      defents[dpecpos].adspec = ptespec;
+      defents[dpecpos].adsuba = ptesuba;
+      defents[dpecpos].addat1 = ptedat1;
+
+      np = TRG_MASK & ptebuf.defnum;
+
+      if (c EQ 1)
+	{
+
+	  dpepred = 0;
+	  defptr[np] = dpecpos;
+	}
+
+      if (dpepred)
+	{
+
+	  dpesucc = defents[dpepred].nextdef;
+	  defents[dpecpos].nextdef = dpesucc;
+	  defents[dpepred].nextdef = dpecpos;
+
+	}
+      else
+	{
+
+	  if (c EQ - 1)
+	    {
+
+	      dpesucc = defptr[np];
+	      defents[dpecpos].nextdef = dpesucc;
+	      defptr[np] = dpecpos;
+
+	    }
+	  else
+	    {
+
+	      defents[dpecpos].nextdef = 0;
+	    }
 	}
 
 #if	DEBUGEP
-	if (debugsw AND debugep) {
+      if (debugsw AND debugep)
+	{
 
-		if (snapep)
-			SnapPTV("entrpte");
+	  if (snapep)
+	    SnapPTV ("entrpte");
 
-		printf("entrpte():  INVALID\n");
+	  printf ("entrpte():  ENTERED\n");
 	}
+#endif
+      return;
+    }
+
+#if	DEBUGEP
+  if (debugsw AND debugep)
+    {
+
+      if (snapep)
+	SnapPTV ("entrpte");
+
+      printf ("entrpte():  INVALID\n");
+    }
 #endif
 }
 
@@ -705,15 +749,15 @@ entrpte()
 */
 
 short
-find1st()
+find1st ()
 {
-	register short cp, pp;
+  register short cp, pp;
 
-	for (cp = 0; cp < NDEFSTMS; cp++)
-		if (0 NE (pp = ADR_MASK & stmptr[cp]))
-			return(pp);
+  for (cp = 0; cp < NDEFSTMS; cp++)
+    if (0 NE (pp = ADR_MASK & stmptr[cp]))
+      return (pp);
 
-	return(0);
+  return (0);
 }
 
 /*
@@ -723,21 +767,21 @@ find1st()
 */
 
 short
-findnxt(cp)
-short cp;
+findnxt (cp)
+     short cp;
 {
-	register short np, stim;
+  register short np, stim;
 
-	if (0 NE (np = patches[cp].nextstm))
-		return(np);
+  if (0 NE (np = patches[cp].nextstm))
+    return (np);
 
-	stim = TRG_MASK & patches[cp].stmnum;
+  stim = TRG_MASK & patches[cp].stmnum;
 
-	while (++stim < NDEFSTMS)
-		if (0 NE (np = ADR_MASK & stmptr[stim]))
-			return(np);
+  while (++stim < NDEFSTMS)
+    if (0 NE (np = ADR_MASK & stmptr[stim]))
+      return (np);
 
-	return(0);
+  return (0);
 }
 
 /* 
@@ -750,30 +794,32 @@ short cp;
 */
 
 short
-findprv(cp)
-short cp;
+findprv (cp)
+     short cp;
 {
-	register short np, pp, stim;
+  register short np, pp, stim;
 
-	if (0 NE (np = patches[cp].prevstm))	/* return prevstm if set */
-		return(np);
+  if (0 NE (np = patches[cp].prevstm))	/* return prevstm if set */
+    return (np);
 
-	stim = TRG_MASK & patches[cp].stmnum;	/* extract the stimulus */
+  stim = TRG_MASK & patches[cp].stmnum;	/* extract the stimulus */
 
-	while (--stim GE 0) {		/* back up one stimulus if we can */
+  while (--stim GE 0)
+    {				/* back up one stimulus if we can */
 
-		if (0 NE (np = ADR_MASK & stmptr[stim])) {	/* any there ? */
+      if (0 NE (np = ADR_MASK & stmptr[stim]))
+	{			/* any there ? */
 
-			/* find the end of the chain for the stimulus */
+	  /* find the end of the chain for the stimulus */
 
-			while (pp = patches[np].nextstm)
-				np = pp;
+	  while (pp = patches[np].nextstm)
+	    np = pp;
 
-			return(np);
-		}
+	  return (np);
 	}
+    }
 
-	return(0);	/* backed up to the start of the table */
+  return (0);			/* backed up to the start of the table */
 }
 
 /* 
@@ -785,28 +831,29 @@ short cp;
    =============================================================================
 */
 
-dpte(pe, row, atr)
-register short pe, row, atr;
+dpte (pe, row, atr)
+     register short pe, row, atr;
 {
-	register short i;
+  register short i;
 
-	memset(ptdsbuf, ' ', 50);
+  memset (ptdsbuf, ' ', 50);
 
-	if (pe) {
+  if (pe)
+    {
 
-		dspdfst(&ptdsbuf[ 2], patches[pe].defnum);
-		dspdfst(&ptdsbuf[15], patches[pe].stmnum);
-		dspdest(&ptdsbuf[28], &patches[pe]);
+      dspdfst (&ptdsbuf[2], patches[pe].defnum);
+      dspdfst (&ptdsbuf[15], patches[pe].stmnum);
+      dspdest (&ptdsbuf[28], &patches[pe]);
 
-		for (i = 0; i < 50; i++)
-			if (ptdsbuf[i] EQ '\0')
-				ptdsbuf[i] = ' ';
-	
-		ptdsbuf[48] = '\0';
-	}
+      for (i = 0; i < 50; i++)
+	if (ptdsbuf[i] EQ '\0')
+	  ptdsbuf[i] = ' ';
 
-	UpdVid(row, 0, "\260 ", PTBATR);
-	UpdVid(row, 1, &ptdsbuf[1], atr);
+      ptdsbuf[48] = '\0';
+    }
+
+  UpdVid (row, 0, "\260 ", PTBATR);
+  UpdVid (row, 1, &ptdsbuf[1], atr);
 }
 
 /* 
@@ -818,146 +865,158 @@ register short pe, row, atr;
    =============================================================================
 */
 
-dptw()
+dptw ()
 {
-	register short cp, r, row, pp;
+  register short cp, r, row, pp;
 
 #if	DEBUGDP
-	if (debugsw AND debugdp)
-		printf("dptw():  ENTRY  ptecpos = %d\n", ptecpos);
+  if (debugsw AND debugdp)
+    printf ("dptw():  ENTRY  ptecpos = %d\n", ptecpos);
 #endif
 
-	if (ptecpos) {
+  if (ptecpos)
+    {
 
-		/* search back from ptecpos for predecessors */
+      /* search back from ptecpos for predecessors */
 
-		row = 7;
-		pp  = ptecpos;
+      row = 7;
+      pp = ptecpos;
 
-		while (0 NE (cp = findprv(pp))) {
+      while (0 NE (cp = findprv (pp)))
+	{
 
-			pp = cp;
+	  pp = cp;
 
-			if (--row EQ 0)
-				break;
-		}
-
-#if	DEBUGDP
-	if (debugsw AND debugdp)
-		printf("dptw():  backed up to row = %d  pp = %d\n", row, pp);
-#endif
-
-		if (row) {	/* blank any unused lines  (rows 0..6) */
-
-			for (r = 0; r < row; r++)
-				dpte(0, r, PTPATR);
-		}
-
-		while (row < 7) {	/* display predecessors  (rows 0..6) */
-
-			dpte(pp, row++, PTPATR);
-			pp = findnxt(pp);
-		}
-/* 
-*/
-		/* display ptecpos at the center  (row 7) */
-
-#if	DEBUGDP
-	if (debugsw AND debugdp)
-		printf("dptw():  row = %d  pp = %d  ptecpos = %d\n",
-			row, pp, ptecpos);
-#endif
-
-		dpte(pp, row++, PTEATR);
-
-		/* display forward from ptecpos  (rows 8..15) */
-
-		while (0 NE (pp = findnxt(pp))) {
-
-			dpte(pp, row++, PTPATR);
-
-			if (row > 15)
-				break;
-		}
-
-		/* blank any unused display lines  (rows 8..15) */
-		while (row < 16)
-			dpte(0, row++, PTPATR);
-/* 
-*/			
-	} else {
-
-		if (0 NE (ptecpos = find1st())) {
-
-#if	DEBUGDP
-	if (debugsw AND debugdp)
-		printf("dptw():  found 1st at %d\n", ptecpos);
-#endif
-
-			/* clear lines above the center (rows 0..6) */
-
-			for (row = 0; row < 7; ++row)
-				dpte(0, row, PTPATR);
-
-			/* display ptecpos at the center (row 7) */
-
-			dpte(pp = ptecpos, row++, PTEATR);
-
-			/* display forward from ptecpos (rows 8..15) */
-
-			while (0 NE (pp = findnxt(pp))) {
-
-				dpte(pp, row++, PTPATR);
-
-				if (row > 15)
-					break;
-			}
-
-			/* blank any unused display lines (rows 8..15) */
-
-			while (row < 16)
-				dpte(0, row++, PTPATR);
-/* 
-*/
-		} else {
-
-#if	DEBUGDP
-	if (debugsw AND debugdp)
-		printf("dptw():  no patches to display\n");
-#endif
-
-			/* clear the patch display */
-
-			for (row = 0; row < 16; ++row)
-				dpte(0, row, (row EQ 7) ? PTEATR : PTPATR);
-		}
+	  if (--row EQ 0)
+	    break;
 	}
 
-	if (ptecpos) {
-
-		memcpyw(&ptebuf.defnum, &patches[ptecpos].defnum, 6);
-		pteset = TRUE;
-		pte2buf();
-
 #if	DEBUGDP
-	if (debugsw AND debugdp)
-		printf("dptw():  EXIT -- LOADED buffer,  ptecpos = %d\n",
-			ptecpos);
+      if (debugsw AND debugdp)
+	printf ("dptw():  backed up to row = %d  pp = %d\n", row, pp);
 #endif
 
-	} else {
+      if (row)
+	{			/* blank any unused lines  (rows 0..6) */
 
-		pteset = FALSE;
-		voidpb();
-
-#if	DEBUGDP
-	if (debugsw AND debugdp)
-		printf("dptw():  EXIT -- VOIDED buffer,  ptecpos = %d\n",
-			ptecpos);
-#endif
-
-
+	  for (r = 0; r < row; r++)
+	    dpte (0, r, PTPATR);
 	}
+
+      while (row < 7)
+	{			/* display predecessors  (rows 0..6) */
+
+	  dpte (pp, row++, PTPATR);
+	  pp = findnxt (pp);
+	}
+/* 
+*/
+      /* display ptecpos at the center  (row 7) */
+
+#if	DEBUGDP
+      if (debugsw AND debugdp)
+	printf ("dptw():  row = %d  pp = %d  ptecpos = %d\n",
+		row, pp, ptecpos);
+#endif
+
+      dpte (pp, row++, PTEATR);
+
+      /* display forward from ptecpos  (rows 8..15) */
+
+      while (0 NE (pp = findnxt (pp)))
+	{
+
+	  dpte (pp, row++, PTPATR);
+
+	  if (row > 15)
+	    break;
+	}
+
+      /* blank any unused display lines  (rows 8..15) */
+      while (row < 16)
+	dpte (0, row++, PTPATR);
+/* 
+*/
+    }
+  else
+    {
+
+      if (0 NE (ptecpos = find1st ()))
+	{
+
+#if	DEBUGDP
+	  if (debugsw AND debugdp)
+	    printf ("dptw():  found 1st at %d\n", ptecpos);
+#endif
+
+	  /* clear lines above the center (rows 0..6) */
+
+	  for (row = 0; row < 7; ++row)
+	    dpte (0, row, PTPATR);
+
+	  /* display ptecpos at the center (row 7) */
+
+	  dpte (pp = ptecpos, row++, PTEATR);
+
+	  /* display forward from ptecpos (rows 8..15) */
+
+	  while (0 NE (pp = findnxt (pp)))
+	    {
+
+	      dpte (pp, row++, PTPATR);
+
+	      if (row > 15)
+		break;
+	    }
+
+	  /* blank any unused display lines (rows 8..15) */
+
+	  while (row < 16)
+	    dpte (0, row++, PTPATR);
+/* 
+*/
+	}
+      else
+	{
+
+#if	DEBUGDP
+	  if (debugsw AND debugdp)
+	    printf ("dptw():  no patches to display\n");
+#endif
+
+	  /* clear the patch display */
+
+	  for (row = 0; row < 16; ++row)
+	    dpte (0, row, (row EQ 7) ? PTEATR : PTPATR);
+	}
+    }
+
+  if (ptecpos)
+    {
+
+      memcpyw (&ptebuf.defnum, &patches[ptecpos].defnum, 6);
+      pteset = TRUE;
+      pte2buf ();
+
+#if	DEBUGDP
+      if (debugsw AND debugdp)
+	printf ("dptw():  EXIT -- LOADED buffer,  ptecpos = %d\n", ptecpos);
+#endif
+
+    }
+  else
+    {
+
+      pteset = FALSE;
+      voidpb ();
+
+#if	DEBUGDP
+      if (debugsw AND debugdp)
+	printf ("dptw():  EXIT -- VOIDED buffer,  ptecpos = %d\n", ptecpos);
+#endif
+
+
+    }
 }
 
 /* 
@@ -969,79 +1028,86 @@ dptw()
    =============================================================================
 */
 
-srdspte()
+srdspte ()
 {
-	short	oldcpos, oldpred, oldsucc;
+  short oldcpos, oldpred, oldsucc;
 #if	DEBUGSR
-	register short i;
-	char dbuf[50];
+  register short i;
+  char dbuf[50];
 #endif
 
-	ptegood = ptedfok AND ptestok AND ptedsok AND ptedtok;
+  ptegood = ptedfok AND ptestok AND ptedsok AND ptedtok;
 
 #if	DEBUGSR
-	if (debugsw AND debugsr) {
+  if (debugsw AND debugsr)
+    {
 
-		printf("srdspte():  ENTRY  pte good=%d dfok=%d stok=%d dsok=%d dtok=%d\n",
-			ptegood, ptedfok, ptestok, ptedsok, ptedtok);
+      printf
+	("srdspte():  ENTRY  pte good=%d dfok=%d stok=%d dsok=%d dtok=%d\n",
+	 ptegood, ptedfok, ptestok, ptedsok, ptedtok);
 
-		memcpy(dbuf, ptdebuf, 48);
+      memcpy (dbuf, ptdebuf, 48);
 
-		for (i = 0; i < 48; i++)
-			if (dbuf[i] EQ '\0')
-				dbuf[i] = ' ';
-			else if (dbuf[i] & 0x0080)
-				dbuf[i] = '~';
+      for (i = 0; i < 48; i++)
+	if (dbuf[i] EQ '\0')
+	  dbuf[i] = ' ';
+	else if (dbuf[i] & 0x0080)
+	  dbuf[i] = '~';
 
-		dbuf[48] = '\0';
+      dbuf[48] = '\0';
 
-		printf("  ptdebuf = \"%s\"\n", dbuf);
-	}
+      printf ("  ptdebuf = \"%s\"\n", dbuf);
+    }
 #endif
 
-	if (ptegood) {
+  if (ptegood)
+    {
 
-		oldcpos = ptecpos;	/* save patch pointers */
-		oldpred = ptepred;
-		oldsucc = ptesucc;
+      oldcpos = ptecpos;	/* save patch pointers */
+      oldpred = ptepred;
+      oldsucc = ptesucc;
 
-		buf2pte();
+      buf2pte ();
 
-		if (0 EQ findpte()) {
+      if (0 EQ findpte ())
+	{
 
 #if	DEBUGSR
-	if (debugsw AND debugsr)
-		printf("srdspte():  FOUND patch at ptecpos = %d\n", ptecpos);
+	  if (debugsw AND debugsr)
+	    printf ("srdspte():  FOUND patch at ptecpos = %d\n", ptecpos);
 #endif
 
-			memcpyw(&ptebuf.defnum, &patches[ptecpos].defnum, 6);
-			pteset = TRUE;
-			pte2buf();
-			dptw();
-
-		} else {
-
-			ptecpos = oldcpos;	/* restore patch pointers */
-			ptepred = oldpred;
-			ptesucc = oldsucc;
-
-#if	DEBUGSR
-	if (debugsw AND debugsr) {
-
-		printf("srdspte():  patch not found\n");
-
-		if (snapsr)
-			SnapPTV("srdspte");
+	  memcpyw (&ptebuf.defnum, &patches[ptecpos].defnum, 6);
+	  pteset = TRUE;
+	  pte2buf ();
+	  dptw ();
 
 	}
-#endif
+      else
+	{
 
-		}
-	}
+	  ptecpos = oldcpos;	/* restore patch pointers */
+	  ptepred = oldpred;
+	  ptesucc = oldsucc;
 
 #if	DEBUGSR
-	if (debugsw AND debugsr)
-		printf("srdspte():  EXIT -- ptecpos = %d\n", ptecpos);
+	  if (debugsw AND debugsr)
+	    {
+
+	      printf ("srdspte():  patch not found\n");
+
+	      if (snapsr)
+		SnapPTV ("srdspte");
+
+	    }
+#endif
+
+	}
+    }
+
+#if	DEBUGSR
+  if (debugsw AND debugsr)
+    printf ("srdspte():  EXIT -- ptecpos = %d\n", ptecpos);
 #endif
 
 }
@@ -1055,86 +1121,90 @@ srdspte()
    =============================================================================
 */
 
-stmproc(trg)
-register unsigned short trg;
+stmproc (trg)
+     register unsigned short trg;
 {
-	register struct defent	*nextdef;
-	register struct patch	*nextpch;
-	register unsigned short adspec, adsuba, np, stim;
-	unsigned short addat1, adrtag;
+  register struct defent *nextdef;
+  register struct patch *nextpch;
+  register unsigned short adspec, adsuba, np, stim;
+  unsigned short addat1, adrtag;
 
-	/* ***** DEFINER PROCESSING PHASE ***** */
+  /* ***** DEFINER PROCESSING PHASE ***** */
 
-	np      = ADR_MASK & defptr[TRG_MASK & trg];
-	nextdef = np ? &defents[np] : (struct defent *)NULL;	/* point at DEF chain */
+  np = ADR_MASK & defptr[TRG_MASK & trg];
+  nextdef = np ? &defents[np] : (struct defent *) NULL;	/* point at DEF chain */
 
 /* 
 */
-	while ((struct defent *)NULL NE nextdef) {		/* process DEF chain */
+  while ((struct defent *) NULL NE nextdef)
+    {				/* process DEF chain */
 
-		/* setup search criteria */
+      /* setup search criteria */
 
-		adspec = nextdef->adspec;
-		adsuba = nextdef->adsuba;
-		addat1 = nextdef->addat1;
-		stim   = nextdef->stm;
-		adrtag = dmatch[adspec];
+      adspec = nextdef->adspec;
+      adsuba = nextdef->adsuba;
+      addat1 = nextdef->addat1;
+      stim = nextdef->stm;
+      adrtag = dmatch[adspec];
 
-		/* point at the start of the STM chain */
+      /* point at the start of the STM chain */
 
-		np      = ADR_MASK & stmptr[TRG_MASK & stim];
-		nextpch = np ? &patches[np] : (struct patch *)NULL;
+      np = ADR_MASK & stmptr[TRG_MASK & stim];
+      nextpch = np ? &patches[np] : (struct patch *) NULL;
 
-		while ((struct patch *)NULL NE nextpch) {	/* process STM chain */
+      while ((struct patch *) NULL NE nextpch)
+	{			/* process STM chain */
 
-			/* if this patch matches our search criteria ... */
+	  /* if this patch matches our search criteria ... */
 
-			if ((stim   EQ  nextpch->stmnum) AND
-			    (adspec EQ (nextpch->paspec & PE_SPEC)) AND
-			    (adsuba EQ  nextpch->pasuba)) {
+	  if ((stim EQ nextpch->stmnum) AND
+	      (adspec EQ (nextpch->paspec & PE_SPEC)) AND
+	      (adsuba EQ nextpch->pasuba))
+	    {
 
-				if ((NOT adrtag) OR
-				    (adrtag AND addat1 EQ nextpch->padat1)) {
+	      if ((NOT adrtag) OR (adrtag AND addat1 EQ nextpch->padat1))
+		{
 
-					if (nextpch->defnum EQ trg)
-						nextpch->paspec |= PE_TBIT;	/* define */
-					else
-						nextpch->paspec &= ~PE_TBIT;	/* undefine */
-				}
-			}
-
-			/* point at the next patch in the STM chain */
-
-			np      = nextpch->nextstm;
-			nextpch = np ? &patches[np] : (struct patch *)NULL;
+		  if (nextpch->defnum EQ trg)
+		    nextpch->paspec |= PE_TBIT;	/* define */
+		  else
+		    nextpch->paspec &= ~PE_TBIT;	/* undefine */
 		}
+	    }
 
-		/* point at the next DEF entry */
+	  /* point at the next patch in the STM chain */
 
-		np      = nextdef->nextdef;
-		nextdef = np ? &defents[np] : (struct defent *)NULL;
+	  np = nextpch->nextstm;
+	  nextpch = np ? &patches[np] : (struct patch *) NULL;
 	}
+
+      /* point at the next DEF entry */
+
+      np = nextdef->nextdef;
+      nextdef = np ? &defents[np] : (struct defent *) NULL;
+    }
 /* 
 */
 
-	/* ***** STIMULUS PROCESSING PHASE ***** */
+  /* ***** STIMULUS PROCESSING PHASE ***** */
 
-	/* setup initial STM chain pointer */
+  /* setup initial STM chain pointer */
 
-	np = ADR_MASK & stmptr[TRG_MASK & trg];
-	nextpch = np ? &patches[np] : (struct patch *)NULL;
+  np = ADR_MASK & stmptr[TRG_MASK & trg];
+  nextpch = np ? &patches[np] : (struct patch *) NULL;
 
-	/* process the STM chain */
+  /* process the STM chain */
 
-	while ((struct patch *)NULL NE nextpch) {	/* for each patch .. */
+  while ((struct patch *) NULL NE nextpch)
+    {				/* for each patch .. */
 
-		if ((nextpch->paspec & PE_TBIT) AND	/* if it's defined ... */
-		    (nextpch->stmnum EQ trg))		/* ... and stm matches */
-			dopatch(nextpch);		/* ... do the patch */
+      if ((nextpch->paspec & PE_TBIT) AND	/* if it's defined ... */
+	  (nextpch->stmnum EQ trg))	/* ... and stm matches */
+	dopatch (nextpch);	/* ... do the patch */
 
-		/* point at the next patch */
+      /* point at the next patch */
 
-		np = nextpch->nextstm;
-		nextpch = np ? &patches[np] : (struct patch *)NULL;
-	}
+      np = nextpch->nextstm;
+      nextpch = np ? &patches[np] : (struct patch *) NULL;
+    }
 }

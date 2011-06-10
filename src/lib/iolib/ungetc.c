@@ -9,14 +9,14 @@
 #include "stddefs.h"
 
 int
-ungetc(c, ptr)
-register int c;
-register FILE *ptr;
+ungetc (c, ptr)
+     register int c;
+     register FILE *ptr;
 {
-	if ((c EQ EOF) OR (ptr->_bp LE ptr->_buff))
-		return(EOF);
+  if ((c EQ EOF) OR (ptr->_bp LE ptr->_buff))
+    return (EOF);
 
-	*--ptr->_bp = c;
+  *--ptr->_bp = c;
 
-	return(c);
+  return (c);
 }

@@ -18,10 +18,10 @@
    =============================================================================
 */
 
-VSinit()
+VSinit ()
 {
-	v_nobj = 0;
-	v_obpri = 0;
-	memsetw(v_obtab, 0, (sizeof v_obtab)/2);
-	v_curob = &v_obtab[0];
+  v_nobj = 0;
+  v_obpri = 0;
+  memsetw (v_obtab, 0, (sizeof v_obtab) / 2);
+  v_curob = &v_obtab[0];
 }

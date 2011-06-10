@@ -26,19 +26,19 @@
 
 #define	MAXARGS		30	/* maximum number of command line arguments */
 
-extern	int	open(), creat();
+extern int open (), creat ();
 
-extern	int	InitFS();
-extern	int	_fd_cls();
-extern	int	xtrap15();
+extern int InitFS ();
+extern int _fd_cls ();
+extern int xtrap15 ();
 
-int (*_clsall)();
+int (*_clsall) ();
 
 /* 
 */
 
-static	int	Argc;
-static	char	*Argv[MAXARGS];
+static int Argc;
+static char *Argv[MAXARGS];
 
 /* 
 */
@@ -49,10 +49,10 @@ static	char	*Argv[MAXARGS];
    ============================================================================
 */
 
-exit(code)
+exit (code)
 {
-	(*_clsall)();		/* close all open files */
-	xtrap15(code);		/* return to the BIOS */
+  (*_clsall) ();		/* close all open files */
+  xtrap15 (code);		/* return to the BIOS */
 }
 
 
@@ -65,16 +65,16 @@ exit(code)
 */
 
 static
-_eredir(name)
-char *name;
+_eredir (name)
+     char *name;
 {
-	char buff[200];
+  char buff[200];
 
-	strcpy(buff, "Can't open file for redirection: ");
-	strcat(buff, name);
-	strcat(buff, "\n");
-	write(2, buff, strlen(buff));
-	exit(EINVAL);
+  strcpy (buff, "Can't open file for redirection: ");
+  strcat (buff, name);
+  strcat (buff, "\n");
+  write (2, buff, strlen (buff));
+  exit (EINVAL);
 }
 
 #endif
@@ -88,74 +88,82 @@ char *name;
    ============================================================================
 */
 
-Croot(cp)
-register char *cp;
+Croot (cp)
+     register char *cp;
 {
-	register	char	*fname;
-	register	int	k;
+  register char *fname;
+  register int k;
 
-	Argv[0] = ROOTMSG;
-	Argc = 1;
+  Argv[0] = ROOTMSG;
+  Argc = 1;
 
-	_clsall = _fd_cls;
-	InitFS();
+  _clsall = _fd_cls;
+  InitFS ();
 
 #if	REDIRECT
 
-	while (Argc < MAXARGS) {	/* handle command line arguments */
+  while (Argc < MAXARGS)
+    {				/* handle command line arguments */
 
-		while (*cp EQ ' ' OR *cp EQ '\t')	/* skip whitespace */
-			++cp;
+      while (*cp EQ ' ' OR * cp EQ '\t')	/* skip whitespace */
+	++cp;
 
-		if (*cp EQ 0)			/* check for end of line */
-			break;
+      if (*cp EQ 0)		/* check for end of line */
+	break;
 
-		if (*cp EQ '>') {		/* > - redirect output */
+      if (*cp EQ '>')
+	{			/* > - redirect output */
 
-			k = 1;	/* stdout */
-			goto redir;
+	  k = 1;		/* stdout */
+	  goto redir;
 
-		} else if (*cp EQ '<') {	/* < - redirect input */
-
-			k = 0;	/* stdin */
-redir:
-			while (*++cp EQ ' ' OR *cp EQ '\t')	/* skip whitespace */
-				;
-
-			fname = cp;	/* pointer to start of name */
-
-			while (*++cp)	/* skip to whitespace */
-				if (*cp EQ ' ' OR *cp EQ '\t') {
-
-					*cp++ = 0;
-					break;
-				}
-
-			close(k);	/* close old assignment */
-
-			if (k)
-				k = creat(fname, 0666);		/* stdout */
-			else
-				k = open(fname, O_RDONLY);	/* stdin */
-
-			if (k EQ -1)
-				_eredir(fname);
-
-		} else {	/* collect a command line argument */
-
-			Argv[Argc++] = cp;
-
-			while (*++cp)	/* find end of argument */
-				if (*cp EQ ' ' OR *cp EQ '\t') {
-
-					*cp++ = 0;
-					break;
-				}
-		}
 	}
+      else if (*cp EQ '<')
+	{			/* < - redirect input */
+
+	  k = 0;		/* stdin */
+	redir:
+	  while (*++cp EQ ' ' OR * cp EQ '\t')	/* skip whitespace */
+	    ;
+
+	  fname = cp;		/* pointer to start of name */
+
+	  while (*++cp)		/* skip to whitespace */
+	    if (*cp EQ ' ' OR * cp EQ '\t')
+	      {
+
+		*cp++ = 0;
+		break;
+	      }
+
+	  close (k);		/* close old assignment */
+
+	  if (k)
+	    k = creat (fname, 0666);	/* stdout */
+	  else
+	    k = open (fname, O_RDONLY);	/* stdin */
+
+	  if (k EQ - 1)
+	    _eredir (fname);
+
+	}
+      else
+	{			/* collect a command line argument */
+
+	  Argv[Argc++] = cp;
+
+	  while (*++cp)		/* find end of argument */
+	    if (*cp EQ ' ' OR * cp EQ '\t')
+	      {
+
+		*cp++ = 0;
+		break;
+	      }
+	}
+    }
 
 #endif
 
-	main(Argc,Argv);	/* call application */
-	exit(0);		/* exit in case the application didn't */
+  main (Argc, Argv);		/* call application */
+  exit (0);			/* exit in case the application didn't */
 }

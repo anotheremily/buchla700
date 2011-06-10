@@ -5,17 +5,18 @@
    =============================================================================
 */
 
-#define	MAXFSL	256			/* size of the gdsel free list */
-#define	NGDSEL	17			/* number of gdstb elements */
+#define	MAXFSL	256		/* size of the gdsel free list */
+#define	NGDSEL	17		/* number of gdstb elements */
 
-#define	I_SBASE		0		/* initial sbase value */
-#define	I_OFFSET	0		/* initial soffset value */
+#define	I_SBASE		0	/* initial sbase value */
+#define	I_OFFSET	0	/* initial soffset value */
 
-struct	gdsel	{
+struct gdsel
+{
 
-	struct	gdsel	*next;		/* pointer to next element */
-	short	note;			/* note offset 0..87 */
-	short	code;			/* update code */
+  struct gdsel *next;		/* pointer to next element */
+  short note;			/* note offset 0..87 */
+  short code;			/* update code */
 };
 
 /*

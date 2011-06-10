@@ -14,23 +14,25 @@
 */
 
 int
-tolower(c)
-int c;
+tolower (c)
+     int c;
 {
-	int	x;
+  int x;
 
-	if (isascii(c)) {
+  if (isascii (c))
+    {
 
-		if (isupper(c))
-			x = _tolower(c);
-		else
-			x = c;
+      if (isupper (c))
+	x = _tolower (c);
+      else
+	x = c;
 
-	} else {
+    }
+  else
+    {
 
-		x = c;
-	}
+      x = c;
+    }
 
-	return(x);
+  return (x);
 }
-

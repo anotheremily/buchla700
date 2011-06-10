@@ -6,7 +6,7 @@
    ============================================================================
  */
 
-extern	int	errno;
+extern int errno;
 
 #define EPERM	1
 #define ENOENT	2
@@ -52,4 +52,3 @@ extern	int	errno;
 #define ERENAME	36
 
 /* ***** end of errno.h ***** */
-

@@ -67,167 +67,175 @@
 
 
 int
-readln(unit,nc,ctl,nb,buf)
-int unit;	/* logical unit number 1..4 */
-int nc;		/* length of control string ctl */
-char *ctl;	/* control string pointer */
-int nb;		/* buffer limit */
-char *buf;	/* buffer pointer (at least nb+1 bytes) */
+readln (unit, nc, ctl, nb, buf)
+     int unit;			/* logical unit number 1..4 */
+     int nc;			/* length of control string ctl */
+     char *ctl;			/* control string pointer */
+     int nb;			/* buffer limit */
+     char *buf;			/* buffer pointer (at least nb+1 bytes) */
 {
-	register char *cp;
-	register int i, j;
-	register char *bp;
-	register char c;
-	
+  register char *cp;
+  register int i, j;
+  register char *bp;
+  register char c;
 
-	if (unit LT 1 OR unit GT 4)	/* verify unit number is in range */
-		return(ERR15);		/* return ERR15 if not */
 
-	bp = buf;	/* setup buffer pointer */
+  if (unit LT 1 OR unit GT 4)	/* verify unit number is in range */
+    return (ERR15);		/* return ERR15 if not */
 
-	for (i = 0; i < nb; i++) {	/* main read loop */
+  bp = buf;			/* setup buffer pointer */
 
-		c = BIOS(B_GETC, unit) & 0xFF;	/* get a byte from the unit */
+  for (i = 0; i < nb; i++)
+    {				/* main read loop */
 
-		*bp++ = c;	/* add it to the buffer */
-		*bp = '\0';	/* ... followed by a zero byte */
+      c = BIOS (B_GETC, unit) & 0xFF;	/* get a byte from the unit */
 
-		cp = ctl;	/* setup to scan ctl for the character */
+      *bp++ = c;		/* add it to the buffer */
+      *bp = '\0';		/* ... followed by a zero byte */
 
-		for (j = 0; j < nc; j++)	/* scan each byte of ctl */
-			if (*ctl++ EQ c )	/* done if we find it */
-				return((int)c);
+      cp = ctl;			/* setup to scan ctl for the character */
 
-		BIOS(B_PUTC, unit, c);		/* echo the character */
-	}
+      for (j = 0; j < nc; j++)	/* scan each byte of ctl */
+	if (*ctl++ EQ c)	/* done if we find it */
+	  return ((int) c);
 
-	return(ERR01);	/* buffer full */
+      BIOS (B_PUTC, unit, c);	/* echo the character */
+    }
+
+  return (ERR01);		/* buffer full */
 }
 
 /*  */
 
 int
-getln(unit,nb,buf)
-int unit;	/* logical unit number 1..4 */
-int nb;		/* buffer limit */
-char *buf;	/* buffer pointer */
+getln (unit, nb, buf)
+     int unit;			/* logical unit number 1..4 */
+     int nb;			/* buffer limit */
+     char *buf;			/* buffer pointer */
 {
-	register char *bp;
-	register char c;
-	register int bc;
+  register char *bp;
+  register char c;
+  register int bc;
 
-	bc = 0;		/* number of characters currently in buffer */
-	bp = buf;	/* current buffer pointer */
-	*bp = '\0';	/* initial null into buffer */
+  bc = 0;			/* number of characters currently in buffer */
+  bp = buf;			/* current buffer pointer */
+  *bp = '\0';			/* initial null into buffer */
 
-	while (bc LT nb) {
+  while (bc LT nb)
+    {
 
-		c = BIOS(B_GETC, unit) & 0xFF;
+      c = BIOS (B_GETC, unit) & 0xFF;
 
-		switch (c) {
+      switch (c)
+	{
 
-		case A_BS:
-		case A_DEL:
+	case A_BS:
+	case A_DEL:
 
-			if (bc EQ 0) {
+	  if (bc EQ 0)
+	    {
 
-				BIOS(B_PUTC, unit, A_BEL);
-				break;
+	      BIOS (B_PUTC, unit, A_BEL);
+	      break;
 
-			} else {
+	    }
+	  else
+	    {
 
-				bc--;
-				bp--;
-				*bp = '\0';
-				BIOS(B_PUTC, unit, A_BS);
-				BIOS(B_PUTC, unit, ' ');
-				BIOS(B_PUTC, unit, A_BS);
-				break;
-			}
+	      bc--;
+	      bp--;
+	      *bp = '\0';
+	      BIOS (B_PUTC, unit, A_BS);
+	      BIOS (B_PUTC, unit, ' ');
+	      BIOS (B_PUTC, unit, A_BS);
+	      break;
+	    }
 
-		case A_CR:
-		case A_LF:
+	case A_CR:
+	case A_LF:
 
-			*bp++ = c;		/* put character in buffer */
-			*bp = '\0';		/* terminate line with null */
-			return((int)c);		/* return -- CR or LF hit */
+	  *bp++ = c;		/* put character in buffer */
+	  *bp = '\0';		/* terminate line with null */
+	  return ((int) c);	/* return -- CR or LF hit */
 
 /*  */
 
-		case CTL('X'):
+	case CTL ('X'):
 
-			*buf = '\0';		/* clear the buffer */
-			return((int)c);		/* return -- line cancelled */
+	  *buf = '\0';		/* clear the buffer */
+	  return ((int) c);	/* return -- line cancelled */
 
-		default:
+	default:
 
-			*bp++ = c;		/* put character in buffer */
-			*bp = '\0';		/* terminate line with null */
-			BIOS(B_PUTC, unit, c);	/* echo the character */
-			bc++;			/* update character count */
-		}
+	  *bp++ = c;		/* put character in buffer */
+	  *bp = '\0';		/* terminate line with null */
+	  BIOS (B_PUTC, unit, c);	/* echo the character */
+	  bc++;			/* update character count */
 	}
+    }
 
-	return(ERR01);		/* buffer full error */
+  return (ERR01);		/* buffer full error */
 }
 
 /*  */
 
 int
-getrln(unit,nb,buf)
-int unit;	/* logical unit number 1..4 */
-int nb;		/* buffer limit */
-char *buf;	/* buffer pointer */
+getrln (unit, nb, buf)
+     int unit;			/* logical unit number 1..4 */
+     int nb;			/* buffer limit */
+     char *buf;			/* buffer pointer */
 {
-	register char *bp;
-	register char c;
-	register int bc;
+  register char *bp;
+  register char c;
+  register int bc;
 
-	bc = 0;		/* number of characters currently in buffer */
-	bp = buf;	/* current buffer pointer */
-	*bp = '\0';	/* initial null into buffer */
+  bc = 0;			/* number of characters currently in buffer */
+  bp = buf;			/* current buffer pointer */
+  *bp = '\0';			/* initial null into buffer */
 
-	while (bc LT nb) {
+  while (bc LT nb)
+    {
 
-		c = BIOS(B_GETC, unit) & 0xFF;
+      c = BIOS (B_GETC, unit) & 0xFF;
 
-		switch (c) {
+      switch (c)
+	{
 
-		case A_CR:
-		case A_LF:
-		case CTL('Z'):
+	case A_CR:
+	case A_LF:
+	case CTL ('Z'):
 
-			*bp++ = c;		/* put character in buffer */
-			*bp = '\0';		/* terminate line with null */
-			return((int)c);		/* return -- CR, LF, or ^Z hit */
+	  *bp++ = c;		/* put character in buffer */
+	  *bp = '\0';		/* terminate line with null */
+	  return ((int) c);	/* return -- CR, LF, or ^Z hit */
 
-		case CTL('X'):
+	case CTL ('X'):
 
-			*buf = '\0';		/* clear the buffer */
-			return((int)c);		/* return -- line cancelled */
+	  *buf = '\0';		/* clear the buffer */
+	  return ((int) c);	/* return -- line cancelled */
 
-		default:
+	default:
 
-			*bp++ = c;		/* put character in buffer */
-			*bp = '\0';		/* terminate line with null */
-			bc++;			/* update character count */
-		}
+	  *bp++ = c;		/* put character in buffer */
+	  *bp = '\0';		/* terminate line with null */
+	  bc++;			/* update character count */
 	}
+    }
 
-	return(ERR01);		/* buffer full error */
+  return (ERR01);		/* buffer full error */
 }
 
 /*  */
 
-writeln(unit,buf)
-int unit;	/* logical unit number 0..4 */
-char *buf;	/* buffer pointer */
+writeln (unit, buf)
+     int unit;			/* logical unit number 0..4 */
+     char *buf;			/* buffer pointer */
 {
-	register char *bp;
-	register char c;
+  register char *bp;
+  register char c;
 
-	bp = buf;	/* setup buffer pointer */
+  bp = buf;			/* setup buffer pointer */
 
-	while (c = *bp++)	/* send the string, a byte at a time */
-		BIOS(B_PUTC, unit, c);
+  while (c = *bp++)		/* send the string, a byte at a time */
+    BIOS (B_PUTC, unit, c);
 }

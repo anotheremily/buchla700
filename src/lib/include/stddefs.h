@@ -94,6 +94,6 @@
 
 /* BOOL type definition for flag variables */
 
-typedef	char	BOOL;
+typedef char BOOL;
 
 #endif

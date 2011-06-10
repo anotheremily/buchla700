@@ -20,25 +20,26 @@
 */
 
 long
-mangle(bitmap, nb, ib)
-register long *bitmap;		/* bit map table pointer */
-register short nb;		/* number of least significant input bits */
-register long ib;		/* input data (in nb least significant bits) */
+mangle (bitmap, nb, ib)
+     register long *bitmap;	/* bit map table pointer */
+     register short nb;		/* number of least significant input bits */
+     register long ib;		/* input data (in nb least significant bits) */
 {
-	register long	bm;			/* scan mask */
-	register long	rv;			/* result value */
-	register short	bn;			/* bit number (bitmap index) */
+  register long bm;		/* scan mask */
+  register long rv;		/* result value */
+  register short bn;		/* bit number (bitmap index) */
 
-	bm = 0x00000001L;			/* setup scan mask */
-	rv = 0x00000000L;			/* clear the output word */
+  bm = 0x00000001L;		/* setup scan mask */
+  rv = 0x00000000L;		/* clear the output word */
 
-	for (bn = 0; bn < nb; bn++) {		/* scan across nb bits */
+  for (bn = 0; bn < nb; bn++)
+    {				/* scan across nb bits */
 
-		if (ib & bm)			/* if the input bit is 1 */
-			rv |= bitmap[bn];	/* 'OR' the bitmap into rv */
+      if (ib & bm)		/* if the input bit is 1 */
+	rv |= bitmap[bn];	/* 'OR' the bitmap into rv */
 
-		bm <<= 1;			/* shift the scan mask left */
-	}
+      bm <<= 1;			/* shift the scan mask left */
+    }
 
-	return(rv);				/* return rv as the result */
+  return (rv);			/* return rv as the result */
 }

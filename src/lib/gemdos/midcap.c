@@ -16,43 +16,44 @@
 #define	MBUFSZ		(unsigned short)(31*1024)
 
 #define	SNAPFILE	"MIDCAP.DAT"	/* snap file name */
-#define	MAXNOL		16		/* max number of data bytes on a line */
+#define	MAXNOL		16	/* max number of data bytes on a line */
 
 #define	FORMAT1		"\n%5u  %02.02x  "
 #define	FORMAT2		"%02.02x  "
 #define	FORMAT3		"\n%5u  "
 
-struct iorec {		/* structure for MIDI buffer description */
+struct iorec
+{				/* structure for MIDI buffer description */
 
-	char *ibuf;		/* base address of buffer */
-        short ibufsz;		/* buffer size in bytes */
-        short ibufhd;		/* head index */
-        short ibuftl;		/* tail index */
-        short ibuflo;		/* low water mark index */
-        short ibufhi;		/* high water mark index */
+  char *ibuf;			/* base address of buffer */
+  short ibufsz;			/* buffer size in bytes */
+  short ibufhd;			/* head index */
+  short ibuftl;			/* tail index */
+  short ibuflo;			/* low water mark index */
+  short ibufhi;			/* high water mark index */
 };
 
-extern	char	*malloc();
+extern char *malloc ();
 
-void	PrMIDI(), cleanbf();
+void PrMIDI (), cleanbf ();
 
-int	SetMBuf(), midi_in(), m_stat();
+int SetMBuf (), midi_in (), m_stat ();
 
-FILE	*ofp;			/* output file pointer */
-FILE	*sfp;			/* snap file pointer */
+FILE *ofp;			/* output file pointer */
+FILE *sfp;			/* snap file pointer */
 
-char	*newbuf;		/* expanded MIDI buffer pointer */
-char	*oldbuf;		/* old MIDI buffer pointer */
+char *newbuf;			/* expanded MIDI buffer pointer */
+char *oldbuf;			/* old MIDI buffer pointer */
 
-unsigned short	indx;		/* MIDI input byte number */
+unsigned short indx;		/* MIDI input byte number */
 
-short	feseen;			/* MIDI active sensing seen */
-short	nol;			/* number of MIDI data bytes on the line */
-short	oldbsz;			/* old MIDI buffer size */
-short	oldbhi;			/* old MIDI buffer high water mark */
-short	oldblo;			/* old MIDI buffer low water mark */
+short feseen;			/* MIDI active sensing seen */
+short nol;			/* number of MIDI data bytes on the line */
+short oldbsz;			/* old MIDI buffer size */
+short oldbhi;			/* old MIDI buffer high water mark */
+short oldblo;			/* old MIDI buffer low water mark */
 
-struct iorec	*m_buff;	/* MIDI iorec pointer */
+struct iorec *m_buff;		/* MIDI iorec pointer */
 
 /* 
 */
@@ -64,41 +65,42 @@ struct iorec	*m_buff;	/* MIDI iorec pointer */
 */
 
 int
-SetMBuf()
+SetMBuf ()
 {
-        unsigned short size;
+  unsigned short size;
 
-        size = MBUFSZ;	/* MIDI buffer */
+  size = MBUFSZ;		/* MIDI buffer */
 
-        m_buff = (struct iorec *)Iorec(2); /* pointer to buffer descriptor */
+  m_buff = (struct iorec *) Iorec (2);	/* pointer to buffer descriptor */
 
-	oldbuf = m_buff->ibuf;
-	oldbsz = m_buff->ibufsz;
-	oldbhi = m_buff->ibufhi;
-	oldblo = m_buff->ibuflo;
+  oldbuf = m_buff->ibuf;
+  oldbsz = m_buff->ibufsz;
+  oldbhi = m_buff->ibufhi;
+  oldblo = m_buff->ibuflo;
 
-	if ((char *)NULL EQ (newbuf = (char *)malloc(size))) {
+  if ((char *) NULL EQ (newbuf = (char *) malloc (size)))
+    {
 
-		printf ("ERROR -- unable to allocate MIDI buffer.\n");
-		return(FAILURE);
-	}
+      printf ("ERROR -- unable to allocate MIDI buffer.\n");
+      return (FAILURE);
+    }
 
-	/* clear out the buffer */
+  /* clear out the buffer */
 
-	m_buff->ibufhd = 0;		/* reset the head index */
-	m_buff->ibuftl = 0;		/* reset the tail index */
+  m_buff->ibufhd = 0;		/* reset the head index */
+  m_buff->ibuftl = 0;		/* reset the tail index */
 
-	/* we do this twice because we aren't disabling interrupts ... */
+  /* we do this twice because we aren't disabling interrupts ... */
 
-	m_buff->ibufhd = 0;		/* reset the head index */
-	m_buff->ibuftl = 0;		/* reset the tail index */
+  m_buff->ibufhd = 0;		/* reset the head index */
+  m_buff->ibuftl = 0;		/* reset the tail index */
 
-        m_buff->ibuf   = newbuf;	/* change address of buffer */
-        m_buff->ibufsz = size;		/* change size of buffer */
+  m_buff->ibuf = newbuf;	/* change address of buffer */
+  m_buff->ibufsz = size;	/* change size of buffer */
 
-	indx = 0;			/* reset the byte index */
+  indx = 0;			/* reset the byte index */
 
-	return(SUCCESS);
+  return (SUCCESS);
 }
 
 /*
@@ -108,9 +110,9 @@ SetMBuf()
 */
 
 int
-midi_in()
+midi_in ()
 {
-        return((int)Bconin(3) & 0x00FF);
+  return ((int) Bconin (3) & 0x00FF);
 }
 
 
@@ -121,57 +123,65 @@ midi_in()
 */
 
 void
-PrMIDI(M_Byte)
-unsigned int M_Byte;
+PrMIDI (M_Byte)
+     unsigned int M_Byte;
 {
-	if ((0x00FF & M_Byte) EQ 0x00FE) {
+  if ((0x00FF & M_Byte) EQ 0x00FE)
+    {
 
-		if (NOT feseen) {
+      if (NOT feseen)
+	{
 
-			printf("\nActive sense is active\n");
+	  printf ("\nActive sense is active\n");
 
-			if ((FILE *)NULL NE ofp)
-				fprintf(ofp, "\nActive sense is active\n");
-		}
-
-		nol = 0;
-		feseen = TRUE;
-
-	} else {
-
-		++indx;
-
-		if (0x0080 & M_Byte) {		/* new status byte */
-
-			printf(FORMAT1, indx, M_Byte);
-			nol = 0;
-
-			if ((FILE *)NULL NE ofp)
-				fprintf(ofp, FORMAT1, indx, M_Byte);
-
-		} else {			/* data byte */
-
-			if (++nol > MAXNOL) {
-
-				printf(FORMAT3, indx);
-				nol = 1;
-
-				if ((FILE *)NULL NE ofp)
-					fprintf(ofp, FORMAT3, indx);
-			}
-
-			printf(FORMAT2, M_Byte);
-
-			if ((FILE *)NULL NE ofp)
-				fprintf(ofp, FORMAT2, M_Byte);
-		}
+	  if ((FILE *) NULL NE ofp)
+	    fprintf (ofp, "\nActive sense is active\n");
 	}
 
-	fflush(stdout);
+      nol = 0;
+      feseen = TRUE;
 
-	if ((FILE *)NULL NE ofp)
-		fflush(ofp);
-}       
+    }
+  else
+    {
+
+      ++indx;
+
+      if (0x0080 & M_Byte)
+	{			/* new status byte */
+
+	  printf (FORMAT1, indx, M_Byte);
+	  nol = 0;
+
+	  if ((FILE *) NULL NE ofp)
+	    fprintf (ofp, FORMAT1, indx, M_Byte);
+
+	}
+      else
+	{			/* data byte */
+
+	  if (++nol > MAXNOL)
+	    {
+
+	      printf (FORMAT3, indx);
+	      nol = 1;
+
+	      if ((FILE *) NULL NE ofp)
+		fprintf (ofp, FORMAT3, indx);
+	    }
+
+	  printf (FORMAT2, M_Byte);
+
+	  if ((FILE *) NULL NE ofp)
+	    fprintf (ofp, FORMAT2, M_Byte);
+	}
+    }
+
+  fflush (stdout);
+
+  if ((FILE *) NULL NE ofp)
+    fflush (ofp);
+}
 
 
 /*
@@ -181,9 +191,9 @@ unsigned int M_Byte;
 */
 
 int
-m_stat()
+m_stat ()
 {
-        return((int)Bconstat(3) ? TRUE : FALSE);
+  return ((int) Bconstat (3) ? TRUE : FALSE);
 }
 
 
@@ -194,34 +204,35 @@ m_stat()
 */
 
 void
-cleanbf()
+cleanbf ()
 {
-	int mstat;
+  int mstat;
 
-	printf("Clearing MIDI input buffer ...\n");
-	feseen = FALSE;
+  printf ("Clearing MIDI input buffer ...\n");
+  feseen = FALSE;
 
-	/* clear out the buffer by resetting the head and tail indices */
+  /* clear out the buffer by resetting the head and tail indices */
 
-	m_buff->ibufhd = 0;		/* reset the head index */
-	m_buff->ibuftl = 0;		/* reset the tail index */
+  m_buff->ibufhd = 0;		/* reset the head index */
+  m_buff->ibuftl = 0;		/* reset the tail index */
 
-	/* we do this twice because we aren't disabling interrupts ... */
+  /* we do this twice because we aren't disabling interrupts ... */
 
-	m_buff->ibufhd = 0;		/* reset the head index */
-	m_buff->ibuftl = 0;		/* reset the tail index */
+  m_buff->ibufhd = 0;		/* reset the head index */
+  m_buff->ibuftl = 0;		/* reset the tail index */
 
-	/* make sure it's really drained */
+  /* make sure it's really drained */
 
-	mstat = m_stat();
+  mstat = m_stat ();
 
-        while (mstat) {
+  while (mstat)
+    {
 
-		midi_in();
-		mstat = m_stat();
-	}
+      midi_in ();
+      mstat = m_stat ();
+    }
 
-	indx = 0;
+  indx = 0;
 }
 
 /* 
@@ -233,132 +244,143 @@ cleanbf()
    =============================================================================
 */
 
-main(argc, argv)
-int argc;
-char *argv[];
+main (argc, argv)
+     int argc;
+     char *argv[];
 {
-	int ch, runtag;
+  int ch, runtag;
 
-	ofp    = (FILE *)NULL;
+  ofp = (FILE *) NULL;
 
-	printf("\033E%s\n\n", VERMSG);
-	printf("Hit ESC to quit,  / to clear buffer,  space to pause output.\n\n");
+  printf ("\033E%s\n\n", VERMSG);
+  printf ("Hit ESC to quit,  / to clear buffer,  space to pause output.\n\n");
 
-	if (SetMBuf())		/* move MIDI buffer & increase its size */
-		exit(2);
+  if (SetMBuf ())		/* move MIDI buffer & increase its size */
+    exit (2);
 
-	printf("%u byte MIDI buffer allocated at 0x%08.8lx\n",
-		MBUFSZ, (long)newbuf);
+  printf ("%u byte MIDI buffer allocated at 0x%08.8lx\n",
+	  MBUFSZ, (long) newbuf);
 
-        cleanbf();		/* clear out MIDI buffer */
+  cleanbf ();			/* clear out MIDI buffer */
 
-	if (argc EQ 2) {
+  if (argc EQ 2)
+    {
 
-		if ((FILE *)NULL EQ (ofp = fopen(argv[1], "w"))) {
+      if ((FILE *) NULL EQ (ofp = fopen (argv[1], "w")))
+	{
 
-			printf("ERROR -- Unable to open \"%s\" for output.\n",
-				argv[1]);
+	  printf ("ERROR -- Unable to open \"%s\" for output.\n", argv[1]);
 
-			exit(2);
+	  exit (2);
 
-		} else {
-
-			printf("Outputting to file \"%s\".\n", argv[1]);
-		}
 	}
+      else
+	{
 
-        printf("Ready for MIDI data.\n");
-	runtag = TRUE;
+	  printf ("Outputting to file \"%s\".\n", argv[1]);
+	}
+    }
 
-        while (runtag) {
+  printf ("Ready for MIDI data.\n");
+  runtag = TRUE;
 
-		if (Bconstat(2)) {
+  while (runtag)
+    {
 
-			ch = 0x00FF & Bconin(2);
+      if (Bconstat (2))
+	{
 
-			switch (ch) {
+	  ch = 0x00FF & Bconin (2);
 
-			case '\033':	/* escape */
+	  switch (ch)
+	    {
 
-				runtag = FALSE;
-				break;
+	    case '\033':	/* escape */
 
-			case ' ':	/* space = pause */
+	      runtag = FALSE;
+	      break;
 
-				printf("PAUSED");
-				Bconin(2);
-				printf("\b\b\b\b\b\b      \b\b\b\b\b\b");
+	    case ' ':		/* space = pause */
 
-				break;
+	      printf ("PAUSED");
+	      Bconin (2);
+	      printf ("\b\b\b\b\b\b      \b\b\b\b\b\b");
 
-			case '/':	/* / = clear buffer and screen */
+	      break;
 
-				cleanbf();
-				printf("\033E");
-			        printf("Ready for MIDI data.\n");
+	    case '/':		/* / = clear buffer and screen */
 
-				if ((FILE *)NULL NE ofp) {
+	      cleanbf ();
+	      printf ("\033E");
+	      printf ("Ready for MIDI data.\n");
 
-					fprintf(ofp, "\n\nMIDI buffer flushed.\n\n");
-					fflush(ofp);
-				}
+	      if ((FILE *) NULL NE ofp)
+		{
 
-				break;
-
-			case 'w':	/* w = write to SNAPFILE */
-
-				if ((FILE *)NULL EQ (sfp = fopenb(SNAPFILE, "w"))) {
-
-					printf("ERROR -- Unable to open \"%s\" for output.\n",
-						SNAPFILE);
-
-					exit(2);
-
-				} else {
-
-					printf("\n\nOutputting to file \"%s\".\n", SNAPFILE);
-				}
-
-				fwrite(newbuf, indx, 1, sfp);
-
-				fflush(sfp);
-				fclose(sfp);
-
-				printf("\nFile written and closed.\n\n");
-				break;
-			}
+		  fprintf (ofp, "\n\nMIDI buffer flushed.\n\n");
+		  fflush (ofp);
 		}
 
-                if (m_stat())
-                        PrMIDI(midi_in());
+	      break;
 
-		if ((FILE *)NULL NE ofp)
-			fflush(ofp);
-        } 
+	    case 'w':		/* w = write to SNAPFILE */
 
-	if ((FILE *)NULL NE ofp) {
+	      if ((FILE *) NULL EQ (sfp = fopenb (SNAPFILE, "w")))
+		{
 
-		fprintf(ofp, "\n");
-		fflush(ofp);
-		fclose(ofp);
+		  printf ("ERROR -- Unable to open \"%s\" for output.\n",
+			  SNAPFILE);
+
+		  exit (2);
+
+		}
+	      else
+		{
+
+		  printf ("\n\nOutputting to file \"%s\".\n", SNAPFILE);
+		}
+
+	      fwrite (newbuf, indx, 1, sfp);
+
+	      fflush (sfp);
+	      fclose (sfp);
+
+	      printf ("\nFile written and closed.\n\n");
+	      break;
+	    }
 	}
 
-	/* clear out the buffer */
+      if (m_stat ())
+	PrMIDI (midi_in ());
 
-	m_buff->ibufhd = 0;		/* reset the head index */
-	m_buff->ibuftl = 0;		/* reset the tail index */
+      if ((FILE *) NULL NE ofp)
+	fflush (ofp);
+    }
 
-	/* we do this twice because we aren't disabling interrupts ... */
+  if ((FILE *) NULL NE ofp)
+    {
 
-	m_buff->ibufhd = 0;		/* reset the head index */
-	m_buff->ibuftl = 0;		/* reset the tail index */
+      fprintf (ofp, "\n");
+      fflush (ofp);
+      fclose (ofp);
+    }
 
-	m_buff->ibufsz = oldbsz;	/* restore the old buffer size */
-	m_buff->ibuf   = oldbuf;	/* restore the old buffer address */
+  /* clear out the buffer */
 
-	free(newbuf);			/* give back the big MIDI buffer */
+  m_buff->ibufhd = 0;		/* reset the head index */
+  m_buff->ibuftl = 0;		/* reset the tail index */
 
-	printf("\n");
-	fflush(stdout);
-	exit(0);
+  /* we do this twice because we aren't disabling interrupts ... */
+
+  m_buff->ibufhd = 0;		/* reset the head index */
+  m_buff->ibuftl = 0;		/* reset the tail index */
+
+  m_buff->ibufsz = oldbsz;	/* restore the old buffer size */
+  m_buff->ibuf = oldbuf;	/* restore the old buffer address */
+
+  free (newbuf);		/* give back the big MIDI buffer */
+
+  printf ("\n");
+  fflush (stdout);
+  exit (0);
 }
