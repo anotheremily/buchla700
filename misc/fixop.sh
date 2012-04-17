@@ -1,4 +1,7 @@
 #!/bin/bash
+#
+# Originally written by boberg (https://github.com/boberg)
+# 
 
 fixop() {
 
