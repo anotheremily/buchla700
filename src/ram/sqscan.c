@@ -73,7 +73,7 @@ Pcheck (ptr, msg)
 {
   register struct s_entry *cval;
 
-  if (ptr EQ E_NULL)
+  if (ptr == E_NULL)
     {
 
       printf ("** Pcheck($%08.8lx):  ZERO - %s **\n", ptr, msg);
@@ -87,7 +87,7 @@ Pcheck (ptr, msg)
 
   cval = spool;
 
-  if (ptr LT cval)
+  if (ptr < cval)
     {
 
       printf ("** Pcheck($%08.8lx):  LOW - %s **\n", ptr, msg);
@@ -100,7 +100,7 @@ Pcheck (ptr, msg)
 
   cval = &spool[(long) MAX_SE - 1];
 
-  if (ptr GT cval)
+  if (ptr > cval)
     {
 
       printf ("** Pcheck($%08.8lx): HIGH - %s **\n", ptr, msg);
@@ -185,7 +185,7 @@ Qevent ()
       if (CM_USTR ("on"))
 	{
 
-	  if (E_NULL EQ (tsp1 = e_alc (E_SIZE2)))
+	  if (E_NULL == (tsp1 = e_alc (E_SIZE2)))
 	    {
 
 	      nospace ("!status=on");
@@ -208,7 +208,7 @@ Qevent ()
       else if (CM_USTR ("off"))
 	{
 
-	  if (E_NULL EQ (tsp1 = e_alc (E_SIZE2)))
+	  if (E_NULL == (tsp1 = e_alc (E_SIZE2)))
 	    {
 
 	      nospace ("!status=off");
@@ -245,7 +245,7 @@ Qevent ()
 
       aux1 = QQnum;
 
-      if (E_NULL EQ (tsp1 = e_alc (E_SIZE2)))
+      if (E_NULL == (tsp1 = e_alc (E_SIZE2)))
 	{
 
 	  nospace ("!tempo");
@@ -276,7 +276,7 @@ Qevent ()
 
       aux1 = QQnum;
 
-      if (E_NULL EQ (tsp1 = e_alc (E_SIZE2)))
+      if (E_NULL == (tsp1 = e_alc (E_SIZE2)))
 	{
 
 	  nospace ("!inst");
@@ -308,7 +308,7 @@ Qevent ()
 
       aux1 = QQnum;
 
-      if (E_NULL EQ (tsp1 = e_alc (E_SIZE2)))
+      if (E_NULL == (tsp1 = e_alc (E_SIZE2)))
 	{
 
 	  nospace ("!tuning");
@@ -350,10 +350,10 @@ Qevent ()
 
       aux1 = QQnum;
 
-      if (QQchr EQ '-')
+      if (QQchr == '-')
 	aux1 = -aux1;
 
-      if (E_NULL EQ (tsp1 = e_alc (E_SIZE2)))
+      if (E_NULL == (tsp1 = e_alc (E_SIZE2)))
 	{
 
 	  nospace ("!trans");
@@ -385,7 +385,7 @@ Qevent ()
 
       aux1 = QQnum;
 
-      if (E_NULL EQ (tsp1 = e_alc (E_SIZE2)))
+      if (E_NULL == (tsp1 = e_alc (E_SIZE2)))
 	{
 
 	  nospace ("!dyn");
@@ -417,7 +417,7 @@ Qevent ()
 
       aux1 = QQnum;
 
-      if (E_NULL EQ (tsp1 = e_alc (E_SIZE2)))
+      if (E_NULL == (tsp1 = e_alc (E_SIZE2)))
 	{
 
 	  nospace ("!loc");
@@ -587,7 +587,7 @@ Qevent ()
   if (CM_USTR ("stop"))
     {				/* !stop */
 
-      if (E_NULL EQ (tsp1 = e_alc (E_SIZE1)))
+      if (E_NULL == (tsp1 = e_alc (E_SIZE1)))
 	{
 
 	  nospace ("!stop");
@@ -697,7 +697,7 @@ Qevent ()
 	  for (aux1 = 0; aux1 < 128; aux1++)
 	    {
 
-	      if (scores[aux1] NE E_NULL)
+	      if (scores[aux1] != E_NULL)
 		{
 
 		  printf ("<%3d: ", aux1);
@@ -774,7 +774,7 @@ Qevent ()
 
       tsp1 = frfind (QQnum, aux1);
 
-      if (tsp1 NE E_NULL)
+      if (tsp1 != E_NULL)
 	{
 
 	  if (verbose)
@@ -800,7 +800,7 @@ Qevent ()
   if (CM_USTR ("chase"))
     {				/* !chase */
 
-      if (E_NULL EQ (tsp1 = p_cur))
+      if (E_NULL == (tsp1 = p_cur))
 	{
 
 	  printf ("<CHASE:  Current score not active>\n\n");
@@ -814,7 +814,7 @@ Qevent ()
 
 	  tsp3 = &spool[0];
 
-	  if (tsp2 LT tsp3)
+	  if (tsp2 < tsp3)
 	    {
 
 	      printf ("\nCHASE:  Error\n");
@@ -826,7 +826,7 @@ Qevent ()
 
 	  tsp3 = &spool[MAX_SE - 1];
 
-	  if (tsp2 GT tsp3)
+	  if (tsp2 > tsp3)
 	    {
 
 	      printf ("\nCHASE:  Error\n");
@@ -839,7 +839,7 @@ Qevent ()
 	  SEdump (tsp2);
 	  tsp2 = tsp2->e_fwd;
 
-	  if ((tsp1 EQ tsp2) OR (tsp2->e_type EQ EV_SCORE))
+	  if ((tsp1 == tsp2) || (tsp2->e_type == EV_SCORE))
 	    {
 
 	      printf ("-- End of chain --\n\n");
@@ -956,7 +956,7 @@ Qnote ()
   if (CM_CHR ('+'))
     {				/* output note begin */
 
-      if (E_NULL EQ (nsp1 = (struct n_entry *) e_alc (E_SIZE1)))
+      if (E_NULL == (nsp1 = (struct n_entry *) e_alc (E_SIZE1)))
 	{
 
 	  nospace ("note event");
@@ -976,7 +976,7 @@ Qnote ()
   if (CM_CHR ('-'))
     {				/* output note end */
 
-      if (E_NULL EQ (nsp1 = (struct n_entry *) e_alc (E_SIZE1)))
+      if (E_NULL == (nsp1 = (struct n_entry *) e_alc (E_SIZE1)))
 	{
 
 	  nospace ("note event");
@@ -1005,7 +1005,7 @@ Qnote ()
       dvwork = 100L;
       noteoff = t_cur + ((noteper * noteval) / dvwork);
 
-      if (E_NULL EQ (nsp1 = (struct n_entry *) e_alc (E_SIZE1)))
+      if (E_NULL == (nsp1 = (struct n_entry *) e_alc (E_SIZE1)))
 	{
 
 	  nospace ("note event");
@@ -1014,7 +1014,7 @@ Qnote ()
 
       p_cur = insnevt (nsp1, EV_NBEG, curgrp, notenum, 64);
 
-      if (E_NULL EQ (nsp1 = (struct n_entry *) e_alc (E_SIZE1)))
+      if (E_NULL == (nsp1 = (struct n_entry *) e_alc (E_SIZE1)))
 	{
 
 	  nospace ("note event");
@@ -1041,7 +1041,7 @@ Qnote ()
   dvwork = 100L;
   noteoff = t_cur + ((noteval * noteper) / dvwork);
 
-  if (E_NULL EQ (nsp1 = (struct n_entry *) e_alc (E_SIZE1)))
+  if (E_NULL == (nsp1 = (struct n_entry *) e_alc (E_SIZE1)))
     {
 
       nospace ("note event");
@@ -1050,7 +1050,7 @@ Qnote ()
 
   p_cur = insnevt (nsp1, EV_NBEG, curgrp, notenum, 64);
 
-  if (E_NULL EQ (nsp1 = (struct n_entry *) e_alc (E_SIZE1)))
+  if (E_NULL == (nsp1 = (struct n_entry *) e_alc (E_SIZE1)))
     {
 
       nospace ("note event");
@@ -1142,7 +1142,7 @@ Qseq ()
       if (!*QQip)
 	return (QQsw);
 
-      while (QQsw AND ! endflg)
+      while (QQsw && ! endflg)
 	{
 
 	  if (!Qadv ())

@@ -34,7 +34,7 @@ setwq (qp, qadr, qsiz, hi, lo)
      unsigned short *qadr;
      unsigned short qsiz, hi, lo;
 {
-  if ((unsigned short *) 0L EQ qadr)
+  if ((unsigned short *) 0L == qadr)
     qsiz = 0;
 
   qp->qbuf = qadr;
@@ -74,18 +74,18 @@ putwq (qp, c)
      register struct wordq *qp;
      register unsigned short c;
 {
-  if (0 NE qp->qsize)
+  if (0 != qp->qsize)
     {				/* verify queue is ok */
 
-      if (qp->qlen EQ qp->qsize)	/* check queue length */
+      if (qp->qlen == qp->qsize)	/* check queue length */
 	return (-1);		/* -1 = full */
 
       qp->qbuf[qp->qin++] = c;	/* put word in queue */
 
-      if (qp->qin GE qp->qsize)	/* update input index */
+      if (qp->qin >= qp->qsize)	/* update input index */
 	qp->qin = 0;		/* wrap around */
 
-      if (++qp->qlen EQ qp->qhi)	/* check length again */
+      if (++qp->qlen == qp->qhi)	/* check length again */
 	return (1);		/* 1 = at hi water */
       else
 	return (0);		/* 0 = OK */
@@ -124,18 +124,18 @@ getwq (qp, p)
      register struct wordq *qp;
      register unsigned short *p;
 {
-  if (0 NE qp->qsize)
+  if (0 != qp->qsize)
     {				/* check queue is ok */
 
-      if (0 NE qp->qlen)
+      if (0 != qp->qlen)
 	{			/* check queue length */
 
 	  *p = qp->qbuf[qp->qout++];	/* get word from queue */
 
-	  if (qp->qout GE qp->qsize)	/* check out pointer */
+	  if (qp->qout >= qp->qsize)	/* check out pointer */
 	    qp->qout = 0;	/* wrap around */
 
-	  if (--qp->qlen EQ qp->qlo)	/* check length again */
+	  if (--qp->qlen == qp->qlo)	/* check length again */
 	    return (1);		/* 1 = at low water */
 	  else
 	    return (0);		/* 0 = OK */

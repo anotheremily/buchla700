@@ -25,7 +25,7 @@
 #define	V_SYM		(S_Glb | S_Ext)
 
 #define	cerror(S)	fprintf(stderr, "%s:  ERROR - %s", PGMNAME, S)
-#define	PLURAL(n)	((n EQ 1) ? "" : "s")
+#define	PLURAL(n)	((n == 1) ? "" : "s")
 
 extern char *basename ();
 extern int qsort ();
@@ -143,7 +143,7 @@ findopt (argc, argv)
 
 	case '-':
 
-	  if ((c = *++*argv) EQ '\0')
+	  if ((c = *++*argv) == '\0')
 	    break;
 
 	  do
@@ -215,7 +215,7 @@ findopt (argc, argv)
 		}
 
 	    }
-	  while ((c = *++*argv) NE '\0');
+	  while ((c = *++*argv) != '\0');
 
 	  continue;
 	}
@@ -307,20 +307,20 @@ prntsym (i)
 
 /* 
 */
-  if (vflag AND sizes)
+  if (vflag && sizes)
     {
 
       symflag = sp->sym.symtype;
       thisorg = symflag & (S_Data | S_Text | S_BSS);
 
-      if (i EQ (symtop - 1))
+      if (i == (symtop - 1))
 	{			/* end of table ? */
 
-	  if (thisorg EQ S_Text)
+	  if (thisorg == S_Text)
 	    nextloc = textend + 1L;
-	  else if (thisorg EQ S_Data)
+	  else if (thisorg == S_Data)
 	    nextloc = dataend + 1L;
-	  else if (thisorg EQ S_BSS)
+	  else if (thisorg == S_BSS)
 	    nextloc = bssend + 1L;
 	  else
 	    nextloc = sp->sym.symvalue;
@@ -336,14 +336,14 @@ prntsym (i)
 	  nextorg = symtab[i + 1].sym.symtype & (S_Data | S_Text | S_BSS);
 	}
 
-      if (nextorg NE thisorg)
+      if (nextorg != thisorg)
 	{
 
-	  if (thisorg EQ S_Text)
+	  if (thisorg == S_Text)
 	    nextloc = textend + 1L;
-	  else if (thisorg EQ S_Data)
+	  else if (thisorg == S_Data)
 	    nextloc = dataend + 1L;
-	  else if (thisorg EQ S_BSS)
+	  else if (thisorg == S_BSS)
 	    nextloc = bssend + 1L;
 	  else
 	    nextloc = sp->sym.symvalue;
@@ -361,7 +361,7 @@ prntsym (i)
 	case (S_Def | S_Data):
 	case (S_Def | S_Glb | S_BSS):
 	case (S_Def | S_BSS):
-	  if (nmods EQ 1)
+	  if (nmods == 1)
 	    {
 
 	      printf (" %11ld ", thesize);
@@ -426,13 +426,13 @@ prntsym (i)
 
 grabsym ()
 {
-  if (symtop EQ MAXSYMS)
+  if (symtop == MAXSYMS)
     return;
 
   memcpy (symtab[symtop].modname, module, 12);
   memcpy (&symtab[symtop].sym, &cursym, sizeof (struct SYMBOL));
 
-  if (++symtop EQ MAXSYMS)
+  if (++symtop == MAXSYMS)
     {
 
       fprintf (stderr, "%s:  Limit of %d symbols ", PGMNAME, MAXSYMS);
@@ -457,7 +457,7 @@ process (fn)
 
   /* open the file */
 
-  if (NULL EQ (curfp = fopenb (fn, "r")))
+  if (NULL == (curfp = fopenb (fn, "r")))
     {
 
       fprintf (stderr, "%s:  Unable to open %s\n", PGMNAME, fn);
@@ -467,7 +467,7 @@ process (fn)
 
   /* read in the file header */
 
-  if (1 NE fread (&fhdr, sizeof fhdr, 1, curfp))
+  if (1 != fread (&fhdr, sizeof fhdr, 1, curfp))
     {
 
       fprintf (stderr, "%s:  Unable to read %s\n", PGMNAME, fn);
@@ -478,7 +478,7 @@ process (fn)
 
   /* check the magic */
 
-  if ((fhdr.F_Magic NE F_R_C) AND (fhdr.F_Magic NE F_R_D))
+  if ((fhdr.F_Magic != F_R_C) && (fhdr.F_Magic != F_R_D))
     {
 
       fprintf (stderr, "%s:  Bad magic [0x%04x] in %s",
@@ -497,17 +497,17 @@ process (fn)
 
   /* if it's a discontiguous file, read the origins */
 
-  if (fhdr.F_Magic EQ F_R_D)
+  if (fhdr.F_Magic == F_R_D)
     {
 
       dataorg = getl (curfp);
 
-      if (0L EQ dataorg)
+      if (0L == dataorg)
 	dataorg = textorg + fhdr.F_Text;
 
       bssorg = getl (curfp);
 
-      if (0L EQ bssorg)
+      if (0L == bssorg)
 	bssorg = dataorg + fhdr.F_Data;
 
     }
@@ -534,7 +534,7 @@ process (fn)
 
       sympos = fhdr.F_Text + fhdr.F_Data;
 
-      if (-1 EQ fseek (curfp, sympos, 1))
+      if (-1 == fseek (curfp, sympos, 1))
 	{
 
 	  fprintf (stderr, "%s:  Unable to seek to %ld on %s\n",
@@ -548,7 +548,7 @@ process (fn)
       strncpy (module, basename (fn), 12);
       lnsyms = fhdr.F_Symtab / (sizeof cursym);
 
-      if (lnsyms GT 32767)
+      if (lnsyms > 32767)
 	{
 
 	  fclose (curfp);
@@ -560,7 +560,7 @@ process (fn)
       for (i = 0; i < nsyms; i++)
 	{
 
-	  if (1 NE fread (&cursym, sizeof cursym, 1, curfp))
+	  if (1 != fread (&cursym, sizeof cursym, 1, curfp))
 	    {
 
 	      fprintf (stderr, "%s:  Unable to read %s\n", PGMNAME, fn);
@@ -572,16 +572,16 @@ process (fn)
 	  if (varonly)
 	    {
 
-	      if (((cursym.symtype & B_SYM) EQ B_SYM) OR
-		  ((cursym.symtype & D_SYM) EQ D_SYM) OR
-		  ((cursym.symtype & V_SYM) EQ V_SYM))
+	      if (((cursym.symtype & B_SYM) == B_SYM) ||
+		  ((cursym.symtype & D_SYM) == D_SYM) ||
+		  ((cursym.symtype & V_SYM) == V_SYM))
 		grabsym ();
 
 	    }
 	  else if (txtonly)
 	    {
 
-	      if (((cursym.symtype & T_SYM) EQ T_SYM))
+	      if (((cursym.symtype & T_SYM) == T_SYM))
 		grabsym ();
 
 	    }
@@ -681,7 +681,7 @@ typesym (ep)
     return (1);
   else if (ep->sym.symtype & S_BSS)
     return (2);
-  else if (ep->sym.symtype & S_Ext AND ep->sym.symvalue)
+  else if (ep->sym.symtype & S_Ext && ep->sym.symvalue)
     return (3);
   else
     return (4);
@@ -742,24 +742,24 @@ main (argc, argv)
   for (argc = findopt (argc, argv); argc > 0; --argc, ++argv)
     process (*argv);		/* process each file for symbols */
 
-  if (nmods EQ 0)
+  if (nmods == 0)
     {				/* give usage if no files processed */
 
       usage ();
       exit (1);
     }
 
-  if (NOT nohead)
+  if (! nohead)
     printf ("%d module%s processed.  %d symbol%s selected.\n",
 	    nmods, PLURAL (nmods), symtop, PLURAL (symtop));
 
   if (symtop < 1)		/* done if no symbols found */
     exit (0);
 
-  if (NOT nohead)
+  if (! nohead)
     printf ("\f");		/* forms feed */
 
-  if (NOT nosyms)
+  if (! nosyms)
     {
 
       vflag = FALSE;		/* sort and print by name */
@@ -771,7 +771,7 @@ main (argc, argv)
       if (ssflag)		/* done if ssflag set */
 	exit (0);
 
-      if (NOT nohead)
+      if (! nohead)
 	printf ("\f");		/* forms feed */
     }
 

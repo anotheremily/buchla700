@@ -68,7 +68,7 @@ main ()
 
   /* first, read the old version message object file */
 
-  if ((FILE *) NULL EQ (fp = fopenb (VERFILE, "r")))
+  if ((FILE *) NULL == (fp = fopenb (VERFILE, "r")))
     {
 
       printf ("ERROR -- Unable to open \"%s\" for reading  (errno = %d)\n",
@@ -79,7 +79,7 @@ main ()
 
   rewind (fp);
 
-  if (1 NE (rc = fread (&verbuf, len, 1, fp)))
+  if (1 != (rc = fread (&verbuf, len, 1, fp)))
     {
 
       printf ("ERROR -- Unable to read \"%s\"  (rc = %d, errno = %d)\n",
@@ -120,7 +120,7 @@ main ()
 
       vn = ((verbuf.ver[9] - '0') * 10) + (verbuf.ver[10] - '0') + 1;
 
-      if (vn GE 100)
+      if (vn >= 100)
 	{			/* too many versions today ? */
 
 	  printf ("WARNING -- version number rolled over to 00.\n");
@@ -138,7 +138,7 @@ main ()
 */
   /* finally, re-write the version message object file */
 
-  if ((FILE *) NULL EQ (fp = fopenb (VERFILE, "w")))
+  if ((FILE *) NULL == (fp = fopenb (VERFILE, "w")))
     {
 
       printf ("ERROR -- Unable to open \"%s\" for writing  (errno = %d)\n",
@@ -149,7 +149,7 @@ main ()
 
   rewind (fp);
 
-  if (1 NE (rc = fwrite (&verbuf, len, 1, fp)))
+  if (1 != (rc = fwrite (&verbuf, len, 1, fp)))
     {
 
       printf ("ERROR -- Unable to write to \"%s\"  (rc = %d, errno = %d)\n",

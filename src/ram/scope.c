@@ -83,7 +83,7 @@ scope (val)
   register short i;
   register char *bp = scopebf;
 
-  if ((ndisp NE 11) OR (NOT scopef))
+  if ((ndisp != 11) || (! scopef))
     return;
 
   vputs (scopeob, scoper++, scopec, scopebf, SCOPEOLD);
@@ -96,7 +96,7 @@ scope (val)
       scoper = 0;
       scopec += 12;
 
-      if (scopec GE 60)
+      if (scopec >= 60)
 	scopec = 0;
     }
 
@@ -133,10 +133,10 @@ scope (val)
 
 scptogl ()
 {
-  if (NOT astat)
+  if (! astat)
     return;
 
-  scopef = NOT scopef;
+  scopef = ! scopef;
 }
 
 /* 

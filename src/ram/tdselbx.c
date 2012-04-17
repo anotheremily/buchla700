@@ -121,7 +121,7 @@ tdhilit (from, to)
     }
 /* 
 */
-  for (i = from; i LE to; i++)
+  for (i = from; i <= to; i++)
     {
 
       if (i < 24)
@@ -251,7 +251,7 @@ tdfnbox (n)
 
 	  ttsel3 = loc2key (row, col);
 
-	  if (ttsel3 GE 0)
+	  if (ttsel3 >= 0)
 	    tt_trcp (ttsel1, ttsel2, ttsel3);
 
 	  ttcmdsv = 0;
@@ -284,7 +284,7 @@ tdfnbox (n)
 
 	  ttsel2 = loc2key (row, col);
 
-	  if (ttsel2 GE 0)
+	  if (ttsel2 >= 0)
 	    tt_incr (ttsel1, ttsel2);
 
 	  ttcmdsv = 0;
@@ -317,7 +317,7 @@ tdfnbox (n)
 
 	  ttsel2 = loc2key (row, col);
 
-	  if (ttsel2 GE 0)
+	  if (ttsel2 >= 0)
 	    tt_intp (ttsel1, ttsel2);
 
 	  ttcmdsv = 0;
@@ -371,7 +371,7 @@ tdfnbox (n)
 
 	case 20:		/* store */
 
-	  if (curtun EQ 0)
+	  if (curtun == 0)
 	    return (FAILURE);
 
 	  puttun (curtun);
@@ -393,7 +393,7 @@ tdfnbox (n)
 */
     case 7:			/* tuning table name */
 
-      if ((col < 7) OR (col GT 38))
+      if ((col < 7) || (col > 38))
 	return (FAILURE);
 
       if (tdnamsw)

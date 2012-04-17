@@ -113,10 +113,10 @@ sc_adv ()
 */
   /* see if it's time to update VRAM from edges */
 
-  if ((ndisp EQ 2) AND (soffset EQ ((sd EQ D_BAK) ? 0 : 3)))
+  if ((ndisp == 2) && (soffset == ((sd == D_BAK) ? 0 : 3)))
     {
 
-      if (sd EQ D_BAK)
+      if (sd == D_BAK)
 	{			/* set source and target pointers */
 
 	  fsl = prvsl;
@@ -135,7 +135,7 @@ sc_adv ()
 
 	  /* set target pointer #2 */
 
-	  pptr = saddr - ((sd EQ D_BAK) ? 28542L : 28545L);
+	  pptr = saddr - ((sd == D_BAK) ? 28542L : 28545L);
 
 	  if (sbase < 28672)
 	    {			/* double update - right and left */
@@ -200,7 +200,7 @@ sc_adv ()
 
 /* 
 */
-  if (sd EQ D_FWD)
+  if (sd == D_FWD)
     {
 
       if (++soffset > 3)
@@ -252,7 +252,7 @@ sc_adv ()
 
   /* only update VSDD registers if score is up and scrl changed */
 
-  if ((ndisp EQ 2) AND (scrl NE pscrl))
+  if ((ndisp == 2) && (scrl != pscrl))
     {
 
       sword = (unsigned) ((char *) saddr >> 1);
@@ -307,7 +307,7 @@ scupd ()
 
   /* update VRAM, if it's time */
 
-  if (cslice (cursl, maskpx, masksl, gdstbc) AND (ndisp EQ 2))
+  if (cslice (cursl, maskpx, masksl, gdstbc) && (ndisp == 2))
     {
 
       DB_CMNT ("scupd - center write ...");

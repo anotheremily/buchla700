@@ -29,8 +29,8 @@ waitcr ()
 
   /* await a CR, in which case we just exit */
 
-  while ('\r' NE (c = (0x007F & (int) BIOS (B_GETC, CON_DEV))))
-    if (c EQ '\007')		/* ... or a control-G */
+  while ('\r' != (c = (0x007F & (int) BIOS (B_GETC, CON_DEV))))
+    if (c == '\007')		/* ... or a control-G */
       xtrap15 ();		/* ... in which case we trap first */
 
   return (c);			/* return the character that caused us to exit */

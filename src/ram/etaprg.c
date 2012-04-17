@@ -72,7 +72,7 @@ ef_aprg (n)
     printf ("ef_aprg($%04.4X):  ebuf=[%s], tmpval=%d\n", n, ebuf, tmpval);
 #endif
 
-  if ((tmpval EQ 0) OR (tmpval GT 16))
+  if ((tmpval == 0) || (tmpval > 16))
     return (FAILURE);
 
   prgchan = tmpval;

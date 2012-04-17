@@ -51,7 +51,7 @@ flush_ (ptr, data)
 {
   register int size;
 
-  if (_ClFlag EQ 0)
+  if (_ClFlag == 0)
     {
 
       cls_rtn = _clsall;
@@ -64,7 +64,7 @@ flush_ (ptr, data)
 
       size = (int) ((long) ptr->_bp - (long) ptr->_buff);
 
-      if (write (ptr->_unit, ptr->_buff, size) EQ - 1)
+      if (write (ptr->_unit, ptr->_buff, size) == - 1)
 	{
 
 	ioerr:
@@ -73,7 +73,7 @@ flush_ (ptr, data)
 	}
     }
 
-  if (data EQ - 1)
+  if (data == - 1)
     {				/* just flushing, not adding data */
 
       ptr->_flags &= ~_DIRTY;
@@ -81,13 +81,13 @@ flush_ (ptr, data)
       return (0);
     }
 
-  if (ptr->_buff EQ NULL)	/* get a buffer if we don't have one */
+  if (ptr->_buff == NULL)	/* get a buffer if we don't have one */
     getbuff (ptr);
 
-  if (ptr->_buflen EQ 1)
+  if (ptr->_buflen == 1)
     {				/* unbuffered I/O */
 
-      if (write (ptr->_unit, &data, 1) EQ - 1)
+      if (write (ptr->_unit, &data, 1) == - 1)
 	goto ioerr;
 
       return (data);
@@ -164,7 +164,7 @@ putc (c, ptr)
      int c;
      register FILE *ptr;
 {
-  if (ptr->_bp GE ptr->_bend)
+  if (ptr->_bp >= ptr->_bend)
     return (flush_ (ptr, c & 0xFF));
 
   return ((*ptr->_bp++ = c) & 0xFF);

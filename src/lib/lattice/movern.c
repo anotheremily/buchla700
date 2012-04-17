@@ -88,7 +88,7 @@ main (argc, argv)
 
   printf ("Creating \"%s\" ...\n", outfile);
 
-  if ((FILE *) NULL EQ (fp = fopen (outfile, "w")))
+  if ((FILE *) NULL == (fp = fopen (outfile, "w")))
     {
 
       printf ("ERROR -- Unable to open \"%s\" for output\n", OUTFILE);
@@ -125,14 +125,14 @@ main (argc, argv)
 
 #else
 
-      if (0 EQ (n % maxl))
+      if (0 == (n % maxl))
 	fprintf (fp, "\t%s\t%d", DATADEF, t);
       else
 	fprintf (fp, ",%d", t);
 
       ++nol;
 
-      if ((maxl - 1) EQ (n % maxl))
+      if ((maxl - 1) == (n % maxl))
 	{
 
 	  fprintf (fp, "\n");

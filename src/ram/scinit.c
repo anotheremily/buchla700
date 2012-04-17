@@ -312,10 +312,10 @@ e_alc (w)
 
     case E_SIZE1:
 
-      if (spcount LT E_SIZE1)
+      if (spcount < E_SIZE1)
 	{			/* try raw free pool first */
 
-	  if (se1_cnt EQ 0)
+	  if (se1_cnt == 0)
 	    {			/* try for a deleted entry */
 
 	      if (se3_cnt)
@@ -380,10 +380,10 @@ e_alc (w)
 
     case E_SIZE2:
 
-      if (spcount LT E_SIZE2)
+      if (spcount < E_SIZE2)
 	{			/* try for raw storage */
 
-	  if (se2_cnt EQ 0)
+	  if (se2_cnt == 0)
 	    {			/* try for a deleted entry */
 
 	      if (se3_cnt)
@@ -432,10 +432,10 @@ e_alc (w)
 
     case E_SIZE3:
 
-      if (spcount LT E_SIZE3)
+      if (spcount < E_SIZE3)
 	{			/* try for raw storage */
 
-	  if (se3_cnt EQ 0)
+	  if (se3_cnt == 0)
 	    {			/* try for a deleted entry */
 
 	      return (E_NULL);	/* no space left */
@@ -536,7 +536,7 @@ eh_ins (ne, et)
 
   hp = hplist[curscor][et];	/* get list pointer */
 
-  if (hp EQ E_NULL)
+  if (hp == E_NULL)
     {				/* if list was empty */
 
       hplist[curscor][et] = ne;	/* start the list */
@@ -545,7 +545,7 @@ eh_ins (ne, et)
       return;
     }
 
-  if (hp->e_time GT ne->e_time)
+  if (hp->e_time > ne->e_time)
     {				/* if first entry was later */
 
       hp->e_dn = ne;		/* add to start of list */
@@ -555,10 +555,10 @@ eh_ins (ne, et)
       return;
     }
 
-  while (E_NULL NE (ep = hp->e_up))
+  while (E_NULL != (ep = hp->e_up))
     {				/* search forward */
 
-      if (ep->e_time GT ne->e_time)
+      if (ep->e_time > ne->e_time)
 	{			/* if we find a later event */
 
 	  ne->e_up = ep;	/* insert into list */
@@ -591,13 +591,13 @@ eh_rmv (ev, et)
      register struct s_entry *ev;
      short et;
 {
-  if (hplist[curscor][et] EQ ev)	/* update hplist */
+  if (hplist[curscor][et] == ev)	/* update hplist */
     hplist[curscor][et] = ev->e_up;
 
-  if (ev->e_up NE E_NULL)	/* update entry above */
+  if (ev->e_up != E_NULL)	/* update entry above */
     (ev->e_up)->e_dn = ev->e_dn;
 
-  if (ev->e_dn NE E_NULL)	/* update entry below */
+  if (ev->e_dn != E_NULL)	/* update entry below */
     (ev->e_dn)->e_up = ev->e_up;
 
   ev->e_up = ev->e_dn = E_NULL;	/* update entry itself */
@@ -618,10 +618,10 @@ sc_clr (ns)
   register struct s_entry *dsp, *nsp;
   register short i;
 
-  if (E_NULL NE (nsp = scores[ns]))
+  if (E_NULL != (nsp = scores[ns]))
     {
 
-      while (nsp NE (dsp = nsp->e_fwd))
+      while (nsp != (dsp = nsp->e_fwd))
 	{
 
 	  e_del (e_rmv (nsp));	/* delete this one */
@@ -670,10 +670,10 @@ selscor (ns)
   oldscor = curscor;		/* setup for new score */
   curscor = ns;
 
-  if (E_NULL EQ (nsp = scores[ns]))
+  if (E_NULL == (nsp = scores[ns]))
     {				/* initialize score if needed */
 
-      if (E_NULL EQ (nsp = e_alc (E_SIZE1)))
+      if (E_NULL == (nsp = e_alc (E_SIZE1)))
 	{			/* score header */
 
 	  curscor = oldscor;
@@ -687,7 +687,7 @@ selscor (ns)
       nsp->e_data1 = ns;
       nsp->e_time = 0L;
 
-      if (E_NULL EQ (ep = e_alc (E_SIZE1)))
+      if (E_NULL == (ep = e_alc (E_SIZE1)))
 	{			/* score end */
 
 	  sc_clr (ns);

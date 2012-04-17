@@ -61,7 +61,7 @@ FILE *printer;			/* printer file pointer */
 newline (fp)
      FILE *fp;
 {
-  if (nline++ GE (nlpage - (martop + marbot)))
+  if (nline++ >= (nlpage - (martop + marbot)))
     {
 
       nline = 1;		/* set current line number = 1 */
@@ -141,7 +141,7 @@ skipnl (fp, n)
 {
   int j;
 
-  if (n LE 0)
+  if (n <= 0)
     return;
 
   for (j = 0; j < n; j++)
@@ -223,7 +223,7 @@ newsect (fp)
 {
   newsub = TRUE;
 
-  if (nline NE nlpage)
+  if (nline != nlpage)
     {
 
       if (nline > (nlpage - minleft))

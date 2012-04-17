@@ -107,7 +107,7 @@ SnapPTV (s)
   memcpy (dbuf, ptdebuf, 48);
 
   for (i = 0; i < 48; i++)
-    if (dbuf[i] EQ '\0')
+    if (dbuf[i] == '\0')
       dbuf[i] = ' ';
     else if (dbuf[i] & 0x0080)
       dbuf[i] = '~';
@@ -152,7 +152,7 @@ SnapPTV (s)
 
 	      printf ("  defptr[$%04.4X] = %3d%s\n",
 		      stim, defptr[stim],
-		      ((TRG_MASK & ptedef) EQ stim) ? " <-- ptedef" : "");
+		      ((TRG_MASK & ptedef) == stim) ? " <-- ptedef" : "");
 	    }
 	}
     }
@@ -166,7 +166,7 @@ SnapPTV (s)
 	if (stmptr[stim])
 	  printf ("  stmptr[$%04.4X] = %3d%s\n",
 		  stim, stmptr[stim],
-		  ((TRG_MASK & ptestm) EQ stim) ? " <-- ptestm" : "");
+		  ((TRG_MASK & ptestm) == stim) ? " <-- ptestm" : "");
     }
 #endif
 
@@ -194,7 +194,7 @@ buf2pte ()
   pteset = TRUE;
 
 #if	DEBUGPD
-  if (debugsw AND debugpd)
+  if (debugsw && debugpd)
     {
 
       if (snappb)
@@ -242,7 +242,7 @@ voidpb ()
   ptedata = -1;
 
 #if	DEBUGVP
-  if (debugsw AND debugvp)
+  if (debugsw && debugvp)
     {
 
       if (snappb)
@@ -291,9 +291,9 @@ setptcv ()
 */
     case 4:			/* seq, reg */
 
-      if (spec EQ PA_SLIN)
+      if (spec == PA_SLIN)
 	ptedata = 13;
-      else if (spec EQ PA_SCTL)
+      else if (spec == PA_SCTL)
 	ptedata = 9;
       else
 	ptedata = 12;
@@ -307,9 +307,9 @@ setptcv ()
 
     case 6:			/* inst, wave, config */
 
-      if (spec EQ PA_INST)
+      if (spec == PA_INST)
 	ptedata = 15;
-      else if (spec EQ PA_CNFG)
+      else if (spec == PA_CNFG)
 	ptedata = 17;
       else
 	ptedata = 16;
@@ -325,7 +325,7 @@ setptcv ()
     case 9:			/* osc, ind, frq */
     case 10:			/* level, filtr, fil q, loctn, dynmc */
 
-      if (spec EQ PA_OSC)
+      if (spec == PA_OSC)
 	ptedata = ptedat1 + 4;
       else
 	ptedata = dtabl9[ptedat1];
@@ -335,7 +335,7 @@ setptcv ()
     default:			/* something weird got in here somehow ... */
 
 #if	DEBUGPD
-      if (debugsw AND debugpd)
+      if (debugsw && debugpd)
 	printf ("setptcv():  BAD ptedest ($%04.4X),  spec = $%04.4X\n",
 		ptedest, spec);
 #endif
@@ -391,7 +391,7 @@ pte2buf ()
       ptedtok = TRUE;
 
 #if	DEBUGPD
-      if (debugsw AND debugpd)
+      if (debugsw && debugpd)
 	{
 
 	  if (snappb)
@@ -408,7 +408,7 @@ pte2buf ()
       voidpb ();		/* void the patch buffer */
 
 #if	DEBUGPD
-      if (debugsw AND debugpd)
+      if (debugsw && debugpd)
 	printf ("pte2buf():  patch buffer VOIDED\n");
 #endif
 
@@ -433,30 +433,30 @@ ptde_ds (n, key)
   if (n ? ptestok : ptedfok)
     {
 
-      if ((n EQ 0) AND (ptedef EQ 0xFFFF))
+      if ((n == 0) && (ptedef == 0xFFFF))
 	return;
 
       port = ((n ? ptestm : ptedef) >> 11) & 0x0003;
       chan = ((n ? ptestm : ptedef) >> 7) & 0x000F;
       stim = (n ? ptestm : ptedef) & 0x007F;
 
-      if ((port EQ 0) OR (port EQ 1) OR ((port EQ 2) AND (chan < 2)))
+      if ((port == 0) || (port == 1) || ((port == 2) && (chan < 2)))
 	{
 
 	  /* Key / Rel */
 
-	  if (inrange (stccol, dsdecol[0][n][0], dsdecol[0][n][1]) OR
-	      inrange (stccol, dsdecol[3][n][0], dsdecol[3][n][1]) OR
+	  if (inrange (stccol, dsdecol[0][n][0], dsdecol[0][n][1]) ||
+	      inrange (stccol, dsdecol[3][n][0], dsdecol[3][n][1]) ||
 	      inrange (stccol, dsdecol[4][n][0], dsdecol[4][n][1]))
 	    {
 
-	      if (stccol EQ dsdecol[3][n][1])
+	      if (stccol == dsdecol[3][n][1])
 		{
 
-		  if ((key < 1) OR (key > 3))
+		  if ((key < 1) || (key > 3))
 		    return;
 
-		  if (key EQ 3)
+		  if (key == 3)
 		    {
 
 		      buf[0] = 'L';
@@ -496,15 +496,15 @@ ptde_ds (n, key)
 
 	      UpdVid (7, stccol, buf, PTDATR);
 
-	      if (stccol EQ dsdecol[4][n][1])
+	      if (stccol == dsdecol[4][n][1])
 		{
 
 		  ctcon ();
 		  return;
 		}
 
-	      if ((stccol EQ dsdecol[0][n][1]) OR
-		  (stccol EQ dsdecol[3][n][1]))
+	      if ((stccol == dsdecol[0][n][1]) ||
+		  (stccol == dsdecol[3][n][1]))
 		++stccol;
 
 	      movectc (stcrow, ++stccol);
@@ -514,7 +514,7 @@ ptde_ds (n, key)
 /* 
 */
 	}
-      else if ((port EQ 2) AND (chan EQ 2))
+      else if ((port == 2) && (chan == 2))
 	{
 
 	  /* Trig */
@@ -528,7 +528,7 @@ ptde_ds (n, key)
 
 	      UpdVid (7, stccol, buf, PTDATR);
 
-	      if (stccol EQ dsdecol[1][n][1])
+	      if (stccol == dsdecol[1][n][1])
 		{
 
 		  ctcon ();
@@ -541,15 +541,15 @@ ptde_ds (n, key)
 	  return;
 
 	}
-      else if ((port EQ 2) AND (chan EQ 3))
+      else if ((port == 2) && (chan == 3))
 	{
 
 	  /* Pulse */
 
-	  if (stccol EQ dsdecol[2][n][1])
+	  if (stccol == dsdecol[2][n][1])
 	    {
 
-	      if ((key < 1) OR (key > 2))
+	      if ((key < 1) || (key > 2))
 		return;
 
 	      ptdebuf[stccol] = key + '0';
@@ -579,10 +579,10 @@ ptdkey ()
   register short key, val, vg;
   char buf[8];
 
-  if (NOT astat)		/* only do this on key closures */
+  if (! astat)		/* only do this on key closures */
     return;
 
-  if (NOT ptbflag)		/* load up the edit buffer */
+  if (! ptbflag)		/* load up the edit buffer */
     pte2buf ();
 
   key = asig - 60;
@@ -613,17 +613,17 @@ ptdkey ()
 
 	    case 0:		/* key */
 
-	      if (inrange (stccol, 30, 32) OR
-		  (stccol EQ 34) OR inrange (stccol, 36, 37))
+	      if (inrange (stccol, 30, 32) ||
+		  (stccol == 34) || inrange (stccol, 36, 37))
 		{
 
-		  if (stccol EQ 34)
+		  if (stccol == 34)
 		    {
 
-		      if ((key < 1) OR (key > 3))
+		      if ((key < 1) || (key > 3))
 			return;
 
-		      if (key EQ 3)
+		      if (key == 3)
 			buf[0] = 'L';
 		      else
 			buf[0] = key + '0';
@@ -640,10 +640,10 @@ ptdkey ()
 
 		  UpdVid (7, stccol, buf, PTDATR);
 
-		  if ((stccol EQ 32) OR (stccol EQ 34))
+		  if ((stccol == 32) || (stccol == 34))
 		    ++stccol;
 
-		  if (stccol EQ 37)
+		  if (stccol == 37)
 		    ctcon ();
 		  else
 		    movectc (stcrow, ++stccol);
@@ -663,7 +663,7 @@ ptdkey ()
 
 		  UpdVid (7, stccol, buf, PTDATR);
 
-		  if (stccol EQ 37)
+		  if (stccol == 37)
 		    ctcon ();
 		  else
 		    movectc (stcrow, ++stccol);
@@ -673,10 +673,10 @@ ptdkey ()
 
 	    case 2:		/* pls */
 
-	      if (stccol EQ 34)
+	      if (stccol == 34)
 		{
 
-		  if ((key < 1) OR (key > 2))
+		  if ((key < 1) || (key > 2))
 		    return;
 
 		  ptdebuf[stccol] = key + '0';
@@ -692,7 +692,7 @@ ptdkey ()
 */
 	    case 3:		/* led */
 
-	      if (stccol EQ 32)
+	      if (stccol == 32)
 		{
 
 		  if (key > 6)
@@ -719,7 +719,7 @@ ptdkey ()
 
 		  UpdVid (7, stccol, buf, PTDATR);
 
-		  if (stccol EQ 33)
+		  if (stccol == 33)
 		    ctcon ();
 		  else
 		    movectc (stcrow, ++stccol);
@@ -735,10 +735,10 @@ ptdkey ()
 
 	    case 8:		/* v out */
 
-	      if (stccol EQ 32)
+	      if (stccol == 32)
 		{
 
-		  if ((key < 1) OR (key > 5))
+		  if ((key < 1) || (key > 5))
 		    return;
 
 		  ptdebuf[stccol] = key + '0';
@@ -753,10 +753,10 @@ ptdkey ()
 
 	    case 9:		/* osc, index, freq */
 
-	      if (stccol EQ 32)
+	      if (stccol == 32)
 		{
 
-		  if ((key < 1) OR (key > 4))
+		  if ((key < 1) || (key > 4))
 		    return;
 
 		  ptdebuf[stccol] = key + '0';
@@ -779,10 +779,10 @@ ptdkey ()
 
 		  vg = (ptesuba >> 8) & 0x00FF;
 
-		  if (stccol EQ 39)
+		  if (stccol == 39)
 		    {
 
-		      if ((key EQ 8) OR (key EQ 9))
+		      if ((key == 8) || (key == 9))
 			{
 
 			  if (vg > 11)
@@ -813,10 +813,10 @@ ptdkey ()
 		  else
 		    {		/* column 40 */
 
-		      if (((vg EQ 0) OR (vg EQ 12)) AND
-			  ((key EQ 0) OR (key EQ 1) OR (key EQ 2)))
+		      if (((vg == 0) || (vg == 12)) &&
+			  ((key == 0) || (key == 1) || (key == 2)))
 			key += 10;
-		      else if (key EQ 0)
+		      else if (key == 0)
 			return;
 
 		      val = key + ((key > 9) ? '\242' : '0');
@@ -837,7 +837,7 @@ ptdkey ()
 
 		  UpdVid (7, stccol, buf, PTDATR);
 
-		  if (stccol EQ 40)
+		  if (stccol == 40)
 		    ctcon ();
 		  else
 		    movectc (stcrow, ++stccol);
@@ -866,9 +866,9 @@ ptdkey ()
 
 	    case 42:		/* + | - */
 
-	      if (key EQ 8)
+	      if (key == 8)
 		buf[0] = '-';
-	      else if (key EQ 9)
+	      else if (key == 9)
 		buf[0] = '+';
 	      else
 		return;
@@ -877,7 +877,7 @@ ptdkey ()
 
 	    case 43:		/* 0 | 1 */
 
-	      if ((key EQ 0) OR (key EQ 1))
+	      if ((key == 0) || (key == 1))
 		buf[0] = key + '0';
 	      else
 		return;
@@ -902,10 +902,10 @@ ptdkey ()
 
 	  UpdVid (7, stccol, buf, PTDATR);
 
-	  if (stccol EQ 43)
+	  if (stccol == 43)
 	    ++stccol;
 
-	  if (stccol EQ 46)
+	  if (stccol == 46)
 	    ctcon ();
 	  else
 	    movectc (stcrow, ++stccol);
@@ -915,7 +915,7 @@ ptdkey ()
 */
 	case 2:		/* time -- 32767 */
 
-	  if ((stccol EQ 42) AND (key > 3))
+	  if ((stccol == 42) && (key > 3))
 	    return;
 
 	  buf[0] = key + '0';
@@ -924,7 +924,7 @@ ptdkey ()
 
 	  UpdVid (7, stccol, buf, PTDATR);
 
-	  if (stccol EQ 46)
+	  if (stccol == 46)
 	    ctcon ();
 	  else
 	    movectc (stcrow, ++stccol);
@@ -940,49 +940,49 @@ ptdkey ()
 
 	    case 42:
 
-	      if (key EQ 8)
+	      if (key == 8)
 		{
 
-		  if (ptdebuf[42] EQ '\240')
+		  if (ptdebuf[42] == '\240')
 		    buf[0] = '\241';
-		  else if (ptdebuf[42] EQ '\241')
+		  else if (ptdebuf[42] == '\241')
 		    buf[0] = '\241';
 		  else
 		    buf[0] = '-';
 
 		}
-	      else if (key EQ 9)
+	      else if (key == 9)
 		{
 
-		  if (ptdebuf[42] EQ '\240')
+		  if (ptdebuf[42] == '\240')
 		    buf[0] = '\240';
-		  else if (ptdebuf[42] EQ '\241')
+		  else if (ptdebuf[42] == '\241')
 		    buf[0] = '\240';
 		  else
 		    buf[0] = '+';
 
 		}
-	      else if (key EQ 0)
+	      else if (key == 0)
 		{
 
-		  if (ptdebuf[42] EQ '\240')
+		  if (ptdebuf[42] == '\240')
 		    buf[0] = '+';
-		  else if (ptdebuf[42] EQ '\241')
+		  else if (ptdebuf[42] == '\241')
 		    buf[0] = '-';
 		  else
 		    return;
 
 		}
-	      else if (key EQ 1)
+	      else if (key == 1)
 		{
 
-		  if (ptdebuf[42] EQ '\240')
+		  if (ptdebuf[42] == '\240')
 		    buf[0] = '\240';
-		  else if (ptdebuf[42] EQ '\241')
+		  else if (ptdebuf[42] == '\241')
 		    buf[0] = '\241';
-		  else if (ptdebuf[42] EQ '+')
+		  else if (ptdebuf[42] == '+')
 		    buf[0] = '\240';
-		  else if (ptdebuf[42] EQ '-')
+		  else if (ptdebuf[42] == '-')
 		    buf[0] = '\241';
 		  else
 		    return;
@@ -1011,10 +1011,10 @@ ptdkey ()
 
 	  UpdVid (7, stccol, buf, PTDATR);
 
-	  if (stccol EQ 43)
+	  if (stccol == 43)
 	    ++stccol;
 
-	  if (stccol EQ 46)
+	  if (stccol == 46)
 	    ctcon ();
 	  else
 	    movectc (stcrow, ++stccol);
@@ -1024,18 +1024,18 @@ ptdkey ()
 */
 	case 4:		/* interval -- +1200 */
 
-	  if (stccol EQ 42)
+	  if (stccol == 42)
 	    {
 
-	      if (key EQ 8)
+	      if (key == 8)
 		buf[0] = '-';
-	      else if (key EQ 9)
+	      else if (key == 9)
 		buf[0] = '+';
 	      else
 		return;
 
 	    }
-	  else if (stccol EQ 43)
+	  else if (stccol == 43)
 	    {
 
 	      if (key > 1)
@@ -1055,7 +1055,7 @@ ptdkey ()
 
 	  UpdVid (7, stccol, buf, PTDATR);
 
-	  if (stccol EQ 46)
+	  if (stccol == 46)
 	    ctcon ();
 	  else
 	    movectc (stcrow, ++stccol);
@@ -1086,10 +1086,10 @@ ptdkey ()
 
 	  UpdVid (7, stccol, buf, PTDATR);
 
-	  if (stccol EQ 42)
+	  if (stccol == 42)
 	    ++stccol;
 
-	  if (stccol EQ 44)
+	  if (stccol == 44)
 	    ctcon ();
 	  else
 	    movectc (stcrow, ++stccol);
@@ -1126,10 +1126,10 @@ ptdkey ()
 
 	  UpdVid (7, stccol, buf, PTDATR);
 
-	  if (stccol EQ 43)
+	  if (stccol == 43)
 	    ++stccol;
 
-	  if (stccol EQ 45)
+	  if (stccol == 45)
 	    ctcon ();
 	  else
 	    movectc (stcrow, ++stccol);
@@ -1152,11 +1152,11 @@ ptdkey ()
 
 	    case 44:
 
-	      if (key EQ 7)
+	      if (key == 7)
 		buf[0] = ' ';
-	      else if (key EQ 8)
+	      else if (key == 8)
 		buf[0] = '\251';
-	      else if (key EQ 9)
+	      else if (key == 9)
 		buf[0] = '\250';
 	      else
 		return;
@@ -1176,7 +1176,7 @@ ptdkey ()
 
 	  UpdVid (7, stccol, buf, PTDATR);
 
-	  if (stccol EQ 46)
+	  if (stccol == 46)
 	    ctcon ();
 	  else
 	    movectc (stcrow, ++stccol);
@@ -1220,14 +1220,14 @@ ptdkey ()
 */
 	case 9:		/* stop | start */
 
-	  if (key EQ 8)
+	  if (key == 8)
 	    {			/* stop */
 
 	      strcpy (buf, "Stop ");
 	      ptedat2 = 0;
 
 	    }
-	  else if (key EQ 9)
+	  else if (key == 9)
 	    {			/* start */
 
 	      strcpy (buf, "Start");
@@ -1247,14 +1247,14 @@ ptdkey ()
 
 	case 10:		/* off | on */
 
-	  if (key EQ 8)
+	  if (key == 8)
 	    {			/* off */
 
 	      strcpy (buf, "Off   ");
 	      ptedat2 = 0;
 
 	    }
-	  else if (key EQ 9)
+	  else if (key == 9)
 	    {			/* on */
 
 	      strcpy (buf, "On   ");
@@ -1284,11 +1284,11 @@ ptdkey ()
 
 	    case 42:
 
-	      if (key EQ 7)
+	      if (key == 7)
 		buf[0] = 'R';
-	      else if (key EQ 8 AND ((PE_SPEC & ptespec) NE PA_RSET))
+	      else if (key == 8 && ((PE_SPEC & ptespec) != PA_RSET))
 		buf[0] = '-';
-	      else if (key EQ 9)
+	      else if (key == 9)
 		buf[0] = '+';
 	      else
 		return;
@@ -1311,7 +1311,7 @@ ptdkey ()
 
 	  UpdVid (7, stccol, buf, PTDATR);
 
-	  if (stccol EQ 44)
+	  if (stccol == 44)
 	    ctcon ();
 	  else
 	    movectc (stcrow, ++stccol);
@@ -1330,7 +1330,7 @@ ptdkey ()
 
 	  UpdVid (7, stccol, buf, PTDATR);
 
-	  if (stccol EQ 44)
+	  if (stccol == 44)
 	    ctcon ();
 	  else
 	    movectc (stcrow, ++stccol);
@@ -1339,10 +1339,10 @@ ptdkey ()
 
 	case 14:		/* LED controls */
 
-	  if ((key > 3) OR (stccol EQ 46))
+	  if ((key > 3) || (stccol == 46))
 	    return;
 
-	  if ((stccol EQ 45) AND (0 EQ (ptesuba & 0x0001)))
+	  if ((stccol == 45) && (0 == (ptesuba & 0x0001)))
 	    return;
 
 	  buf[0] = key + '0';
@@ -1351,8 +1351,8 @@ ptdkey ()
 
 	  UpdVid (7, stccol, buf, PTDATR);
 
-	  if (((ptesuba & 0x0001) AND (stccol EQ 45)) OR
-	      ((0 EQ ptesuba & 0x0001) AND (stccol EQ 44)))
+	  if (((ptesuba & 0x0001) && (stccol == 45)) ||
+	      ((0 == ptesuba & 0x0001) && (stccol == 44)))
 	    ctcon ();
 	  else
 	    movectc (stcrow, ++stccol);
@@ -1365,7 +1365,7 @@ ptdkey ()
 	  if (stccol > 43)
 	    return;
 
-	  if ((stccol EQ 42) AND (key > 4))
+	  if ((stccol == 42) && (key > 4))
 	    return;
 
 	  buf[0] = key + '0';
@@ -1374,7 +1374,7 @@ ptdkey ()
 
 	  UpdVid (7, stccol, buf, PTDATR);
 
-	  if (stccol EQ 43)
+	  if (stccol == 43)
 	    ctcon ();
 	  else
 	    movectc (stcrow, ++stccol);
@@ -1387,7 +1387,7 @@ ptdkey ()
 	  if (stccol > 43)
 	    return;
 
-	  if ((stccol EQ 42) AND (key > 2))
+	  if ((stccol == 42) && (key > 2))
 	    return;
 
 	  buf[0] = key + '0';
@@ -1396,7 +1396,7 @@ ptdkey ()
 
 	  UpdVid (7, stccol, buf, PTDATR);
 
-	  if (stccol EQ 43)
+	  if (stccol == 43)
 	    ctcon ();
 	  else
 	    movectc (stcrow, ++stccol);
@@ -1408,7 +1408,7 @@ ptdkey ()
 	  if (stccol > 43)
 	    return;
 
-	  if ((stccol EQ 42) AND (key > 1))
+	  if ((stccol == 42) && (key > 1))
 	    return;
 
 	  buf[0] = key + '0';
@@ -1417,7 +1417,7 @@ ptdkey ()
 
 	  UpdVid (7, stccol, buf, PTDATR);
 
-	  if (stccol EQ 43)
+	  if (stccol == 43)
 	    ctcon ();
 	  else
 	    movectc (stcrow, ++stccol);

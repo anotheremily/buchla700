@@ -32,7 +32,7 @@ fsize (fp, how)
   register struct channel *chp;
   register struct fcb *fcp;
 
-  if (fp EQ (FILE *) 0L)
+  if (fp == (FILE *) 0L)
     return (-1L);
 
   if (fp->_flags & _BUSY)
@@ -40,7 +40,7 @@ fsize (fp, how)
 
       chp = &chantab[fp->_unit];
 
-      if (chp->c_close NE _filecl)
+      if (chp->c_close != _filecl)
 	return (-1L);
 
       fcp = chp->c_arg;
@@ -90,7 +90,7 @@ dspace (which)
       clcount = 0;
 
       for (nc = 2; nc < maxcl; nc++)
-	if (0 EQ _gtcl12 (_thefat, nc))
+	if (0 == _gtcl12 (_thefat, nc))
 	  ++clcount;
 
       return (clcount);

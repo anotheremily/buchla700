@@ -51,10 +51,10 @@ short
 loc2key (row, col)
      short row, col;
 {
-  if (row EQ 24)
+  if (row == 24)
     {
 
-      if ((col > 6) AND (col < 39))
+      if ((col > 6) && (col < 39))
 	return (-1);		/* -1 = name */
       else if (col > 52)
 	return (-9);		/* -9 = table # */
@@ -64,32 +64,32 @@ loc2key (row, col)
     }
   else if (col < 12)
     return (row);		/* 0..23 = key 0..23 */
-  else if ((col > 11) AND (col < 22))
+  else if ((col > 11) && (col < 22))
     return (row + 24);		/* 24..47 = key 24..47 */
-  else if ((col > 21) AND (col < 32))
+  else if ((col > 21) && (col < 32))
     return (row + 48);		/* 48..71 = key 48..71 */
-  else if ((col > 31) AND (col < 42))
+  else if ((col > 31) && (col < 42))
     return (row + 72);		/* 72..95 = key 72..95 */
-  else if ((col > 41) AND (col < 53))
+  else if ((col > 41) && (col < 53))
     return (row + 96);		/* 96..119 = key 96..119 */
-  else if ((col > 52) AND (row < 8))
+  else if ((col > 52) && (row < 8))
     return (row + 120);		/* 120..127 = key 120..127 */
   else if (col > 52)
     {
 
-      if ((row EQ 9) OR (row EQ 10))
+      if ((row == 9) || (row == 10))
 	return (-2);		/* -2 = transpose and copy */
-      else if (row EQ 12)
+      else if (row == 12)
 	return (-3);		/* -3 = increment */
-      else if (row EQ 14)
+      else if (row == 14)
 	return (-4);		/* -4 = interpolate */
-      else if (row EQ 16)
+      else if (row == 16)
 	return (-5);		/* -5 = undo */
-      else if (row EQ 18)
+      else if (row == 18)
 	return (-6);		/* -6 = value */
-      else if (row EQ 20)
+      else if (row == 20)
 	return (-7);		/* -7 = store */
-      else if (row EQ 22)
+      else if (row == 22)
 	return (-8);		/* -8 = retrieve */
       else
 	return (-10);		/* -10 = not a field */
@@ -181,7 +181,7 @@ rd_tpch (nn)
 
   vbank (0);
   vcputsv (tunob, 64,
-	   ((val EQ 320) OR (val EQ 21920))
+	   ((val == 320) || (val == 21920))
 	   ? TDMKEYC : tdbox[n][4], tdbox[n][5],
 	   cfetp->frow, cfetp->flcol, dspbuf, 14);
 
@@ -229,7 +229,7 @@ nd_tpch (nn, k)
 
     case 1:
 
-      if (k GT 6)
+      if (k > 6)
 	return (FAILURE);
 
       ebuf[1] = k;
@@ -239,7 +239,7 @@ nd_tpch (nn, k)
 */
     case 2:
 
-      if (k EQ 7)
+      if (k == 7)
 	{			/* blank */
 
 	  ebuf[2] = k;
@@ -247,7 +247,7 @@ nd_tpch (nn, k)
 	  break;
 
 	}
-      else if (k EQ 8)
+      else if (k == 8)
 	{			/* flat */
 
 	  ebuf[2] = k;
@@ -255,7 +255,7 @@ nd_tpch (nn, k)
 	  break;
 
 	}
-      else if (k EQ 9)
+      else if (k == 9)
 	{			/* sharp */
 
 	  ebuf[2] = k;
@@ -280,7 +280,7 @@ nd_tpch (nn, k)
   vbank (0);
   vcputsv (tunob, 64, TDENTRY, tdbox[n][5], stcrow, stccol, dspbuf, 14);
 
-  if (col EQ 4)
+  if (col == 4)
     return (SUCCESS);
 
   advtcur ();

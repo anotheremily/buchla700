@@ -43,15 +43,15 @@ chgsef ()
   ep = p_cur;
   rt = t_cur;
 
-  if (EV_FINI NE ep->e_type)
+  if (EV_FINI != ep->e_type)
     {
 
       ep = ep->e_fwd;
 
-      while (ep->e_time EQ rt)
+      while (ep->e_time == rt)
 	{
 
-	  if (EV_FINI EQ ep->e_type)
+	  if (EV_FINI == ep->e_type)
 	    break;
 
 	  se_exec (ep, se);
@@ -78,15 +78,15 @@ chgseb ()
   ep = p_cur;
   rt = t_cur;
 
-  if (EV_SCORE NE ep->e_type)
+  if (EV_SCORE != ep->e_type)
     {
 
       ep = ep->e_bak;
 
-      while (ep->e_time EQ rt)
+      while (ep->e_time == rt)
 	{
 
-	  if (EV_SCORE EQ ep->e_type)
+	  if (EV_SCORE == ep->e_type)
 	    break;
 
 	  se_exec (ep, se);
@@ -117,15 +117,15 @@ chgsdf ()
   ep = p_ctr;
   rt = t_ctr;
 
-  if (EV_FINI NE ep->e_type)
+  if (EV_FINI != ep->e_type)
     {
 
       ep = ep->e_fwd;
 
-      while (ep->e_time EQ rt)
+      while (ep->e_time == rt)
 	{
 
-	  if (EV_FINI EQ ep->e_type)
+	  if (EV_FINI == ep->e_type)
 	    break;
 
 	  se_disp (ep, D_FWD, gdstbc, 1);
@@ -138,15 +138,15 @@ chgsdf ()
   ep = p_bak;
   rt = t_bak;
 
-  if (EV_FINI NE ep->e_type)
+  if (EV_FINI != ep->e_type)
     {
 
       ep = ep->e_fwd;
 
-      while (ep->e_time EQ rt)
+      while (ep->e_time == rt)
 	{
 
-	  if (EV_FINI EQ ep->e_type)
+	  if (EV_FINI == ep->e_type)
 	    break;
 
 	  se_disp (ep, D_FWD, gdstbp, 0);
@@ -159,15 +159,15 @@ chgsdf ()
   ep = p_fwd;
   rt = t_fwd;
 
-  if (EV_FINI NE ep->e_type)
+  if (EV_FINI != ep->e_type)
     {
 
       ep = ep->e_fwd;
 
-      while (ep->e_time EQ rt)
+      while (ep->e_time == rt)
 	{
 
-	  if (EV_FINI EQ ep->e_type)
+	  if (EV_FINI == ep->e_type)
 	    break;
 
 	  se_disp (ep, D_FWD, gdstbn, 0);
@@ -198,15 +198,15 @@ chgsdb ()
   ep = p_ctr;
   rt = t_ctr;
 
-  if (EV_SCORE NE ep->e_type)
+  if (EV_SCORE != ep->e_type)
     {
 
       ep = ep->e_bak;
 
-      while (ep->e_time EQ rt)
+      while (ep->e_time == rt)
 	{
 
-	  if (EV_SCORE EQ ep->e_type)
+	  if (EV_SCORE == ep->e_type)
 	    break;
 
 	  se_disp (ep, D_BAK, gdstbc, 1);
@@ -219,15 +219,15 @@ chgsdb ()
   ep = p_bak;
   rt = t_bak;
 
-  if (EV_SCORE NE ep->e_type)
+  if (EV_SCORE != ep->e_type)
     {
 
       ep = ep->e_bak;
 
-      while (ep->e_time EQ rt)
+      while (ep->e_time == rt)
 	{
 
-	  if (EV_SCORE EQ ep->e_type)
+	  if (EV_SCORE == ep->e_type)
 	    break;
 
 	  se_disp (ep, D_BAK, gdstbp, 0);
@@ -240,15 +240,15 @@ chgsdb ()
   ep = p_fwd;
   rt = t_fwd;
 
-  if (EV_SCORE NE ep->e_type)
+  if (EV_SCORE != ep->e_type)
     {
 
       ep = ep->e_bak;
 
-      while (ep->e_time EQ rt)
+      while (ep->e_time == rt)
 	{
 
-	  if (EV_SCORE EQ ep->e_type)
+	  if (EV_SCORE == ep->e_type)
 	    break;
 
 	  se_disp (ep, D_BAK, gdstbn, 0);

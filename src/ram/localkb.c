@@ -160,7 +160,7 @@ setleds ()
 
     case PK_ASGN:		/* assignment table */
 
-      if (curasg EQ 0)
+      if (curasg == 0)
 	return;
 
       io_leds = (curasg - 1) % 20;	/* indicate current assignment */
@@ -169,11 +169,11 @@ setleds ()
 */
     case PK_GOTO:		/* go to */
 
-      if (gomode EQ GO_SECT)
+      if (gomode == GO_SECT)
 	{			/* indicate active sections */
 
 	  for (i = 0; i < 20; i++)
-	    if (E_NULL NE seclist[curscor][i])
+	    if (E_NULL != seclist[curscor][i])
 	      io_leds = i;
 
 	}
@@ -181,7 +181,7 @@ setleds ()
 	{			/* indicate active scores */
 
 	  for (i = 0; i < 20; i++)
-	    if (E_NULL NE scores[i])
+	    if (E_NULL != scores[i])
 	      io_leds = i;
 	}
 
@@ -190,7 +190,7 @@ setleds ()
     case PK_LIBR:
 
       for (i = 0; i < 20; i++)
-	if (E_NULL NE scores[i])
+	if (E_NULL != scores[i])
 	  io_leds = i;
 
       return;
@@ -228,7 +228,7 @@ localkb (sig)
 
 	  prstab[trg] = SM_SCALE (aval);
 
-	  if (keystat[key] EQ 0)
+	  if (keystat[key] == 0)
 	    {			/* initial key closure */
 
 	      trgtab[trg] |= M_KSTATE;
@@ -247,7 +247,7 @@ localkb (sig)
 		{		/* normal mode */
 
 		  for (i = 0; i < 12; i++)
-		    if ((grp2prt[i][0] EQ LCL_PRT) AND (grp2prt[i][1] EQ 1))
+		    if ((grp2prt[i][0] == LCL_PRT) && (grp2prt[i][1] == 1))
 		      {
 
 			asgvce (i, LCL_PRT - 1, 0, lclkey, vel);
@@ -265,17 +265,17 @@ localkb (sig)
 	      for (i = 0; i < 12; i++)
 		{
 
-		  if ((grp2prt[i][0] EQ LCL_PRT) AND (grp2prt[i][1] EQ 1))
+		  if ((grp2prt[i][0] == LCL_PRT) && (grp2prt[i][1] == 1))
 		    {
 
 		      if (newsv (i, SM_KPRS, val))
 			{
 
-			  if (recsw AND grpstat[i] AND
-			      (2 EQ (ancmsw ? varmode[5][i] : grpmode[i])))
+			  if (recsw && grpstat[i] &&
+			      (2 == (ancmsw ? varmode[5][i] : grpmode[i])))
 			    {
 
-			      if (E_NULL NE (ep = e_alc (E_SIZE2)))
+			      if (E_NULL != (ep = e_alc (E_SIZE2)))
 				{
 
 				  ep->e_time = t_cur;
@@ -292,7 +292,7 @@ localkb (sig)
 				}
 
 			    }
-			  else if ((angroup - 1) EQ i)
+			  else if ((angroup - 1) == i)
 			    {
 
 			      dsanval (5);
@@ -311,20 +311,20 @@ localkb (sig)
 	  trgtab[trg] &= ~M_KSTATE;
 	  prstab[trg] = 0;
 
-	  if (NOT trgtab[trg])
+	  if (! trgtab[trg])
 	    {
 
 	      for (i = 0; i < 12; i++)
 		{
 
-		  if (vce2trg[i] EQ trg)
+		  if (vce2trg[i] == trg)
 		    {
 
 		      vce2trg[i] = -1;
 		      procpfl (trg);
 		    }
 
-		  if ((grp2prt[i][0] EQ LCL_PRT) AND (grp2prt[i][1] EQ 1))
+		  if ((grp2prt[i][0] == LCL_PRT) && (grp2prt[i][1] == 1))
 		    ne_end (trg, i);
 		}
 
@@ -341,12 +341,12 @@ localkb (sig)
       if (astat)
 	{			/* key down */
 
-	  if (keystat[key] EQ 0)
+	  if (keystat[key] == 0)
 	    {			/* closure */
 
 	      keystat[key] = 1;
 
-	      if (key EQ 0)
+	      if (key == 0)
 		{		/* delete last entry */
 
 		  disptag = FALSE;
@@ -357,19 +357,19 @@ localkb (sig)
 		      ep = lstends[lstendc];
 		      lstends[lstendc] = (struct n_entry *) NULL;
 
-		      if ((struct n_entry *) NULL EQ ep)
+		      if ((struct n_entry *) NULL == ep)
 			continue;
 
-		      if (ep EQ p_bak)
+		      if (ep == p_bak)
 			p_bak = p_bak->e_bak;
 
-		      if (ep EQ p_ctr)
+		      if (ep == p_ctr)
 			p_ctr = p_ctr->e_bak;
 
-		      if (ep EQ p_cur)
+		      if (ep == p_cur)
 			p_cur = p_cur->e_bak;
 
-		      if (ep EQ p_fwd)
+		      if (ep == p_fwd)
 			p_fwd = p_fwd->e_bak;
 
 		      e_del (e_rmv (ep));
@@ -385,19 +385,19 @@ localkb (sig)
 		      ep = lstbgns[lstbgnc];
 		      lstbgns[lstbgnc] = (struct n_entry *) NULL;
 
-		      if ((struct n_entry *) NULL EQ ep)
+		      if ((struct n_entry *) NULL == ep)
 			continue;
 
-		      if (ep EQ p_bak)
+		      if (ep == p_bak)
 			p_bak = p_bak->e_bak;
 
-		      if (ep EQ p_ctr)
+		      if (ep == p_ctr)
 			p_ctr = p_ctr->e_bak;
 
-		      if (ep EQ p_cur)
+		      if (ep == p_cur)
 			p_cur = p_cur->e_bak;
 
-		      if (ep EQ p_fwd)
+		      if (ep == p_fwd)
 			p_fwd = p_fwd->e_bak;
 
 		      e_del (e_rmv (ep));
@@ -410,29 +410,29 @@ localkb (sig)
 		  if (disptag)
 		    {
 
-		      if ((fc_val - stepfrm[3][stepint]) GE 0L)
+		      if ((fc_val - stepfrm[3][stepint]) >= 0L)
 			fc_val -= stepfrm[3][stepint];
 
 		      sc_refr (fc_val);
 		    }
 
 		}
-	      else if (key EQ 1)
+	      else if (key == 1)
 		{		/* enable step */
 
-		  stepenb = NOT stepenb;
+		  stepenb = ! stepenb;
 		  setleds ();
 
 /* 
 */
 		}
-	      else if (key EQ 2)
+	      else if (key == 2)
 		{		/* insert bar */
 
 		  if (recsw)
 		    {
 
-		      if (E_NULL NE (ep = e_alc (E_SIZE1)))
+		      if (E_NULL != (ep = e_alc (E_SIZE1)))
 			{
 
 			  ep->e_type = EV_BAR;
@@ -445,21 +445,21 @@ localkb (sig)
 		    }
 
 		}
-	      else if (key EQ 3)
+	      else if (key == 3)
 		{		/* insert a rest */
 
 		  if ((fc_val + stepfrm[3][stepint]) < 0x00FFFFFEL)
 		    fc_val += stepfrm[3][stepint];
 
 		}
-	      else if ((key GE 4) AND (key LE 6))
+	      else if ((key >= 4) && (key <= 6))
 		{
 
 		  stepwgt = 6 - key;	/* select weight */
 		  setleds ();
 
 		}
-	      else if ((key GE 7) AND (key LE 23))
+	      else if ((key >= 7) && (key <= 23))
 		{
 
 		  stepint = key - 7;	/* select interval */
@@ -483,15 +483,15 @@ localkb (sig)
       if (astat)
 	{
 
-	  if (keystat[key] EQ 0)
+	  if (keystat[key] == 0)
 	    {
 
 	      keystat[key] = 1;
 
-	      if (key GE 20)
+	      if (key >= 20)
 		return;
 
-	      if (ismode EQ IS_LORC)
+	      if (ismode == IS_LORC)
 		selins (key + 1);
 	      else
 		selins (key + 21);
@@ -511,14 +511,14 @@ localkb (sig)
       if (astat)
 	{
 
-	  if (keystat[key] EQ 0)
+	  if (keystat[key] == 0)
 	    {
 
 	      keystat[key] = 1;
 
-	      if ((asmode EQ 5) AND (key GE 19))
+	      if ((asmode == 5) && (key >= 19))
 		return;
-	      else if (key GE 20)
+	      else if (key >= 20)
 		return;
 
 	      selasg (key + 1 + ((asmode - 1) * 20));
@@ -539,18 +539,18 @@ localkb (sig)
       if (astat)
 	{
 
-	  if (keystat[key] EQ 0)
+	  if (keystat[key] == 0)
 	    {
 
 	      keystat[key] = 1;
 
-	      if (key GE 20)	/* limit key range */
+	      if (key >= 20)	/* limit key range */
 		return;
 
-	      if (gomode EQ GO_SECT)
+	      if (gomode == GO_SECT)
 		{		/* section */
 
-		  if (E_NULL NE (ep = seclist[curscor][key]))
+		  if (E_NULL != (ep = seclist[curscor][key]))
 		    {
 
 		      if (insmode)
@@ -577,7 +577,7 @@ localkb (sig)
 	      else
 		{		/* score */
 
-		  if (E_NULL NE scores[key])
+		  if (E_NULL != scores[key])
 		    {
 
 		      if (insmode)
@@ -616,18 +616,18 @@ localkb (sig)
       if (astat)
 	{
 
-	  if (keystat[key] EQ 0)
+	  if (keystat[key] == 0)
 	    {
 
 	      keystat[key] = 1;
 
-	      if ((-1 NE lksel) AND (key < 20))
+	      if ((-1 != lksel) && (key < 20))
 		{
 
 		  ldpass = 2;
 
 		  for (i = 0; i < N_SCORES; i++)
-		    if (ldmap[i] EQ key)
+		    if (ldmap[i] == key)
 		      {
 
 			ldmap[i] = -1;
@@ -655,16 +655,16 @@ localkb (sig)
       if (astat)
 	{
 
-	  if (keystat[key] EQ 0)
+	  if (keystat[key] == 0)
 	    {
 
 	      keystat[key] = 1;
 
-	      if ((-1 NE gtmsel) AND (key < 12))
+	      if ((-1 != gtmsel) && (key < 12))
 		{
 
 		  for (i = 0; i < 12; i++)
-		    if (grptmap[i] EQ key)
+		    if (grptmap[i] == key)
 		      {
 
 			grptmap[i] = -1;

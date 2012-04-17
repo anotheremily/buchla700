@@ -29,10 +29,10 @@ flread (buff, len, fp)
   while (len > 0L)
     {
 
-      if (len GE (long) CHUNK)
+      if (len >= (long) CHUNK)
 	{
 
-	  if (1 NE fread (buff, CHUNK, 1, fp))
+	  if (1 != fread (buff, CHUNK, 1, fp))
 	    return (EOF);
 
 	  buff += (long) CHUNK;
@@ -44,7 +44,7 @@ flread (buff, len, fp)
 
 	  ilen = len;
 
-	  if (1 NE fread (buff, ilen, 1, fp))
+	  if (1 != fread (buff, ilen, 1, fp))
 	    return (EOF);
 
 	  len = 0L;

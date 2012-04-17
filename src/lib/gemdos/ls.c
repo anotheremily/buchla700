@@ -94,10 +94,10 @@ main (argc, argv)
 
   /* process input options */
 
-  while (--argc > 0 AND (*++argv)[0] EQ '-')
+  while (--argc > 0 && (*++argv)[0] == '-')
     {
 
-      for (s = argv[0] + 1; *s NE '\0'; s++)
+      for (s = argv[0] + 1; *s != '\0'; s++)
 	{
 
 	  switch (0x007F & *s)
@@ -105,29 +105,29 @@ main (argc, argv)
 
 	    case 'a':		/* -a: list all files */
 
-	      allf = NOT allf;
+	      allf = ! allf;
 	      break;
 
 	    case 'c':		/* -c: 1-column listing requested */
 
-	      colm = NOT colm;
+	      colm = ! colm;
 	      break;
 
 	    case 'l':		/* -l: long listing requested */
 
-	      ll = NOT ll;
+	      ll = ! ll;
 	      break;
 
 	    case 'r':		/* -r: reverse sort direction */
 
-	      rev = NOT rev;
+	      rev = ! rev;
 	      break;
 
 	    case 's':		/* -s: print sizes only */
 
 	      sizonly = TRUE;
 
-	      if (*(s + 1) EQ '1')
+	      if (*(s + 1) == '1')
 		{
 
 		  clsize = ONECS;	/* diskuse for 1-sided floppy */
@@ -135,7 +135,7 @@ main (argc, argv)
 		  nt++;
 
 		}
-	      else if (*(s + 1) EQ '2')
+	      else if (*(s + 1) == '2')
 		{
 
 		  clsize = TWOCS;	/* or 2-sided */
@@ -147,12 +147,12 @@ main (argc, argv)
 
 	    case 't':		/* -t: time sort requested */
 
-	      tsrt = NOT tsrt;
+	      tsrt = ! tsrt;
 	      break;
 
 	    case 'u':		/* -u: print disk usage */
 
-	      usage = NOT usage;
+	      usage = ! usage;
 	      break;
 
 	    case 'R':		/* -R: recursively list subdirs */
@@ -175,7 +175,7 @@ main (argc, argv)
   tsc = toscreen ();		/* find out if output is to console screen */
   obuf = (struct outbuf *) malloc (sizeof (*obuf));	/* point to free memory */
 
-  if (argc EQ 0)
+  if (argc == 0)
     {
 
       argc++;
@@ -188,13 +188,13 @@ main (argc, argv)
   FOREVER
   {				/* cycle through args present */
 
-    if (spath[1] EQ ':' AND spath[2] EQ '\0')	/* if drive only */
+    if (spath[1] == ':' && spath[2] == '\0')	/* if drive only */
       getpath (spath);		/* get path */
 
-    if (usage OR sizonly OR ll)
+    if (usage || sizonly || ll)
       c = getsize (spath);	/* get use data only if needed */
 
-    if (c EQ 0)
+    if (c == 0)
       search (spath);		/* go do the hard work */
 
     if (--argc > 0)
@@ -206,7 +206,7 @@ main (argc, argv)
     else
       {
 
-	if (usage OR sizonly)
+	if (usage || sizonly)
 	  {
 
 	    if (np > 1)
@@ -235,10 +235,10 @@ int
 getsize (path)			/* get file cluster size */
      char *path;
 {
-  if (clsize EQ 0)
+  if (clsize == 0)
     {				/* if size not already set */
 
-      if ((clsize = getcl (path)) EQ 0)
+      if ((clsize = getcl (path)) == 0)
 	{			/* get cluster size for drive */
 
 	  fprintf (stderr, "Invalid drive: %c\n", *path);
@@ -295,10 +295,10 @@ search (path)
   strcpy (work, path);
   path_len = strlen (work);	/* save original path length */
 
-  if (!find_first (work, &dta, 0) OR work[path_len - 1] EQ QS)
+  if (!find_first (work, &dta, 0) || work[path_len - 1] == QS)
     {
 
-      if (work[path_len - 1] NE QS)
+      if (work[path_len - 1] != QS)
 	{
 
 	  strcat (work, DQS);	/* if path is to a directory */
@@ -320,7 +320,7 @@ search (path)
 	  if (dta.attr & 0x08)	/* ignore volume label */
 	    continue;
 
-	  if (dta.fname[0] EQ '.' AND ! allf)	/* unless -a option */
+	  if (dta.fname[0] == '.' && ! allf)	/* unless -a option */
 	    continue;		/* ignore "." and ".." */
 
 	  obuf[k].oattr = dta.attr;	/* stash this entry */
@@ -329,10 +329,10 @@ search (path)
 	  obuf[k].osize = dta.fsize;
 	  strcpy (obuf[k].oname, dta.fname);
 
-	  if (usage OR sizonly)
+	  if (usage || sizonly)
 	    {
 
-	      if ((dta.attr & 0x10) AND dta.fname[0] NE '.')
+	      if ((dta.attr & 0x10) && dta.fname[0] != '.')
 		{
 
 		  bytes += clsize;	/* sum up disk usage */
@@ -364,17 +364,17 @@ search (path)
 */
   work[path_len] = NULL;	/* restore directory pathname */
 
-  if (np++ AND ! sizonly)
+  if (np++ && ! sizonly)
     fputc (endlin (), stdout);	/* separate listing blocks */
 
-  if (usage OR sizonly)
+  if (usage || sizonly)
     {
 
       total += bytes;		/* total bytes to date */
       fprintf (stdout, "%7ld  ", bytes);
     }
 
-  if (recd OR nargs > 1 OR usage OR sizonly OR ID)
+  if (recd || nargs > 1 || usage || sizonly || ID)
     {
 
       fprintf (stdout, "%s", work);	/* identify the block */
@@ -401,12 +401,12 @@ search (path)
     do
       {
 
-	if (dta.attr & 0x10 AND dta.fname[0] NE '.')
+	if (dta.attr & 0x10 && dta.fname[0] != '.')
 	  {
 
 	    work[path_len] = 0;	/* discard old name */
 
-	    for (z = 0; dta.fname[z] NE NULL; z++)
+	    for (z = 0; dta.fname[z] != NULL; z++)
 	      dta.fname[z] = tolower (dta.fname[z]);
 
 	    strcat (work, dta.fname);	/* install a new one */
@@ -544,7 +544,7 @@ getcl (pp)
   extern long left;
   extern int drive;
 
-  if (*(pp + 1) EQ ':')		/* use specified drive if any */
+  if (*(pp + 1) == ':')		/* use specified drive if any */
     r.ax = *pp - 'a';
   else
     {
@@ -555,7 +555,7 @@ getcl (pp)
 
   drive = r.ax & 0x7F;
 
-  if (!usage AND ! sizonly AND drive EQ 2)
+  if (!usage && ! sizonly && drive == 2)
     return (HARDCS);
   else
     {
@@ -564,7 +564,7 @@ getcl (pp)
       r.ax = 0x3600;
       sysint (0x21, &r, &r);	/* DOS interrupt hex 36 */
 
-      if (r.ax EQ 0xFFFF)	/* gets free disk space */
+      if (r.ax == 0xFFFF)	/* gets free disk space */
 	return (0);		/* and other goodies */
       else
 	{
@@ -589,7 +589,7 @@ comp (a, b)
   if (tsrt)
     {
 
-      if (a->odate NE b->odate)	/* if dates differ */
+      if (a->odate != b->odate)	/* if dates differ */
 	y = (a->odate < b->odate) ? -1 : 1;	/* that settles it */
       else
 	y = (a->otime < b->otime) ? -1 : 1;	/* else compare times */
@@ -649,7 +649,7 @@ putname (i)
 {
   int c, j = 0;
 
-  while ((c = tolower (obuf[i].oname[j])) NE 0)
+  while ((c = tolower (obuf[i].oname[j])) != 0)
     {
 
       fputc (c, stdout);
@@ -673,7 +673,7 @@ endlin (fp)
   extern int tsc;		/* true if output is to screen */
   int c;
 
-  if (tsc AND++ lc GE SCRSIZ)
+  if (tsc AND++ lc >= SCRSIZ)
     {				/* pause if output is to console screen */
       /* and we've shown a screenful */
 
@@ -761,7 +761,7 @@ longlist (k)
 
 	  fprintf (stdout, "%s%7ld  %2d %s ", l.fattr, l.size, l.day, mon);
 
-	  if (cdate GE (l.yr * 12 + l.mnum) + 12)
+	  if (cdate >= (l.yr * 12 + l.mnum) + 12)
 	    fprintf (stdout, " %4d  ", l.yr);	/* print year if too old */
 	  else
 	    {
@@ -813,7 +813,7 @@ fill (i, ll)
 /* 
 */
 
-  if ((obuf[i].oattr & 0x10) AND obuf[i].oname[0] NE '.')
+  if ((obuf[i].oattr & 0x10) && obuf[i].oname[0] != '.')
     {
 
       ll->size = clsize;
@@ -833,12 +833,12 @@ fill (i, ll)
   ll->yr = (obuf[i].odate >> 9) + 1980;
   k = obuf[i].otime >> 5;	/* this is a mess */
   ll->mm = k & 0x3f;
-  ll->ap = ((ll->hh = k >> 6) GE 12) ? 'p' : 'a';
+  ll->ap = ((ll->hh = k >> 6) >= 12) ? 'p' : 'a';
 
   if (ll->hh > 12)
     ll->hh -= 12;
 
-  if (ll->hh EQ 0)
+  if (ll->hh == 0)
     ll->hh = 12;
 
   return;
@@ -889,7 +889,7 @@ mname (n)
     "Dec"
   };
 
-  return ((n < 1 OR n > 12) ? name[0] : name[n]);
+  return ((n < 1 || n > 12) ? name[0] : name[n]);
 }
 
 /* 

@@ -34,7 +34,7 @@ getline (buf, nb)
 	case A_BS:
 	case A_DEL:
 
-	  if (bc EQ 0)
+	  if (bc == 0)
 	    {
 
 	      putchar (A_BEL);	/* complain -- nothing there */

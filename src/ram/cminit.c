@@ -13,7 +13,7 @@
 
 #define	CM_MXSTR	257	/* maximum parser string result length */
 
-#define	CM_DBLK		if (!QQanch) while (*QQip EQ ' ') ++QQip
+#define	CM_DBLK		if (!QQanch) while (*QQip == ' ') ++QQip
 
 int QQsw;			/* parser result switch */
 int QQanch;			/* parser anchored match switch */
@@ -74,7 +74,7 @@ CMchr (c)
 {
   CM_DBLK;
 
-  if (c NE * QQip)
+  if (c != * QQip)
     return (QQsw = FALSE);
 
   QQchr = *QQip++;
@@ -108,7 +108,7 @@ CMuchr (c)
     if (isupper (t))
       t = _tolower (t);
 
-  if (c NE t)
+  if (c != t)
     return (QQsw = FALSE);
 
   QQchr = *QQip++;
@@ -139,7 +139,7 @@ CMstr (s)
   while (*s)
     {
 
-      if (*t++ NE * s++)
+      if (*t++ != * s++)
 	return (QQsw = FALSE);
     }
 
@@ -186,7 +186,7 @@ CMustr (s)
 	if (isupper (t2))
 	  t2 = _tolower (t2);
 
-      if (t1 NE t2)
+      if (t1 != t2)
 	return (QQsw = FALSE);
     }
 
@@ -386,7 +386,7 @@ CMstat (msg)
   printf ("  {%s}\r\n", QQin);
   printf ("   ");
 
-  while (tp++ NE QQip)
+  while (tp++ != QQip)
     printf (" ");
 
   printf ("^\r\n");

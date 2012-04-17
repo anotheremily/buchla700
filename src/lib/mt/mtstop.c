@@ -42,7 +42,7 @@ MTStop (tid)
 
 /* 
 */
-  if ((struct _mt_def *) NIL EQ _MT_)
+  if ((struct _mt_def *) NIL == _MT_)
     _MT_ = (struct _mt_def *) XBIOS (X_MTDEFS);
 
   tcbcur = _MT_->mtp->TCBs;	/* point at TCB table */
@@ -55,7 +55,7 @@ MTStop (tid)
       if (tcbcur->flags & MTF_OCC)
 	{			/* TCB in use ? */
 
-	  if (tcbcur->tid EQ tid)
+	  if (tcbcur->tid == tid)
 	    {			/* task we want ? */
 
 	      if (tcbcur->flags & MTF_STP)
@@ -81,7 +81,7 @@ MTStop (tid)
 		  return (1);	/* task is waiting */
 		}
 
-	      if (NOT (tcbcur->flags & MTF_RDY))
+	      if (! (tcbcur->flags & MTF_RDY))
 		{		/* stopped ? */
 
 		  setipl (oldipl);	/* RESTORE INTERRUPTS */
@@ -98,10 +98,10 @@ MTStop (tid)
 		  tcbprv = tcbcur;
 		  tcbcur = tcbprv->next;
 
-		  if (tcbcur NE (TCB *) NIL)
+		  if (tcbcur != (TCB *) NIL)
 		    {
 
-		      if (tcbcur->tid EQ tid)
+		      if (tcbcur->tid == tid)
 			{
 
 			  tcbprv->next = tcbcur->next;

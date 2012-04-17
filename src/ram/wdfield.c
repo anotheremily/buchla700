@@ -306,7 +306,7 @@ pntsup ()
   for (i = 0, k = 0; i < cwnp; i++, k += cwin)
     {
 
-      if (i EQ 0)
+      if (i == 0)
 	{			/* first point */
 
 	  ov[curwpnt] = curwoff << 5;
@@ -323,9 +323,9 @@ pntsup ()
 	      tv = (ov[j] >> 5) -
 		((((long) curdif * wdcurtb[k]) + WCROUND) / WCSCALE);
 
-	      if (tv GT 1023)
+	      if (tv > 1023)
 		tv = 1023;
-	      else if (tv LT - 1023)
+	      else if (tv < - 1023)
 		tv = -1023;
 
 	      ov[j] = tv << 5;
@@ -333,15 +333,15 @@ pntsup ()
 
 	  j = curwpnt - i;	/* update point on the left */
 
-	  if (j GE 0)
+	  if (j >= 0)
 	    {			/* ... if it exists */
 
 	      tv = (ov[j] >> 5) -
 		((((long) curdif * wdcurtb[k]) + WCROUND) / WCSCALE);
 
-	      if (tv GT 1023)
+	      if (tv > 1023)
 		tv = 1023;
-	      else if (tv LT - 1023)
+	      else if (tv < - 1023)
 		tv = -1023;
 
 	      ov[j] = tv << 5;
@@ -416,7 +416,7 @@ wdintp ()
 
 wdykdn ()
 {
-  if (wpntsv EQ 0)
+  if (wpntsv == 0)
     return;
 
   lstwpnt = curwpnt;
@@ -431,13 +431,13 @@ wdykdn ()
 
 wdykup ()
 {
-  if ((wpntsv EQ 0) OR (wdupdfl EQ FALSE))
+  if ((wpntsv == 0) || (wdupdfl == FALSE))
     return;
 
-  if (wpntsv EQ 1)
+  if (wpntsv == 1)
     {				/* offsets */
 
-      if (curwdth EQ NUMWIDS)
+      if (curwdth == NUMWIDS)
 	wdintp ();		/* interpolate mode */
       else
 	pntsup ();		/* brush mode */
@@ -484,9 +484,9 @@ wdcyupd ()
 
       cyval += cyrate;
 
-      if (cyval GT (CYMAX - 1))
+      if (cyval > (CYMAX - 1))
 	cyval = CYMAX - 1;
-      else if (cyval LT 1)
+      else if (cyval < 1)
 	cyval = 1;
 
       return;
@@ -496,9 +496,9 @@ wdcyupd ()
 
       curwoff -= cyrate;
 
-      if (curwoff GT 1023)
+      if (curwoff > 1023)
 	curwoff = 1023;
-      else if (curwoff LT - 1023)
+      else if (curwoff < - 1023)
 	curwoff = -1023;
 
       cyval = WPOFF - ((curwoff * WPSF1) / WPSF2);
@@ -595,21 +595,21 @@ wdcxupd ()
 
       cxval += cxrate;
 
-      if (cxval GT (CXMAX - 1))
+      if (cxval > (CXMAX - 1))
 	cxval = CXMAX - 1;
-      else if (cxval LT 1)
+      else if (cxval < 1)
 	cxval = 1;
 
       return;
 
     case 1:			/* offset selected - maybe do interpolate move */
 
-      if (curwdth NE NUMWIDS)
+      if (curwdth != NUMWIDS)
 	return;
 
       curwpnt += sign (cxrate, wxrate);
 
-      if (curwpnt GE NUMWPNT)
+      if (curwpnt >= NUMWPNT)
 	curwpnt = NUMWPNT - 1;
       else if (curwpnt < 0)
 	curwpnt = 0;
@@ -650,7 +650,7 @@ wdnfld (k)
 	  ip = &vbufs[curvce];
 	  hv = curwslt ? &ip->idhwvbh : &ip->idhwvah;
 
-	  if (hitbox EQ 0)
+	  if (hitbox == 0)
 	    {			/* waveshape area */
 
 	      switch (wpntsv)
@@ -658,7 +658,7 @@ wdnfld (k)
 
 		case 0:	/* nothing selected */
 
-		  if (k EQ 8)
+		  if (k == 8)
 		    {		/* - */
 
 		      if (--curwdth < 0)
@@ -668,7 +668,7 @@ wdnfld (k)
 		      return (SUCCESS);
 
 		    }
-		  else if (k EQ 9)
+		  else if (k == 9)
 		    {		/* + */
 
 		      if (++curwdth > NUMWIDS)
@@ -683,23 +683,23 @@ wdnfld (k)
 */
 		case 1:	/* offset selected */
 
-		  if (k EQ 8)
+		  if (k == 8)
 		    {		/* - */
 
-		      if (curwdth EQ NUMWIDS)
+		      if (curwdth == NUMWIDS)
 			return (FAILURE);
 
-		      if (--curwdth LT 0)
+		      if (--curwdth < 0)
 			curwdth = NUMWIDS - 1;
 
 		      wdswin (4);
 		      return (SUCCESS);
 
 		    }
-		  else if (k EQ 9)
+		  else if (k == 9)
 		    {		/* + */
 
-		      if (curwdth EQ NUMWIDS)
+		      if (curwdth == NUMWIDS)
 			{
 
 			  wdintp ();
@@ -707,7 +707,7 @@ wdnfld (k)
 			  wdswin (2);
 
 			}
-		      else if (++curwdth GE NUMWIDS)
+		      else if (++curwdth >= NUMWIDS)
 			curwdth = 0;
 
 		      wdswin (4);
@@ -719,7 +719,7 @@ wdnfld (k)
 */
 		case 2:	/* harmonic selected */
 
-		  if (k EQ 8)
+		  if (k == 8)
 		    {		/* - */
 
 		      if (hv[curwhrm] > 0)
@@ -728,7 +728,7 @@ wdnfld (k)
 			return (FAILURE);
 
 		    }
-		  else if (k EQ 9)
+		  else if (k == 9)
 		    {		/* + */
 
 		      if (hv[curwhrm] < 0)
@@ -760,10 +760,10 @@ wdnfld (k)
 /* 
 */
 	}
-      else if (hitbox EQ 1)
+      else if (hitbox == 1)
 	{			/* harmonic legend */
 
-	  if (k EQ 8)
+	  if (k == 8)
 	    {			/* - */
 
 	      if (hv[curwhrm] > 0)
@@ -772,7 +772,7 @@ wdnfld (k)
 		return (FAILURE);
 
 	    }
-	  else if (k EQ 9)
+	  else if (k == 9)
 	    {			/* + */
 
 	      if (hv[curwhrm] < 0)
@@ -814,22 +814,22 @@ wdnfld (k)
 short
 wdxkey ()
 {
-  if (NOT astat)
+  if (! astat)
     return (FAILURE);
 
   stcrow = cyval / 14;
   stccol = cxval >> 3;
 
-  if (stcrow EQ 23)
+  if (stcrow == 23)
     {
 
-      if ((stccol GE 2) OR (stccol LE 8))
+      if ((stccol >= 2) || (stccol <= 8))
 	{
 
 	  clrws ();
 
 	}
-      else if ((stccol GE 38) AND (stccol LE 42))
+      else if ((stccol >= 38) && (stccol <= 42))
 	{
 
 	  memsetw (curwslt ? vbufs[curvce].idhwvbo
@@ -839,7 +839,7 @@ wdxkey ()
 	  wsupd ();
 
 	}
-      else if ((stccol GE 51) AND (stccol LE 58))
+      else if ((stccol >= 51) && (stccol <= 58))
 	{
 
 	  memsetw (vmtab, 0, NUMHARM);

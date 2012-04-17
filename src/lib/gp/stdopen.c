@@ -28,11 +28,11 @@ stdopen (name, mode)
 {
   FILE *fp;
 
-  if ((FILE *) NULL EQ (fp = fopen (name, mode)))
+  if ((FILE *) NULL == (fp = fopen (name, mode)))
     {
 
       if (opnfail)
-	if ((FILE *) NULL NE (fp = (*opnfail) (name, mode)))
+	if ((FILE *) NULL != (fp = (*opnfail) (name, mode)))
 	  return (fp);
 
       fprintf (stderr, "%s: ERROR - Unable to open \"%s\" in mode \"%s\".\n",
@@ -65,11 +65,11 @@ stdopna (name, mode)
 {
   FILE *fp;
 
-  if ((FILE *) NULL EQ (fp = fopena (name, mode)))
+  if ((FILE *) NULL == (fp = fopena (name, mode)))
     {
 
       if (opnfail)
-	if ((FILE *) NULL NE (fp = (*opnfail) (name, mode)))
+	if ((FILE *) NULL != (fp = (*opnfail) (name, mode)))
 	  return (fp);
 
       fprintf (stderr, "%s: ERROR - Unable to open \"%s\" in mode \"%s\".\n",
@@ -104,11 +104,11 @@ stdopnb (name, mode)
 {
   FILE *fp;
 
-  if ((FILE *) NULL EQ (fp = fopenb (name, mode)))
+  if ((FILE *) NULL == (fp = fopenb (name, mode)))
     {
 
       if (opnfail)
-	if ((FILE *) NULL NE (fp = (*opnfail) (name, mode)))
+	if ((FILE *) NULL != (fp = (*opnfail) (name, mode)))
 	  return (fp);
 
       fprintf (stderr, "%s: ERROR - Unable to open \"%s\" in mode \"%s\".\n",

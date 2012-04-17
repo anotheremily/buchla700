@@ -31,7 +31,7 @@ fread (buffer, size, number, stream)
       for (i = size; i; --i)
 	{
 
-	  if ((c = getc (stream)) EQ EOF)
+	  if ((c = getc (stream)) == EOF)
 	    return (total);
 
 	  *buffer++ = c;

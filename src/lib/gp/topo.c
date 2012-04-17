@@ -82,9 +82,9 @@ look:
 
     haspred:
     }
-  while (++k LE n);
+  while (++k <= n);
 
-  if (count EQ n)		/* see if all are done */
+  if (count == n)		/* see if all are done */
     return (SUCCESS);
   else
     return (FAILURE);

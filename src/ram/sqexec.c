@@ -211,7 +211,7 @@ dosqact (seq, act, dat)
 
       val = evaltv (dat);
 
-      if (sregval[obj] EQ val)
+      if (sregval[obj] == val)
 	return (0);
       else
 	return (1);
@@ -289,14 +289,14 @@ sqexec (seq)
   rc = dosqact (seq, act, dat);
 
 #if	DEBUGSX
-  if (debugsw AND debugsx)
+  if (debugsw && debugsx)
     printf ("sqexec(%02u):  Line %03u  Act 1 $%04.4X $%04.4X  $%04.4X %d\n",
 	    seq, line, act, dat, seqflag[seq], rc);
 #endif
 
-  if (rc EQ 1)			/* skip action 2 */
+  if (rc == 1)			/* skip action 2 */
     goto act3;
-  else if (rc EQ - 1)		/* jump or stop */
+  else if (rc == - 1)		/* jump or stop */
     return;
 
   act = sp->seqact2;		/* do Action 2 */
@@ -305,14 +305,14 @@ sqexec (seq)
   rc = dosqact (seq, act, dat);
 
 #if	DEBUGSX
-  if (debugsw AND debugsx)
+  if (debugsw && debugsx)
     printf ("sqexec(%02u):  Line %03u  Act 2 $%04.4X $%04.4X  $%04.4X %d\n",
 	    seq, line, act, dat, seqflag[seq], rc);
 #endif
 
-  if (rc EQ 1)			/* skip action 3 */
+  if (rc == 1)			/* skip action 3 */
     goto nxtline;
-  else if (rc EQ - 1)		/* jump or stop */
+  else if (rc == - 1)		/* jump or stop */
     return;
 
 act3:
@@ -322,24 +322,24 @@ act3:
   rc = dosqact (seq, act, dat);
 
 #if	DEBUGSX
-  if (debugsw AND debugsx)
+  if (debugsw && debugsx)
     printf ("sqexec(%02u):  Line %03u  Act 3 $%04.4X $%04.4X  $%04.4X %d\n",
 	    seq, line, act, dat, seqflag[seq], rc);
 #endif
 
-  if (rc EQ - 1)		/* jump or stop */
+  if (rc == - 1)		/* jump or stop */
     return;
 
 nxtline:			/* increment line counter */
 
-  if (++seqline[seq] GE NSLINES)
+  if (++seqline[seq] >= NSLINES)
     seqline[seq] = 0;
 
   seqtime[seq] = seqtab[seqline[seq]].seqtime;
   seqflag[seq] |= SQF_CLK;
 
 #if	DEBUGSX
-  if (debugsw AND debugsx)
+  if (debugsw && debugsx)
     printf ("sqexec(%02u):  Next %03u  %5u  $%04.4X\n",
 	    seq, line, seqtime[seq], seqflag[seq]);
 #endif
@@ -363,7 +363,7 @@ seqproc ()
   register unsigned short *fp;
   char linbuf[66];
 
-  if (0 EQ timers[SQTIMER])
+  if (0 == timers[SQTIMER])
     {
 
       for (seq = 0; seq < 16; seq++)
@@ -371,7 +371,7 @@ seqproc ()
 
 	  fp = &seqflag[seq];
 
-	  if ((SQF_RUN | SQF_CLK) EQ ((SQF_RUN | SQF_CLK) & *fp))
+	  if ((SQF_RUN | SQF_CLK) == ((SQF_RUN | SQF_CLK) & *fp))
 	    {
 
 	      if (seqtime[seq])
@@ -395,15 +395,15 @@ seqproc ()
     }
 
   for (seq = 0; seq < 16; seq++)
-    if (SQF_RUN EQ ((SQF_RUN | SQF_CLK) & seqflag[seq]))
+    if (SQF_RUN == ((SQF_RUN | SQF_CLK) & seqflag[seq]))
       sqexec (seq);
 /* 
 */
-  if (((ndisp EQ 1) OR (ndisp EQ 3)) AND dsp_ok AND seqdupd)
+  if (((ndisp == 1) || (ndisp == 3)) && dsp_ok && seqdupd)
     {
 
 #if	DEBUGSX
-      if (debugsw AND debugsx)
+      if (debugsw && debugsx)
 	printf ("seqproc():  ndisp = %d  seqdupd = $%04.4X\n",
 		ndisp, seqdupd);
 #endif

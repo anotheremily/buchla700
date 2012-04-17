@@ -39,7 +39,7 @@ extern short adbox[][8];
 
 modasg ()
 {
-  if (NOT asgmod)
+  if (! asgmod)
     {
 
       asgmod = TRUE;
@@ -89,7 +89,7 @@ ef_ains (n)
   for (i = 0; i < 2; i++)
     tmpval = (tmpval * 10) + (ebuf[i] - '0');
 
-  if (tmpval GE NINST)
+  if (tmpval >= NINST)
     return (FAILURE);
 
   ins2grp[grp] = tmpval | (ins2grp[grp] & 0xFF00);

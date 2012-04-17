@@ -80,7 +80,7 @@ readit (fp, to, len)
   for (count = 0; count < len; count++)
     {
 
-      if (EOF EQ (c = getc (fp)))
+      if (EOF == (c = getc (fp)))
 	{
 
 	  printf ("ERROR: Unexpected EOF -- errno = %d\n", errno);
@@ -117,10 +117,10 @@ main (argc, argv)
 
   strcpy (libname, LIBNAME);
 
-  if (argc EQ 2)
+  if (argc == 2)
     strcpy (libname, argv[1]);
 
-  if ((FILE *) NULL EQ (fp = fopenb (libname, "r")))
+  if ((FILE *) NULL == (fp = fopenb (libname, "r")))
     {
 
       printf ("Unable to open [%s]\n", libname);

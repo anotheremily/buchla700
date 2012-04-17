@@ -25,14 +25,14 @@ infield (row, col, fetp)
 {
   infetp = (struct fet *) NULL;	/* setup for NULL infetp return */
 
-  if ((struct fet *) NULL EQ fetp)	/* handle NULL fet pointer */
+  if ((struct fet *) NULL == fetp)	/* handle NULL fet pointer */
     return (FALSE);
 
   while (fetp->redisp)
-    {				/* redisp EQ NULL is end of table */
+    {				/* redisp == NULL is end of table */
 
-      if ((row EQ fetp->frow) AND	/* check the entry */
-	  (col GE fetp->flcol) AND (col LE fetp->frcol))
+      if ((row == fetp->frow) &&	/* check the entry */
+	  (col >= fetp->flcol) && (col <= fetp->frcol))
 	{
 
 	  infetp = fetp;	/* set new fet pointer */

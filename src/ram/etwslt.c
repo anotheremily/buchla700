@@ -115,7 +115,7 @@ nd_wslt (nn, k)
   printf ("nd_wslt($%04X, %d)\r\n", nn, k);
 #endif
 
-  if (k GT 1)
+  if (k > 1)
     return (FAILURE);
 
   ebuf[0] = k + 'A';

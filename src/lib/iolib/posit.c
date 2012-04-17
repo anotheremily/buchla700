@@ -25,7 +25,7 @@ posit (fd, pos)
 {
   register struct fcb *fp;
 
-  if ((fd < 0) OR (fd > MAXCHAN))
+  if ((fd < 0) || (fd > MAXCHAN))
     {
 
       errno = EBADF;
@@ -34,7 +34,7 @@ posit (fd, pos)
 
   fp = chantab[fd].c_arg;
 
-  if ((chantab[fd].c_seek EQ 0) OR ((pos << FILESHFT) > fp->curlen))
+  if ((chantab[fd].c_seek == 0) || ((pos << FILESHFT) > fp->curlen))
     {
 
       errno = EINVAL;

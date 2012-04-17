@@ -70,7 +70,7 @@ ef_agch (n)
   ebflag = FALSE;
   tmpval = 0;
 
-  if ((ebuf[0] EQ ' ') AND (ebuf[1] EQ ' '))
+  if ((ebuf[0] == ' ') && (ebuf[1] == ' '))
     {
 
       tmpval = -1;
@@ -82,13 +82,13 @@ ef_agch (n)
       for (i = 0; i < 2; i++)
 	{
 
-	  if (ebuf[i] EQ ' ')
+	  if (ebuf[i] == ' ')
 	    ebuf[i] = '0';
 
 	  tmpval = (tmpval * 10) + (ebuf[i] - '0');
 	}
 
-      if ((tmpval EQ 0) OR (tmpval GT 16))
+      if ((tmpval == 0) || (tmpval > 16))
 	return (FAILURE);
     }
 

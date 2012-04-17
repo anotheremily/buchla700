@@ -21,7 +21,7 @@ extern struct _mtdef *_MT_;	/* Multi-Tasker structure pointer */
 unsigned
 MTGetID ()
 {
-  if ((struct _mt_def *) NIL EQ _MT_)
+  if ((struct _mt_def *) NIL == _MT_)
     _MT_ = (struct _mt_def *) XBIOS (X_MTDEFS);
 
   return (_MT_->CurP->tid);	/* return current task ID */

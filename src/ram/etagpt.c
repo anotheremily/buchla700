@@ -74,7 +74,7 @@ ef_agpt (n)
 
   grp2prt[grp][0] = ebuf[0];
 
-  if (grp2prt[grp][0] NE 1)
+  if (grp2prt[grp][0] != 1)
     for (i = 0; i < 88; i++)
       key2grp[i] &= ~(0x0001 << grp);
 
@@ -124,17 +124,17 @@ nd_agpt (nn, k)
 
   n = nn & 0x00FF;
 
-  if (k EQ 8)
+  if (k == 8)
     {				/* '-' */
 
-      if (--ebuf[0] LT 0)
+      if (--ebuf[0] < 0)
 	ebuf[0] = 3;
 
     }
-  else if (k EQ 9)
+  else if (k == 9)
     {				/* '+' */
 
-      if (++ebuf[0] GT 3)
+      if (++ebuf[0] > 3)
 	ebuf[0] = 0;
 
     }

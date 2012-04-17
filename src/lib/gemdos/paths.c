@@ -72,7 +72,7 @@ main (argc, argv)
 
       c = *argv[1];
 
-      if (isascii (c) AND isalpha (c))
+      if (isascii (c) && isalpha (c))
 	{			/* check argument */
 
 	  first = _toupper (c) - 'A';
@@ -105,7 +105,7 @@ main (argc, argv)
 
       c = *argv[2];
 
-      if (isascii (c) AND isalpha (c))
+      if (isascii (c) && isalpha (c))
 	{			/* check argument */
 
 	  last = _toupper (c) - 'A';
@@ -156,7 +156,7 @@ main (argc, argv)
 
 	  Dgetpath (buf, 1 + drive);
 
-	  if ('\0' EQ buf[0])
+	  if ('\0' == buf[0])
 	    {			/* clean up root path */
 
 	      buf[0] = '\\';

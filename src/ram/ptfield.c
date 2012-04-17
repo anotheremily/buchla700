@@ -149,10 +149,10 @@ ptmkey ()
   if (astat)
     {
 
-      if (stccol EQ 48)
+      if (stccol == 48)
 	{
 
-	  if (ss_sqsw EQ 0)
+	  if (ss_sqsw == 0)
 	    {
 
 	      (*xy_dn) ();	/* handle KEY_DOWN functions */
@@ -177,7 +177,7 @@ ptmkey ()
   else
     {
 
-      if (stccol EQ 48)
+      if (stccol == 48)
 	{
 
 	  ss_ptsw = 0;
@@ -185,7 +185,7 @@ ptmkey ()
 	  ncvwait = cvtime;
 	  cmfirst = TRUE;
 
-	  if (ss_sqsw EQ 0)
+	  if (ss_sqsw == 0)
 	    (*xy_up) ();
 
 	  (*pstmove) ();	/* handle POST-MOVE functions */
@@ -212,10 +212,10 @@ ptekey ()
   if (astat)
     {
 
-      if (stccol EQ 48)
+      if (stccol == 48)
 	{
 
-	  if (ss_sqsw EQ 0)
+	  if (ss_sqsw == 0)
 	    {
 
 	      (*xy_dn) ();	/* handle KEY_DOWN functions */
@@ -240,7 +240,7 @@ ptekey ()
   else
     {
 
-      if (stccol EQ 48)
+      if (stccol == 48)
 	{
 
 	  ss_ptsw = 0;
@@ -248,7 +248,7 @@ ptekey ()
 	  ncvwait = cvtime;
 	  cmfirst = TRUE;
 
-	  if (ss_sqsw EQ 0)
+	  if (ss_sqsw == 0)
 	    (*xy_up) ();
 
 	  (*pstmove) ();	/* handle POST-MOVE functions */
@@ -272,13 +272,13 @@ ptxkey ()
 {
   register short i, cp, pp, sp, stm;
 
-  if (NOT astat)		/* only on key closures ... */
+  if (! astat)		/* only on key closures ... */
     return;
 
   if (inrange (stccol, 2, 13))
     {				/* definer -- clear definer */
 
-      if (ptecpos AND NOT ptbflag)
+      if (ptecpos && ! ptbflag)
 	{			/* refresh data entry stuff */
 
 	  memcpyw (&ptebuf.defnum, &patches[ptecpos].defnum, 6);
@@ -292,7 +292,7 @@ ptxkey ()
       memset (&ptdebuf[2], ' ', 12);
 
       for (i = 0; i < 48; i++)
-	if (ptdebuf[i] EQ '\0')
+	if (ptdebuf[i] == '\0')
 	  ptdebuf[i] = ' ';
 
       ptdebuf[0] = '\260';
@@ -307,7 +307,7 @@ ptxkey ()
   else if (inrange (stccol, 15, 26))
     {				/* stimulus -- clear stimulus */
 
-      if (ptecpos AND NOT ptbflag)
+      if (ptecpos && ! ptbflag)
 	{			/* refresh data entry stuff */
 
 	  memcpyw (&ptebuf.defnum, &patches[ptecpos].defnum, 6);
@@ -321,7 +321,7 @@ ptxkey ()
       memset (&ptdebuf[15], ' ', 12);
 
       for (i = 0; i < 48; i++)
-	if (ptdebuf[i] EQ '\0')
+	if (ptdebuf[i] == '\0')
 	  ptdebuf[i] = ' ';
 
       ptdebuf[0] = '\260';
@@ -356,7 +356,7 @@ ptxkey ()
 
 	  stm = patches[cp].stmnum;	/* get stimulus used */
 #if	DEBUGXP
-	  if (debugsw AND debugxp)
+	  if (debugsw && debugxp)
 	    printf ("ptxkey():  DELETING PATCH  pp = %d  cp = %d  sp = %d\n",
 		    pp, cp, sp);
 #endif
@@ -392,11 +392,11 @@ ptxkey ()
 
 		      sp = defents[cp].nextdef;	/* successor */
 
-		      if (defents[cp].stm EQ stm)
+		      if (defents[cp].stm == stm)
 			{
 
 #if	DEBUGXP
-			  if (debugsw AND debugxp)
+			  if (debugsw && debugxp)
 			    {
 
 			      printf
@@ -448,7 +448,7 @@ dspdfst (buf, val)
 {
   register unsigned short chan, port, stim;
 
-  if (val EQ NULL_DEF)
+  if (val == NULL_DEF)
     {				/* handle possible blank definer */
 
       strcpy (buf, "            ");
@@ -576,7 +576,7 @@ dfpdat (pp)
 
 	  vp1 = 0;
 
-	  if (sgn EQ '+')
+	  if (sgn == '+')
 	    sgn = '\240';
 	  else
 	    sgn = '\241';
@@ -595,7 +595,7 @@ dfpdat (pp)
 
     case PSA_FNC:		/* function / control */
 
-      if ((PE_SPEC & pp->paspec) EQ PA_AUX)
+      if ((PE_SPEC & pp->paspec) == PA_AUX)
 	sprintf (buf, "%s", (val & 0x0001) ? "On   " : "Off  ");
       else
 	sprintf (buf, "%s", (val & 0x0001) ? "Start" : "Stop ");

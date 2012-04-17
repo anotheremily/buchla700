@@ -56,14 +56,14 @@ stashp ()
 
   c = findpte ();
 
-  if (c EQ 0)
+  if (c == 0)
     {				/* old patch -- just update it */
 
       memcpyw (&patches[ptecpos].defnum, &ptebuf.defnum, 6);
       patches[ptecpos].paspec |= PE_TBIT;	/* define it */
 
 #if	DEBUGSP
-      if (debugsw AND debugsp)
+      if (debugsw && debugsp)
 	{
 
 	  printf ("stashp():  UPDATED\n");
@@ -76,11 +76,11 @@ stashp ()
 
   /* allocate a patch entry and fill it in */
 
-  if (0 EQ (ptecpos = pt_alc ()))
+  if (0 == (ptecpos = pt_alc ()))
     {
 
 #if	DEBUGSP
-      if (debugsw AND debugsp)
+      if (debugsw && debugsp)
 	printf ("stashp():  patch table FULL\n");
 #endif
       return (FAILURE);		/* no patch entries left */
@@ -90,7 +90,7 @@ stashp ()
   patches[ptecpos].paspec |= PE_TBIT;	/* define it */
   stim = TRG_MASK & ptebuf.stmnum;
 
-  if (c EQ 1)
+  if (c == 1)
     {				/* new patch -- no STM entry yet */
 
       ptepred = 0;
@@ -119,7 +119,7 @@ stashp ()
 
       patches[ptecpos].prevstm = 0;
 
-      if (c EQ - 1)
+      if (c == - 1)
 	{
 
 	  ptesucc = stmptr[stim];
@@ -141,11 +141,11 @@ stashp ()
 */
   /* update DEF table */
 
-  if (0 EQ (c = finddpe ()))
+  if (0 == (c = finddpe ()))
     {
 
 #if	DEBUGSP
-      if (debugsw AND debugsp)
+      if (debugsw && debugsp)
 	{
 
 	  printf ("stashp():  defent already exists -- dpecpos = %d\n",
@@ -158,11 +158,11 @@ stashp ()
       return (SUCCESS);		/* defent already exists */
     }
 
-  if (0 EQ (dpecpos = dt_alc ()))
+  if (0 == (dpecpos = dt_alc ()))
     {
 
 #if	DEBUGSP
-      if (debugsw AND debugsp)
+      if (debugsw && debugsp)
 	printf ("stashp():  defent table FULL\n");
 #endif
       return (FAILURE);		/* no defents left */
@@ -176,7 +176,7 @@ stashp ()
 
   np = TRG_MASK & ptebuf.defnum;
 
-  if (c EQ 1)
+  if (c == 1)
     {
 
       dpepred = 0;
@@ -195,7 +195,7 @@ stashp ()
   else
     {
 
-      if (c EQ - 1)
+      if (c == - 1)
 	{
 
 	  dpesucc = defptr[np];
@@ -211,7 +211,7 @@ stashp ()
     }
 
 #if	DEBUGSP
-  if (debugsw AND debugsp)
+  if (debugsw && debugsp)
     {
 
       printf ("stashp():  new defent created -- dpecpos = %d\n", dpecpos);
@@ -286,7 +286,7 @@ ptread (fp)
       ptecpos = ptepred = ptesucc = 0;
 
 #if	DEBUGRE
-      if (debugsw AND debugre)
+      if (debugsw && debugre)
 	printf ("ptread():  reading\n");
 #endif
       if (rd_ec (fp, &cb, 1L))
@@ -296,7 +296,7 @@ ptread (fp)
 	  return (FAILURE);
 	}
 
-      if (0 EQ cb)		/* if it's 0, we're done */
+      if (0 == cb)		/* if it's 0, we're done */
 	break;
 
       ptebuf.paspec = PE_TBIT | (PE_SPEC & cb);
@@ -453,7 +453,7 @@ ptread (fp)
 	}
 
 #if	DEBUGRE
-      if (debugsw AND debugre)
+      if (debugsw && debugre)
 	printf ("\n\n");
 #endif
 
@@ -468,7 +468,7 @@ ptread (fp)
     }
 
 #if	DEBUGRE
-  if (debugsw AND debugre)
+  if (debugsw && debugre)
     printf ("ptread():  terminator read -- end of patch file\n");
 #endif
 

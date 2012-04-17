@@ -215,7 +215,7 @@ do_redraw (xc, yc, wc, hc)
 
   wind_get (wi_handle, WF_FIRSTXYWH, &t1.g_x, &t1.g_y, &t1.g_w, &t1.g_h);
 
-  while (t1.g_w AND t1.g_h)
+  while (t1.g_w && t1.g_h)
     {
 
       if (rc_intersect (&t2, &t1))
@@ -293,7 +293,7 @@ multi ()
 
 	  case WM_REDRAW:
 
-	    if (msgbuff[3] EQ wi_handle)
+	    if (msgbuff[3] == wi_handle)
 	      do_redraw (msgbuff[4], msgbuff[5], msgbuff[6], msgbuff[7]);
 
 	    break;
@@ -301,7 +301,7 @@ multi ()
 	  case WM_NEWTOP:
 	  case WM_TOPPED:
 
-	    if (msgbuff[3] EQ wi_handle)
+	    if (msgbuff[3] == wi_handle)
 	      {
 
 		wind_set (wi_handle, WF_TOP, 0, 0, 0, 0);
@@ -312,7 +312,7 @@ multi ()
 */
 	  case AC_CLOSE:
 
-	    if ((msgbuff[3] EQ menu_id) AND (wi_handle NE NO_WINDOW))
+	    if ((msgbuff[3] == menu_id) && (wi_handle != NO_WINDOW))
 	      {
 
 		v_clsvwk (handle);
@@ -323,7 +323,7 @@ multi ()
 
 	  case WM_CLOSED:
 
-	    if (msgbuff[3] EQ wi_handle)
+	    if (msgbuff[3] == wi_handle)
 	      {
 
 		wind_close (wi_handle);
@@ -343,7 +343,7 @@ multi ()
 	  case WM_SIZED:
 	  case WM_MOVED:
 
-	    if (msgbuff[3] EQ wi_handle)
+	    if (msgbuff[3] == wi_handle)
 	      {
 
 		if (msgbuff[6] < MIN_WIDTH)
@@ -364,10 +364,10 @@ multi ()
 */
 	  case AC_OPEN:
 
-	    if (msgbuff[4] EQ menu_id)
+	    if (msgbuff[4] == menu_id)
 	      {
 
-		if (wi_handle EQ NO_WINDOW)
+		if (wi_handle == NO_WINDOW)
 		  {
 
 		    open_vwork ();
@@ -418,7 +418,7 @@ multi ()
 	  }			/* end of switch (msgbuff[0]) */
 /* 
 */
-      if ((event & MU_BUTTON) AND (wi_handle EQ top_window))
+      if ((event & MU_BUTTON) && (wi_handle == top_window))
 	if (butdown)
 	  butdown = FALSE;
 	else

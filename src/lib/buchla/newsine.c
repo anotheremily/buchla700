@@ -154,7 +154,7 @@ msrec (fp, adr, len, buf)
   while (i)
     {				/* while there's data ... */
 
-      if (i GE RECLEN)
+      if (i >= RECLEN)
 	{			/* full record */
 
 	  outrec (fp, recadr, RECLEN, rp);

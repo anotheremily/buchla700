@@ -83,29 +83,29 @@ main ()
 
   /* read header data */
 
-  if (3 NE scanf ("%s %d %d", &cgname, &nscans, &npixels))
+  if (3 != scanf ("%s %d %d", &cgname, &nscans, &npixels))
     {
 
       printf ("\n%s:  Unable to read header data.\n", PROGID);
       exit (1);
     }
 
-  if (strlen (cgname) GT 7)
+  if (strlen (cgname) > 7)
     {
 
       printf ("%s:  Character generator name too long.\n", PROGID);
       exit (1);
     }
 
-  if ((nscans GT 16) OR (nscans LE 0))
+  if ((nscans > 16) || (nscans <= 0))
     {
 
       printf ("%s:  Number of scan lines must be > 0 and < 17.\n", PROGID);
       exit (1);
     }
 
-  if ((npixels NE 6) AND (npixels NE 8) AND
-      (npixels NE 12) AND (npixels NE 16))
+  if ((npixels != 6) && (npixels != 8) &&
+      (npixels != 12) && (npixels != 16))
     {
 
       printf ("%s:  Number of pixels must be 6, 8, 12, or 16.\n", PROGID);
@@ -119,7 +119,7 @@ main ()
   while (TRUE)
     {
 
-      if (EOF EQ scanf ("%x", &cnum))
+      if (EOF == scanf ("%x", &cnum))
 	{			/* character number */
 
 	  /* all characters are in slice table, output it */
@@ -202,7 +202,7 @@ main ()
 	}
 
 /*  */
-      if ((cnum < 0) OR (cnum > 255))
+      if ((cnum < 0) || (cnum > 255))
 	{
 
 	  printf ("%s:  Character number must be > 0 and < FF.\n", PROGID);
@@ -212,7 +212,7 @@ main ()
       for (i = 0; i < nscans; i++)
 	{
 
-	  if (1 NE scanf ("%x", &pixels))
+	  if (1 != scanf ("%x", &pixels))
 	    {
 
 	      printf ("\n%s:  Error reading slice data for %2x.\n",

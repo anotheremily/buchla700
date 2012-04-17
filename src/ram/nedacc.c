@@ -77,14 +77,14 @@ accnote ()
 
   rc = -1;
 
-  if ((ac_code EQ N_SHARP) AND cflag)
+  if ((ac_code == N_SHARP) && cflag)
     {
 
       DB_CMNT ("accnote - N_SHARP");
       rc = cnote + 1;
 
     }
-  else if ((ac_code EQ N_FLAT) AND cflag)
+  else if ((ac_code == N_FLAT) && cflag)
     {
 
       DB_CMNT ("accnote - N_FLAT");
@@ -124,14 +124,14 @@ ned_acc (grp)
 
   DB_ENTR ("ned_acc");
 
-  if (-1 EQ (nn = accnote ()))
+  if (-1 == (nn = accnote ()))
     {
 
       DB_EXIT ("ned_acc - accnote() failed");
       return (FAILURE);
     }
 
-  if (E_NULL NE (ep = (struct n_entry *) e_alc (E_SIZE1)))
+  if (E_NULL != (ep = (struct n_entry *) e_alc (E_SIZE1)))
     {
 
 #if	DEBUGIT
@@ -173,7 +173,7 @@ ned_nat (grp)
 
   DB_ENTR ("ned_nat");
 
-  if (E_NULL NE (ep = (struct n_entry *) e_alc (E_SIZE1)))
+  if (E_NULL != (ep = (struct n_entry *) e_alc (E_SIZE1)))
     {
 
 #if	DEBUGIT
@@ -245,7 +245,7 @@ nedesub (grp, note)
 
       case EV_NEND:		/* note end */
 
-	if ((ep->e_data1 EQ note) AND (ep->e_data2 EQ grp))
+	if ((ep->e_data1 == note) && (ep->e_data2 == grp))
 	  {
 
 	    DB_EXIT ("nedesub - note end hit");
@@ -261,7 +261,7 @@ nedesub (grp, note)
 
       case EV_NBEG:		/* note begin */
 
-	if ((ep->e_data1 EQ note) AND (ep->e_data2 EQ grp))
+	if ((ep->e_data1 == note) && (ep->e_data2 == grp))
 	  {			/* group and note match */
 
 	    ep = ep->e_fwd;	/* setup for scan */
@@ -278,7 +278,7 @@ nedesub (grp, note)
 
 		case EV_NEND:
 
-		  if ((ep->e_data1 EQ note) AND (ep->e_data2 EQ grp))
+		  if ((ep->e_data1 == note) && (ep->e_data2 == grp))
 		    {
 
 		      DB_EXIT ("nedesub - note end hit");
@@ -291,14 +291,14 @@ nedesub (grp, note)
 */
 		case EV_NBEG:
 
-		  if ((ep->e_data1 EQ note) AND (ep->e_data2 EQ grp))
+		  if ((ep->e_data1 == note) && (ep->e_data2 == grp))
 		    {
 
 		case EV_FINI:
 
 		      DB_CMNT ("nedesub - note begin / fini hit");
 
-		      if (E_NULL NE (np = (struct n_entry *) e_alc (E_SIZE1)))
+		      if (E_NULL != (np = (struct n_entry *) e_alc (E_SIZE1)))
 			{
 
 #if	DEBUGIT
@@ -366,7 +366,7 @@ ned_end (grp)
 #endif
   DB_CMNT ("ned_end - trying natural");
 
-  if (-1 EQ (rc = nedesub (grp, cnote)))
+  if (-1 == (rc = nedesub (grp, cnote)))
     {				/* try for a natural */
 
       noteop = NOP_NUL;		/* clear pending operation code */
@@ -374,7 +374,7 @@ ned_end (grp)
       return (FAILURE);
 
     }
-  else if (0 EQ rc)
+  else if (0 == rc)
     {
 
       noteop = NOP_NUL;		/* clear pending operation code */
@@ -382,7 +382,7 @@ ned_end (grp)
       return (SUCCESS);
 
     }
-  else if (1 NE rc)
+  else if (1 != rc)
     {
 
 #if	DEBUGIT
@@ -404,7 +404,7 @@ ned_end (grp)
 
   DB_CMNT ("ned_end - trying accidental");
 
-  if (-1 EQ (rc = nedesub (grp, cnote + 1)))
+  if (-1 == (rc = nedesub (grp, cnote + 1)))
     {				/* try for an accidental */
 
       noteop = NOP_NUL;		/* clear pending operation code */
@@ -412,7 +412,7 @@ ned_end (grp)
       return (FAILURE);
 
     }
-  else if (1 EQ rc)
+  else if (1 == rc)
     {
 
       noteop = NOP_NUL;		/* clear pending operation code */
@@ -420,7 +420,7 @@ ned_end (grp)
       return (FAILURE);
 
     }
-  else if (0 NE rc)
+  else if (0 != rc)
     {
 
 #if	DEBUGIT
@@ -467,16 +467,16 @@ ned_mvn (grp)
 
       DB_CMNT ("ned_mvn - clipping out begin");
 
-      if (p_bak EQ bp)
+      if (p_bak == bp)
 	p_bak = bp->e_fwd;
 
-      if (p_ctr EQ bp)
+      if (p_ctr == bp)
 	p_ctr = bp->e_fwd;
 
-      if (p_cur EQ bp)
+      if (p_cur == bp)
 	p_cur = bp->e_fwd;
 
-      if (p_fwd EQ bp)
+      if (p_fwd == bp)
 	p_fwd = bp->e_fwd;
 
       e_rmv ((struct s_entry *) bp);
@@ -486,16 +486,16 @@ ned_mvn (grp)
 
       DB_CMNT ("ned_mvn - clipping out end");
 
-      if (p_bak EQ ep)
+      if (p_bak == ep)
 	p_bak = ep->e_fwd;
 
-      if (p_ctr EQ ep)
+      if (p_ctr == ep)
 	p_ctr = ep->e_fwd;
 
-      if (p_cur EQ ep)
+      if (p_cur == ep)
 	p_cur = ep->e_fwd;
 
-      if (p_fwd EQ ep)
+      if (p_fwd == ep)
 	p_fwd = ep->e_fwd;
 
       e_rmv ((struct s_entry *) ep);
@@ -519,7 +519,7 @@ ned_mvn (grp)
   else
     {
 
-      if (E_NULL NE fcnote (grp, cnote))
+      if (E_NULL != fcnote (grp, cnote))
 	{
 
 	  notesel = TRUE;	/* note selected */
@@ -527,10 +527,10 @@ ned_mvn (grp)
 	  return (FAILURE);
 
 	}
-      else if (-1 NE (note = accnote ()))
+      else if (-1 != (note = accnote ()))
 	{
 
-	  if (E_NULL NE (bp = fcnote (grp, note)))
+	  if (E_NULL != (bp = fcnote (grp, note)))
 	    {
 
 	      notesel = TRUE;	/* note selected */
@@ -570,7 +570,7 @@ ned_mvb (grp)
       bp = p_nbeg;		/* point at note begin event */
       ep = p_nend;		/* point at note end event */
 
-      if (ctime GE ep->e_time)
+      if (ctime >= ep->e_time)
 	{			/* check move point */
 
 	  noteop = NOP_NUL;	/* clear pending operation */
@@ -583,16 +583,16 @@ ned_mvb (grp)
 
       DB_CMNT ("ned_mvb - clipping out begin");
 
-      if (p_bak EQ bp)
+      if (p_bak == bp)
 	p_bak = bp->e_fwd;
 
-      if (p_ctr EQ bp)
+      if (p_ctr == bp)
 	p_ctr = bp->e_fwd;
 
-      if (p_cur EQ bp)
+      if (p_cur == bp)
 	p_cur = bp->e_fwd;
 
-      if (p_fwd EQ bp)
+      if (p_fwd == bp)
 	p_fwd = bp->e_fwd;
 
       e_rmv ((struct s_entry *) bp);
@@ -613,7 +613,7 @@ ned_mvb (grp)
   else
     {
 
-      if (E_NULL NE fcnote (grp, cnote))
+      if (E_NULL != fcnote (grp, cnote))
 	{			/* natural ? */
 
 	  notesel = TRUE;	/* note selected */
@@ -621,10 +621,10 @@ ned_mvb (grp)
 	  return (FAILURE);
 
 	}
-      else if (-1 NE (note = accnote ()))
+      else if (-1 != (note = accnote ()))
 	{			/* accidental ? */
 
-	  if (E_NULL NE (bp = fcnote (grp, note)))
+	  if (E_NULL != (bp = fcnote (grp, note)))
 	    {
 
 	      notesel = TRUE;	/* note selected */
@@ -664,7 +664,7 @@ ned_mve (grp)
       bp = p_nbeg;		/* point at note begin event */
       ep = p_nend;		/* point at note end event */
 
-      if (ctime LE bp->e_time)
+      if (ctime <= bp->e_time)
 	{			/* check move point */
 
 	  noteop = NOP_NUL;	/* clear pending operation */
@@ -677,16 +677,16 @@ ned_mve (grp)
 
       DB_CMNT ("ned_mve - clipping out end");
 
-      if (p_bak EQ ep)
+      if (p_bak == ep)
 	p_bak = ep->e_fwd;
 
-      if (p_ctr EQ ep)
+      if (p_ctr == ep)
 	p_ctr = ep->e_fwd;
 
-      if (p_cur EQ ep)
+      if (p_cur == ep)
 	p_cur = ep->e_fwd;
 
-      if (p_fwd EQ ep)
+      if (p_fwd == ep)
 	p_fwd = ep->e_fwd;
 
       e_rmv ((struct s_entry *) ep);
@@ -706,7 +706,7 @@ ned_mve (grp)
   else
     {
 
-      if (E_NULL NE fcnote (grp, cnote))
+      if (E_NULL != fcnote (grp, cnote))
 	{			/* natural ? */
 
 	  notesel = TRUE;	/* note selected */
@@ -714,10 +714,10 @@ ned_mve (grp)
 	  return (FAILURE);
 
 	}
-      else if (-1 NE (note = accnote ()))
+      else if (-1 != (note = accnote ()))
 	{
 
-	  if (E_NULL NE (bp = fcnote (grp, note)))
+	  if (E_NULL != (bp = fcnote (grp, note)))
 	    {			/* accidental ? */
 
 	      notesel = TRUE;	/* note selected */
@@ -748,14 +748,14 @@ donote ()
 
   DB_ENTR ("donote");
 
-  if (scmctl NE - 1)
+  if (scmctl != - 1)
     {				/* area 1 menu must be down */
 
-      DB_EXIT ("donote - scmctl NE -1");
+      DB_EXIT ("donote - scmctl != -1");
       return;
     }
 
-  if (NOT recsw)
+  if (! recsw)
     {				/* must be in record mode */
 
       DB_EXIT ("donote - not in record mode");
@@ -770,7 +770,7 @@ donote ()
   for (i = 0; i < 12; i++)
     {				/* scan the groups */
 
-      if ((grpmode[i] EQ 2) AND grpstat[i])
+      if ((grpmode[i] == 2) && grpstat[i])
 	{
 
 	  grp = i;		/* log the group */
@@ -789,7 +789,7 @@ donote ()
 
 /* 
 */
-  if (gs NE 1)
+  if (gs != 1)
     {				/* must have a single group enabled */
 
       DB_EXIT ("donote - no single group enabled");

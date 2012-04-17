@@ -49,10 +49,10 @@ ctcpos (row, col)
 
       nrow = CurLine + 7;
 
-      if (stcrow EQ DATAROW)	/* turn off old cursor */
+      if (stcrow == DATAROW)	/* turn off old cursor */
 	vclrav (obj9, nrow, stccol, C_ULINE, 48);
 
-      if (row EQ DATAROW)	/* turn on new cursor */
+      if (row == DATAROW)	/* turn on new cursor */
 	vsetav (obj9, nrow, col, C_ULINE, 48);
     }
 
@@ -74,7 +74,7 @@ ctcoff ()
   if (v_regs[5] & 0x0180)	/* point at the control bank */
     vbank (0);
 
-  if (stcrow EQ DATAROW)	/* turn off cursor */
+  if (stcrow == DATAROW)	/* turn off cursor */
     vclrav (obj9, CurLine + 7, stccol, C_ULINE, 48);
 
   ctcsw = FALSE;
@@ -91,7 +91,7 @@ ctcon ()
   if (v_regs[5] & 0x0180)	/* point at the control bank */
     vbank (0);
 
-  if (stcrow EQ DATAROW)
+  if (stcrow == DATAROW)
     {				/* turn on cursor */
 
       ctcsw = TRUE;

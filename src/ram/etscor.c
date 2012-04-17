@@ -58,7 +58,7 @@ ef_scor ()
 
   ebflag = FALSE;
 
-  if ((ival GT N_SCORES) OR (ival EQ 0))
+  if ((ival > N_SCORES) || (ival == 0))
     return (FAILURE);
 
   if (insmode)

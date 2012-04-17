@@ -178,17 +178,17 @@ ldxkey ()
   register short slot;
   char buf[4];
 
-  if (NOT astat)		/* only on key closure */
+  if (! astat)		/* only on key closure */
     return (FAILURE);
 
   clrerms ();
   stcrow = cyval / 14;
   stccol = cxval >> 3;
 
-  if (lselsw AND lrasw)
+  if (lselsw && lrasw)
     {
 
-      if (0 NE (slot = ldline (cyval)))
+      if (0 != (slot = ldline (cyval)))
 	{
 
 	  slot -= 1;
@@ -204,22 +204,22 @@ ldxkey ()
   if (lcancel (2))
     return (SUCCESS);
 
-  if (NOT ldelsw)
+  if (! ldelsw)
     {				/* deletion not yet selected ? */
 
-      if (0 NE (ldrow = ldline (cyval)))
+      if (0 != (ldrow = ldline (cyval)))
 	{			/* index area ? */
 
-	  if (stccol EQ 11)
+	  if (stccol == 11)
 	    {			/* load tag ? */
 
-	      if (-1 EQ (slot = lin2slt (stcrow)))
+	      if (-1 == (slot = lin2slt (stcrow)))
 		return (FAILURE);
 
 	      if (ltagged)
 		{
 
-		  if (slot NE tagslot)
+		  if (slot != tagslot)
 		    {
 
 		      filecat[tagslot].fcp0 = oldltag;
@@ -254,10 +254,10 @@ ldxkey ()
 	      return (SUCCESS);
 	    }
 
-	  if ((stccol < 13) OR (stccol > 20))	/* name ? */
+	  if ((stccol < 13) || (stccol > 20))	/* name ? */
 	    return (FAILURE);
 
-	  if (-1 NE (ldslot = lin2slt (ldrow)))
+	  if (-1 != (ldslot = lin2slt (ldrow)))
 	    {
 
 	      /* select file to delete */
@@ -272,10 +272,10 @@ ldxkey ()
       else
 	{			/* not in the index area */
 
-	  if (21 EQ stcrow)
+	  if (21 == stcrow)
 	    {			/* filename or comment ? */
 
-	      if ((stccol GE 10) AND (stccol LE 17))
+	      if ((stccol >= 10) && (stccol <= 17))
 		{
 
 		  /* clear filename field */
@@ -285,7 +285,7 @@ ldxkey ()
 		  return (SUCCESS);
 
 		}
-	      else if (stccol GE 27)
+	      else if (stccol >= 27)
 		{
 
 		  /* clear comment field */
@@ -308,7 +308,7 @@ ldxkey ()
 
       /* delete the file if cursor hasn't moved */
 
-      if (ldrow EQ ldline (cyval))
+      if (ldrow == ldline (cyval))
 	{
 
 	  filecat[ldslot].fcsize[0] = 0;
@@ -366,7 +366,7 @@ ld_prmv ()
 
 ldcyupd ()
 {
-  if (lmwtype EQ 1)
+  if (lmwtype == 1)
     {
 
       vtcyupd ();		/* update virtual typewriter cursor y */
@@ -377,9 +377,9 @@ ldcyupd ()
 
       cyval += cyrate;
 
-      if (cyval GT (CYMAX - 1))
+      if (cyval > (CYMAX - 1))
 	cyval = CYMAX - 1;
-      else if (cyval LT 1)
+      else if (cyval < 1)
 	cyval = 1;
     }
 }
@@ -395,7 +395,7 @@ ldcyupd ()
 
 ldcxupd ()
 {
-  if (lmwtype EQ 1)
+  if (lmwtype == 1)
     {
 
       vtcxupd ();		/* update virtual typewriter cursor x */
@@ -406,9 +406,9 @@ ldcxupd ()
 
       cxval += cxrate;
 
-      if (cxval GT (CXMAX - 1))
+      if (cxval > (CXMAX - 1))
 	cxval = CXMAX - 1;
-      else if (cxval LT 1)
+      else if (cxval < 1)
 	cxval = 1;
     }
 }
@@ -429,7 +429,7 @@ ldmkey ()
 
       ltagged = FALSE;
 
-      if ((sliders EQ LS_LIBR) OR (pkctrl EQ PK_LIBR))
+      if ((sliders == LS_LIBR) || (pkctrl == PK_LIBR))
 	{
 
 	  sliders = oldsl;
@@ -465,16 +465,16 @@ loadem (key)
   for (ldslot = 0; ldslot < 20; ldslot++)
     {				/* check each slot */
 
-      if (ocslot (ldslot) AND
-	  ((c = filecat[ldslot].fcp0) & 0x007F) EQ (key & 0x007F))
+      if (ocslot (ldslot) &&
+	  ((c = filecat[ldslot].fcp0) & 0x007F) == (key & 0x007F))
 	{
 
 	  ldkind = ftkind (ldslot);
 
-	  if ((ldkind EQ FT_ORC) OR (ldkind EQ FT_ORL) OR (ldkind EQ FT_ORH))
+	  if ((ldkind == FT_ORC) || (ldkind == FT_ORL) || (ldkind == FT_ORH))
 	    lorchl = (c & 0x0080) ? 1 : 0;
 
-	  if (ldkind EQ FT_SCR)
+	  if (ldkind == FT_SCR)
 	    for (i = 0; i < N_SCORES; i++)
 	      ldmap[i] = i;
 
@@ -485,7 +485,7 @@ loadem (key)
 	}
     }
 
-  if (rc AND (ndisp EQ - 1))
+  if (rc && (ndisp == - 1))
     m7menu ();
 }
 
@@ -504,22 +504,22 @@ ldkey (k)
   register short c, col, row, slot;
   char buf[4];
 
-  if (NOT astat)		/* only on key closure */
+  if (! astat)		/* only on key closure */
     return (FAILURE);
 
-  if (NOT catin)		/* catalog must be valid */
+  if (! catin)		/* catalog must be valid */
     return;
 
   row = cyval / 14;		/* determine cursor position */
   col = cxval >> 3;
 
-  if (col NE 11)		/* must be column 11 */
+  if (col != 11)		/* must be column 11 */
     return;
 
-  if (-1 EQ (slot = lin2slt (row)))	/* ... and a valid slot */
+  if (-1 == (slot = lin2slt (row)))	/* ... and a valid slot */
     return;
 
-  if (NOT ltagged)
+  if (! ltagged)
     {
 
       oldltag = filecat[slot].fcp0;	/* save old tag */
@@ -532,11 +532,11 @@ ldkey (k)
 
   if (k < 7)
     filecat[slot].fcp0 = (c = k + 'A');
-  else if (k EQ 7)
+  else if (k == 7)
     return;
-  else if (k EQ 8)
+  else if (k == 8)
     filecat[slot].fcp0 = (c = filecat[slot].fcp0 & 0x007F);
-  else				/* k EQ 9 */
+  else				/* k == 9 */
     filecat[slot].fcp0 = (c = filecat[slot].fcp0 | 0x0080);
 
   loadrow = row;

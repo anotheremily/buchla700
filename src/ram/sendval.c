@@ -94,9 +94,9 @@ sendval (voice, par, ival)
 
       ltmp = ((long) ival >> 1) + ((long) ival >> 2);
 
-      if (ltmp GT (long) VALMAX)
+      if (ltmp > (long) VALMAX)
 	  ltmp = (long) VALMAX;
-      else if (ltmp LT (long) VALMIN)
+      else if (ltmp < (long) VALMIN)
 	  ltmp = (long) VALMIN;
 
       val = (short) ltmp;

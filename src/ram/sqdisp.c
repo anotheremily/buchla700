@@ -186,7 +186,7 @@ dsact (buf, act, dat)
       chan = 0x000F & (dat >> 7);
       key = 0x007F & dat;
 
-      if (port EQ 2)
+      if (port == 2)
 	sprintf (&buf[3], "%03u L   ", 1 + key);
       else
 	sprintf (&buf[3], "%03u %u %02u", 1 + key, 1 + port, 1 + chan);
@@ -268,7 +268,7 @@ dsact (buf, act, dat)
     }
 
   for (i = 0; i < 12; i++)
-    if (buf[i] EQ '\0')
+    if (buf[i] == '\0')
       buf[i] = ' ';
 }
 
@@ -302,7 +302,7 @@ dsqlin (buf, slin)
   buf[0] = '\260';
 
   for (i = 0; i < 48; i++)
-    if (buf[i] EQ '\0')
+    if (buf[i] == '\0')
       buf[i] = ' ';
 
   buf[48] = '\0';
@@ -343,9 +343,9 @@ dstw ()
     {
 
       dsqlin (TheBuf, slin);
-      UpdVid (srow, 0, TheBuf, (srow EQ 7) ? PTEATR : PTPATR);
+      UpdVid (srow, 0, TheBuf, (srow == 7) ? PTEATR : PTPATR);
 
-      if (++slin GE NSLINES)
+      if (++slin >= NSLINES)
 	slin -= NSLINES;
     }
 
@@ -460,10 +460,10 @@ sqwin (n)
 
 	  vvputsv (obj10, 16, PDBORFG, PDSEQBG, i, 14, "\260", 14, 14, cg3);
 
-	  if (i EQ 7)
+	  if (i == 7)
 	    {
 
-	      if (48 EQ XTOC (cxval))
+	      if (48 == XTOC (cxval))
 		{
 
 		  vsplot4 (obj10, 16, PDPTRFG, i, 0, "\277", 14, 14, cg3);
@@ -539,12 +539,12 @@ SqFwdLn ()
 {
   register short slin;
 
-  if (++curslin GE NSLINES)
+  if (++curslin >= NSLINES)
     curslin -= NSLINES;
 
   slin = curslin + 8;
 
-  if (slin GE NSLINES)
+  if (slin >= NSLINES)
     slin -= NSLINES;
 
   dsqlin (TheBuf, slin);
@@ -577,7 +577,7 @@ sqwins ()
 sqdisp ()
 {
 #if	DEBUGSQ
-  if (debugsw AND debugsq)
+  if (debugsw && debugsq)
     printf ("sqdisp(): ENTRY\n");
 #endif
 
@@ -652,7 +652,7 @@ sqdisp ()
   vsndpal (seqpal);		/* set the palette */
 
 #if	DEBUGSQ
-  if (debugsw AND debugsq)
+  if (debugsw && debugsq)
     printf ("sqdisp():  EXIT\n");
 #endif
 

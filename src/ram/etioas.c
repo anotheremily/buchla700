@@ -79,7 +79,7 @@ ef_ioas (n)
 
   ebflag = FALSE;
 
-  if (ival GE NASGS)
+  if (ival >= NASGS)
     return (FAILURE);
 
   getasg (curasg = ival);
@@ -88,13 +88,13 @@ ef_ioas (n)
   if (recsw)
     {
 
-      if (E_NULL NE (ep = findev (p_cur, t_cur, EV_ASGN, -1, -1)))
+      if (E_NULL != (ep = findev (p_cur, t_cur, EV_ASGN, -1, -1)))
 	{
 
 	  ep->e_data1 = ival;
 
 	}
-      else if (E_NULL NE (ep = e_alc (E_SIZE2)))
+      else if (E_NULL != (ep = e_alc (E_SIZE2)))
 	{
 
 	  ep->e_type = EV_ASGN;
@@ -205,13 +205,13 @@ ef_tune (n)
   if (recsw)
     {
 
-      if (E_NULL NE (ep = findev (p_cur, t_cur, EV_TUNE, -1, -1)))
+      if (E_NULL != (ep = findev (p_cur, t_cur, EV_TUNE, -1, -1)))
 	{
 
 	  ep->e_data1 = ival;
 
 	}
-      else if (E_NULL NE (ep = e_alc (E_SIZE2)))
+      else if (E_NULL != (ep = e_alc (E_SIZE2)))
 	{
 
 	  ep->e_type = EV_TUNE;
@@ -317,7 +317,7 @@ ef_tmpo (n)
 
   ebflag = FALSE;
 
-  if ((ival GT 240) OR (ival LT 4))
+  if ((ival > 240) || (ival < 4))
     return (FAILURE);
 
   settmpo (ival);
@@ -325,13 +325,13 @@ ef_tmpo (n)
   if (recsw)
     {
 
-      if (E_NULL NE (ep = findev (p_cur, t_cur, EV_TMPO, -1, -1)))
+      if (E_NULL != (ep = findev (p_cur, t_cur, EV_TMPO, -1, -1)))
 	{
 
 	  ep->e_data1 = ival;
 
 	}
-      else if (E_NULL NE (ep = e_alc (E_SIZE2)))
+      else if (E_NULL != (ep = e_alc (E_SIZE2)))
 	{
 
 	  ep->e_type = EV_TMPO;
@@ -456,7 +456,7 @@ ef_intp (n)
   if (tmpval > (unsigned) 64900)
     return (FAILURE);
 
-  if (tmpval EQ 0)
+  if (tmpval == 0)
     tmpval = 1;
 
   curintp = tofpu (tmpval);
@@ -464,14 +464,14 @@ ef_intp (n)
   if (recsw)
     {
 
-      if (E_NULL NE (ep = findev (p_cur, t_cur, EV_INTP, -1, -1)))
+      if (E_NULL != (ep = findev (p_cur, t_cur, EV_INTP, -1, -1)))
 	{
 
 	  ep->e_data1 = (curintp >> 8);
 	  ep->e_data2 = 0x00FF & curintp;
 
 	}
-      else if (E_NULL NE (ep = e_alc (E_SIZE3)))
+      else if (E_NULL != (ep = e_alc (E_SIZE3)))
 	{
 
 	  ep->e_type = EV_INTP;
@@ -534,13 +534,13 @@ nd_intp (n, k)
 
   ec = stccol - cfetp->flcol;	/* setup edit buffer column */
 
-  if (ec EQ 2)
+  if (ec == 2)
     return (FAILURE);
 
-  if ((ec EQ 0) AND (k > 6))
+  if ((ec == 0) && (k > 6))
     return (FAILURE);
 
-  if ((ec EQ 1) AND (ebuf[0] EQ '6') AND (k > 4))
+  if ((ec == 1) && (ebuf[0] == '6') && (k > 4))
     return (FAILURE);
 
   ebuf[ec] = k + '0';
@@ -556,7 +556,7 @@ nd_intp (n, k)
 
   advscur ();
 
-  if (stccol EQ 37)
+  if (stccol == 37)
     advscur ();
 
   return (SUCCESS);

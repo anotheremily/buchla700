@@ -33,7 +33,7 @@ MTID ()
 
   inuse = TRUE;			/* preset inuse to get things started */
 
-  if ((struct _mt_def *) NIL EQ _MT_)
+  if ((struct _mt_def *) NIL == _MT_)
     _MT_ = (struct _mt_def *) XBIOS (X_MTDEFS);
 
   oldipl = setipl (7);		/* DISABLE INTERRUPTS */
@@ -49,7 +49,7 @@ MTID ()
 	{			/* search the TCB table */
 
 	  if (tcp->flags & MTF_OCC)	/* TCB occupied ? */
-	    if (tcp->tid EQ newtid)
+	    if (tcp->tid == newtid)
 	      {			/* tid in use ? */
 
 		inuse = TRUE;	/* set to search again */

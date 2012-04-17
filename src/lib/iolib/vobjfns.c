@@ -20,10 +20,10 @@
 
 		Setup object 'obj' of type 'type' at 'base' in bank 'bank'
 		with height 'ypix' and width 'xpix' at initial location
-		'x0','y0', with flags 'flags'.  Assumes HRS EQ 1.
+		'x0','y0', with flags 'flags'.  Assumes HRS == 1.
 		If 'pri' >= 0, display the object at priority level 'pri'.
-		Define a bitmap object if 'type' EQ 0, or a character object
-		if 'type' NE 0.
+		Define a bitmap object if 'type' == 0, or a character object
+		if 'type' != 0.
 
 	CpyObj(from, to, w, h, sw)
 	unsigned int *from, *to;
@@ -88,7 +88,7 @@ SelObj (obj)
   v_curob = op;
   v_obpri = op->opri;
 
-  if ((v_regs[5] & 0x0180) NE newbank)
+  if ((v_regs[5] & 0x0180) != newbank)
     vbank (op->obank & 3);
 }
 
@@ -129,7 +129,7 @@ SetPri (obj, pri)
 
   vi_ctl |= (1 << pri);		/* set unblank bit */
 
-  if (*((long *) 0x000064) NE & VIint)	/* make sure VI vector is set */
+  if (*((long *) 0x000064) != & VIint)	/* make sure VI vector is set */
     BIOS (B_SETV, 25, VIint);
 
   setipl (0);			/* enable VI interrupt */
@@ -141,7 +141,7 @@ SetPri (obj, pri)
 /*
    =============================================================================
 	SetObj(obj, type, bank, base, xpix, ypix, x0, y0, flags, pri)
-	Setup an object, and optionally display it.  Assumes HRS EQ 1.
+	Setup an object, and optionally display it.  Assumes HRS == 1.
    =============================================================================
 */
 

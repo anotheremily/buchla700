@@ -16,7 +16,7 @@
 
 	HARM is the number of harmonics generated
 	i is the harmonic number  (1 is the fundamental)
-	j is the point number, K LE j LE L
+	j is the point number, K <= j <= L
    =============================================================================
 */
 

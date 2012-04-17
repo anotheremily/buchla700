@@ -181,7 +181,7 @@ match (string, pattern)
  *		(3)	Any non-escaped ']' marks the end of list.
  *
  *		(4)	A list beginning with the special character
- *			'!' matches any character NOT in list.
+ *			'!' matches any character ! in list.
  *			The '!' character is only special if it
  *			is the first character in the list.
  *

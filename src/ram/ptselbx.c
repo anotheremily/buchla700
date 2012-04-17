@@ -427,7 +427,7 @@ aftercm ()
 	    case PA_INTN:
 	    case PA_AUX:
 
-	      if (ptedat1 EQ PSA_SRC)
+	      if (ptedat1 == PSA_SRC)
 		hilitpm (HT_1);
 	      else
 		hilitpm (HT_OFF);
@@ -484,7 +484,7 @@ endpsm (row, col)
   submenu = FALSE;
   cmtype = CT_SMTH;
 
-  ptegood = ptedfok AND ptestok AND ptedsok AND ptedtok;
+  ptegood = ptedfok && ptestok && ptedsok && ptedtok;
 
   mtcoff ();
   movectc (row, col);
@@ -509,14 +509,14 @@ edefstm (du, n)
   register long ltemp;
 
 #if	DEBUGIT
-  if (debugsw AND snapit)
+  if (debugsw && snapit)
     printf ("edefstm(%d):  pte stok=%d  dfok=%d\n", n, ptestok, ptedfok);
 #endif
 
   if (n)
     {
 
-      if (NOT ptestok)
+      if (! ptestok)
 	{
 
 	  movectc (DATAROW, 15);
@@ -527,7 +527,7 @@ edefstm (du, n)
   else
     {
 
-      if (NOT ptedfok)
+      if (! ptedfok)
 	{
 
 	  movectc (DATAROW, 2);
@@ -542,7 +542,7 @@ edefstm (du, n)
 /* 
 */
 
-  if ((port EQ 0) OR (port EQ 1) OR ((port EQ 2) AND (chan < 2)))
+  if ((port == 0) || (port == 1) || ((port == 2) && (chan < 2)))
     {				/* key / rel */
 
       ltemp = 0;		/* stimulus number */
@@ -552,7 +552,7 @@ edefstm (du, n)
       for (i = left; i < right; i++)
 	ltemp = (ltemp * 10) + ptdebuf[i] - '0';
 
-      if ((ltemp EQ 0) OR (ltemp > 128L))
+      if ((ltemp == 0) || (ltemp > 128L))
 	{
 
 	  movectc (DATAROW, left);
@@ -561,7 +561,7 @@ edefstm (du, n)
 
       stim = ltemp - 1;
 
-      if (port EQ 2)
+      if (port == 2)
 	{
 
 	  chan = 0;
@@ -577,7 +577,7 @@ edefstm (du, n)
 	  for (i = left; i < right; i++)
 	    ltemp = (ltemp * 10) + ptdebuf[i] - '0';
 
-	  if ((ltemp EQ 0) OR (ltemp > 16L))
+	  if ((ltemp == 0) || (ltemp > 16L))
 	    {
 
 	      movectc (DATAROW, left);
@@ -594,7 +594,7 @@ edefstm (du, n)
 /* 
 */
     }
-  else if ((port EQ 2) AND (chan EQ 2))
+  else if ((port == 2) && (chan == 2))
     {				/* Trig */
 
       ltemp = 0;
@@ -604,7 +604,7 @@ edefstm (du, n)
       for (i = left; i < right; i++)
 	ltemp = (ltemp * 10) + ptdebuf[i] - '0';
 
-      if ((ltemp EQ 0) OR (ltemp > 16L))
+      if ((ltemp == 0) || (ltemp > 16L))
 	{
 
 	  movectc (DATAROW, left);
@@ -620,13 +620,13 @@ edefstm (du, n)
 /* 
 */
     }
-  else if ((port EQ 2) AND (chan EQ 3))
+  else if ((port == 2) && (chan == 3))
     {				/* Pulse */
 
       left = n ? 21 : 8;
       ltemp = ptdebuf[left] - '0';
 
-      if ((ltemp EQ 0) OR (ltemp > 2L))
+      if ((ltemp == 0) || (ltemp > 2L))
 	{
 
 	  movectc (DATAROW, left);
@@ -654,7 +654,7 @@ edefstm (du, n)
     ptedfok = TRUE;
 
 #if	SNAPDUMP
-  if (debugsw AND snapit)
+  if (debugsw && snapit)
     SnapPTV ("edefstm");
 #endif
 
@@ -683,7 +683,7 @@ ptdest (du)
   short port, chan;
 
 #if	DEBUGIT
-  if (debugsw AND debug01)
+  if (debugsw && debug01)
     printf ("ptdest(%d): entry -- ptedest = %d\n", du, ptedest);
 #endif
 
@@ -699,7 +699,7 @@ ptdest (du)
       for (i = left; i < right; i++)
 	ltemp = (ltemp * 10) + ptdebuf[i] - '0';
 
-      if ((ltemp EQ 0) OR (ltemp > 128L))
+      if ((ltemp == 0) || (ltemp > 128L))
 	{
 
 	  movectc (DATAROW, left);
@@ -714,7 +714,7 @@ ptdest (du)
       for (i = left; i < right; i++)
 	ltemp = (ltemp * 10) + ptdebuf[i] - '0';
 
-      if ((ltemp EQ 0) OR (ltemp > 16L))
+      if ((ltemp == 0) || (ltemp > 16L))
 	{
 
 	  movectc (DATAROW, left);
@@ -724,7 +724,7 @@ ptdest (du)
       chan = ltemp - 1;
 /* 
 */
-      if (ptdebuf[34] EQ 'L')
+      if (ptdebuf[34] == 'L')
 	{
 
 	  port = 2;
@@ -750,7 +750,7 @@ ptdest (du)
       for (i = left; i < right; i++)
 	ltemp = (ltemp * 10) + ptdebuf[i] - '0';
 
-      if ((ltemp EQ 0) OR (ltemp > 16L))
+      if ((ltemp == 0) || (ltemp > 16L))
 	{
 
 	  movectc (DATAROW, left);
@@ -780,7 +780,7 @@ ptdest (du)
       for (i = left; i < right; i++)
 	ltemp = (ltemp * 10) + ptdebuf[i] - '0';
 
-      if ((ltemp EQ 0) OR (ltemp > 16L))
+      if ((ltemp == 0) || (ltemp > 16L))
 	{
 
 	  movectc (DATAROW, left);
@@ -800,14 +800,14 @@ ptdest (du)
     case 6:			/* inst, wave, config */
     case 10:			/* level, filtr, fil Q, loctn, dynmc */
 
-      if (ptdebuf[39] EQ 'V')
+      if (ptdebuf[39] == 'V')
 	stim = 0;
       else
 	stim = 12;
 
       i = ptdebuf[40] & 0x00FF;
 
-      if (i GE '\254')
+      if (i >= '\254')
 	stim += i - '\242';
       else
 	stim += i - '0';
@@ -824,14 +824,14 @@ ptdest (du)
 */
     case 9:			/* osc, ind, frq */
 
-      if (ptdebuf[39] EQ 'V')
+      if (ptdebuf[39] == 'V')
 	stim = 0;
       else
 	stim = 12;
 
       i = ptdebuf[40] & 0x00FF;
 
-      if (i GE '\254')
+      if (i >= '\254')
 	stim += i - '\242';
       else
 	stim += i - '0';
@@ -849,7 +849,7 @@ ptdest (du)
   ptedsok = TRUE;
 
 #if	SNAPDUMP
-  if (debugsw AND snapit)
+  if (debugsw && snapit)
     SnapPTV ("ptdest");
 #endif
 
@@ -861,7 +861,7 @@ ptdest (du)
     }
 
 #if	DEBUGIT
-  if (debugsw AND debug01)
+  if (debugsw && debug01)
     printf ("ptdest(%d): exit\n", du);
 #endif
 }
@@ -878,7 +878,7 @@ ptdest (du)
 epatch ()
 {
 #if	DEBUGIT
-  if (debugsw AND debug01)
+  if (debugsw && debug01)
     printf ("epatch(): entry\n");
 #endif
 
@@ -891,12 +891,12 @@ epatch ()
   movectc (DATAROW, 2);		/* reposition the cursor */
 
 #if	SNAPDUMP
-  if (debugsw AND snapit)
+  if (debugsw && snapit)
     SnapPTV ("epatch");
 #endif
 
 #if	DEBUGIT
-  if (debugsw AND debug01)
+  if (debugsw && debug01)
     printf ("epatch(): exit\n");
 #endif
 }
@@ -946,7 +946,7 @@ ptfnbox (n)
   register short i, box, ptd, ptt;
   register long ltemp;
 
-  if (NOT submenu)
+  if (! submenu)
     {				/* PATCH DATA ENTRY LINE */
 
       if (inrange (stccol, 2, 13))
@@ -999,19 +999,19 @@ ptfnbox (n)
 
 	  ptedftp = 0;		/* not def/stm */
 
-	  if (stccol EQ 28)
+	  if (stccol == 28)
 	    {			/* select */
 
 	      setsubm (19, 2);
 
 	    }
-	  else if (ptemenu EQ HT_3)
+	  else if (ptemenu == HT_3)
 	    {
 
 	      setsubm (20, 22);
 
 	    }
-	  else if ((ptemenu EQ HT_4) OR (ptemenu EQ HT_5))
+	  else if ((ptemenu == HT_4) || (ptemenu == HT_5))
 	    {
 
 	      setsubm (19, 43);
@@ -1036,7 +1036,7 @@ ptfnbox (n)
 	  setptcv ();		/* setup control variables */
 
 #if	DEBUGIT
-	  if (debugsw AND debug01)
+	  if (debugsw && debug01)
 	    SnapPTV ("ptfnbox");
 #endif
 	  switch (ptedata)
@@ -1054,7 +1054,7 @@ ptfnbox (n)
 	      ebuf[2] = ptdebuf[46];
 	      ebuf[3] = ptdebuf[42];
 
-	      if (0xFFFF EQ (i = dec2fr (ebuf)))
+	      if (0xFFFF == (i = dec2fr (ebuf)))
 		{
 
 		  badpdat ();
@@ -1088,7 +1088,7 @@ ptfnbox (n)
 
 	      i = ptdebuf[42] & 0x00FF;
 
-	      if ((i EQ '\240') OR (i EQ '\241'))
+	      if ((i == '\240') || (i == '\241'))
 		ltemp = 1000;
 	      else
 		ltemp = 0;
@@ -1103,7 +1103,7 @@ ptfnbox (n)
 		  return (FAILURE);
 		}
 
-	      if ((i EQ '-') OR (i EQ '\241'))
+	      if ((i == '-') || (i == '\241'))
 		ltemp = -ltemp;
 
 	      ptedat2 = ltemp << 5;
@@ -1126,7 +1126,7 @@ ptfnbox (n)
 		  return (FAILURE);
 		}
 
-	      if (ptdebuf[42] EQ '-')
+	      if (ptdebuf[42] == '-')
 		ltemp = -ltemp;
 
 	      ptedat2 = ltemp << 1;
@@ -1161,7 +1161,7 @@ ptfnbox (n)
 
 	      memcpy (ebuf, &ptdebuf[42], 5);
 
-	      if (FAILURE EQ cnvp2c ())
+	      if (FAILURE == cnvp2c ())
 		{
 
 		  badpdat ();
@@ -1182,7 +1182,7 @@ ptfnbox (n)
 
 	    case 11:		/* source */
 
-	      if (stccol EQ 42)
+	      if (stccol == 42)
 		setsubm (19, 49);	/* select */
 	      else
 		epatch ();	/* enter -- source */
@@ -1193,10 +1193,10 @@ ptfnbox (n)
 
 	      ltemp = ((ptdebuf[43] - '0') * 10) + (ptdebuf[44] - '0');
 
-	      if (ptdebuf[42] EQ 'R')
+	      if (ptdebuf[42] == 'R')
 		{
 
-		  if ((ltemp EQ 0) OR (ltemp > 16L))
+		  if ((ltemp == 0) || (ltemp > 16L))
 		    {
 
 		      badpdat ();
@@ -1275,7 +1275,7 @@ ptfnbox (n)
 
 	      ltemp = ((ptdebuf[42] - '0') * 10) + (ptdebuf[43] - '0');
 
-	      if ((ltemp EQ 0) OR (ltemp > 20L))
+	      if ((ltemp == 0) || (ltemp > 20L))
 		{
 
 		  badpdat ();
@@ -1358,7 +1358,7 @@ ptfnbox (n)
 	      i = box - 1;
 	      ptedfst = dfsttp[i];
 
-	      if (ptedftp EQ 1)
+	      if (ptedftp == 1)
 		{		/* def */
 
 		  ptedfok = TRUE;
@@ -1374,7 +1374,7 @@ ptfnbox (n)
 		  return (SUCCESS);
 
 		}
-	      else if (ptedftp EQ 2)
+	      else if (ptedftp == 2)
 		{		/* stm */
 
 		  ptestok = TRUE;
@@ -1420,7 +1420,7 @@ ptfnbox (n)
 	  i = box - 1;
 	  ptt = destype[i];
 
-	  if (ptt NE - 1)
+	  if (ptt != - 1)
 	    {
 
 	      ptedsok = TRUE;
@@ -1488,12 +1488,12 @@ ptfnbox (n)
 */
 	case HT_5:		/* FPU OUTPUTS WITHOUT FUNCTIONS */
 
-	  if (NOT inrange (box, 31, 34))
+	  if (! inrange (box, 31, 34))
 	    return (FAILURE);
 
 	case HT_4:		/* FPU OUTPUTS WITH FUNCTIONS */
 
-	  if (NOT inrange (box, 31, 35))
+	  if (! inrange (box, 31, 35))
 	    return (FAILURE);
 
 	  i = box - 31;

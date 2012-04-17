@@ -45,7 +45,7 @@ scioerr (sn, ep)
   char scid[40];
   char erms[40];
 
-  if (E_NULL NE ep)
+  if (E_NULL != ep)
     e_del (ep);
 
   sc_clr (sn);
@@ -98,7 +98,7 @@ scread (ns, fp)
 
   sn = ldmap[ns];		/* map the score */
 
-  if (-1 EQ sn)
+  if (-1 == sn)
     {				/* skip score if map = -1 */
 
       if (rd_ec (fp, &nbr, 4L))
@@ -108,7 +108,7 @@ scread (ns, fp)
 	  return (FAILURE);
 	}
 
-      if (nbr EQ - 1L)		/* done if it's null */
+      if (nbr == - 1L)		/* done if it's null */
 	return (SUCCESS);
 
       if (skp_ec (fp, 16L))
@@ -137,7 +137,7 @@ scread (ns, fp)
       return (FAILURE);
     }
 
-  if (nbr EQ - 1L)
+  if (nbr == - 1L)
     {				/* see if it's a null score marker */
 
       return (SUCCESS);
@@ -178,7 +178,7 @@ scread (ns, fp)
       return (FAILURE);
     }
 
-  if (etype NE EV_SCORE)
+  if (etype != EV_SCORE)
     {				/* complain if it's not a score event */
 
       sprintf (scid, "  score %d", sn + 1);
@@ -189,7 +189,7 @@ scread (ns, fp)
       return (FAILURE);
     }
 
-  if (E_NULL EQ (ep = e_alc (E_SIZE1)))
+  if (E_NULL == (ep = e_alc (E_SIZE1)))
     {				/* allocate header space */
 
       noevent (sn);
@@ -229,7 +229,7 @@ scread (ns, fp)
 	case EV_STOP:		/* stop */
 	case EV_NEXT:		/* next */
 
-	  if (E_NULL EQ (ep = e_alc (E_SIZE1)))
+	  if (E_NULL == (ep = e_alc (E_SIZE1)))
 	    {
 
 	      noevent (sn);
@@ -276,7 +276,7 @@ scread (ns, fp)
 */
 	doit1:
 
-	  if (E_NULL EQ (ep = e_alc (E_SIZE2)))
+	  if (E_NULL == (ep = e_alc (E_SIZE2)))
 	    {
 
 	      noevent (sn);
@@ -302,7 +302,7 @@ scread (ns, fp)
 	  libsp = e_ins (ep, libsp);
 	  eh_ins (ep, ehdr);
 
-	  if (etype EQ EV_SBGN)
+	  if (etype == EV_SBGN)
 	    seclist[sn][ep->e_data1] = ep;
 
 	  break;
@@ -312,7 +312,7 @@ scread (ns, fp)
 	case EV_REPT:		/* repeat */
 	case EV_PNCH:		/* punch in/out */
 
-	  if (E_NULL EQ (ep = e_alc (E_SIZE1)))
+	  if (E_NULL == (ep = e_alc (E_SIZE1)))
 	    {
 
 	      noevent (sn);
@@ -342,7 +342,7 @@ scread (ns, fp)
 	case EV_NBEG:		/* note begin */
 	case EV_NEND:		/* note end */
 
-	  if (E_NULL EQ (ep = e_alc (E_SIZE1)))
+	  if (E_NULL == (ep = e_alc (E_SIZE1)))
 	    {
 
 	      noevent (sn);
@@ -385,7 +385,7 @@ scread (ns, fp)
 */
 	case EV_PRES:		/* polyphonic pressure */
 
-	  if (E_NULL EQ (ep = e_alc (E_SIZE1)))
+	  if (E_NULL == (ep = e_alc (E_SIZE1)))
 	    {
 
 	      noevent (sn);
@@ -421,7 +421,7 @@ scread (ns, fp)
 */
 	case EV_CPRS:		/* channel pressure */
 
-	  if (E_NULL EQ (ep = e_alc (E_SIZE1)))
+	  if (E_NULL == (ep = e_alc (E_SIZE1)))
 	    {
 
 	      noevent (sn);
@@ -488,7 +488,7 @@ scread (ns, fp)
 */
 	doit2:
 
-	  if (E_NULL EQ (ep = e_alc (E_SIZE2)))
+	  if (E_NULL == (ep = e_alc (E_SIZE2)))
 	    {
 
 	      noevent (sn);
@@ -525,7 +525,7 @@ scread (ns, fp)
 */
 	case EV_TRNS:		/* transposition */
 
-	  if (E_NULL EQ (ep = e_alc (E_SIZE3)))
+	  if (E_NULL == (ep = e_alc (E_SIZE3)))
 	    {
 
 	      noevent (sn);
@@ -562,7 +562,7 @@ scread (ns, fp)
 */
 	case EV_ANVL:		/* analog value */
 
-	  if (E_NULL EQ (ep = e_alc (E_SIZE2)))
+	  if (E_NULL == (ep = e_alc (E_SIZE2)))
 	    {
 
 	      noevent (sn);
@@ -600,7 +600,7 @@ scread (ns, fp)
 */
 	case EV_FINI:		/* score end */
 
-	  if (E_NULL EQ (ep = e_alc (E_SIZE1)))
+	  if (E_NULL == (ep = e_alc (E_SIZE1)))
 	    {
 
 	      noevent (sn);

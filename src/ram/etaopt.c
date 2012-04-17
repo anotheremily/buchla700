@@ -61,7 +61,7 @@ ef_aopt (n)
 
   tmpval = ebuf[0] - '0';
 
-  if (tmpval GT 3)
+  if (tmpval > 3)
     return (FAILURE);
 
   curmop = tmpval;
@@ -106,7 +106,7 @@ nd_aopt (nn, k)
 {
   register short n;
 
-  if ((k < 1) OR (k > 2))
+  if ((k < 1) || (k > 2))
     return (FAILURE);
 
   n = nn & 0xFF;

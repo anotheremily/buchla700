@@ -285,7 +285,7 @@ advacur ()
 
   newcol = stccol + 1;
 
-  if (newcol LE cfetp->frcol)
+  if (newcol <= cfetp->frcol)
     itcpos (stcrow, newcol);
 
   cxval = stccol << 3;
@@ -309,7 +309,7 @@ bspacur ()
 
   newcol = stccol - 1;
 
-  if (newcol GE cfetp->flcol)
+  if (newcol >= cfetp->flcol)
     itcpos (stcrow, newcol);
 
   cxval = stccol << 3;
@@ -427,13 +427,13 @@ drawk2g (grp)
       lp += 128L;
     }
 
-  if (grp2prt[grp][0] EQ 1)
+  if (grp2prt[grp][0] == 1)
     {
 
       for (key = 0; key < 88; key++)
 	if (key2grp[key] & (0x0001 << grp))
 	  vbfill4 (asgob, 128, asgkble[key] + 24, line,
-		   asgkble[key] + (key EQ 87 ? 31 : 28),
+		   asgkble[key] + (key == 87 ? 31 : 28),
 		   line + 3, exp_c (AK_SELC));
 
       sprintf (bfs, "%c", (grp > 8) ? (grp + 163) : (grp + '1'));
@@ -482,7 +482,7 @@ numblk (buf, n)
      char *buf;
      short n;
 {
-  if (n EQ - 1)
+  if (n == - 1)
     {
 
       strcpy (buf, "  ");
@@ -513,7 +513,7 @@ adswin (n)
   register char *bfsp;
   char buf1[4], buf2[4];
 
-  if ((n EQ 7) AND (admctl NE - 1))
+  if ((n == 7) && (admctl != - 1))
     return;
 
   cx = exp_c (adbox[n][5]);
@@ -633,7 +633,7 @@ adswin (n)
 	  tsplot4 (asgob, 64, adbox[n][4], adbox[n][6] + i + 5,
 		   adbox[n][7] + 10, bfs, 14);
 
-	  if ((mctlnum[i] NE - 1) AND (mctlnum[i] & CTAG1))
+	  if ((mctlnum[i] != - 1) && (mctlnum[i] & CTAG1))
 	    {
 
 	      bfs[0] = '2' + i;
@@ -890,7 +890,7 @@ getasg (n)
   memcpy (caname, ap->a_name, 16);
 
   for (i = 0; i < 12; i++)	/* fix old tables */
-    if (grp2prt[i][0] EQ 4)
+    if (grp2prt[i][0] == 4)
       grp2prt[i][0] = 3;
 
   sendval (1, 0, (ps_intn * 10) << 5);
@@ -902,7 +902,7 @@ getasg (n)
 
       grp = vce2grp[vce];
 
-      if (grp NE - 1)
+      if (grp != - 1)
 	{
 
 	  s_inst[vce] = ins2grp[grp - 1] & 0x00FF;
@@ -931,7 +931,7 @@ putasg (n)
   register short i;
 
   for (i = 0; i < 12; i++)	/* fix old tables */
-    if (grp2prt[i][0] EQ 4)
+    if (grp2prt[i][0] == 4)
       grp2prt[i][0] = 3;
 
   ap = &asgtab[n];

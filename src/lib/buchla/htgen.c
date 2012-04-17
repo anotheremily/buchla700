@@ -16,7 +16,7 @@
 
 	HARM is the number of harmonics generated
 	i is the harmonic number  (1 is the fundamental)
-	j is the point number, K LE j LE L
+	j is the point number, K <= j <= L
    =============================================================================
 */
 
@@ -88,7 +88,7 @@ CalcArc (arg)
 {
   double y;
 
-  if (arg EQ 0.0)		/* Return PI/2 if arg = 0.0 */
+  if (arg == 0.0)		/* Return PI/2 if arg = 0.0 */
     return ((double) M_HALFPI);
 
   y = ACOSFN (arg);
@@ -108,10 +108,10 @@ CalcArc (arg)
 DoOut (j, k)
      int j, k;
 {
-  if (j EQ (WIDTH - 1))
+  if (j == (WIDTH - 1))
     {				/* end of line ? */
 
-      if (k EQ HARM)		/* last table ? */
+      if (k == HARM)		/* last table ? */
 	fprintf (fp, "\t%s }\t/* %3d */\n", result, j);
       else
 	fprintf (fp, "\t%s },\t/* %3d */\n", result, j);
@@ -158,7 +158,7 @@ main ()
 
   printf ("Creating file \"%s\"\n", FILENAME);
 
-  if ((FILE *) NULL EQ (fp = fopen (FILENAME, "w")))
+  if ((FILE *) NULL == (fp = fopen (FILENAME, "w")))
     {
 
       printf ("ERROR:  unable to open \"%s\" for writing\n", FILENAME);
@@ -225,10 +225,10 @@ main ()
       for (j = 0; j < K; j++)
 	{
 
-	  if (nol EQ 1)
+	  if (nol == 1)
 	    {
 
-	      if (j EQ 0)
+	      if (j == 0)
 		strcat (strcat (result, "{"), intc);
 	      else
 		strcat (strcat (result, " "), intc);
@@ -240,7 +240,7 @@ main ()
 	      strcat (strcat (result, ","), intc);
 	    }
 
-	  if (nol EQ PER)
+	  if (nol == PER)
 	    DoOut (j, i);
 
 	  ++nol;
@@ -252,12 +252,12 @@ main ()
 
 	  sprintf (intc, "%5d", (int) hartab[j]);
 
-	  if (nol EQ 1)
+	  if (nol == 1)
 	    strcat (strcat (result, " "), intc);
 	  else
 	    strcat (strcat (result, ","), intc);
 
-	  if (nol EQ PER)
+	  if (nol == PER)
 	    DoOut (j, i);
 
 	  ++nol;
@@ -268,18 +268,18 @@ main ()
       for (; j < WIDTH; j++)
 	{
 
-	  if (nol EQ 1)
+	  if (nol == 1)
 	    strcat (strcat (result, " "), intc);
 	  else
 	    strcat (strcat (result, ","), intc);
 
-	  if (nol EQ PER)
+	  if (nol == PER)
 	    DoOut (j, i);
 
 	  ++nol;
 	}
 
-      if (nol NE 1)
+      if (nol != 1)
 	DoOut (j - 1, i);
     }
 

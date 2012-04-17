@@ -13,7 +13,7 @@ ungetc (c, ptr)
      register int c;
      register FILE *ptr;
 {
-  if ((c EQ EOF) OR (ptr->_bp LE ptr->_buff))
+  if ((c == EOF) || (ptr->_bp <= ptr->_buff))
     return (EOF);
 
   *--ptr->_bp = c;

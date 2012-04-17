@@ -22,7 +22,7 @@ main (argc, argv)
 {
   register short i, m, n;
 
-  if (argc NE 2)
+  if (argc != 2)
     m = 1;
   else
     m = atoi (argv[1]);

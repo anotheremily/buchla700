@@ -170,29 +170,29 @@ oktocm (ep)
 
   et = 0x007F & ep->e_type;	/* get event type */
 
-  if (0 EQ cmslens[et])		/* is this type not copied ? */
+  if (0 == cmslens[et])		/* is this type not copied ? */
     return (FALSE);		/* return FALSE if so */
 
-  if (NOT cmgtags[et])		/* is it group sensitive ? */
+  if (! cmgtags[et])		/* is it group sensitive ? */
     return (TRUE);		/* return TRUE if not */
 
   /* get group number */
 
   grp = 0x000F & (cmgtype[et] ? ep->e_data2 : ep->e_data1);
 
-  if (NOT grpstat[grp])		/* group enabled ? */
+  if (! grpstat[grp])		/* group enabled ? */
     return (FALSE);		/* can't do it if not */
 
-  if ((et EQ EV_ANRS) OR (et EQ EV_ANVL))	/* analog */
+  if ((et == EV_ANRS) || (et == EV_ANVL))	/* analog */
     mode = ancmsw ?
       varmode[0x0007 & (ep->e_data1 >> 4)][grp] :
-      (grptmap[grp] EQ - 1 ? 0 : 2);
+      (grptmap[grp] == - 1 ? 0 : 2);
   else				/* other */
-    mode = grptmap[grp] EQ - 1 ? 0 : 2;
+    mode = grptmap[grp] == - 1 ? 0 : 2;
 
   /* return TRUE if in record mode */
 
-  return ((mode EQ 2) ? TRUE : FALSE);
+  return ((mode == 2) ? TRUE : FALSE);
 }
 
 /* 
@@ -217,27 +217,27 @@ oktode (ep)
 
   et = 0x007F & ep->e_type;	/* get event type */
 
-  if ((et EQ EV_NBEG) OR (et EQ EV_NEND))	/* don't delete notes */
+  if ((et == EV_NBEG) || (et == EV_NEND))	/* don't delete notes */
     return (FALSE);
 
-  if (NOT cmgtags[et])		/* is event group sensitive ? */
+  if (! cmgtags[et])		/* is event group sensitive ? */
     return (TRUE);		/* return TRUE if not */
 
   /* get group number */
 
   grp = 0x000F & (cmgtype[et] ? ep->e_data2 : ep->e_data1);
 
-  if (NOT grpstat[grp])		/* enabled ? */
+  if (! grpstat[grp])		/* enabled ? */
     return (FALSE);		/* can't do it if not */
 
-  if ((et EQ EV_ANRS) OR (et EQ EV_ANVL))	/* analog */
+  if ((et == EV_ANRS) || (et == EV_ANVL))	/* analog */
     mode = ancmsw ? varmode[7 & (ep->e_data1 >> 4)][grp] : grpmode[grp];
   else				/* other */
     mode = grpmode[grp];
 
   /* return TRUE if  in record mode */
 
-  return ((mode EQ 2) ? TRUE : FALSE);
+  return ((mode == 2) ? TRUE : FALSE);
 }
 
 /* 
@@ -262,13 +262,13 @@ oktodg (ep)
 
   et = 0x007F & ep->e_type;	/* get event type */
 
-  if ((et NE EV_NBEG) AND	/* is it a note begin ... */
-      (et NE EV_NEND))		/* ... or a note end ? */
+  if ((et != EV_NBEG) &&	/* is it a note begin ... */
+      (et != EV_NEND))		/* ... or a note end ? */
     return (FALSE);		/* return FALSE if not */
 
   grp = ep->e_data2;		/* get group number */
 
-  if ((grpmode[grp] EQ 2) AND	/* is group in record mode ... */
+  if ((grpmode[grp] == 2) &&	/* is group in record mode ... */
       grpstat[grp])		/* ... and enabled ? */
     return (TRUE);		/* return TRUE if so */
   else
@@ -301,7 +301,7 @@ chksec (ns)
 
   /* find section beginning in seclist */
 
-  if (E_NULL EQ (p_sbgn = seclist[curscor][ns]))
+  if (E_NULL == (p_sbgn = seclist[curscor][ns]))
     {
 
       secopok = FALSE;
@@ -321,13 +321,13 @@ chksec (ns)
   while (ep)
     {
 
-      if (((ep->e_type & 0x007F) EQ EV_SEND) AND (ep->e_data1 EQ ns))
+      if (((ep->e_type & 0x007F) == EV_SEND) && (ep->e_data1 == ns))
 	break;
 
       ep = ep->e_up;
     }
 
-  if (E_NULL EQ (p_send = ep))
+  if (E_NULL == (p_send = ep))
     {				/* error if not found */
 
       secopok = FALSE;
@@ -337,7 +337,7 @@ chksec (ns)
 
   /* get section end and check that it occurs after section begin */
 
-  if (t_sbgn GE (t_send = ep->e_time))
+  if (t_sbgn >= (t_send = ep->e_time))
     {
 
       secopok = FALSE;
@@ -378,7 +378,7 @@ sizesec ()
   sbp = p_sbgn->e_fwd;		/* point to first event to copy */
   sep = p_send;			/* point at section end */
 
-  while (sbp NE sep)
+  while (sbp != sep)
     {				/* scan up to section end ... */
 
       et = 0x007F & sbp->e_type;	/* get event type */
@@ -419,7 +419,7 @@ edelta (ep, btime, delta)
 {
   DB_ENTR ("edelta");
 
-  while ((ep->e_type & 0x007F) NE EV_FINI)
+  while ((ep->e_type & 0x007F) != EV_FINI)
     {				/* for each event */
 
       if (ep->e_time > btime)	/* in range ? */
@@ -480,7 +480,7 @@ madjsec (sbp, btime)
 
       /* we're done when we see the section end */
 
-      if ((EV_SEND EQ et) AND (sbp->e_data1 EQ ns))
+      if ((EV_SEND == et) && (sbp->e_data1 == ns))
 	break;
 
       if (oktocm (sbp))
@@ -495,7 +495,7 @@ madjsec (sbp, btime)
 
 	      grp = 0x000F & (cmgtype[et] ? np->e_data2 : np->e_data1);
 
-	      if ((et EQ EV_NBEG) OR (et EQ EV_NEND))
+	      if ((et == EV_NBEG) || (et == EV_NEND))
 		{
 
 		  /* regroup */
@@ -514,7 +514,7 @@ madjsec (sbp, btime)
 		  np->e_data1 = nv;
 
 		}
-	      else if ((et EQ EV_ANRS) OR (et EQ EV_ANVL))
+	      else if ((et == EV_ANRS) || (et == EV_ANVL))
 		{
 
 		  /* regroup */
@@ -597,10 +597,10 @@ ehfix (cbp, cep)
 
       /* does event belong in hplist ? */
 
-      if (-1 NE ehdlist[et])
+      if (-1 != ehdlist[et])
 	eh_ins (cbp, ehdlist[et]);	/* if so, update hplist */
 
-      if (cbp EQ cep)		/* see if we're done */
+      if (cbp == cep)		/* see if we're done */
 	return;			/* return if so */
 
       cbp = cbp->e_fwd;		/* advance to the next event */

@@ -91,7 +91,7 @@ int2rat (rat)
       for (den = 1; den < 10; den++)
 	{
 
-	  if (rat EQ ratio[inum + den])
+	  if (rat == ratio[inum + den])
 	    {
 
 	      ebuf[0] = num + '0';
@@ -150,13 +150,13 @@ cnvc2p (buf, cv)
 short
 cnvp2c ()
 {
-  if (ebuf[0] EQ 9)		/* high limit is C9 00 */
-    if (ebuf[1] GT 2)
+  if (ebuf[0] == 9)		/* high limit is C9 00 */
+    if (ebuf[1] > 2)
       return (FAILURE);
-    else if (ebuf[1] EQ 2)
-      if (ebuf[2] NE 7)
+    else if (ebuf[1] == 2)
+      if (ebuf[2] != 7)
 	return (FAILURE);
-      else if (ebuf[3] OR ebuf[4])
+      else if (ebuf[3] || ebuf[4])
 	return (FAILURE);
 
   cents = (ebuf[0] * 1200) + pitches[ebuf[1]] + shrpflt[ebuf[2] - 7]
@@ -324,7 +324,7 @@ ef_iosc (nn)
       for (i = 0; i < 4; i++)
 	tmp = (tmp * 10) + (ebuf[i] - '0');
 
-      if (ebuf[4] EQ '-')
+      if (ebuf[4] == '-')
 	tmp = -tmp;
 
       setoval (ip, v, tmp);
@@ -349,7 +349,7 @@ ef_iosc (nn)
 
       tmp = (tmp * 10) + ebuf[3] - '0';
 
-      if (tmp GT 159)
+      if (tmp > 159)
 	return (FAILURE);
 
       setoval (ip, v, tmp);
@@ -419,7 +419,7 @@ rd_iosc (nn)
 /* 
 */
   bform = ctl & OC_MOD;
-  ocs = ((v EQ 3) ? ' ' : (ctl & OC_SYN ? 'S' : 's'));
+  ocs = ((v == 3) ? ' ' : (ctl & OC_SYN ? 'S' : 's'));
 
   switch (bform)
     {
@@ -513,7 +513,7 @@ setoscb (n, v)
       break;
     }
 
-  ocs = ((v EQ 3) ? ' ' : (ctl & OC_SYN ? 'S' : 's'));
+  ocs = ((v == 3) ? ' ' : (ctl & OC_SYN ? 'S' : 's'));
 
   bfm = ctl & OC_MOD;
 /* 
@@ -523,7 +523,7 @@ setoscb (n, v)
 
     case OC_INT:		/* interval */
 
-      if ((bfm EQ OC_RAT) OR (bfm EQ OC_INT))
+      if ((bfm == OC_RAT) || (bfm == OC_INT))
 	{
 
 	  sprintf (ebuf, "%04d%c", ((val < 0 ? -val : val) >> 1),
@@ -544,7 +544,7 @@ setoscb (n, v)
 
     case OC_RAT:		/* ratio */
 
-      if (bfm EQ OC_RAT)
+      if (bfm == OC_RAT)
 	{
 
 	  int2rat (val >> 1);
@@ -605,7 +605,7 @@ setosyn (n, v, t)
 
   ip = &vbufs[curvce];
 
-  if (stcrow EQ 21)
+  if (stcrow == 21)
     return;
 
   sc = t ? "S" : "s";
@@ -660,23 +660,23 @@ nd_iosc (nn, k)
   n = nn & 0xFF;
   v = (nn >> 8) & 3;
 
-  if (stccol LT 39)
+  if (stccol < 39)
     {				/* mode */
 
-      if (k EQ 8)
+      if (k == 8)
 	{			/* - */
 
-	  if (--bform LT 0)
+	  if (--bform < 0)
 	    bform = 3;
 
 	  setoscb (n, v);
 	  return (SUCCESS);
 
 	}
-      else if (k EQ 9)
+      else if (k == 9)
 	{			/* + */
 
-	  if (++bform GT 3)
+	  if (++bform > 3)
 	    bform = 0;
 
 	  setoscb (n, v);
@@ -688,20 +688,20 @@ nd_iosc (nn, k)
 /* 
 */
     }
-  else if (stccol EQ 46)
+  else if (stccol == 46)
     {				/* sync */
 
-      if (stcrow EQ 21)
+      if (stcrow == 21)
 	return (FAILURE);
 
-      if (k EQ 8)
+      if (k == 8)
 	{			/* - */
 
 	  setosyn (n, v, 0);	/* off */
 	  return (SUCCESS);
 
 	}
-      else if (k EQ 9)
+      else if (k == 9)
 	{			/* + */
 
 	  setosyn (n, v, 1);	/* on */
@@ -714,7 +714,7 @@ nd_iosc (nn, k)
 /* 
 */
     }
-  else if ((stccol GE 40) AND (stccol LE 44))
+  else if ((stccol >= 40) && (stccol <= 44))
     {				/* value */
 
       switch (bform)
@@ -722,17 +722,17 @@ nd_iosc (nn, k)
 
 	case OC_INT:		/* interval */
 
-	  if (stccol EQ 40)
+	  if (stccol == 40)
 	    {			/* sign */
 
-	      if (k EQ 8)
+	      if (k == 8)
 		{		/* - */
 
 		  k = '-';
 		  ebuf[4] = '-';
 
 		}
-	      else if (k EQ 9)
+	      else if (k == 9)
 		{		/* + */
 
 		  k = '+';
@@ -758,7 +758,7 @@ nd_iosc (nn, k)
 	  vcputsv (instob, 64, ID_ENTRY, idbox[n][5],
 		   stcrow, stccol, dspbuf, 14);
 
-	  if (stccol EQ 44)
+	  if (stccol == 44)
 	    return (SUCCESS);
 
 	  advicur ();
@@ -767,7 +767,7 @@ nd_iosc (nn, k)
 */
 	case OC_RAT:		/* ratio */
 
-	  if (stccol EQ 40)
+	  if (stccol == 40)
 	    {
 
 	      if (k)
@@ -792,7 +792,7 @@ nd_iosc (nn, k)
 		return (FAILURE);
 
 	    }
-	  else if (stccol EQ 42)
+	  else if (stccol == 42)
 	    {
 
 	      if (k)
@@ -822,7 +822,7 @@ nd_iosc (nn, k)
 */
 	case OC_FRQ:		/* frequency */
 
-	  if (stccol EQ 42)
+	  if (stccol == 42)
 	    return (FAILURE);
 
 	  ebuf[stccol - 40] = k + '0';
@@ -835,12 +835,12 @@ nd_iosc (nn, k)
 	  vcputsv (instob, 64, ID_ENTRY, idbox[n][5],
 		   stcrow, stccol, dspbuf, 14);
 
-	  if (stccol EQ 44)
+	  if (stccol == 44)
 	    return (SUCCESS);
 
 	  advicur ();
 
-	  if (stccol EQ 42)
+	  if (stccol == 42)
 	    advicur ();
 
 	  return (SUCCESS);
@@ -859,7 +859,7 @@ nd_iosc (nn, k)
 
 	    case 41:
 
-	      if (k GT 6)
+	      if (k > 6)
 		return (FAILURE);
 
 	      ebuf[1] = k;
@@ -868,7 +868,7 @@ nd_iosc (nn, k)
 
 	    case 42:
 
-	      if (k EQ 7)
+	      if (k == 7)
 		{		/* blank */
 
 		  ebuf[2] = k;
@@ -876,7 +876,7 @@ nd_iosc (nn, k)
 		  break;
 
 		}
-	      else if (k EQ 8)
+	      else if (k == 8)
 		{		/* flat */
 
 		  ebuf[2] = k;
@@ -884,7 +884,7 @@ nd_iosc (nn, k)
 		  break;
 
 		}
-	      else if (k EQ 9)
+	      else if (k == 9)
 		{		/* sharp */
 
 		  ebuf[2] = k;
@@ -912,7 +912,7 @@ nd_iosc (nn, k)
 	  vcputsv (instob, 64, ID_ENTRY, idbox[n][5],
 		   stcrow, stccol, dspbuf, 14);
 
-	  if (stccol EQ 44)
+	  if (stccol == 44)
 	    return (SUCCESS);
 
 	  advicur ();

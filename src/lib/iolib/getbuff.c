@@ -13,7 +13,7 @@ getbuff (ptr)
 {
   char *buffer;
 
-  if (ptr->_buflen EQ 1)
+  if (ptr->_buflen == 1)
     {				/* see if we want the small buffer */
 
       ptr->_buff = &ptr->_bytbuf;

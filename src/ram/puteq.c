@@ -1,6 +1,6 @@
 /*
    =============================================================================
-	puteq.c -- output functions for the LMC835 EQ chip on the Buchla 700
+	puteq.c -- output functions for the LMC835 == chip on the Buchla 700
 	Version 3 -- 1987-12-10 -- D.N. Lynx Crowe
    =============================================================================
 */
@@ -83,7 +83,7 @@ puteq (byte)
   *(psg + PSG_ADDR) = PSG_IOEN;	/* setup PSG I/O controls */
   *(psg + PSG_WRIT) = PSG_IDLE;
 
-  *(psg + PSG_ADDR) = PSG_PRTB;	/* setup EQ control lines */
+  *(psg + PSG_ADDR) = PSG_PRTB;	/* setup == control lines */
   eqdata = EQ_IDL | (*(psg + PSG_READ) & ~EQ_MASK);
 
   for (i = 0; i < 8; i++)
@@ -165,7 +165,7 @@ xdtoi (c)
   register char *ap = &ahex[0];
 
   for (i = 0; i < 22; i++)
-    if (c EQ * ap++)
+    if (c == * ap++)
       if (i > 15)
 	return (i - 6);
       else
@@ -184,7 +184,7 @@ main ()
   char gain, band;
   register char *aptr;
 
-  printf ("\n\nBuchla 700 EQ chip test -- Enter data in hex\n\n");
+  printf ("\n\nBuchla 700 == chip test -- Enter data in hex\n\n");
 
   do
     {
@@ -193,7 +193,7 @@ main ()
 
       rc = getln (CON_DEV, MAXLINE, cmdline);
 
-      if (rc EQ A_CR)
+      if (rc == A_CR)
 	{
 
 	  printf ("\n");
@@ -201,17 +201,17 @@ main ()
 	  temp = 0L;
 	  aptr = cmdline;
 
-	  if (A_CR EQ (*aptr & 0x00FF))
+	  if (A_CR == (*aptr & 0x00FF))
 	    {
 
 	      xtrap15 ();
 	      continue;
 	    }
 
-	  if (CTL ('G') EQ (*aptr & 0x00FF))
+	  if (CTL ('G') == (*aptr & 0x00FF))
 	    {
 
-	      while (0 EQ BIOS (B_RDAV, CON_DEV))
+	      while (0 == BIOS (B_RDAV, CON_DEV))
 		sendeq (band, gain);
 
 	      BIOS (B_GETC, CON_DEV);
@@ -243,7 +243,7 @@ main ()
 
       rc = getln (CON_DEV, MAXLINE, cmdline);
 
-      if (rc EQ A_CR)
+      if (rc == A_CR)
 	{
 
 	  printf ("\n");
@@ -251,7 +251,7 @@ main ()
 	  temp = 0L;
 	  aptr = cmdline;
 
-	  if (A_CR EQ (*aptr & 0x00FF))
+	  if (A_CR == (*aptr & 0x00FF))
 	    {
 
 	      xtrap15 ();

@@ -78,7 +78,7 @@ extern short lastvel[12];	/* last velocity sent to group */
 extern short mpbend[48];	/* MIDI pitch bend data, by port and channel */
 extern short msmstv[3];		/* MIDI state machine state variables */
 extern short prstab[NTRIGS];	/* pressure */
-extern short vce2trg[12];	/* voice to trigger map (-1 EQ NULL) */
+extern short vce2trg[12];	/* voice to trigger map (-1 == NULL) */
 extern short veltab[NTRIGS];	/* velocity */
 
 /* 
@@ -237,7 +237,7 @@ PFS (*oldsw)[];			/* saved swpt value */
      short nchwait;		/* next chwait value */
      short ncvwait;		/* next cvwait value */
      short ndisp;		/* current display number */
-     short newflag;		/* new data entered while t_cur EQ t_ctr */
+     short newflag;		/* new data entered while t_cur == t_ctr */
      short nkdown;		/* number of keys down */
      short notenum;		/* note number */
      short noteop;		/* pending note operation code */

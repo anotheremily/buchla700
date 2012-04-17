@@ -176,7 +176,7 @@ ptwin (n)
 
 	  UpdVid (i, 0, "\260", PTBATR);
 
-	  UpdVid (i, 1, linbuf, (i EQ 7) ? PTEATR : PTPATR);
+	  UpdVid (i, 1, linbuf, (i == 7) ? PTEATR : PTPATR);
 	}
 
       dptw ();
@@ -198,10 +198,10 @@ ptwin (n)
 
 	  vvputsv (obj10, 16, PDBORFG, PDSEQBG, i, 14, "\260", 14, 14, cg3);
 
-	  if (i EQ 7)
+	  if (i == 7)
 	    {
 
-	      if (48 EQ XTOC (cxval))
+	      if (48 == XTOC (cxval))
 		{
 
 		  vsplot4 (obj10, 16, PDPTRFG, i, 0, "\277", 14, 14, cg3);

@@ -5,7 +5,7 @@
 
 	These routines implement the Unix standard C runtime
 	library routines malloc(), free(), and realloc(),
-	but are NOT compatible with intermixed brk() and sbrk() calls.
+	but are ! compatible with intermixed brk() and sbrk() calls.
 
 	The routines manage "heaps" allocated from the system.
 	Each heap is carved up into some number of user memory
@@ -119,7 +119,7 @@ a_heap (x)
 
   /* grab a chunk from GEMDOS */
 
-  if ((heap->link = (HEAP *) Malloc (x)) EQ 0)
+  if ((heap->link = (HEAP *) Malloc (x)) == 0)
     {
 
 #if	DEBUGIT
@@ -183,7 +183,7 @@ s_split (mcb, x)
 
   /* check for ownership here */
 
-  if (mcb EQ 0 OR (heap = mcb->heap) EQ 0 OR mcb->magic NE MAGIC)
+  if (mcb == 0 || (heap = mcb->heap) == 0 || mcb->magic != MAGIC)
     {
 
 #if	DEBUGIT
@@ -235,7 +235,7 @@ aloc_s (x, heap)
   /* use first fit algorithm to find chunk to use */
 
   for (mcb = heap->avail; mcb; mcb = mcb->fore)
-    if (mcb->size GE x + sizeof (MCB))
+    if (mcb->size >= x + sizeof (MCB))
       break;
 
   if (mcb)
@@ -277,7 +277,7 @@ static
 unfree (mcb)
      MCB *mcb;
 {
-  if ((mcb->aft->fore = mcb->fore) NE 0)
+  if ((mcb->aft->fore = mcb->fore) != 0)
     mcb->fore->aft = mcb->aft;
 }
 
@@ -301,11 +301,11 @@ collect ()
     printf ("collect():  collecting garbage ...\n");
 #endif
 
-  for (flag = 0, heap = &heaps; (h = heap->link) NE 0;)
+  for (flag = 0, heap = &heaps; (h = heap->link) != 0;)
     {
 
-      if ((mcb = h->avail) NE 0 AND
-	  NOT mcb->buddy AND ((char *) mcb + mcb->size) EQ h->limit)
+      if ((mcb = h->avail) != 0 &&
+	  ! mcb->buddy && ((char *) mcb + mcb->size) == h->limit)
 	{
 
 	  heap->link = h->link;
@@ -361,7 +361,7 @@ malloc (n)
   /* first check all current heaps */
 
   for (heap = heaps.link; heap; heap = heap->link)
-    if ((p = aloc_s (x, heap)) NE 0)
+    if ((p = aloc_s (x, heap)) != 0)
       return (p);
 
   /* not enough room on heap list, try garbage collection */
@@ -370,8 +370,8 @@ malloc (n)
 
   /* now allocate a new heap */
 
-  if ((heap = a_heap (max (x, HEAPSIZE))) NE 0)
-    if ((p = aloc_s (x, heap)) NE 0)
+  if ((heap = a_heap (max (x, HEAPSIZE))) != 0)
+    if ((p = aloc_s (x, heap)) != 0)
       return (p);
 
   /* couldn't get a chunk big enough */
@@ -407,7 +407,7 @@ free (mcb)
 
   /* check for ownership here */
 
-  if (mcb EQ 0 OR (heap = mcb->heap) EQ 0 OR mcb->magic NE MAGIC)
+  if (mcb == 0 || (heap = mcb->heap) == 0 || mcb->magic != MAGIC)
     {
 
 #if	DEBUGIT
@@ -481,7 +481,7 @@ realloc (mcb, n)
 
   /* check for ownership here */
 
-  if (mcb EQ 0 OR mcb->magic NE MAGIC)
+  if (mcb == 0 || mcb->magic != MAGIC)
     {
 
 #if	DEBUGIT
@@ -508,7 +508,7 @@ realloc (mcb, n)
 
   /* it's bigger - allocate new block, copy data, and free old one */
 
-  if ((p = malloc (n)) NE 0)
+  if ((p = malloc (n)) != 0)
     {
 
       x = mcb->size - sizeof (MCB);

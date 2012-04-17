@@ -109,7 +109,7 @@ char *
 ev_kind (sep)
      struct s_entry *sep;
 {
-  if ((sep->e_type & 0x00FF) GE N_ETYPES)
+  if ((sep->e_type & 0x00FF) >= N_ETYPES)
     {
 
       x_unrec = TRUE;
@@ -173,7 +173,7 @@ SEsnap ()
   for (i = 0; i < N_SCORES; i++)
     printf ("%2d:  \"%-16.16s\"  $%08lX %s\n",
 	    i + 1, scname[i], scores[i],
-	    (i EQ curscor) ? "<--- curscor" : "");
+	    (i == curscor) ? "<--- curscor" : "");
 
   printf ("\n\n");
 
@@ -231,7 +231,7 @@ SEdump (sep)
       return (sep);
     }
 
-  if (NULL EQ (et = ev_kind (sep)))
+  if (NULL == (et = ev_kind (sep)))
     {
 
       printf ("[%08lX]:  ** Bad event type: $%02.2X **\n", sep, sep->e_type);
@@ -247,18 +247,18 @@ SEdump (sep)
   printf ("  data = $%02.2X $%02.2X",
 	  0x00FF & sep->e_data1, 0x00FF & sep->e_data2);
 
-  if (sep->e_size EQ E_SIZE1)
+  if (sep->e_size == E_SIZE1)
     printf (" $%04.4X $%04.4X",
 	    (struct n_entry *) sep->e_vel, (struct n_entry *) sep->e_data4);
 
   printf ("\n");
 
-  if (sep->e_size GT E_SIZE1)
+  if (sep->e_size > E_SIZE1)
     printf ("  up: $%08lX  dn: $%08lX", sep->e_up, sep->e_dn);
   else
     return (sep);
 
-  if (sep->e_size GT E_SIZE2)
+  if (sep->e_size > E_SIZE2)
     printf ("  lft: $%08lX  rgt: $%08lX", sep->e_lft, sep->e_rgt);
 
   printf ("\n");
@@ -286,7 +286,7 @@ SEchase (ep, n)
 
   printf ("\n");
 
-  if (ep EQ E_NULL)
+  if (ep == E_NULL)
     {
 
       printf ("NULL pointer\n");
@@ -301,7 +301,7 @@ SEchase (ep, n)
 
       SEdump (ep);
 
-      if ((ep->e_type EQ EV_FINI) OR x_unrec)
+      if ((ep->e_type == EV_FINI) || x_unrec)
 	return (scp);
 
       np = ep->e_fwd;
@@ -351,13 +351,13 @@ SLdump ()
       printf ("%2d  %08lX  %08lX  %08lX\n",
 	      i + 1, gdstbp[i], gdstbc[i], gdstbn[i]);
 
-      if (i EQ 11)
+      if (i == 11)
 	printf ("\n");
     }
 
   printf ("\n");
 
-  if (SL_Flag EQ FALSE)
+  if (SL_Flag == FALSE)
     xtrap15 ();
 
   SL_Flag = FALSE;
@@ -439,7 +439,7 @@ DOA ()
   register long *olda6, *cura6;
   register short n, *prptr;
 
-  if (A6PTR AND A7PTR)
+  if (A6PTR && A7PTR)
     {
 
       printf ("Stack dump:  $%08lX to $%08lX\n\n", A7PTR, A7TOP);
@@ -560,10 +560,10 @@ SCslice ()
   for (i = 0; i < NGDSEL; i++)
     {
 
-      if ((struct gdsel *) NULL NE (gp = gdstbp[i]))
+      if ((struct gdsel *) NULL != (gp = gdstbp[i]))
 	{
 
-	  if (NOT s)
+	  if (! s)
 	    {
 
 	      printf ("gdstbp:");
@@ -592,10 +592,10 @@ SCslice ()
   for (i = 0; i < NGDSEL; i++)
     {
 
-      if ((struct gdsel *) NULL NE (gp = gdstbc[i]))
+      if ((struct gdsel *) NULL != (gp = gdstbc[i]))
 	{
 
-	  if (NOT s)
+	  if (! s)
 	    {
 
 	      printf ("gdstbc:");
@@ -623,10 +623,10 @@ SCslice ()
   for (i = 0; i < NGDSEL; i++)
     {
 
-      if ((struct gdsel *) NULL NE (gp = gdstbn[i]))
+      if ((struct gdsel *) NULL != (gp = gdstbn[i]))
 	{
 
-	  if (NOT s)
+	  if (! s)
 	    {
 
 	      printf ("gdstbn:");

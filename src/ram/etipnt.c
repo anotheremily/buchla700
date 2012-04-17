@@ -84,10 +84,10 @@ ef_ipnt (n)
     ("ef_ipnt():  subj=%d, basept=%d, tmpval=%d, endpnt=%d, idpif=%d\r\n",
      subj, basept, tmpval, endpnt, fp->idfpif);
 #endif
-  if (tmpval GE fp->idfpif)
+  if (tmpval >= fp->idfpif)
     {				/* see if we want a new point */
 
-      if (fp->idfpif EQ 100)
+      if (fp->idfpif == 100)
 	{			/* can't do it if we're full */
 
 	  showpt (1);
@@ -96,7 +96,7 @@ ef_ipnt (n)
 #if DEBUGIT
       printf ("ef_ipnt():  NEW POINT REQUESTED\r\n");
 #endif
-      if (FALSE EQ inspnt (ip, curfunc, endpnt))
+      if (FALSE == inspnt (ip, curfunc, endpnt))
 	{			/* try to add it */
 #if DEBUGIT
 	  printf

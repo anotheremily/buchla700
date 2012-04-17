@@ -253,7 +253,7 @@ insect ()
 
   sgoflag = col & 3;
 
-  if ((vtcrow < 19) OR (vtcrow > 20))
+  if ((vtcrow < 19) || (vtcrow > 20))
     return (-1);
 
   return ((col >> 2) + (10 * (vtcrow - 19)));
@@ -308,7 +308,7 @@ bspscur ()
 
   newcol = stccol - 1;
 
-  if (newcol GE cfetp->flcol)
+  if (newcol >= cfetp->flcol)
     stcpos (stcrow, newcol);
 
   cxval = CTOX (stccol);
@@ -364,7 +364,7 @@ dsects ()
 	  cl = ' ';
 	  cr = ' ';
 
-	  if (E_NULL NE seclist[curscor][i + j])
+	  if (E_NULL != seclist[curscor][i + j])
 	    {
 
 	      begun = TRUE;
@@ -384,7 +384,7 @@ dsects ()
 	  while (sp)
 	    {
 
-	      if (sp->e_data1 EQ (i + j))
+	      if (sp->e_data1 == (i + j))
 		{
 
 		  cr = begun ? csr : '}';
@@ -442,7 +442,7 @@ dsgtme (n)
   char buf[4];
   short col;
 
-  if (grptmap[n] EQ - 1)
+  if (grptmap[n] == - 1)
     strcpy (buf, "  ");
   else
     sprintf (buf, "%02d", grptmap[n] + 1);
@@ -479,7 +479,7 @@ dsgtmap ()
   for (i = 0; i < 12; i++)
     {
 
-      dsgtmn (i, gtmsel EQ i);
+      dsgtmn (i, gtmsel == i);
       dsgtme (i);
     }
 }
@@ -500,7 +500,7 @@ ingroup ()
   if (col < 0)
     return (-1);
 
-  if (2 EQ (col % 3))
+  if (2 == (col % 3))
     return (-1);
 
   return (col / 3);
@@ -520,7 +520,7 @@ sdmtxt (row, col, txt, tag)
      char *txt;
      short tag;
 {
-  if ((v_regs[5] & 0x0180) NE 0x0100)
+  if ((v_regs[5] & 0x0180) != 0x0100)
     vbank (1);
 
   vcputsv (obj11, 64, SD_TEXT, SDBG16, row, col, txt, 14);
@@ -540,7 +540,7 @@ showam (asg)
 {
   register short col, na, row;
 
-  if (asg EQ 1)
+  if (asg == 1)
     na = 48;
   else
     na = NASGS;
@@ -548,7 +548,7 @@ showam (asg)
   for (col = 2; col < 60; col += 15)
     {
 
-      if (asg GE na)
+      if (asg >= na)
 	return;
 
       (*itxput) (0, col, "No Assignment", 0);
@@ -556,7 +556,7 @@ showam (asg)
       for (row = 1; row < 15; row++)
 	{
 
-	  if (asg GE na)
+	  if (asg >= na)
 	    return;
 
 	  sprintf (bfs, "%02d %-10.10s", asg, asgtab[asg].a_name);
@@ -643,7 +643,7 @@ scmenu (n)
   register short i;
   register struct octent *op;
 
-  if (n GE 0)
+  if (n >= 0)
     {				/* put up a submenu */
 
       itxput = sdmtxt;		/* setup output function */
@@ -759,7 +759,7 @@ sdmenu (n)
   wasup = sdmctl;		/* save previous menu type */
   sdmctl = n;			/* set new menu type */
 
-  if (n GE 0)
+  if (n >= 0)
     {				/* put up a menu */
 
       submenu = TRUE;		/* indicate there's a menu up */
@@ -771,7 +771,7 @@ sdmenu (n)
       memsetw (&sctctab[4][0], exp_c (SDBGMM), 64);
       memsetw (&sctctab[5][0], exp_c (SDBGMM), 64);
 
-      if (n EQ 4)
+      if (n == 4)
 	{			/* extra 2 lines for section menu */
 
 	  memsetw (&sctctab[6][0], exp_c (SDBGMM), 64);
@@ -791,7 +791,7 @@ sdmenu (n)
 	vputs (obj8, 3 + i, 0, sdmenus[n][i], SDMENUBG);
 /* 
 */
-      if (n EQ 4)
+      if (n == 4)
 	{			/* extra 2 lines for section menu */
 
 	  vputs (obj8, 6, 0, sdmln3, SDMENUBG);
@@ -811,7 +811,7 @@ sdmenu (n)
 	  point = GLCplot;	/* setup to plot on LCD */
 	  GLCcurs (G_ON);
 
-	  if (ismode NE IS_NULL)
+	  if (ismode != IS_NULL)
 	    {			/* cancel inst. mode */
 
 	      ismode = IS_NULL;
@@ -821,7 +821,7 @@ sdmenu (n)
 	      lcdlbls ();
 	    }
 
-	  if (gomode NE GO_NULL)
+	  if (gomode != GO_NULL)
 	    {			/* cancel goto mode */
 
 	      gomode = GO_NULL;
@@ -838,10 +838,10 @@ sdmenu (n)
 	      lseg (ASGN_XL, ASGN_Y, ASGN_XR, ASGN_Y, 0);
 	    }
 
-	  if ((pkctrl EQ PK_PFRM) OR (pkctrl EQ PK_NOTE))
+	  if ((pkctrl == PK_PFRM) || (pkctrl == PK_NOTE))
 	    oldpk = pkctrl;
 
-	  if (sliders NE LS_LIBR)
+	  if (sliders != LS_LIBR)
 	    oldsl = sliders;
 
 	  oldsw = swpt;		/* put panel in group mode */
@@ -871,7 +871,7 @@ sdmenu (n)
       stcclr ();		/* ... */
       sdwin (11);		/* redisplay window 11 data */
 
-      if (wasup EQ 4)
+      if (wasup == 4)
 	{
 
 	  sdwin (12);		/* redisplay window 12 data */
@@ -944,14 +944,14 @@ hilitop (n)
   if (v_regs[5] & 0x0180)
     vbank (0);
 
-  if (secop NE SOP_NUL)
+  if (secop != SOP_NUL)
     {
 
       row = sdmht[secop][0];
       lc = sdmht[secop][1];
       rc = sdmht[secop][2];
 
-      for (col = lc; col LE rc; col++)
+      for (col = lc; col <= rc; col++)
 	vputa (obj8, row, col, SDMENUBG);
     }
 
@@ -961,7 +961,7 @@ hilitop (n)
   lc = sdmht[n][1];
   rc = sdmht[n][2];
 
-  for (col = lc; col LE rc; col++)
+  for (col = lc; col <= rc; col++)
     vputa (obj8, row, col, (SDBGMM | (SD_ENTR << 4)));
 }
 
@@ -979,7 +979,7 @@ dosecop ()
   register short sect;
   register struct s_entry *ep;
 
-  if (clkrun OR (-1 EQ (sect = insect ())))
+  if (clkrun || (-1 == (sect = insect ())))
     {
 
       secop = SOP_NUL;
@@ -998,7 +998,7 @@ dosecop ()
 
     case SOP_GO:		/* GoTo */
 
-      if (sgoflag EQ 3)
+      if (sgoflag == 3)
 	{			/* GoTo End Section */
 
 	  ep = hplist[curscor][EH_SEND];
@@ -1006,7 +1006,7 @@ dosecop ()
 	  while (ep)
 	    {
 
-	      if (ep->e_data1 EQ sect)
+	      if (ep->e_data1 == sect)
 		{
 
 		  sc_goto (fc_val = ep->e_time);
@@ -1020,7 +1020,7 @@ dosecop ()
       else
 	{			/* GoTo Begin Section */
 
-	  if (E_NULL NE (ep = seclist[curscor][sect]))
+	  if (E_NULL != (ep = seclist[curscor][sect]))
 	    sc_goto (fc_val = ep->e_time);
 	}
 
@@ -1029,13 +1029,13 @@ dosecop ()
 */
     case SOP_BGN:		/* Begin */
 
-      if (NOT recsw)		/* only in record mode */
+      if (! recsw)		/* only in record mode */
 	break;
 
       if (v_regs[5] & 0x0180)
 	vbank (0);
 
-      if (E_NULL NE (ep = seclist[curscor][sect]))
+      if (E_NULL != (ep = seclist[curscor][sect]))
 	{
 
 	  eh_rmv (ep, EH_SBGN);
@@ -1046,7 +1046,7 @@ dosecop ()
 	  se_exec (ep, D_FWD);
 
 	}
-      else if (E_NULL NE (ep = e_alc (E_SIZE2)))
+      else if (E_NULL != (ep = e_alc (E_SIZE2)))
 	{
 
 	  ep->e_time = t_cur;
@@ -1064,13 +1064,13 @@ dosecop ()
 */
     case SOP_END:		/* End */
 
-      if (NOT recsw)		/* only in record mode */
+      if (! recsw)		/* only in record mode */
 	break;
 
       if (v_regs[5] & 0x0180)
 	vbank (0);
 
-      if (E_NULL NE (ep = ehfind (EH_SEND, -1L, sect, -1)))
+      if (E_NULL != (ep = ehfind (EH_SEND, -1L, sect, -1)))
 	{
 
 	  eh_rmv (ep, EH_SEND);
@@ -1081,7 +1081,7 @@ dosecop ()
 	  se_exec (ep, D_FWD);
 
 	}
-      else if (E_NULL NE (ep = e_alc (E_SIZE2)))
+      else if (E_NULL != (ep = e_alc (E_SIZE2)))
 	{
 
 	  ep->e_time = t_cur;
@@ -1098,7 +1098,7 @@ dosecop ()
 */
     case SOP_MOV:		/* Move */
 
-      if (NOT recsw)		/* only in record mode */
+      if (! recsw)		/* only in record mode */
 	break;
 
       if (sec_mov (sect))	/* move the section */
@@ -1109,7 +1109,7 @@ dosecop ()
 
     case SOP_CPY:		/* Copy */
 
-      if (NOT recsw)		/* only in record mode */
+      if (! recsw)		/* only in record mode */
 	break;
 
       if (sec_cpy (sect))	/* copy the section */
@@ -1120,7 +1120,7 @@ dosecop ()
 
     case SOP_MRG:		/* Merge */
 
-      if (NOT recsw)		/* only in record mode */
+      if (! recsw)		/* only in record mode */
 	break;
 
       if (sec_mrg (sect))	/* merge the section */
@@ -1131,7 +1131,7 @@ dosecop ()
 
     case SOP_GRP:		/* ReGrp */
 
-      if (NOT recsw)		/* only in record mode */
+      if (! recsw)		/* only in record mode */
 	break;
 
       if (sec_grp (sect))	/* regroup the section */
@@ -1144,14 +1144,14 @@ dosecop ()
 */
     case SOP_STC:		/* SMPTE */
 
-      if (NOT recsw)		/* only in record mode */
+      if (! recsw)		/* only in record mode */
 	break;
 
       break;
 
     case SOP_DGR:		/* Delete Gr */
 
-      if (NOT recsw)		/* only in record mode */
+      if (! recsw)		/* only in record mode */
 	break;
 
       if (sec_dgr (sect))	/* delete note events */
@@ -1162,7 +1162,7 @@ dosecop ()
 
     case SOP_DEV:		/* Delete Ev */
 
-      if (NOT recsw)		/* only in record mode */
+      if (! recsw)		/* only in record mode */
 	break;
 
       if (sec_dev (sect))	/* delete non-note events */
@@ -1173,7 +1173,7 @@ dosecop ()
 
     case SOP_RMV:		/* Remove */
 
-      if (NOT recsw)		/* only in record mode */
+      if (! recsw)		/* only in record mode */
 	break;
 
       if (sec_rmv (sect))	/* remove section */
@@ -1278,13 +1278,13 @@ sdboxfn (n)
 
     case 0:			/* signature, section, beat, frame */
 
-      if (col EQ 0)
+      if (col == 0)
 	{			/* signature */
 
 	  if (clkrun)		/* clock can't be running */
 	    return (FAILURE);
 
-	  if (ac_code EQ N_SHARP)
+	  if (ac_code == N_SHARP)
 	    ac_code = N_FLAT;
 	  else
 	    ac_code = N_SHARP;
@@ -1293,13 +1293,13 @@ sdboxfn (n)
 	  return (SUCCESS);
 
 	}
-      else if ((col GE 2) AND (col LE 4))
+      else if ((col >= 2) && (col <= 4))
 	{			/* section menu */
 
 	  if (clkrun)		/* clock can't be running */
 	    return (FAILURE);
 
-	  if (sdmctl EQ - 1)
+	  if (sdmctl == - 1)
 	    {			/* menu not up yet */
 
 	      sdmenu (4);	/* put up the menu */
@@ -1310,34 +1310,34 @@ sdboxfn (n)
 	  else
 	    {			/* menu up */
 
-	      if (vtcrow EQ 19)
+	      if (vtcrow == 19)
 		{
 
-		  if ((vtccol GE 1) AND (vtccol LE 4))
+		  if ((vtccol >= 1) && (vtccol <= 4))
 		    {		/* GoTo */
 
 		      hilitop (SOP_GO);
 		      return (SUCCESS);
 
 		    }
-		  else if ((vtccol GE 8) AND (vtccol LE 11))
+		  else if ((vtccol >= 8) && (vtccol <= 11))
 		    {		/* Move */
 
 		      hilitop (SOP_MOV);
 		      return (SUCCESS);
 
 		    }
-		  else if ((vtccol GE 15) AND (vtccol LE 19))
+		  else if ((vtccol >= 15) && (vtccol <= 19))
 		    {		/* SMPTE */
 
 		      hilitop (SOP_STC);
 		      return (SUCCESS);
 
 		    }
-		  else if ((vtccol GE 24) AND (vtccol LE 62))
+		  else if ((vtccol >= 24) && (vtccol <= 62))
 		    {		/* number */
 
-		      if (-1 NE insect ())
+		      if (-1 != insect ())
 			{
 
 			  sdmenu (-1);
@@ -1349,34 +1349,34 @@ sdboxfn (n)
 /* 
 */
 		}
-	      else if (vtcrow EQ 20)
+	      else if (vtcrow == 20)
 		{
 
-		  if ((vtccol GE 1) AND (vtccol LE 5))
+		  if ((vtccol >= 1) && (vtccol <= 5))
 		    {		/* Begin */
 
 		      hilitop (SOP_BGN);
 		      return (SUCCESS);
 
 		    }
-		  else if ((vtccol GE 8) AND (vtccol LE 11))
+		  else if ((vtccol >= 8) && (vtccol <= 11))
 		    {		/* Copy */
 
 		      hilitop (SOP_CPY);
 		      return (SUCCESS);
 
 		    }
-		  else if ((vtccol GE 15) AND (vtccol LE 20))
+		  else if ((vtccol >= 15) && (vtccol <= 20))
 		    {		/* Del Gr */
 
 		      hilitop (SOP_DGR);
 		      return (SUCCESS);
 
 		    }
-		  else if ((vtccol GE 24) AND (vtccol LE 62))
+		  else if ((vtccol >= 24) && (vtccol <= 62))
 		    {		/* number */
 
-		      if (-1 NE insect ())
+		      if (-1 != insect ())
 			{
 
 			  sdmenu (-1);
@@ -1388,24 +1388,24 @@ sdboxfn (n)
 /* 
 */
 		}
-	      else if (vtcrow EQ 21)
+	      else if (vtcrow == 21)
 		{
 
-		  if ((vtccol GE 1) AND (vtccol LE 3))
+		  if ((vtccol >= 1) && (vtccol <= 3))
 		    {		/* End */
 
 		      hilitop (SOP_END);
 		      return (SUCCESS);
 
 		    }
-		  else if ((vtccol GE 8) AND (vtccol LE 12))
+		  else if ((vtccol >= 8) && (vtccol <= 12))
 		    {		/* Merge */
 
 		      hilitop (SOP_MRG);
 		      return (SUCCESS);
 
 		    }
-		  else if ((vtccol GE 15) AND (vtccol LE 20))
+		  else if ((vtccol >= 15) && (vtccol <= 20))
 		    {		/* Del Ev */
 
 		      hilitop (SOP_DEV);
@@ -1415,40 +1415,40 @@ sdboxfn (n)
 /* 
 */
 		}
-	      else if (vtcrow EQ 22)
+	      else if (vtcrow == 22)
 		{
 
-		  if ((vtccol GE 8) AND (vtccol LE 12))
+		  if ((vtccol >= 8) && (vtccol <= 12))
 		    {		/* ReGrp */
 
 		      hilitop (SOP_GRP);
 		      return (SUCCESS);
 
 		    }
-		  else if ((vtccol GE 15) AND (vtccol LE 20))
+		  else if ((vtccol >= 15) && (vtccol <= 20))
 		    {		/* Remove */
 
 		      hilitop (SOP_RMV);
 		      return (SUCCESS);
 
 		    }
-		  else if ((vtccol GE 28) AND (vtccol LE 62))
+		  else if ((vtccol >= 28) && (vtccol <= 62))
 		    {		/* number */
 
-		      if (gtmsel GE 0)
+		      if (gtmsel >= 0)
 			dsgtmn (gtmsel, FALSE);
 
-		      if (-1 NE (gtmsel = ingroup ()))
+		      if (-1 != (gtmsel = ingroup ()))
 			dsgtmn (gtmsel, TRUE);
 
 		      return (SUCCESS);
 		    }
 
 		}
-	      else if (vtcrow EQ 23)
+	      else if (vtcrow == 23)
 		{
 
-		  if ((vtccol GE 1) AND (vtccol LE 6))
+		  if ((vtccol >= 1) && (vtccol <= 6))
 		    {		/* Escape */
 
 		      secop = SOP_NUL;
@@ -1456,7 +1456,7 @@ sdboxfn (n)
 		      return (SUCCESS);
 
 		    }
-		  else if ((vtccol GE 22) AND (vtccol LE 24))
+		  else if ((vtccol >= 22) && (vtccol <= 24))
 		    {		/* Transpose */
 
 		      return (enterit ());
@@ -1481,7 +1481,7 @@ sdboxfn (n)
       else
 	istart ();		/* ... insert of -> on */
 
-      if (modewas NE insmode)	/* only refresh if changed */
+      if (modewas != insmode)	/* only refresh if changed */
 	sc_refr (fc_val);
 
       dsimode ();		/* update insert mode display */
@@ -1489,20 +1489,20 @@ sdboxfn (n)
 
     case 2:			/* clock control, source */
 
-      if (col LE 33)
+      if (col <= 33)
 	{			/* clock */
 
-	  clkset (NOT clkrun);
+	  clkset (! clkrun);
 	  dsclk ();
 	  return (SUCCESS);
 
 /* 
 */
 	}
-      else if ((col GE 35) AND (col LE 43))
+      else if ((col >= 35) && (col <= 43))
 	{			/* control */
 
-	  if (sdmctl EQ - 1)
+	  if (sdmctl == - 1)
 	    {			/* menu not yet up */
 
 	      sdmenu (3);
@@ -1512,10 +1512,10 @@ sdboxfn (n)
 	  else
 	    {			/* menu up */
 
-	      if (vtcrow EQ 19)
+	      if (vtcrow == 19)
 		{
 
-		  if ((vtccol GE 1) AND (vtccol LE 5))
+		  if ((vtccol >= 1) && (vtccol <= 5))
 		    {
 
 		      clkctl = CK_LOCAL;
@@ -1525,10 +1525,10 @@ sdboxfn (n)
 		    }
 
 		}
-	      else if (vtcrow EQ 20)
+	      else if (vtcrow == 20)
 		{
 
-		  if ((vtccol GE 1) AND (vtccol LE 5))
+		  if ((vtccol >= 1) && (vtccol <= 5))
 		    {
 
 		      clkctl = CK_MIDI;
@@ -1538,10 +1538,10 @@ sdboxfn (n)
 		    }
 
 		}
-	      else if (vtcrow EQ 21)
+	      else if (vtcrow == 21)
 		{
 
-		  if ((vtccol GE 1) AND (vtccol LE 5))
+		  if ((vtccol >= 1) && (vtccol <= 5))
 		    {
 
 		      clkctl = CK_SMPTE;
@@ -1556,10 +1556,10 @@ sdboxfn (n)
 /* 
 */
 	}
-      else if (col GE 45)
+      else if (col >= 45)
 	{			/* source */
 
-	  if (sdmctl EQ - 1)
+	  if (sdmctl == - 1)
 	    {			/* menu not yet up */
 
 	      sdmenu (2);
@@ -1570,10 +1570,10 @@ sdboxfn (n)
 	  else
 	    {			/* menu up */
 
-	      if (vtcrow EQ 19)
+	      if (vtcrow == 19)
 		{
 
-		  if ((vtccol GE 1) AND (vtccol LE 5))
+		  if ((vtccol >= 1) && (vtccol <= 5))
 		    {
 
 		      clksrc = CK_LOCAL;
@@ -1584,7 +1584,7 @@ sdboxfn (n)
 		      return (SUCCESS);
 
 		    }
-		  else if ((vtccol GE 9) AND (vtccol LE 13))
+		  else if ((vtccol >= 9) && (vtccol <= 13))
 		    {
 
 		      clksrc = CK_PLS24;
@@ -1595,7 +1595,7 @@ sdboxfn (n)
 		      return (SUCCESS);
 
 		    }
-		  else if ((vtccol GE 17) AND (vtccol LE 20))
+		  else if ((vtccol >= 17) && (vtccol <= 20))
 		    {
 
 		      clksrc = CK_STEP;
@@ -1610,10 +1610,10 @@ sdboxfn (n)
 /* 
 */
 		}
-	      else if (vtcrow EQ 20)
+	      else if (vtcrow == 20)
 		{
 
-		  if ((vtccol GE 1) AND (vtccol LE 5))
+		  if ((vtccol >= 1) && (vtccol <= 5))
 		    {
 
 		      clksrc = CK_MIDI;
@@ -1624,7 +1624,7 @@ sdboxfn (n)
 		      return (SUCCESS);
 
 		    }
-		  else if ((vtccol GE 9) AND (vtccol LE 13))
+		  else if ((vtccol >= 9) && (vtccol <= 13))
 		    {
 
 		      clksrc = CK_PLS48;
@@ -1637,10 +1637,10 @@ sdboxfn (n)
 /* 
 */
 		}
-	      else if (vtcrow EQ 21)
+	      else if (vtcrow == 21)
 		{
 
-		  if ((vtccol GE 1) AND (vtccol LE 5))
+		  if ((vtccol >= 1) && (vtccol <= 5))
 		    {
 
 		      clksrc = CK_SMPTE;
@@ -1651,7 +1651,7 @@ sdboxfn (n)
 		      return (SUCCESS);
 
 		    }
-		  else if ((vtccol GE 9) AND (vtccol LE 13))
+		  else if ((vtccol >= 9) && (vtccol <= 13))
 		    {
 
 		      clksrc = CK_PLS96;
@@ -1674,10 +1674,10 @@ sdboxfn (n)
       if (clkrun)		/* clock can't be running */
 	return (FAILURE);
 
-      if (scmctl NE - 1)
+      if (scmctl != - 1)
 	scmenu (-1);
 
-      if (sdmctl EQ - 1)
+      if (sdmctl == - 1)
 	{			/* menu not up */
 
 	  sdmenu (1);
@@ -1688,24 +1688,24 @@ sdboxfn (n)
       else
 	{			/* menu up - select operation */
 
-	  if (vtcrow EQ 19)
+	  if (vtcrow == 19)
 	    {
 
-	      if ((vtccol GE 1) AND (vtccol LE 9))
+	      if ((vtccol >= 1) && (vtccol <= 9))
 		{		/* Begin Acc */
 
 		  hilitnt (NOP_ACC);
 		  return (SUCCESS);
 
 		}
-	      else if ((vtccol GE 13) AND (vtccol LE 21))
+	      else if ((vtccol >= 13) && (vtccol <= 21))
 		{		/* Move Note */
 
 		  hilitnt (NOP_MVN);
 		  return (SUCCESS);
 
 		}
-	      else if ((vtccol GE 25) AND (vtccol LE 30))
+	      else if ((vtccol >= 25) && (vtccol <= 30))
 		{		/* Escape */
 
 		  hilitnt (NOP_NUL);
@@ -1717,17 +1717,17 @@ sdboxfn (n)
 /* 
 */
 	    }
-	  else if (vtcrow EQ 20)
+	  else if (vtcrow == 20)
 	    {
 
-	      if ((vtccol GE 1) AND (vtccol LE 9))
+	      if ((vtccol >= 1) && (vtccol <= 9))
 		{		/* Begin Nat */
 
 		  hilitnt (NOP_NAT);
 		  return (SUCCESS);
 
 		}
-	      else if ((vtccol GE 13) AND (vtccol LE 22))
+	      else if ((vtccol >= 13) && (vtccol <= 22))
 		{		/* Move Begin */
 
 		  hilitnt (NOP_MVB);
@@ -1737,17 +1737,17 @@ sdboxfn (n)
 	      return (FAILURE);
 
 	    }
-	  else if (vtcrow EQ 21)
+	  else if (vtcrow == 21)
 	    {
 
-	      if ((vtccol GE 1) AND (vtccol LE 8))
+	      if ((vtccol >= 1) && (vtccol <= 8))
 		{		/* End Note */
 
 		  hilitnt (NOP_END);
 		  return (SUCCESS);
 
 		}
-	      else if ((vtccol GE 13) AND (vtccol LE 20))
+	      else if ((vtccol >= 13) && (vtccol <= 20))
 		{		/* Move End */
 
 		  hilitnt (NOP_MVE);
@@ -1767,10 +1767,10 @@ sdboxfn (n)
 */
     case 4:			/* assignments */
 
-      if (col LE 9)
+      if (col <= 9)
 	{
 
-	  if (scmctl NE 1)
+	  if (scmctl != 1)
 	    {			/* not up yet -- show page 1 */
 
 	      lastam = 0;
@@ -1780,7 +1780,7 @@ sdboxfn (n)
 	  else
 	    {			/* up - switch pages */
 
-	      if (lastam EQ 0)
+	      if (lastam == 0)
 		{		/* show page 2 */
 
 		  lastam = 60;
@@ -1806,10 +1806,10 @@ sdboxfn (n)
 
     case 5:			/* tunings */
 
-      if ((col GE 14) AND (col LE 17))
+      if ((col >= 14) && (col <= 17))
 	{
 
-	  if (scmctl NE 2)
+	  if (scmctl != 2)
 	    scmenu (2);		/* put up menu */
 	  else
 	    scmenu (-1);	/* take down menu */
@@ -1826,7 +1826,7 @@ sdboxfn (n)
 */
     case 8:			/* stop/next */
 
-      if ((col GE 40) AND (col LE 43))
+      if ((col >= 40) && (col <= 43))
 	{			/* stop */
 
 	  if (recsw)
@@ -1835,13 +1835,13 @@ sdboxfn (n)
 	      if (v_regs[5] & 0x0180)
 		vbank (0);
 
-	      if (E_NULL NE (ep = findev (p_cur, t_cur, EV_STOP, -1, -1)))
+	      if (E_NULL != (ep = findev (p_cur, t_cur, EV_STOP, -1, -1)))
 		{
 
 		  se_exec (ep, D_FWD);
 
 		}
-	      else if (E_NULL NE (ep = e_alc (E_SIZE1)))
+	      else if (E_NULL != (ep = e_alc (E_SIZE1)))
 		{
 
 		  ep->e_time = t_cur;
@@ -1855,7 +1855,7 @@ sdboxfn (n)
 	    }
 
 	}
-      else if ((col GE 45) AND (col LE 48))
+      else if ((col >= 45) && (col <= 48))
 	{			/* next */
 
 	  if (recsw)
@@ -1864,13 +1864,13 @@ sdboxfn (n)
 	      if (v_regs[5] & 0x0180)
 		vbank (0);
 
-	      if (E_NULL NE (ep = findev (p_cur, t_cur, EV_NEXT, -1, -1)))
+	      if (E_NULL != (ep = findev (p_cur, t_cur, EV_NEXT, -1, -1)))
 		{
 
 		  se_exec (ep, D_FWD);
 
 		}
-	      else if (E_NULL NE (ep = e_alc (E_SIZE1)))
+	      else if (E_NULL != (ep = e_alc (E_SIZE1)))
 		{
 
 		  ep->e_time = t_cur;
@@ -1891,7 +1891,7 @@ sdboxfn (n)
 */
     case 9:			/* punch in/out */
 
-      if ((col GE 50) AND (col LE 51))
+      if ((col >= 50) && (col <= 51))
 	{			/* punch in */
 
 	  if (recsw)
@@ -1900,13 +1900,13 @@ sdboxfn (n)
 	      if (v_regs[5] & 0x0180)
 		vbank (0);
 
-	      if (E_NULL NE (ep = findev (p_cur, t_cur, EV_STOP, 1, -1)))
+	      if (E_NULL != (ep = findev (p_cur, t_cur, EV_STOP, 1, -1)))
 		{
 
 		  se_exec (ep, D_FWD);
 
 		}
-	      else if (E_NULL NE (ep = e_alc (E_SIZE1)))
+	      else if (E_NULL != (ep = e_alc (E_SIZE1)))
 		{
 
 		  ep->e_time = t_cur;
@@ -1921,7 +1921,7 @@ sdboxfn (n)
 	    }
 
 	}
-      else if ((col GE 53) AND (col LE 55))
+      else if ((col >= 53) && (col <= 55))
 	{			/* punch out */
 
 	  if (recsw)
@@ -1930,13 +1930,13 @@ sdboxfn (n)
 	      if (v_regs[5] & 0x0180)
 		vbank (0);
 
-	      if (E_NULL NE (ep = findev (p_cur, t_cur, EV_PNCH, 0, -1)))
+	      if (E_NULL != (ep = findev (p_cur, t_cur, EV_PNCH, 0, -1)))
 		{
 
 		  se_exec (ep, D_FWD);
 
 		}
-	      else if (E_NULL NE (ep = e_alc (E_SIZE1)))
+	      else if (E_NULL != (ep = e_alc (E_SIZE1)))
 		{
 
 		  ep->e_time = t_cur;
@@ -1961,10 +1961,10 @@ sdboxfn (n)
 
     case 11:			/* group/ins, trans, dyn/loc, velocity */
 
-      if ((row EQ 18) AND (col LE 3))
+      if ((row == 18) && (col <= 3))
 	{			/* inst. menu */
 
-	  if (scmctl NE 0)
+	  if (scmctl != 0)
 	    scmenu (0);		/* put up the menu */
 	  else
 	    scmenu (-1);	/* take down the menu */
@@ -1972,10 +1972,10 @@ sdboxfn (n)
 	  return (SUCCESS);
 
 	}
-      else if ((row EQ 21) AND (col LE 3))
+      else if ((row == 21) && (col <= 3))
 	{			/* velocity flag */
 
-	  velflag = NOT velflag;
+	  velflag = ! velflag;
 	  ds_vmod ();
 	  return (SUCCESS);
 
@@ -1987,7 +1987,7 @@ sdboxfn (n)
 */
     case 12:			/* analog source, value */
 
-      if ((row EQ 23) AND (col LE 4))
+      if ((row == 23) && (col <= 4))
 	{			/* display enable */
 
 	  angroup = -angroup;
@@ -2006,10 +2006,10 @@ sdboxfn (n)
 	  return (SUCCESS);
 
 	}
-      else if ((row EQ 22) AND (col LE 4))
+      else if ((row == 22) && (col <= 4))
 	{			/* r/p source */
 
-	  ancmsw = NOT ancmsw;
+	  ancmsw = ! ancmsw;
 
 	  if (ancmsw)
 	    atr = (SD_CHNG << 4) | SDBG12;
@@ -2034,10 +2034,10 @@ sdboxfn (n)
 */
     case 13:			/* score number and title */
 
-      if (col LE 4)
+      if (col <= 4)
 	{			/* score menu */
 
-	  if (scmctl NE 3)
+	  if (scmctl != 3)
 	    scmenu (3);		/* put up menu */
 	  else
 	    scmenu (-1);	/* take down menu */
@@ -2045,10 +2045,10 @@ sdboxfn (n)
 	  return (SUCCESS);
 
 	}
-      else if ((col GE 10) AND (col LE 25))
+      else if ((col >= 10) && (col <= 25))
 	{			/* score name */
 
-	  if (sdmctl NE 0)
+	  if (sdmctl != 0)
 	    {
 
 	      sdmenu (0);
@@ -2073,7 +2073,7 @@ sdboxfn (n)
 */
     case 14:			/* rec mode */
 
-      if ((col GE 31) AND (col LE 34))
+      if ((col >= 31) && (col <= 34))
 	{			/* Play */
 
 	  recsw = FALSE;
@@ -2081,7 +2081,7 @@ sdboxfn (n)
 	  return (SUCCESS);
 
 	}
-      else if ((col GE 36) AND (col LE 40))
+      else if ((col >= 36) && (col <= 40))
 	{			/* Recrd */
 
 	  recsw = TRUE;
@@ -2089,18 +2089,18 @@ sdboxfn (n)
 	  return (SUCCESS);
 
 	}
-      else if ((col GE 42) AND (col LE 47))
+      else if ((col >= 42) && (col <= 47))
 	{			/* OvrDub */
 
-	  dubsw = NOT dubsw;
+	  dubsw = ! dubsw;
 	  dsrpmod ();
 	  return (SUCCESS);
 
 	}
-      else if ((col GE 49) AND (col LE 55))
+      else if ((col >= 49) && (col <= 55))
 	{			/* PunchIn */
 
-	  pchsw = NOT pchsw;
+	  pchsw = ! pchsw;
 	  dsrpmod ();
 	  return (SUCCESS);
 
@@ -2110,7 +2110,7 @@ sdboxfn (n)
 
     case 16:			/* note display */
 
-      if (NOP_NUL NE noteop)
+      if (NOP_NUL != noteop)
 	donote ();
 
       return (SUCCESS);

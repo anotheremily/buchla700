@@ -61,7 +61,7 @@ static short itcur[] = {
 itcini (color)
      unsigned color;
 {
-  if ((v_regs[5] & 0x0180) NE 0x0100)
+  if ((v_regs[5] & 0x0180) != 0x0100)
     vbank (1);
 
   andcopy (v_cur, itcur, exp_c (color), 64);
@@ -124,7 +124,7 @@ advicur ()
 
   newcol = stccol + 1;
 
-  if (newcol LE cfetp->frcol)
+  if (newcol <= cfetp->frcol)
     itcpos (stcrow, newcol);
 }
 
@@ -145,6 +145,6 @@ bspicur ()
 
   newcol = stccol - 1;
 
-  if (newcol GE cfetp->flcol)
+  if (newcol >= cfetp->flcol)
     itcpos (stcrow, newcol);
 }

@@ -34,7 +34,7 @@ main ()
 
   printf ("Buchla 700 Pitch to Frequency Table Generator %s\n", VER);
 
-  if (NULL EQ (fp = fopen (FILEOUT, "wa")))
+  if (NULL == (fp = fopen (FILEOUT, "wa")))
     {				/* open output file */
 
       printf ("ERROR:  Unable to open [%s] for output.\n", FILEOUT);
@@ -56,7 +56,7 @@ main ()
     {
 
       k = i << 6;
-      j = (double) ((k LE MAXPIT) ? k : MAXPIT) / (double) 1200.0;
+      j = (double) ((k <= MAXPIT) ? k : MAXPIT) / (double) 1200.0;
       m = km * pow ((double) 2.0, j) * (double) 2.0;
       n = (unsigned long) ((m > (double) 10.0 ? (double) 10.0 : m)
 			   * (double) 100.0) << 5;

@@ -45,7 +45,7 @@ pipc (chars, length)
   int i;
 
   for (i = 0; i < length; i++)
-    if (isascii (0x00FF & chars[i]) AND (isprint (0x00FF & chars[i])))
+    if (isascii (0x00FF & chars[i]) && (isprint (0x00FF & chars[i])))
       printf ("%c", chars[i]);
     else
       printf (".");
@@ -72,10 +72,10 @@ mdump (begin, end, start)
   ii = start;
   j = 0;
 
-  if (begin GT end)
+  if (begin > end)
     return;
 
-  while (begin LE end)
+  while (begin <= end)
     {
 
       c = *begin++;

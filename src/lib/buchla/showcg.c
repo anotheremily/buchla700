@@ -99,7 +99,7 @@ main ()
 
       printf ("\n");
 
-      for (irow = cg_rows - 1; irow GE 0; irow--)
+      for (irow = cg_rows - 1; irow >= 0; irow--)
 	{
 
 	  printf ("\t");
@@ -110,7 +110,7 @@ main ()
 	  printf ("\n");
 	}
 
-      if ((ch & 0x0F) EQ 12)
+      if ((ch & 0x0F) == 12)
 	printf ("\f");
     }
 }

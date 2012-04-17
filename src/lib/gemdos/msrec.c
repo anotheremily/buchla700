@@ -43,7 +43,7 @@ static char hexdig[] = "0123456789ABCDEF";	/* hex table */
 
 #define	RECLEN	32		/* 32 bytes per S-record */
 
-#define	GE	>=
+#define	>=	>=
 
 /*  */
 
@@ -129,7 +129,7 @@ msrec (fp, recadr, len, rp)
   while (len)
     {				/* while there's data ... */
 
-      if (len GE RECLEN)
+      if (len >= RECLEN)
 	{			/* full record */
 
 	  outrec (fp, recadr, RECLEN, rp);

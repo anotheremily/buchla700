@@ -295,7 +295,7 @@ mlbld (where, from)
   register short i, j;
   register char c;
 
-  while (-1 NE (i = *from++))
+  while (-1 != (i = *from++))
     {
 
       c = *from++;
@@ -339,7 +339,7 @@ mdselbx (n)
   register short rc;
 
 #if	DEBUGIT
-  if (debugsw AND debugm7)
+  if (debugsw && debugm7)
     printf ("mdselbx(%d): ENTRY  old ndisp = %d\n", n, ndisp);
 #endif
 
@@ -349,10 +349,10 @@ mdselbx (n)
 
   rc = SUCCESS;
 
-  if (ndisp EQ 7)
+  if (ndisp == 7)
     {				/* "Write program to disk" selected */
 
-      if (n EQ 7)
+      if (n == 7)
 	{			/* verified, time to do it */
 
 	  if (dcopy ())
@@ -384,10 +384,10 @@ mdselbx (n)
 */
 
     }
-  else if (ndisp EQ 9)
+  else if (ndisp == 9)
     {				/* "Format disk" selected */
 
-      if (n EQ 9)
+      if (n == 9)
 	{			/* verified, time to do it */
 
 	  if (dformat (DENSITY))
@@ -423,7 +423,7 @@ mdselbx (n)
 
       ndisp = n;		/* display number = box number */
 
-      if (n EQ 7)
+      if (n == 7)
 	{			/* select "Write program to disk" */
 
 	  vcputsv (menuob, 64, MHILITE, mbak,
@@ -431,7 +431,7 @@ mdselbx (n)
 		   mtexts[M_COPY], 14);
 
 	}
-      else if (n EQ 9)
+      else if (n == 9)
 	{			/* select "Format disk" */
 
 	  vcputsv (menuob, 64, MHILITE, mbak,
@@ -448,7 +448,7 @@ mdselbx (n)
     }
 
 #if	DEBUGIT
-  if (debugsw AND debugm7)
+  if (debugsw && debugm7)
     printf ("mdselbx(%d): EXIT  ndisp = %d  rc = %d  runit = %d\n",
 	    n, ndisp, rc, runit);
 #endif
@@ -476,7 +476,7 @@ drawm ()
   mbcv = exp_c (MBUTTON);
   mbak = exp_c (MBKGRND);
 
-  if (ml01[0] EQ 0)
+  if (ml01[0] == 0)
     {
 
       mlbld (ml01, mlc01);
@@ -553,7 +553,7 @@ drawm ()
   mlp = &mlintab[0][0];
   point = mlpoint;
 
-  while (-1 NE mlp[0])
+  while (-1 != mlp[0])
     {
 
       lseg (mlp[0], mlp[1], mlp[2], mlp[3], mlcv);

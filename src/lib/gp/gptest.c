@@ -28,7 +28,7 @@ tp_clin (argc, argv)
   for (i = 0; i < argc; i++)
     printf ("   argv[%d] = \042%s\042\n", i, argv[i]);
 
-  return (argc GT 1);
+  return (argc > 1);
 }
 
 /*

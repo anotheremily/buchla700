@@ -55,7 +55,7 @@ check (fn)
 
   /* open the file */
 
-  if (NULL EQ (B_file = fopenb (fn, "r")))
+  if (NULL == (B_file = fopenb (fn, "r")))
     {
 
       printf ("check:  Unable to open \042%s\042\n", fn);
@@ -64,7 +64,7 @@ check (fn)
 
   /* read in the file header */
 
-  if (1 NE fread (&B_fhdr, sizeof B_fhdr, 1, B_file))
+  if (1 != fread (&B_fhdr, sizeof B_fhdr, 1, B_file))
     {
 
       printf ("check:  Unable to read header for \042%s\042\n", fn);
@@ -74,7 +74,7 @@ check (fn)
 
   /* check the magic */
 
-  if ((B_fhdr.F_Magic NE F_R_C) AND (B_fhdr.F_Magic NE F_R_D))
+  if ((B_fhdr.F_Magic != F_R_C) && (B_fhdr.F_Magic != F_R_D))
     {
 
       printf ("check:  Bad magic [$%04x] in file \042%s\042",
@@ -89,7 +89,7 @@ check (fn)
 
   /* if it's a discontinuous file, read the origins */
 
-  if (B_fhdr.F_Magic EQ F_R_D)
+  if (B_fhdr.F_Magic == F_R_D)
     {
 
       B_dat_o = getl (B_file);
@@ -130,7 +130,7 @@ check (fn)
   endbss = bgnbss + B_bss_l - 1L;
 
   printf ("File \042%s\042 is a %s file and\n",
-	  fn, (B_fhdr.F_Magic EQ F_R_D) ? "Scattered" : "Contiguous");
+	  fn, (B_fhdr.F_Magic == F_R_D) ? "Scattered" : "Contiguous");
 
   printf ("loads from $%08lx to $%08lx  (%ld bytes)\n",
 	  B_txt_o, B_end, B_lod_l);
@@ -161,7 +161,7 @@ main (argc, argv)
 {
   int rc;
 
-  if (argc NE 2)
+  if (argc != 2)
     {
 
       printf ("check:  ERROR - file name required\n");

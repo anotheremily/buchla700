@@ -8,7 +8,7 @@ main ()
 {
   int c;
 
-  while ('\033' NE (0x00FF & (c = Bconin (CON_DEV))))
+  while ('\033' != (0x00FF & (c = Bconin (CON_DEV))))
     {
 
       printf ("%08x\n", c);

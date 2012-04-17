@@ -71,24 +71,24 @@ ef_res1 (n)
   grp = abs (angroup) - 1;
   ival = ebuf[0] & 0x00FF;
 
-  if ((ival < 3) OR (ival > 8))
+  if ((ival < 3) || (ival > 8))
     return (FAILURE);
 
   anrs[n][grp] = ival;
 
-  if (recsw AND grpstat[grp] AND
-      (2 EQ (ancmsw ? varmode[n][grp] : grpmode[grp])))
+  if (recsw && grpstat[grp] &&
+      (2 == (ancmsw ? varmode[n][grp] : grpmode[grp])))
     {
 
       vg = ((n << 4) | grp);
 
-      if (E_NULL NE (ep = findev (p_cur, t_cur, EV_ANRS, vg, -1)))
+      if (E_NULL != (ep = findev (p_cur, t_cur, EV_ANRS, vg, -1)))
 	{
 
 	  ep->e_data2 = ival;
 
 	}
-      else if (E_NULL NE (ep = e_alc (E_SIZE2)))
+      else if (E_NULL != (ep = e_alc (E_SIZE2)))
 	{
 
 	  ep->e_type = EV_ANRS;
@@ -224,26 +224,26 @@ ef_aval (n)
   if (val > 1000)
     return (FAILURE);
 
-  if (ebuf[0] EQ 8)
+  if (ebuf[0] == 8)
     val = -val;
 
   val = val << 5;
 
   setsv (grp, src, val);
 
-  if (recsw AND grpstat[grp] AND
-      (2 EQ (ancmsw ? varmode[n][grp] : grpmode[grp])))
+  if (recsw && grpstat[grp] &&
+      (2 == (ancmsw ? varmode[n][grp] : grpmode[grp])))
     {
 
       vg = (n << 4) | grp;
 
-      if (E_NULL NE (ep = findev (p_cur, t_cur, EV_ANVL, vg, -1)))
+      if (E_NULL != (ep = findev (p_cur, t_cur, EV_ANVL, vg, -1)))
 	{
 
 	  ep->e_dn = (struct s_entry *) ((long) val << 16);
 
 	}
-      else if (E_NULL NE (ep = e_alc (E_SIZE2)))
+      else if (E_NULL != (ep = e_alc (E_SIZE2)))
 	{
 
 	  ep->e_type = EV_ANVL;
@@ -327,13 +327,13 @@ nd_aval (n, k)
 
   ec = stccol - cfetp->flcol;
 
-  if (ec EQ 3)
+  if (ec == 3)
     return (FAILURE);
 
   ebuf[ec] = k;
 
-  if (ec EQ 0)
-    k = (k EQ 8) ? '-' : '+';
+  if (ec == 0)
+    k = (k == 8) ? '-' : '+';
   else
     k += '0';
 
@@ -342,12 +342,12 @@ nd_aval (n, k)
 
   vputc (obj8, 7, stccol, k, SDW12DEA);
 
-  if (ec EQ 4)
+  if (ec == 4)
     return (SUCCESS);
 
   advscur ();
 
-  if (ec EQ 2)
+  if (ec == 2)
     advscur ();
 
   return (SUCCESS);
@@ -389,7 +389,7 @@ ef_agrp (n)
   ebflag = FALSE;
   ival = (10 * (ebuf[0] - '0')) + (ebuf[1] - '0');
 
-  if ((ival > 12) OR (ival < 1))
+  if ((ival > 12) || (ival < 1))
     return (FAILURE);
 
   angroup = sign (angroup, ival);

@@ -61,7 +61,7 @@ dcopy ()
 
   preio ();			/* kill the LCD backlight */
 
-  if ((FILE *) NULL EQ (fp = fopenb (PROGID, "w")))
+  if ((FILE *) NULL == (fp = fopenb (PROGID, "w")))
     {
 
       defect = 1;		/* couldn't open file */
@@ -76,7 +76,7 @@ dcopy ()
   from = &mphead;
 
   for (wrtlen = sizeof mphead; wrtlen--;)
-    if (EOF EQ putc (*from++, fp))
+    if (EOF == putc (*from++, fp))
       {
 
 	defect = 2;		/* couldn't write program header */
@@ -90,7 +90,7 @@ dcopy ()
   from = &Lo_RAM;
 
   for (wrtlen = loadlen; wrtlen--;)
-    if (EOF EQ putc (*from++, fp))
+    if (EOF == putc (*from++, fp))
       {
 
 	defect = 3;		/* couldn't write program */

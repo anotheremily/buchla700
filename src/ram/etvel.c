@@ -74,16 +74,16 @@ ef_vel (n)
 
   ival = SM_SCALE (ival);
 
-  if (recsw AND grpstat[n] AND (2 EQ grpmode[n]))
+  if (recsw && grpstat[n] && (2 == grpmode[n]))
     {
 
       lastvel[n] = ival;
       ep = ep_adj (p_cur, 1, t_cur);
 
-      while (t_cur EQ ep->e_time)
+      while (t_cur == ep->e_time)
 	{
 
-	  if ((EV_NBEG EQ (0x007F & ep->e_type)) AND (ep->e_data2 EQ n))
+	  if ((EV_NBEG == (0x007F & ep->e_type)) && (ep->e_data2 == n))
 	    {
 
 	      ((struct n_entry *) ep)->e_vel = ival;

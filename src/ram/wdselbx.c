@@ -159,7 +159,7 @@ wdfnbox (n)
 	  wpntsv = 1;
 	  curwpnt = (cxval - 2) / 2;
 
-	  if (curwpnt GE NUMWPNT)
+	  if (curwpnt >= NUMWPNT)
 	    curwpnt = NUMWPNT - 1;
 	  else if (curwpnt < 0)
 	    curwpnt = 0;

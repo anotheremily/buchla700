@@ -17,7 +17,7 @@ static char cl[81];
 	Uses 'vobj' of width 'vwid' as the screen, 'fg' as the color, 'vb' as
 	the bank, 'pitch' as the vertical pitch, and 'ml' as the pattern.
 
-	If 'vb' EQ -1,  the bank is not set.  The color in 'fg' will be taken
+	If 'vb' == -1,  the bank is not set.  The color in 'fg' will be taken
 	from the lower 4 bits.
 
 	The list 'ml' points at pairs of counts and characters.  The last count
@@ -42,15 +42,15 @@ vspray4 (vobj, vwid, fg, ml, vb, pitch)
   fg |= fg << 4;
   fg |= fg << 8;
 
-  if (-1 NE vb)
+  if (-1 != vb)
     vbank (vb);
 
-  while (NULL NE (cp = *ml++))
+  while (NULL != (cp = *ml++))
     {
 
       lp = cl;
 
-      while (-1 NE (j = *cp++))
+      while (-1 != (j = *cp++))
 	{
 
 	  j &= 0x00FF;

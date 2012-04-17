@@ -35,7 +35,7 @@ MTZap (tid)
   register short oldipl, rv;
   register TCB *tcp;
 
-  if ((struct _mt_def *) NIL EQ _MT_)
+  if ((struct _mt_def *) NIL == _MT_)
     _MT_ = (struct _mt_def *) XBIOS (X_MTDEFS);
 
   tcp = _MT_->mtp->TCBs;	/* point at start of TCB table */
@@ -49,7 +49,7 @@ MTZap (tid)
       if (tcp->flags & MTF_OCC)
 	{			/* occupied ? */
 
-	  if (tcp->tid NE tid)	/* continue if not TCB we want */
+	  if (tcp->tid != tid)	/* continue if not TCB we want */
 	    goto nexttcb;
 
 	  if (tcp->flags & ~MTF_OCC)

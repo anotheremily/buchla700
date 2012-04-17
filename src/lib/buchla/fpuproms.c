@@ -58,7 +58,7 @@ putfile (fn, n)
      FILE *fn;
      short n;
 {
-  if (NULL EQ (fp = fopen (fn, "w")))
+  if (NULL == (fp = fopen (fn, "w")))
     {
 
       printf ("\nfpuproms:  ERROR - unable to open output file [%s]\n", fn);
@@ -86,7 +86,7 @@ main ()
 
   printf ("Buchla 700 FPU Microcode PROM Utility -- Version %s\n\n", VER);
 
-  if (NULL EQ (fp = fopen (FN_IN, "r")))
+  if (NULL == (fp = fopen (FN_IN, "r")))
     {
 
       printf ("fpuproms:  ERROR - Unable to open [%s] for input\n", FN_IN);
@@ -109,10 +109,10 @@ main ()
       rc = fscanf (fp, "%d %x %x %x %x %x %x %x %x",
 		   &padr, &p1, &p2, &p2b, &p3, &p3b, &p4, &p4b, &p5);
 
-      if (rc EQ EOF)
+      if (rc == EOF)
 	break;
 
-      if (rc NE NFIELDS)
+      if (rc != NFIELDS)
 	{
 
 	  printf ("\nfpuproms:  ERROR - Invalid data near address %d\n",
@@ -121,7 +121,7 @@ main ()
 	  exit (1);
 	}
 
-      if (padr LT 0 OR padr GT 511)
+      if (padr < 0 || padr > 511)
 	{
 
 	  printf ("\nfpuproms:  ERROR - Address [%d] not in range 0..511\n",

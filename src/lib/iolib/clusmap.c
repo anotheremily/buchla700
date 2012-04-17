@@ -82,8 +82,8 @@ waitcr ()
 
   BIOS (B_PUTC, CON_DEV, '\007');
 
-  while ('\r' NE (c = (0x7F & BIOS (B_GETC, CON_DEV))))
-    if (c EQ '\007')
+  while ('\r' != (c = (0x7F & BIOS (B_GETC, CON_DEV))))
+    if (c == '\007')
       xtrap15 ();
 }
 
@@ -132,7 +132,7 @@ ClusMap (fcp)
 
 	      nc++;
 
-	      if (0 EQ (nc - 1) % 10)
+	      if (0 == (nc - 1) % 10)
 		printf ("\n");
 
 	      printf ("%6d", clus);
@@ -147,16 +147,16 @@ ClusMap (fcp)
   printf ("\nFAT cluster count=%d, asects=%ld\n", nc, fcp->asects);
   printf ("%ld bytes allocated, %ld bytes used", alsize, bused);
 
-  if (alsize GE bused)
+  if (alsize >= bused)
     printf (", %ld bytes unused", bunused);
 
   printf ("\n");
 
-  if (bused GT alsize)
+  if (bused > alsize)
     printf ("ERROR:  directory file size exceeds FAT allocation\n");
 
-  if (fcp->asects NE nc)
-    printf ("ERROR:  FAT cluster count (%d) NE FCB cluster count (%ld)\n",
+  if (fcp->asects != nc)
+    printf ("ERROR:  FAT cluster count (%d) != FCB cluster count (%ld)\n",
 	    nc, fcp->asects);
   return (SUCCESS);
 }
@@ -267,14 +267,14 @@ MapFAT (fat, ncl, stops)
   for (i = 2; i < ncl; i++)
     {
 
-      if ((i % 10) EQ 0)
+      if ((i % 10) == 0)
 	printf ("\n%4.4d: ", i);
 
       printf ("%4.4d ", _gtcl12 (fat, i));
 
       /* stop every 10 lines if requested */
 
-      if (stops AND (((i / 10) % 10) EQ 0))
+      if (stops && (((i / 10) % 10) == 0))
 	waitcr ();
     }
 
@@ -329,7 +329,7 @@ FILEpr (fp)
   char *ds, *fsn, *fse;
   struct fcb *fcp;
 
-  if (fp EQ (FILE *) 0L)
+  if (fp == (FILE *) 0L)
     {
 
       printf ("FILEpr():  ERROR - argument was NULL\n");
@@ -342,14 +342,14 @@ FILEpr (fp)
   arg = chantab[fp->_unit].c_close;
   ft = 0;
 
-  if (arg EQ _noper)
+  if (arg == _noper)
     {
 
       ds = (struct device *) chantab[fp->_unit].c_arg->d_name;
       printf (" is a device:  [%s]\n", ds);
 
     }
-  else if (arg EQ _filecl)
+  else if (arg == _filecl)
     {
 
       ft = 1;
@@ -393,7 +393,7 @@ struct fcb *
 fd2fcb (fd)
      short fd;
 {
-  if ((fd < 0) OR (fd > MAXCHAN))
+  if ((fd < 0) || (fd > MAXCHAN))
     return ((struct fcb *) NULL);
 
   return (chantab[fd].c_arg);
@@ -409,7 +409,7 @@ struct fcb *
 fp2fcb (fp)
      FILE *fp;
 {
-  if (fp EQ (FILE *) NULL)
+  if (fp == (FILE *) NULL)
     return ((struct fcb *) NULL);
 
   return (chantab[fp->_unit].c_arg);

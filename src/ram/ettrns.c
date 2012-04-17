@@ -103,27 +103,27 @@ ef_trns (n)
   for (i = 0; i < 4; i++)	/* convert from ASCII to binary */
     trval = (trval * 10) + (ebuf[i] - '0');
 
-  if (trval GT 1200)		/* check against limit */
+  if (trval > 1200)		/* check against limit */
     return (FAILURE);
 
-  if (ebuf[4] EQ '-')		/* fixup sign of value */
+  if (ebuf[4] == '-')		/* fixup sign of value */
     trval = (-trval);
 
   s_trns[n] = trval;		/* store new value */
   settune ();			/* update FPU */
 
-  if (recsw AND grpmode[n] AND (2 EQ grpmode[n]))
+  if (recsw && grpmode[n] && (2 == grpmode[n]))
     {
 
       trnval = (struct s_entry *) ((long) trval << 16);
 
-      if (E_NULL NE (ep = findev (p_cur, t_cur, EV_TRNS, n, -1)))
+      if (E_NULL != (ep = findev (p_cur, t_cur, EV_TRNS, n, -1)))
 	{
 
 	  ep->e_lft = trnval;
 
 	}
-      else if (E_NULL NE (ep = e_alc (E_SIZE3)))
+      else if (E_NULL != (ep = e_alc (E_SIZE3)))
 	{
 
 	  ep->e_type = EV_TRNS;
@@ -181,10 +181,10 @@ rd_trns (n)
   printf ("rd_trns:  %d <%d> [%s] -> ", n, s_trns[n], dspbuf);
 #endif
 
-  if (trsign EQ '-')
+  if (trsign == '-')
     {				/* handle +1, -1 cases */
 
-      if (dspbuf[0] EQ '1')
+      if (dspbuf[0] == '1')
 	dspbuf[0] = SP_M1;	/* -1 */
       else
 	dspbuf[0] = '-';
@@ -193,7 +193,7 @@ rd_trns (n)
   else
     {
 
-      if (dspbuf[0] EQ '1')
+      if (dspbuf[0] == '1')
 	dspbuf[0] = SP_P1;	/* +1 */
       else
 	dspbuf[0] = '+';
@@ -254,7 +254,7 @@ nd_trns (n, k)
 
   advsw = TRUE;
 
-  if (ec EQ 0)
+  if (ec == 0)
     {				/* first column of field ? */
 
       switch (k)
@@ -268,7 +268,7 @@ nd_trns (n, k)
 
 	case 1:		/* digit 1 */
 
-	  if (ebuf[4] EQ '+')
+	  if (ebuf[4] == '+')
 	    k = SP_P1;		/* +1 */
 	  else
 	    k = SP_M1;		/* -1 */
@@ -278,7 +278,7 @@ nd_trns (n, k)
 
 	case 8:		/* - */
 
-	  if (ebuf[0] EQ '0')
+	  if (ebuf[0] == '0')
 	    k = '-';
 	  else
 	    k = SP_M1;
@@ -290,7 +290,7 @@ nd_trns (n, k)
 
 	case 9:		/* + */
 
-	  if (ebuf[0] EQ '0')
+	  if (ebuf[0] == '0')
 	    k = '+';
 	  else
 	    k = SP_P1;

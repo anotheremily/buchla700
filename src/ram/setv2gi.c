@@ -44,10 +44,10 @@ setv2gi (group)
   for (vce = 0; vce < 12; vce++)
     {
 
-      if (vce2grp[vce] EQ grp)
+      if (vce2grp[vce] == grp)
 	{			/* for each voice in the group */
 
-	  if (curvce EQ vce)
+	  if (curvce == vce)
 	    {
 
 	      curinst = ins;

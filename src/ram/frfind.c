@@ -11,8 +11,8 @@
 
 		Returns a pointer to the event chain at the time 'tval'
 		starting from 'sep' in the direction 'sdir'.
-		The right end of the chain is returned when 'sdir' EQ 0,
-		and the left end is returned when 'sdir' NE 0.
+		The right end of the chain is returned when 'sdir' == 0,
+		and the left end is returned when 'sdir' != 0.
 
 	struct s_entry *
 	frfind(tval, sdir)
@@ -22,8 +22,8 @@
 		Returns a pointer to the event chain at the time 'tval'
 		in the current score in the direction 'sdir', or E_NULL
 		if the current score is empty.
-		The right end of the chain is returned when 'sdir' EQ 0,
-		and the left end is returned when 'sdir' NE 0.
+		The right end of the chain is returned when 'sdir' == 0,
+		and the left end is returned when 'sdir' != 0.
 
 	struct s_entry *
 	findev(ep, te, et, d1, d2)
@@ -32,8 +32,8 @@
 	short et, d1, d2;
 
 		Searches the event chain starting at 'ep' for an event at
-		a time of 'te' with:  a type of 'et', e_data1 EQ 'd1',
-		and e_data2 EQ 'd2'.  The values of 'd1' or 'd2' may be -1,
+		a time of 'te' with:  a type of 'et', e_data1 == 'd1',
+		and e_data2 == 'd2'.  The values of 'd1' or 'd2' may be -1,
 		in which case e_data1 or e_data2 will be assumed to match.
 		Returns a pointer to the desired event if it is found, or
 		E_NULL if no event in the chain matches the criteria given.
@@ -45,8 +45,8 @@
 	short d1, d2;
 
 		Searches the event header chain starting for an event at
-		a time of 'te' with:  a type of 'et', e_data1 EQ 'd1',
-		and e_data2 EQ 'd2'.  The values of 'd1' or 'd2' may be -1,
+		a time of 'te' with:  a type of 'et', e_data1 == 'd1',
+		and e_data2 == 'd2'.  The values of 'd1' or 'd2' may be -1,
 		in which case e_data1 or e_data2 will be assumed to match.
 		Returns a pointer to the desired event if it is found, or
 		E_NULL if no event in the chain matches the criteria given.
@@ -100,10 +100,10 @@ ep_adj (sep, sdir, tval)
   if (sdir)
     {				/* find left (earliest) end of chain */
 
-      if (sep->e_time LT tval)
+      if (sep->e_time < tval)
 	{
 
-	  while (E_NULL NE (tep = sep->e_fwd))
+	  while (E_NULL != (tep = sep->e_fwd))
 	    {
 
 #if CHECKP
@@ -111,18 +111,18 @@ ep_adj (sep, sdir, tval)
 #endif
 
 #if	DEBUGIT
-	      if (verbose AND testing)
+	      if (verbose && testing)
 		printf ("  .1. sep=$%08lX, tep=$%08lX\n", sep, tep);
 #endif
 
-	      if (sep->e_time LT tval)
+	      if (sep->e_time < tval)
 		sep = tep;
 	      else
 		break;
 	    }
 	}
 
-      while (E_NULL NE (tep = sep->e_bak))
+      while (E_NULL != (tep = sep->e_bak))
 	{
 
 #if CHECKP
@@ -130,11 +130,11 @@ ep_adj (sep, sdir, tval)
 #endif
 
 #if	DEBUGIT
-	  if (verbose AND testing)
+	  if (verbose && testing)
 	    printf ("  .2. sep=$%08lX, tep=$%08lX\n", sep, tep);
 #endif
 
-	  if ((tep->e_time LT tval) OR (tep->e_type EQ EV_SCORE))
+	  if ((tep->e_time < tval) || (tep->e_type == EV_SCORE))
 	    {
 
 #if	DEBUGIT
@@ -164,10 +164,10 @@ ep_adj (sep, sdir, tval)
   else
     {				/* find right (latest) end of chain */
 
-      if (sep->e_time GT tval)
+      if (sep->e_time > tval)
 	{
 
-	  while (E_NULL NE (tep = sep->e_bak))
+	  while (E_NULL != (tep = sep->e_bak))
 	    {
 
 #if	CHECKP
@@ -175,18 +175,18 @@ ep_adj (sep, sdir, tval)
 #endif
 
 #if DEBUGIT
-	      if (verbose AND testing)
+	      if (verbose && testing)
 		printf ("  .5. sep=$%08lX, tep=$%08lX\n", sep, tep);
 #endif
 
-	      if ((sep->e_time LE tval) OR (sep->e_type EQ EV_SCORE))
+	      if ((sep->e_time <= tval) || (sep->e_type == EV_SCORE))
 		break;
 	      else
 		sep = tep;
 	    }
 	}
 
-      while (E_NULL NE (tep = sep->e_fwd))
+      while (E_NULL != (tep = sep->e_fwd))
 	{
 
 #if CHECKP
@@ -194,11 +194,11 @@ ep_adj (sep, sdir, tval)
 #endif
 
 #if DEBUGIT
-	  if (verbose AND testing)
+	  if (verbose && testing)
 	    printf ("  .6. sep=$%08lX, tep=$%08lX\n", sep, tep);
 #endif
 
-	  if (tep->e_time GT tval)
+	  if (tep->e_time > tval)
 	    {
 
 #if	DEBUGIT
@@ -258,12 +258,12 @@ frfind (tval, sdir)
   Pcheck (p_bak, "p_bak - frfind() - entry");
 #endif
 
-  if (scp EQ E_NULL)
+  if (scp == E_NULL)
     {				/* NULL if no score selected */
 
 #if	DEBUGIT
       if (verbose)
-	printf ("frfind(%ld, %d):  found scp EQ E_NULL\n", tval, sdir);
+	printf ("frfind(%ld, %d):  found scp == E_NULL\n", tval, sdir);
 #endif
       return (E_NULL);
     }
@@ -271,7 +271,7 @@ frfind (tval, sdir)
   if (tval < 0)
     return (ep_adj (scp, sdir, tval));
 
-  if (p_cur->e_time EQ tval)
+  if (p_cur->e_time == tval)
     {				/* at p_cur ? */
 
 #if	DEBUGIT
@@ -281,7 +281,7 @@ frfind (tval, sdir)
       return (ep_adj (p_cur, sdir, tval));
     }
 
-  if (p_fwd->e_time EQ tval)
+  if (p_fwd->e_time == tval)
     {				/* at p_fwd ? */
 
 #if	DEBUGIT
@@ -291,7 +291,7 @@ frfind (tval, sdir)
       return (ep_adj (p_fwd, sdir, tval));
     }
 
-  if (p_bak->e_time EQ tval)
+  if (p_bak->e_time == tval)
     {				/* at p_bak ? */
 
 #if	DEBUGIT
@@ -301,15 +301,15 @@ frfind (tval, sdir)
       return (ep_adj (p_bak, sdir, tval));
     }
 
-  t_min = (tval GT p_cur->e_time) ?	/* time from p_cur */
+  t_min = (tval > p_cur->e_time) ?	/* time from p_cur */
     (tval - p_cur->e_time) : (p_cur->e_time - tval);
 
   ep = p_cur;
 
-  dt = (tval GT p_fwd->e_time) ?	/* time from p_fwd */
+  dt = (tval > p_fwd->e_time) ?	/* time from p_fwd */
     (tval - p_fwd->e_time) : (p_fwd->e_time - tval);
 
-  if (dt LT t_min)
+  if (dt < t_min)
     {				/* select shortest time */
 
       t_min = dt;
@@ -324,10 +324,10 @@ frfind (tval, sdir)
 /* 
 */
 
-  dt = (tval GT p_bak->e_time) ?	/* time to p_bak */
+  dt = (tval > p_bak->e_time) ?	/* time to p_bak */
     (tval - p_bak->e_time) : (p_bak->e_time - tval);
 
-  if (dt LT t_min)
+  if (dt < t_min)
     {				/* select shortest time */
 
       t_min = dt;
@@ -339,19 +339,19 @@ frfind (tval, sdir)
 #endif
     }
 
-  if (NOT insmode)
+  if (! insmode)
     {
 
       for (i = 0; i < N_SECTS; i++)
 	{			/* search section list */
 
-	  if (E_NULL NE (sep = seclist[curscor][i]))
+	  if (E_NULL != (sep = seclist[curscor][i]))
 	    {
 
-	      dt = (tval GT sep->e_time) ?	/* time to section */
+	      dt = (tval > sep->e_time) ?	/* time to section */
 		(tval - sep->e_time) : (sep->e_time - tval);
 
-	      if (dt LT t_min)
+	      if (dt < t_min)
 		{		/* select shortest time */
 
 		  t_min = dt;
@@ -380,7 +380,7 @@ frfind (tval, sdir)
    =============================================================================
 	findev(ep, te, et, d1, d2) -- Searches the event chain
 	starting at 'ep' for an event at a time of 'te' with:
-	a type of 'et', e_data1 EQ 'd1', and e_data2 EQ 'd2'.
+	a type of 'et', e_data1 == 'd1', and e_data2 == 'd2'.
 
 	The values of 'd1' or 'd2' may be -1, in which case
 	e_data1 or e_data2 will be assumed to match.
@@ -400,12 +400,12 @@ findev (ep, te, et, d1, d2)
 
   tp = ep_adj (ep, 1, te);	/* search from left end of chain */
 
-  while (tp->e_time EQ te)
+  while (tp->e_time == te)
     {				/* check the time, ... */
 
-      if ((tp->e_type EQ et) AND	/* ... e_type, */
-	  ((d1 EQ - 1) OR (tp->e_data1 EQ d1)) AND	/* ... e_data1, */
-	  ((d2 EQ - 1) OR (tp->e_data2 EQ d2)))	/* ... e_data2 */
+      if ((tp->e_type == et) &&	/* ... e_type, */
+	  ((d1 == - 1) || (tp->e_data1 == d1)) &&	/* ... e_data1, */
+	  ((d2 == - 1) || (tp->e_data2 == d2)))	/* ... e_data2 */
 	return (tp);		/* found the event */
 
       tp = tp->e_fwd;		/* search forward */
@@ -421,7 +421,7 @@ findev (ep, te, et, d1, d2)
    =============================================================================
 	ehfind(eh, te, d1, d2) -- Searches the event header chain
 	for an event at a time of 'te' with:  a header type of 'eh',
-	e_data1 EQ 'd1', and e_data2 EQ 'd2'.
+	e_data1 == 'd1', and e_data2 == 'd2'.
 
 	The value of 'te' may be -1, in which case e_time will
 	be assumed to match.
@@ -444,12 +444,12 @@ ehfind (eh, te, d1, d2)
 
   tp = hplist[curscor][eh];	/* get head of chain */
 
-  while (E_NULL NE tp)
+  while (E_NULL != tp)
     {				/* check each event ... */
 
-      if (((te EQ - 1L) OR (tp->e_time EQ te)) AND	/* ... time, */
-	  ((d1 EQ - 1) OR (tp->e_data1 EQ d1)) AND	/* ... e_data1, */
-	  ((d2 EQ - 1) OR (tp->e_data2 EQ d2)))	/* ... e_data2 */
+      if (((te == - 1L) || (tp->e_time == te)) &&	/* ... time, */
+	  ((d1 == - 1) || (tp->e_data1 == d1)) &&	/* ... e_data1, */
+	  ((d2 == - 1) || (tp->e_data2 == d2)))	/* ... e_data2 */
 	return (tp);		/* found the event */
 
       tp = tp->e_up;		/* search up the chain */

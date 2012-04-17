@@ -21,10 +21,10 @@ strrtrm (s)
   while (*rp)
     ++rp;
 
-  while ((long) (--rp) GE (long) lp)
+  while ((long) (--rp) >= (long) lp)
     {
 
-      if (*rp EQ ' ')
+      if (*rp == ' ')
 	*rp = '\0';
       else
 	break;

@@ -52,7 +52,7 @@ main ()
 
   q = RNC;
 
-  if (NULL EQ (fp = fopen (FILEOUT, "wa")))
+  if (NULL == (fp = fopen (FILEOUT, "wa")))
     {				/* open output file */
 
       printf ("ERROR:  Unable to open [%s] for output.\n", FILEOUT);
@@ -96,7 +96,7 @@ main ()
       fprintf (fp, "%5d 0x%04x %14.4f %14.4f\n", i, tab[i], f, inc);
 #endif
 
-      if (++count GE notify)
+      if (++count >= notify)
 	{
 
 	  count = 0;
@@ -131,7 +131,7 @@ main ()
       t = pow ((double) 2.0, s);
       inc = (double) 149.082 *t;
 
-      if (inc GE 65536.0)	/* saturate */
+      if (inc >= 65536.0)	/* saturate */
 	break;
 
       i = (long) floor ((double) 2.0 * p);	/* stuff the table */
@@ -142,7 +142,7 @@ main ()
 	       i, tab[i], p, s, t, inc);
 #endif
 
-      if (++count GE notify)
+      if (++count >= notify)
 	{
 
 	  count = 0;

@@ -82,7 +82,7 @@ MBRecv (pmbox)
 
   pmsg = pmbox->head;		/* get the first message in the queue */
 
-  if (pmbox->head EQ pmbox->tail)
+  if (pmbox->head == pmbox->tail)
     {				/* only message ? */
 
       pmbox->head = (MSG *) NIL;	/* clear queue head pointer */
@@ -128,7 +128,7 @@ MBChek (pmbox)
 
       pmsg = pmbox->head;	/* get the first message in the queue */
 
-      if (pmbox->head EQ pmbox->tail)
+      if (pmbox->head == pmbox->tail)
 	{			/* only message ? */
 
 	  pmbox->head = (MSG *) NIL;	/* clear queue head pointer */
@@ -174,7 +174,7 @@ MBDel (pmbox, pmsg)
 {
   register MSG *mprv, *mcur;
 
-  if (SMStat (&pmbox->mail) EQ 1)
+  if (SMStat (&pmbox->mail) == 1)
     {				/* anything in the mailbox ? */
 
       SMWait (&pmbox->mutex);	/* ACQUIRE THE MAILBOX */
@@ -187,7 +187,7 @@ MBDel (pmbox, pmsg)
 	  mprv = mcur;		/* previous MSG = current MSG */
 	  mcur = mprv->next;	/* current MSG = next MSG */
 
-	  if (mcur EQ (MSG *) NIL)
+	  if (mcur == (MSG *) NIL)
 	    {			/* end of queue ? */
 
 	      SMSig (&pmbox->mutex);	/* RELEASE MAILBOX */
@@ -195,7 +195,7 @@ MBDel (pmbox, pmsg)
 	      return (FAILURE);	/* return -- not found */
 	    }
 
-	  if (mcur EQ pmsg)
+	  if (mcur == pmsg)
 	    {			/* message we want ? */
 
 	      mprv->next = mcur->next;	/* dequeue it */

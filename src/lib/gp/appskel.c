@@ -97,7 +97,7 @@ int pxyarray[10];		/* input point array */
 
 hide_mouse ()
 {
-  if (NOT hidden)
+  if (! hidden)
     {
 
       graf_mouse (M_OFF, 0x0L);
@@ -208,7 +208,7 @@ do_redraw (xc, yc, wc, hc)
 
   wind_get (wi_handle, WF_FIRSTXYWH, &t1.g_x, &t1.g_y, &t1.g_w, &t1.g_h);
 
-  while (t1.g_w AND t1.g_h)
+  while (t1.g_w && t1.g_h)
     {
 
       if (rc_intersect (&t2, &t1))
@@ -345,7 +345,7 @@ multi ()
 	  }			/* end of switch (msgbuff[0]) */
 /* 
 */
-      if ((event & MU_BUTTON) AND (wi_handle EQ top_window))
+      if ((event & MU_BUTTON) && (wi_handle == top_window))
 	if (butdown)
 	  butdown = FALSE;
 	else
@@ -360,7 +360,7 @@ multi ()
       wind_update (FALSE);
 
     }
-  while (NOT ((event & MU_MESAG) AND (msgbuff[0] EQ WM_CLOSED)));
+  while (! ((event & MU_MESAG) && (msgbuff[0] == WM_CLOSED)));
 
   wind_close (wi_handle);
 

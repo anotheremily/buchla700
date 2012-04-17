@@ -4,7 +4,7 @@
 	Version 1 -- 1987-02-11 -- D.N. Lynx Crowe
 
 	Return the number of characters in the maximum leading segment
-	of string which consists solely of characters NOT from charset.
+	of string which consists solely of characters ! from charset.
    ============================================================================
 */
 

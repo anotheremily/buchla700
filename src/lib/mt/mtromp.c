@@ -511,22 +511,22 @@ cp_boot ()
       endc = getln (cmdunit, MAXFNLN + 1, bfname);
       writeln (cmdunit, CRLF);
 
-      if (endc EQ A_CR)
+      if (endc == A_CR)
 	break;
 
-      if (endc EQ CTL ('X'))
+      if (endc == CTL ('X'))
 	{
 
 	  writeln (cmdunit, CANNED);
 	  return (FALSE);
 	}
 
-      if (endc EQ ERR01)
+      if (endc == ERR01)
 	writeln (cmdunit, EMSG2);
     }
 
   for (i = 0; i < MAXFNLN + 1; i++)
-    if (bfname[i] EQ A_CR)
+    if (bfname[i] == A_CR)
       bfname[i] = '\0';
 
   return (TRUE);
@@ -591,16 +591,16 @@ dobar (nb, bv)
   register unsigned *bp;
   register int i;
 
-  if ((nb LT 1) OR (nb GT 82))
+  if ((nb < 1) || (nb > 82))
     return;
 
   --nb;
   bp = obj0 + BARBASE + (long) (sigadr[nb] + MARGIN + nb);
 
-  for (i = 127; i GE 0; --i)
+  for (i = 127; i >= 0; --i)
     {
 
-      if (i GT bv)
+      if (i > bv)
 	{
 
 	  *bp = baroff;
@@ -635,7 +635,7 @@ dosw (nb, sv)
   register unsigned *bp;
   register int i, j;
 
-  if ((nb LT 1) OR (nb GT 82))
+  if ((nb < 1) || (nb > 82))
     return;
 
   --nb;
@@ -726,10 +726,10 @@ cx_adsp ()
 /* 
 */
 
-  while (0L EQ BIOS (B_RDAV, CON_DEV))
+  while (0L == BIOS (B_RDAV, CON_DEV))
     {
 
-      if (-1L NE (xafi = XBIOS (X_ANALOG)))
+      if (-1L != (xafi = XBIOS (X_ANALOG)))
 	{
 
 	  xasig = 0x007F & (xafi >> 8);
@@ -742,7 +742,7 @@ cx_adsp ()
 	      sigtab[xasig][0] = xaval;
 	      sigtab[xasig][1] = xastat;
 
-	      if (xasig LT 83)
+	      if (xasig < 83)
 		{
 
 		  dobar (xasig, xaval);
@@ -792,7 +792,7 @@ cx_adsp ()
 	  else
 	    printf ("       ");
 
-	  if (++k EQ 83)
+	  if (++k == 83)
 	    goto outofit;
 	}
 
@@ -837,10 +837,10 @@ waitcr ()
 
   BIOS (B_PUTC, CON_DEV, '\007');
 
-  while ('\r' NE (c = (0x7F & BIOS (B_GETC, CON_DEV))))
+  while ('\r' != (c = (0x7F & BIOS (B_GETC, CON_DEV))))
     {
 
-      if (c EQ '\007')
+      if (c == '\007')
 	return (1);
     }
 
@@ -864,7 +864,7 @@ xdtoi (c)
   register char *ap = &ahex[0];
 
   for (i = 0; i < 22; i++)
-    if (c EQ * ap++)
+    if (c == * ap++)
       if (i > 15)
 	return (i - 6);
       else
@@ -909,10 +909,10 @@ getcmd ()
 
 	  ++sptr;
 
-	  while (*sptr EQ ' ')
+	  while (*sptr == ' ')
 	    ++sptr;
 
-	  if (*sptr EQ A_CR OR * sptr EQ A_LF OR * sptr EQ '\0')
+	  if (*sptr == A_CR || * sptr == A_LF || * sptr == '\0')
 	    c = 0x00FF & *sptr;
 
 	  argsep = c;
@@ -982,10 +982,10 @@ getarg ()
 
 	  ++sptr;
 
-	  while (*sptr EQ ' ')
+	  while (*sptr == ' ')
 	    ++sptr;
 
-	  if (*sptr EQ A_CR OR * sptr EQ A_LF OR * sptr EQ '\0')
+	  if (*sptr == A_CR || * sptr == A_LF || * sptr == '\0')
 	    c = 0x00FF & *sptr;
 
 	  argsep = c;
@@ -1033,7 +1033,7 @@ getlong (var)
   register long temp = 0L;
   register int csw = FALSE, c;
 
-  if (*aptr EQ '$')
+  if (*aptr == '$')
     {				/* leading $ makes it HEX */
 
       ++aptr;
@@ -1206,7 +1206,7 @@ ddump (loc, lastloc, nwide, unit)
 	  return (TRUE);
 	}
 
-      if (loc EQ lastloc)
+      if (loc == lastloc)
 	{
 
 	  dflag = TRUE;
@@ -1263,7 +1263,7 @@ dtext (loc, lastloc, nwide, unit)
 
       c = 0xFF & *loc;
 
-      if (isascii (c) AND isprint (c))
+      if (isascii (c) && isprint (c))
 	BIOS (B_PUTC, unit, c);
       else
 	BIOS (B_PUTC, unit, '.');
@@ -1276,7 +1276,7 @@ dtext (loc, lastloc, nwide, unit)
 	  return (TRUE);
 	}
 
-      if (loc EQ lastloc)
+      if (loc == lastloc)
 	{
 
 	  BIOS (B_PUTC, unit, '|');
@@ -1304,13 +1304,13 @@ cp_mset ()
 {
   redo = FALSE;
 
-  if (0 EQ getarg ())
+  if (0 == getarg ())
     return (FALSE);
 
-  if (argsep NE ',')
+  if (argsep != ',')
     return (FALSE);
 
-  if (setvar (&p_from, p_from) EQ FALSE)
+  if (setvar (&p_from, p_from) == FALSE)
     return (FALSE);
 
   return (TRUE);
@@ -1329,7 +1329,7 @@ cx_mset ()
     {
 
       if (getarg ())
-	if (setvar (&p_value, p_value) EQ FALSE)
+	if (setvar (&p_value, p_value) == FALSE)
 	  return (FALSE);
 
       if (p_value & ~0xFFL)
@@ -1337,7 +1337,7 @@ cx_mset ()
 
       *p_from++ = 0xFF & p_value;
 
-      if (argsep EQ A_CR)
+      if (argsep == A_CR)
 	return (TRUE);
     }
 }
@@ -1356,13 +1356,13 @@ cp_wset ()
 {
   redo = FALSE;
 
-  if (0 EQ getarg ())
+  if (0 == getarg ())
     return (FALSE);
 
-  if (argsep NE ',')
+  if (argsep != ',')
     return (FALSE);
 
-  if (setvar (&p_from, p_from) EQ FALSE)
+  if (setvar (&p_from, p_from) == FALSE)
     return (FALSE);
 
   if ((long) p_from & 1L)
@@ -1391,7 +1391,7 @@ cx_wset ()
     {
 
       if (getarg ())
-	if (setvar (&p_value, p_value) EQ FALSE)
+	if (setvar (&p_value, p_value) == FALSE)
 	  return (FALSE);
 
       if (p_value & ~0xFFFFL)
@@ -1399,7 +1399,7 @@ cx_wset ()
 
       *p_uint++ = 0xFFFF & p_value;
 
-      if (argsep EQ A_CR)
+      if (argsep == A_CR)
 	return (TRUE);
     }
 }
@@ -1418,7 +1418,7 @@ cp_mtst ()
 {
   inext = ilast;
 
-  if (argsep EQ A_CR OR argsep EQ '\0')
+  if (argsep == A_CR || argsep == '\0')
     {
 
       p_from = (char *) 0x00000008L;
@@ -1427,14 +1427,14 @@ cp_mtst ()
     }
 
   if (getarg ())
-    if (setvar (&p_from, USER_RAM) EQ FALSE)
+    if (setvar (&p_from, USER_RAM) == FALSE)
       return (FALSE);
 
-  if (argsep NE ',')
+  if (argsep != ',')
     return (FALSE);
 
   if (getarg ())
-    if (setvar (&p_to, RAM_TOP) EQ FALSE)
+    if (setvar (&p_to, RAM_TOP) == FALSE)
       return (FALSE);
 
   if ((long) p_from & 1L)
@@ -1443,7 +1443,7 @@ cp_mtst ()
   if ((long) p_to & 1L)
     return (FALSE);
 
-  if (p_from GT p_to)
+  if (p_from > p_to)
     return (FALSE);
 
   return (TRUE);
@@ -1468,7 +1468,7 @@ cx_mtst ()
   eloc = (short *) p_to;
   oldloc = loc;
 
-  if (p_from LT (char *)USER_RAM)
+  if (p_from < (char *)USER_RAM)
       setipl (7);
 
   do
@@ -1479,16 +1479,16 @@ cx_mtst ()
 
 	  *loc = mask;
 
-	  if (mask NE (was = *loc))
-	    if (p_from LT (char *)USER_RAM)
+	  if (mask != (was = *loc))
+	    if (p_from < (char *)USER_RAM)
 	        halt ();
 	    else
 	      printf ("%08lX was %04X, expected %04X\r\n", loc, was, mask);
 
 	  *loc = ~mask;
 
-	  if (~mask NE (was = *loc))
-	    if (p_from LT (char *)USER_RAM)
+	  if (~mask != (was = *loc))
+	    if (p_from < (char *)USER_RAM)
 	        halt ();
 	    else
 	      printf ("%08lX was %04X, expected %04X\r\n", loc, was, ~mask);
@@ -1500,9 +1500,9 @@ cx_mtst ()
       loc++;
 
     }
-  while (loc LE eloc);
+  while (loc <= eloc);
 
-  if (oldloc LT (short *)USER_RAM)
+  if (oldloc < (short *)USER_RAM)
       rjumpto ((long) ROMADDR);
 
   return (TRUE);
@@ -1528,7 +1528,7 @@ cp_go ()
   if (getarg ())
     {
 
-      if (setvar (&p_goto, p_goto) EQ FALSE)
+      if (setvar (&p_goto, p_goto) == FALSE)
 	return (FALSE);
 
       if (1L & (long) p_goto)
@@ -1541,7 +1541,7 @@ cp_go ()
   if (getarg ())
     {
 
-      if (setvar (&tba0, 0L) EQ FALSE)
+      if (setvar (&tba0, 0L) == FALSE)
 	return (FALSE);
 
       if (1L & (long) tba0)
@@ -1553,7 +1553,7 @@ cp_go ()
   if (getarg ())
     {
 
-      if (setvar (&tba1, 0L) EQ FALSE)
+      if (setvar (&tba1, 0L) == FALSE)
 	return (FALSE);
 
       if (1L & (long) tba1)
@@ -1582,7 +1582,7 @@ cp_mtsd ()
   if (getarg ())
     {
 
-      if (setvar (&p_from, p_from) EQ FALSE)
+      if (setvar (&p_from, p_from) == FALSE)
 	return (FALSE);
 
       if (1L & (long) p_from)
@@ -1609,7 +1609,7 @@ cp_mpri ()
   if (getarg ())
     {
 
-      if (setvar (&p_pri, p_pri) EQ FALSE)
+      if (setvar (&p_pri, p_pri) == FALSE)
 	return (FALSE);
 
       taskpri = (unsigned) p_pri;
@@ -1633,7 +1633,7 @@ cp_mstp ()
   if (getarg ())
     {
 
-      if (setvar (&p_task, p_task) EQ FALSE)
+      if (setvar (&p_task, p_task) == FALSE)
 	return (FALSE);
 
       taskid = (unsigned) p_task;
@@ -1672,7 +1672,7 @@ cx_mqry ()
 
   rc = MTStat (taskid);
 
-  if ((rc < -3) OR (rc > 2))
+  if ((rc < -3) || (rc > 2))
     {
 
       printf ("unrecognized return code from MTStat:  %d\n", rc);
@@ -1873,7 +1873,7 @@ cp_run ()
   if (getarg ())
     {
 
-      if (setvar (&p_goto, p_goto) EQ FALSE)
+      if (setvar (&p_goto, p_goto) == FALSE)
 	return (FALSE);
 
       if (1L & (long) p_goto)
@@ -1883,7 +1883,7 @@ cp_run ()
   if (getarg ())
     {
 
-      if (setvar (&p_pri, (long) DFRUNPRI) EQ FALSE)
+      if (setvar (&p_pri, (long) DFRUNPRI) == FALSE)
 	return (FALSE);
 
       if (0xFFFF0000L & (long) p_pri)
@@ -1907,7 +1907,7 @@ cx_run ()
 {
   register unsigned task;
 
-  if ((struct _mt_def *) NIL EQ _MT_)
+  if ((struct _mt_def *) NIL == _MT_)
     _MT_ = (struct _mt_def *) XBIOS (X_MTDEFS);
 
   task = MTID ();
@@ -1972,7 +1972,7 @@ cx_zap ()
 
   setipl (7);
 
-  while (p LE q)
+  while (p <= q)
     *p++ = 0;
 
   rjumpto (ROMADDR);
@@ -2035,7 +2035,7 @@ cx_help ()
   for (i = 0; i < NCMDS; i++)
     {
 
-      if (j++ EQ 22)
+      if (j++ == 22)
 	{
 
 	  j = 0;
@@ -2069,7 +2069,7 @@ cx_bpb ()
 {
   register struct bpb *bpp;
 
-  if (0L EQ (bpp = (struct bpb *) BIOS (B_GBPB, 0)))
+  if (0L == (bpp = (struct bpb *) BIOS (B_GBPB, 0)))
     {
 
       writeln (cmdunit, "\r\n\nERROR -- Unable to read BPB\r\n\n");
@@ -2138,7 +2138,7 @@ cx_go ()
       if (p_ba0)
 	{
 
-	  if (*p_ba0 NE (UWORD16) BPINST)
+	  if (*p_ba0 != (UWORD16) BPINST)
 	    {
 
 	      writeln (cmdunit, "\r\n\n** Breakpoint 0 at ");
@@ -2167,7 +2167,7 @@ cx_go ()
       if (p_ba1)
 	{
 
-	  if (*p_ba1 NE (UWORD16) BPINST)
+	  if (*p_ba1 != (UWORD16) BPINST)
 	    {
 
 	      writeln (cmdunit, "\r\n\n** Breakpoint 1 at ");
@@ -2205,14 +2205,14 @@ cp_dump ()
   inext = ilast;
 
   if (getarg ())
-    if (setvar (&p_from, p_from) EQ FALSE)
+    if (setvar (&p_from, p_from) == FALSE)
       {
 
 	redo = FALSE;
 	return (FALSE);
       }
 
-  if (argsep EQ A_CR OR argsep EQ '\0')
+  if (argsep == A_CR || argsep == '\0')
     {
 
       p_to = p_from;
@@ -2222,14 +2222,14 @@ cp_dump ()
     }
 
   if (getarg ())
-    if (setvar (&p_to, p_to) EQ FALSE)
+    if (setvar (&p_to, p_to) == FALSE)
       {
 
 	redo = FALSE;
 	return (FALSE);
       }
 
-  if (argsep EQ A_CR OR argsep EQ '\0')
+  if (argsep == A_CR || argsep == '\0')
     {
 
       p_width = 16L;
@@ -2238,14 +2238,14 @@ cp_dump ()
     }
 
   if (getarg ())
-    if (setvar (&p_width, p_width) EQ FALSE)
+    if (setvar (&p_width, p_width) == FALSE)
       {
 
 	redo = FALSE;
 	return (FALSE);
       }
 
-  if ((p_width LE 0L) OR (p_width GT 16L))
+  if ((p_width <= 0L) || (p_width > 16L))
     {
 
       p_width = 16L;
@@ -2272,15 +2272,15 @@ cp_fill ()
   redo = FALSE;
 
   if (getarg ())
-    if (setvar (&p_from, p_from) EQ FALSE)
+    if (setvar (&p_from, p_from) == FALSE)
       return (FALSE);
 
   if (getarg ())
-    if (setvar (&p_len, p_len) EQ FALSE)
+    if (setvar (&p_len, p_len) == FALSE)
       return (FALSE);
 
   if (getarg ())
-    if (setvar (&p_value, p_value) EQ FALSE)
+    if (setvar (&p_value, p_value) == FALSE)
       return (FALSE);
 
   if (p_value & ~0xFFL)
@@ -2304,15 +2304,15 @@ cp_wfil ()
   redo = FALSE;
 
   if (getarg ())
-    if (setvar (&p_from, p_from) EQ FALSE)
+    if (setvar (&p_from, p_from) == FALSE)
       return (FALSE);
 
   if (getarg ())
-    if (setvar (&p_len, p_len) EQ FALSE)
+    if (setvar (&p_len, p_len) == FALSE)
       return (FALSE);
 
   if (getarg ())
-    if (setvar (&p_value, p_value) EQ FALSE)
+    if (setvar (&p_value, p_value) == FALSE)
       return (FALSE);
 
   if ((long) p_from & 1L)
@@ -2339,15 +2339,15 @@ cp_copy ()
   redo = FALSE;
 
   if (getarg ())
-    if (setvar (&p_from, p_from) EQ FALSE)
+    if (setvar (&p_from, p_from) == FALSE)
       return (FALSE);
 
   if (getarg ())
-    if (setvar (&p_to, p_to) EQ FALSE)
+    if (setvar (&p_to, p_to) == FALSE)
       return (FALSE);
 
   if (getarg ())
-    if (setvar (&p_len, p_len) EQ FALSE)
+    if (setvar (&p_len, p_len) == FALSE)
       return (FALSE);
 
   return (TRUE);
@@ -2368,11 +2368,11 @@ cp_chek ()
   redo = FALSE;
 
   if (getarg ())
-    if (setvar (&p_from, p_from) EQ FALSE)
+    if (setvar (&p_from, p_from) == FALSE)
       return (FALSE);
 
   if (getarg ())
-    if (setvar (&p_to, p_to) EQ FALSE)
+    if (setvar (&p_to, p_to) == FALSE)
       return (FALSE);
 
   return (TRUE);
@@ -2393,15 +2393,15 @@ cp_read ()
   redo = FALSE;
 
   if (getarg ())
-    if (setvar (&p_from, p_from) EQ FALSE)
+    if (setvar (&p_from, p_from) == FALSE)
       return (FALSE);
 
   if (getarg ())
-    if (setvar (&p_to, p_to) EQ FALSE)
+    if (setvar (&p_to, p_to) == FALSE)
       return (FALSE);
 
   if (getarg ())
-    if (setvar (&p_len, p_len) EQ FALSE)
+    if (setvar (&p_len, p_len) == FALSE)
       return (FALSE);
 
   if ((~0x7FFFL) & p_len)
@@ -2442,18 +2442,18 @@ cp_rset ()
   rc = 0;
   redo = FALSE;
 
-  if (0 EQ getarg ())
+  if (0 == getarg ())
     return (FALSE);
 
   str2lc (argstr);
 
-  if (0 EQ (rc = strlcmp (argstr, rlist)))
+  if (0 == (rc = strlcmp (argstr, rlist)))
     return (FALSE);
 
-  if (0 EQ getarg ())
+  if (0 == getarg ())
     return (FALSE);
 
-  if (FALSE EQ setvar (&p_value, 0L))
+  if (FALSE == setvar (&p_value, 0L))
     return (FALSE);
 
   rnum = rc;
@@ -2477,7 +2477,7 @@ cx_chek ()
   redo = FALSE;
   csum = 0L;
 
-  for (cp = p_from; cp LE p_to; cp++)
+  for (cp = p_from; cp <= p_to; cp++)
     csum += 0x000000FFL & *cp;
 
   printf ("Checksum = 0x%08lX\r\n", csum);
@@ -2519,7 +2519,7 @@ cx_rset ()
 /* 
 */
 
-  if (rnum EQ 17)
+  if (rnum == 17)
     {				/* sr -- status register */
 
       if ((~0xFFFFL) & p_value)
@@ -2529,7 +2529,7 @@ cx_rset ()
       return (TRUE);
     }
 
-  if (rnum EQ 18)
+  if (rnum == 18)
     {				/* pc -- program counter */
 
       if (1L & p_value)
@@ -2539,7 +2539,7 @@ cx_rset ()
       return (TRUE);
     }
 
-  if (rnum EQ 19)
+  if (rnum == 19)
     {				/* sp -- stack pointer */
 
       if (1L & p_value)
@@ -2569,18 +2569,18 @@ cp_vrst ()
   rc = 0;
   redo = FALSE;
 
-  if (0 EQ getarg ())
+  if (0 == getarg ())
     return (FALSE);
 
   str2lc (argstr);
 
-  if (0 EQ (rc = strlcmp (argstr, vrlist)))
+  if (0 == (rc = strlcmp (argstr, vrlist)))
     return (FALSE);
 
-  if (0 EQ getarg ())
+  if (0 == getarg ())
     return (FALSE);
 
-  if (FALSE EQ setvar (&p_value, 0L))
+  if (FALSE == setvar (&p_value, 0L))
     return (FALSE);
 
   if (vrnum < 17)
@@ -2714,7 +2714,7 @@ do_srec (line)
   register int c, csum, i, len;
   register unsigned val;
 
-  if ('S' NE (c = *line++))
+  if ('S' != (c = *line++))
     return (-1);		/* error 1 = missing initial S */
 
   switch (c = *line++)
@@ -2771,7 +2771,7 @@ do_srec (line)
 	  csum += (val & 0xFF);
 	  *ldadr = val & 0xFF;
 
-	  if ((*ldadr & 0xFF) NE (val & 0xFF))
+	  if ((*ldadr & 0xFF) != (val & 0xFF))
 	    return (-5);	/* error 5 = store failed */
 
 	  ldadr++;
@@ -2789,14 +2789,14 @@ do_srec (line)
       else
 	return (-6);
 
-      if (csum NE (val & 0xFF))
+      if (csum != (val & 0xFF))
 	return (-7);		/* error 7 = bad checksum */
 
       return (1);
 
     case '9':
 
-      if (memcmpu (line, SREC9, 10) EQ 0)
+      if (memcmpu (line, SREC9, 10) == 0)
 	return (0);
       else
 	return (-8);		/* error 8 = bad end record */
@@ -2835,7 +2835,7 @@ cx_load ()
 
 	  rc = do_srec (cmdline);
 
-	  if (rc LT 0)
+	  if (rc < 0)
 	    {
 
 	      rc = -rc;
@@ -2900,7 +2900,7 @@ cx_fill ()
 
       *cp = (char) (0xFFL & p_value);
 
-      if (*cp NE (char) (0xFFL & p_value))
+      if (*cp != (char) (0xFFL & p_value))
 	{
 
 	  writeln (cmdunit, "\r\n** FILL failed at ");
@@ -2955,7 +2955,7 @@ cx_copy ()
 
   redo = FALSE;
 
-  if (to GT from)
+  if (to > from)
     {
 
       from = from + count;
@@ -2968,7 +2968,7 @@ cx_copy ()
 	  --to;
 	  *to = *from;
 
-	  if (*from NE * to)
+	  if (*from != * to)
 	    {
 
 	      writeln (cmdunit, "\r\n** COPY failed from ");
@@ -2996,7 +2996,7 @@ cx_copy ()
 
 	  *to = *from;
 
-	  if (*from NE * to)
+	  if (*from != * to)
 	    {
 
 	      writeln (cmdunit, "\r\n** COPY failed from ");
@@ -3094,7 +3094,7 @@ wdump (loc, lastloc, nwide, unit)
       if (BIOS (B_RDAV, unit))
 	return (TRUE);
 
-      if (loc EQ lastloc)
+      if (loc == lastloc)
 	{
 
 	  dflag = TRUE;
@@ -3130,7 +3130,7 @@ ldump (loc, lastloc, nwide, unit)
       if (BIOS (B_RDAV, unit))
 	return (TRUE);
 
-      if (loc EQ lastloc)
+      if (loc == lastloc)
 	{
 
 	  dflag = TRUE;
@@ -3158,7 +3158,7 @@ cp_wdmp ()
   inext = ilast;
 
   if (getarg ())
-    if (setvar (&p_from, p_from) EQ FALSE)
+    if (setvar (&p_from, p_from) == FALSE)
       {
 
 	redo = FALSE;
@@ -3172,7 +3172,7 @@ cp_wdmp ()
       return (FALSE);
     }
 
-  if (argsep EQ A_CR OR argsep EQ '\0')
+  if (argsep == A_CR || argsep == '\0')
     {
 
       p_to = p_from;
@@ -3182,7 +3182,7 @@ cp_wdmp ()
     }
 
   if (getarg ())
-    if (setvar (&p_to, p_to) EQ FALSE)
+    if (setvar (&p_to, p_to) == FALSE)
       {
 
 	redo = FALSE;
@@ -3196,7 +3196,7 @@ cp_wdmp ()
       return (FALSE);
     }
 
-  if (argsep EQ A_CR OR argsep EQ '\0')
+  if (argsep == A_CR || argsep == '\0')
     {
 
       p_width = 8;
@@ -3205,7 +3205,7 @@ cp_wdmp ()
     }
 
   if (getarg ())
-    if (setvar (&p_width, p_width) EQ FALSE)
+    if (setvar (&p_width, p_width) == FALSE)
       {
 
 	redo = FALSE;
@@ -3231,7 +3231,7 @@ cp_ldmp ()
   inext = ilast;
 
   if (getarg ())
-    if (setvar (&p_from, p_from) EQ FALSE)
+    if (setvar (&p_from, p_from) == FALSE)
       {
 
 	redo = FALSE;
@@ -3245,7 +3245,7 @@ cp_ldmp ()
       return (FALSE);
     }
 
-  if (argsep EQ A_CR OR argsep EQ '\0')
+  if (argsep == A_CR || argsep == '\0')
     {
 
       p_to = p_from;
@@ -3255,7 +3255,7 @@ cp_ldmp ()
     }
 
   if (getarg ())
-    if (setvar (&p_to, p_to) EQ FALSE)
+    if (setvar (&p_to, p_to) == FALSE)
       {
 
 	redo = FALSE;
@@ -3269,7 +3269,7 @@ cp_ldmp ()
       return (FALSE);
     }
 
-  if (argsep EQ A_CR OR argsep EQ '\0')
+  if (argsep == A_CR || argsep == '\0')
     {
 
       p_width = 4;
@@ -3278,7 +3278,7 @@ cp_ldmp ()
     }
 
   if (getarg ())
-    if (setvar (&p_width, p_width) EQ FALSE)
+    if (setvar (&p_width, p_width) == FALSE)
       {
 
 	redo = FALSE;
@@ -3303,14 +3303,14 @@ cp_ilev ()
 {
   long iplevl;
 
-  if (argsep EQ A_CR OR argsep EQ '\0')
+  if (argsep == A_CR || argsep == '\0')
     return (TRUE);
 
   if (getarg ())
-    if (setvar (&iplevl, iplevl) EQ FALSE)
+    if (setvar (&iplevl, iplevl) == FALSE)
       return (FALSE);
 
-  if (iplevl GT 7)
+  if (iplevl > 7)
     return (FALSE);
 
   iplev = iplevl;
@@ -3327,7 +3327,7 @@ cp_ilev ()
 int
 cx_ilev ()
 {
-  if (-1 EQ setipl (iplev))
+  if (-1 == setipl (iplev))
     {
 
       printf ("ERROR -- Could not set IPL to %d\r\n", iplev);
@@ -3352,7 +3352,7 @@ int
 cp_monc ()
 {
   if (getarg ())
-    if (setvar (&monptr, monptr) EQ FALSE)
+    if (setvar (&monptr, monptr) == FALSE)
       return (FALSE);
 
   monsw = MON_C;
@@ -3370,7 +3370,7 @@ int
 cp_mons ()
 {
   if (getarg ())
-    if (setvar (&monptr, monptr) EQ FALSE)
+    if (setvar (&monptr, monptr) == FALSE)
       return (FALSE);
 
   monsw = MON_S;
@@ -3391,7 +3391,7 @@ int
 cp_monl ()
 {
   if (getarg ())
-    if (setvar (&monptr, monptr) EQ FALSE)
+    if (setvar (&monptr, monptr) == FALSE)
       return (FALSE);
 
   monsw = MON_L;
@@ -3429,7 +3429,7 @@ cx_mon ()
 
 	  vcc = *monptr & 0x0FF;
 
-	  if (vc NE vcc)
+	  if (vc != vcc)
 	    {
 
 	      vc = vcc;
@@ -3453,7 +3453,7 @@ cx_mon ()
 
 	  vss = *vsp;
 
-	  if (vs NE vss)
+	  if (vs != vss)
 	    {
 
 	      vs = vss;
@@ -3479,7 +3479,7 @@ cx_mon ()
 
 	  vll = *vlp;
 
-	  if (vl NE vll)
+	  if (vl != vll)
 	    {
 
 	      vl = vll;
@@ -3625,7 +3625,7 @@ do_cmd ()
 	  for (i = 0; i < NCMDS; i++)
 	    {
 
-	      if (0 EQ strcmp (argstr, cmtab[i].cname))
+	      if (0 == strcmp (argstr, cmtab[i].cname))
 		{
 
 		  ilast = i;
@@ -3633,7 +3633,7 @@ do_cmd ()
 		  if ((*cmtab[i].cp) ())
 		    {
 
-		      if (FALSE EQ (*cmtab[i].cx) ())
+		      if (FALSE == (*cmtab[i].cx) ())
 			writeln (cmdunit, EMSG1);
 
 		    }
@@ -3660,7 +3660,7 @@ do_cmd ()
 	  if (redo)
 	    {
 
-	      if (FALSE EQ (*cmtab[ilast].cx) ())
+	      if (FALSE == (*cmtab[ilast].cx) ())
 		writeln (cmdunit, EMSG1);
 
 	    }
@@ -4095,7 +4095,7 @@ int
 cx_crsh ()
 {
   if (!wzcrsh)
-    printf ("** Crash switch NOT set **\r\n");
+    printf ("** Crash switch ! set **\r\n");
 
   redo = FALSE;
   showcr ();
@@ -4118,10 +4118,10 @@ bphit ()
 
   rc = FALSE;
 
-  if ((char *) p_ba0 EQ regptr->reg_pc)
+  if ((char *) p_ba0 == regptr->reg_pc)
     {
 
-      if (*p_ba0 EQ BPINST)
+      if (*p_ba0 == BPINST)
 	{
 
 	  *p_ba0 = p_bv0;
@@ -4147,10 +4147,10 @@ bphit ()
 /* 
 */
 
-  if ((char *) p_ba1 EQ regptr->reg_pc)
+  if ((char *) p_ba1 == regptr->reg_pc)
     {
 
-      if (*p_ba1 EQ BPINST)
+      if (*p_ba1 == BPINST)
 	{
 
 	  *p_ba1 = p_bv1;
@@ -4177,7 +4177,7 @@ bphit ()
   if (p_ba0)
     {
 
-      if (*p_ba0 EQ BPINST)
+      if (*p_ba0 == BPINST)
 	{
 
 	  *p_ba0 = p_bv0;
@@ -4206,7 +4206,7 @@ bphit ()
   if (p_ba1)
     {
 
-      if (*p_ba1 EQ BPINST)
+      if (*p_ba1 == BPINST)
 	{
 
 	  *p_ba1 = p_bv1;
@@ -4272,7 +4272,7 @@ rompbp (d0, d1, d2, d3, d4, d5, d6, d7, a0, a1, a2, a3, a4, a5, a6, a7, sr0,
   regptr = (struct regs *) &d0;	/* make registers accessable */
   pc -= 2L;			/* adjust pc */
 
-  if (-1 EQ setipl (iplev))	/* enable interrupts */
+  if (-1 == setipl (iplev))	/* enable interrupts */
     writeln (cmdunit, "\r\n\n***** setipl() failed *****\r\n\n");
 
   if (first1)
@@ -4363,7 +4363,7 @@ pclr ()
       afi = XBIOS (X_ANALOG);	/* check panel inputs */
       asig = 0x007F & (afi >> 8);	/* signal number */
 
-      if (0 EQ asig)
+      if (0 == asig)
 	{
 
 	  /* all keys up */
@@ -4406,7 +4406,7 @@ pscan ()
 
   DB_ENTR ("pscan");
 
-  if (0 GE ledcntr--)
+  if (0 >= ledcntr--)
     {
 
       if ((baseled + 3) > 23)	/* turn on a LED */
@@ -4457,7 +4457,7 @@ pscan ()
   if (aflag)
     {				/* anything changed ? */
 
-      if (astat AND (asig EQ BOOTKEY))
+      if (astat && (asig == BOOTKEY))
 	{			/* BOOT key */
 
 	  DB_CMNT ("pscan - booting");
@@ -4485,7 +4485,7 @@ pscan ()
 
 	      DB_CMNT ("pscan - initializing MIDAS TCB");
 
-	      if ((struct _mt_def *) NIL EQ _MT_)
+	      if ((struct _mt_def *) NIL == _MT_)
 		_MT_ = (struct _mt_def *) XBIOS (X_MTDEFS);
 
 	      MTSetT (&ipltcb, MTID (), BOOT_PRI, 0x2200, -1L,
@@ -4501,7 +4501,7 @@ pscan ()
 	    }
 
 	}
-      else if (astat AND (asig EQ ROMPKEY))
+      else if (astat && (asig == ROMPKEY))
 	{			/* ROMP key */
 
 	  for (i = 0; i < 24; i++)	/* turn off LEDs */
@@ -4522,7 +4522,7 @@ pscan ()
 
       c = 0x007F & BIOS (B_GETC, CON_DEV);
 
-      if ((c EQ 'r') OR (c EQ 'R'))
+      if ((c == 'r') || (c == 'R'))
 	{
 
 	  for (i = 0; i < 24; i++)	/* turn off LEDs */
@@ -4731,7 +4731,7 @@ main ()
   XBIOS (X_CLRAFI);		/* clear the panel FIFO */
 
   DB_CMNT ("main - scanning panel");
-  while (FALSE EQ pscan ());	/* do the panel scan */
+  while (FALSE == pscan ());	/* do the panel scan */
 
 /* 
 */

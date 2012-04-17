@@ -98,7 +98,7 @@ ptsizer ()
     ++nb;			/* ... and one for the terminator */
 
 #if	DEBUGPW
-  if (debugsw AND debugpw)
+  if (debugsw && debugpw)
     printf ("ptsizer():  %ld bytes required\n", nb);
 #endif
 
@@ -122,7 +122,7 @@ ptwrite (fp)
   char cb, zero;
 
 #if	DEBUGPW
-  if (debugsw AND debugpw)
+  if (debugsw && debugpw)
     printf ("ptwrite($%08lX):  entered\n", fp);
 #endif
 
@@ -138,7 +138,7 @@ ptwrite (fp)
 	{
 
 #if	DEBUGWE
-	  if (debugsw AND debugwe)
+	  if (debugsw && debugwe)
 	    {
 
 	      printf
@@ -362,7 +362,7 @@ ptwrite (fp)
 	    }
 
 #if	DEBUGWE
-	  if (debugsw AND debugwe)
+	  if (debugsw && debugwe)
 	    printf ("\n\n");
 #endif
 
@@ -380,7 +380,7 @@ ptwrite (fp)
     }
 
 #if	DEBUGPW
-  if (debugsw AND debugpw)
+  if (debugsw && debugpw)
     printf ("ptwrite():  SUCCESS\n");
 #endif
 

@@ -17,7 +17,7 @@ atoi (cp)
 
   sign = 0;
 
-  if (*cp EQ '-')
+  if (*cp == '-')
     {
 
       ++cp;
@@ -27,7 +27,7 @@ atoi (cp)
   else
     {
 
-      if (*cp EQ '+')
+      if (*cp == '+')
 	++cp;
     }
 

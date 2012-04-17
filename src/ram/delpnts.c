@@ -66,7 +66,7 @@ delpnts ()
   pt1 = (0x00FF & fp->idfpt1) + subj;	/* first point to delete */
 
 #if	DEBUGIT
-  if (debugsw AND debugdf)
+  if (debugsw && debugdf)
     {
 
       printf ("delpnts():  curfunc = %d  curvce = %d\n", curfunc, curvce);
@@ -77,23 +77,23 @@ delpnts ()
     }
 #endif
 
-  if (np LE 0)			/* have to delete at least 1 point */
+  if (np <= 0)			/* have to delete at least 1 point */
     return (FAILURE);
 
-  if (subj GE pif)		/* make sure point number is valid */
+  if (subj >= pif)		/* make sure point number is valid */
     return (FAILURE);
 
   if ((pif - np) < 0)		/* make sure we have enough points */
     return (FAILURE);
 
-  if ((subj + np) GE (pif + 1))	/* check the span */
+  if ((subj + np) >= (pif + 1))	/* check the span */
     return (FAILURE);
 
   pt2 = pt1 + np;		/* move from point */
   nmv = NIPNTS - pt2;		/* move count */
 
 #if	DEBUGIT
-  if (debugsw AND debugdf)
+  if (debugsw && debugdf)
     {
 
       printf ("delpnts():  pt2=%d, nmv=%d\n", pt2, nmv);
@@ -103,7 +103,7 @@ delpnts ()
       for (cf = 0; cf < NFINST; cf++)
 	printf ("  %3d   %3d%s\n",
 		cf, vp->idhfnc[cf].idfpif,
-		(cf EQ curfunc) ? " <-- curfunc" : "");
+		(cf == curfunc) ? " <-- curfunc" : "");
 
       printf ("\n");
     }
@@ -212,7 +212,7 @@ delpnts ()
 /* 
 */
 #if	DEBUGIT
-  if (debugsw AND debugdf)
+  if (debugsw && debugdf)
     {
 
       printf ("delpnts():  plft = %3d  pif = %3d  subj = %3d\n",
@@ -223,7 +223,7 @@ delpnts ()
       for (cf = 0; cf < NFINST; cf++)
 	printf ("  %3d   %3d%s\n",
 		cf, vp->idhfnc[cf].idfpif,
-		(cf EQ curfunc) ? " <-- curfunc" : "");
+		(cf == curfunc) ? " <-- curfunc" : "");
 
       printf ("\n");
     }
@@ -255,10 +255,10 @@ inspnt (ip, fn, inpnt)
   register short i, j, k, l, npts;
   short topnt, frompt, oldi;
 
-  if (ip->idhplft EQ 0)		/* see if instrument has points left */
+  if (ip->idhplft == 0)		/* see if instrument has points left */
     return (FALSE);
 
-  if (ip->idhfnc[fn].idfpif EQ 99)	/* see if function is full */
+  if (ip->idhfnc[fn].idfpif == 99)	/* see if function is full */
     return (FALSE);
 
   topnt = NIPNTS - ip->idhplft;	/* calculate move parameters */

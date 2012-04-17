@@ -29,7 +29,7 @@ MTSetP (pri)
   register short oldipl;
   register unsigned oldpri;
 
-  if ((struct _mt_def *) NIL EQ _MT_)
+  if ((struct _mt_def *) NIL == _MT_)
     _MT_ = (struct _mt_def *) XBIOS (X_MTDEFS);
 
   oldipl = setipl (7);		/* DISABLE INTERRUPTS */

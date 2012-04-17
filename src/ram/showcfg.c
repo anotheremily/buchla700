@@ -366,7 +366,7 @@ putpat (pn, px, py, patc)
       pw = pat[pn - 1][pr];
       yp = py - 8 + pr + TopEdge;
 
-      if ((yp GE TopEdge) AND (yp LE BotEdge))
+      if ((yp >= TopEdge) && (yp <= BotEdge))
 	{
 
 	  for (pc = 0; pc < 16; pc++)
@@ -374,8 +374,8 @@ putpat (pn, px, py, patc)
 
 	      xp = px - 8 + pc + LftEdge;
 
-	      if ((xp GE LftEdge) AND
-		  (xp LE RgtEdge) AND (pw & (1 << (15 - pc))))
+	      if ((xp >= LftEdge) &&
+		  (xp <= RgtEdge) && (pw & (1 << (15 - pc))))
 		{
 
 		  vputp (idoct, xp, yp, patc);
@@ -465,7 +465,7 @@ dispws (ws)
   register short i, x, y;
   char buf[64];
 
-  if (ws GE NUMWAVS)		/* number must be valid */
+  if (ws >= NUMWAVS)		/* number must be valid */
     return;
 
   wsp = wslib[ws].final;	/* point at the data */
@@ -607,7 +607,7 @@ imfnbox (n)
   row = hitcy / 14;
   col = hitcx >> 3;
 
-  if (hitbox EQ 12)
+  if (hitbox == 12)
     {
 
       if (wcflag)
@@ -620,7 +620,7 @@ imfnbox (n)
 	      settc (17, wmcsel ? 61 : 57);
 
 	    }
-	  else if ((col GE 19) AND (col LE 22))
+	  else if ((col >= 19) && (col <= 22))
 	    {
 
 	      /* toggle waveshape display page */

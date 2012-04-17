@@ -94,7 +94,7 @@ scsize (sn)
 
   ep = scores[sn];		/* pointer to score begin */
 
-  if (E_NULL EQ ep)
+  if (E_NULL == ep)
     {				/* empty scores don't take any space */
 
 #if	DEBUGIT
@@ -222,7 +222,7 @@ scsizer ()
 
       nb += 4L;			/* overhead for number of longs or -1L marker */
 
-      if (scores[i] NE E_NULL)
+      if (scores[i] != E_NULL)
 	{
 
 	  /* add storage length of events + name + times */
@@ -272,7 +272,7 @@ scwrite (sn, fp)
     printf ("scwrite(%d, $%08lX):  ep = $%08lX\n", sn, fp, ep);
 #endif
 
-  if (E_NULL EQ ep)
+  if (E_NULL == ep)
     {				/* empty scores only get a flag */
 
       sprintf (scid, "score %d was empty", sn + 1);

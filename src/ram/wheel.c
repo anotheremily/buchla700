@@ -278,7 +278,7 @@ MouseRD (str, nc, nt)
       else
 	{
 
-	  if (tc-- LE 0)
+	  if (tc-- <= 0)
 	    return (FAILURE);
 	}
     }
@@ -333,7 +333,7 @@ MouseFL (tc)
       BIOS (B_GETC, PRT_DEV);	/* read a byte */
       ++flushed;		/* update flush count */
 
-      if (--tc LE 0)
+      if (--tc <= 0)
 	{			/* see if we've timed out */
 
 #if	DEBUGMS
@@ -453,7 +453,7 @@ MouseEX (str)
 
   M_error = M_NONE;		/* reset error code */
 
-  if ((str[0] & 0x0040) NE 0x0040)
+  if ((str[0] & 0x0040) != 0x0040)
     {
 
       if (MouseFL (M_FL_CT))
@@ -494,7 +494,7 @@ MouseEX (str)
 	}
     }
 
-  if ((ss_ptsw NE 0) OR (ss_sqsw NE 0))
+  if ((ss_ptsw != 0) || (ss_sqsw != 0))
     {
 
       cxrate = 0;
@@ -549,7 +549,7 @@ MouseEX (str)
 /* 
 */
 
-  if ((cxrate EQ 0) AND (cyrate EQ 0))	/* we're done if nothing changed */
+  if ((cxrate == 0) && (cyrate == 0))	/* we're done if nothing changed */
     return;
 
   msctrl = TRUE;		/* setup movement switches */
@@ -562,7 +562,7 @@ MouseEX (str)
   nchwait = 0;
   curhold = 0;
 
-  if (NOT msflag)		/* if mouse just started moving ... */
+  if (! msflag)		/* if mouse just started moving ... */
     (*xy_dn) ();		/* ... process key down */
 
   oldi = setipl (TIM_DI);	/* set the mouse movement timer */
@@ -591,12 +591,12 @@ MouseIN (c)
     printf ("IN %d %02.2X\n", M_state, c);
 #endif
 
-  if ((M_state GE 0) AND (M_state < 3))
+  if ((M_state >= 0) && (M_state < 3))
     {
 
       M_strng[M_state] = c;
 
-      if (M_state EQ 2)
+      if (M_state == 2)
 	{
 
 	  MouseEX (M_strng);
@@ -637,28 +637,28 @@ tfdump (msg, fifo, ndx, fin, cnt)
   do
     {
 
-      if (nol EQ 0)
+      if (nol == 0)
 	printf ("    ");
 
-      if (i EQ ndx)
+      if (i == ndx)
 	printf ("<%2d  ", fifo[i]);
-      else if (i EQ j)
+      else if (i == j)
 	printf (" %2d> ", fifo[i]);
       else
 	printf (" %2d  ", fifo[i]);
 
-      if (++nol GE 15)
+      if (++nol >= 15)
 	{
 
 	  printf ("\n");
 	  nol = 0;
 	}
 
-      if (++i GE NTKFIFO)
+      if (++i >= NTKFIFO)
 	i = 0;
 
     }
-  while (i NE fin);
+  while (i != fin);
 
   if (nol)
     printf ("\n");
@@ -683,7 +683,7 @@ wheel ()
   if (astat)
     {				/* if it's touched ... */
 
-      if (NOT swflag)
+      if (! swflag)
 	{
 
 	  /* GOING DOWN */
@@ -703,16 +703,16 @@ wheel ()
       else
 	{			/* finger moved */
 
-	  if (0 EQ swstop)
+	  if (0 == swstop)
 	    {
 
 	      swdelta = swlast - aval;
 
-	      if (swdelta GE swthr)
+	      if (swdelta >= swthr)
 		{
 
-		  if ((clkctl EQ CK_STEP) OR
-		      ((clkctl NE CK_STEP) AND (NOT clkrun)))
+		  if ((clkctl == CK_STEP) ||
+		      ((clkctl != CK_STEP) && (! clkrun)))
 		    {
 
 		      /* FINGER MOVED LEFT */
@@ -721,7 +721,7 @@ wheel ()
 		      oldi = setipl (TIM_DI);
 		      fc_val += swtemp;
 
-		      if (fc_val GE 0x00FFFFFFL)
+		      if (fc_val >= 0x00FFFFFFL)
 			fc_val = 0x00FFFFFFL;
 
 		      setipl (oldi);
@@ -729,11 +729,11 @@ wheel ()
 		    }
 
 		}
-	      else if ((swdelta = abs (swdelta)) GE swthr)
+	      else if ((swdelta = abs (swdelta)) >= swthr)
 		{
 
-		  if ((clkctl EQ CK_STEP) OR
-		      ((clkctl NE CK_STEP) AND (NOT clkrun)))
+		  if ((clkctl == CK_STEP) ||
+		      ((clkctl != CK_STEP) && (! clkrun)))
 		    {
 
 		      /* FINGER MOVED RIGHT */
@@ -742,7 +742,7 @@ wheel ()
 		      oldi = setipl (TIM_DI);
 		      fc_val -= swtemp;
 
-		      if (fc_val LT 0L)
+		      if (fc_val < 0L)
 			fc_val = 0L;
 
 		      setipl (oldi);
@@ -768,7 +768,7 @@ wheel ()
       swflag = FALSE;
       swctrl = FALSE;
 
-      if ((clkctl EQ CK_STEP) OR ((clkctl NE CK_STEP) AND (NOT clkrun)))
+      if ((clkctl == CK_STEP) || ((clkctl != CK_STEP) && (! clkrun)))
 	{
 
 	  swndx = swfiin - swback;
@@ -836,9 +836,9 @@ txyup ()
     tfdump ("X", txfifo, txndx, txfiin, txficnt);
 #endif
 
-  if (txrate GE tkrmin)
+  if (txrate >= tkrmin)
     cxrate = -cratex[txrate - tkrmin];	/* tracking left */
-  else if ((txrate = abs (txrate)) GE tkrmin)
+  else if ((txrate = abs (txrate)) >= tkrmin)
     cxrate = cratex[txrate - tkrmin];	/* tracking right */
   else
     cxrate = 0;			/* X inactive */
@@ -855,14 +855,14 @@ txyup ()
     tfdump ("Y", tyfifo, tyndx, tyfiin, tyficnt);
 #endif
 
-  if (tyrate GE tkrmin)
+  if (tyrate >= tkrmin)
     cyrate = cratey[tyrate - tkrmin];	/* tracking down */
-  else if ((tyrate = abs (tyrate)) GE tkrmin)
+  else if ((tyrate = abs (tyrate)) >= tkrmin)
     cyrate = -cratey[tyrate - tkrmin];	/* tracking up */
   else
     cyrate = 0;			/* Y inactive */
 
-  if ((cxrate EQ 0) AND (cyrate EQ 0))
+  if ((cxrate == 0) && (cyrate == 0))
     {
 
       tkctrl = FALSE;		/* STOP -- both rates are zero */
@@ -946,12 +946,12 @@ txstd ()
 
   /* get rate divisor */
 
-  txcdvr = (cmtype EQ CT_GRAF) ? tkthr : tkhdvr;
+  txcdvr = (cmtype == CT_GRAF) ? tkthr : tkhdvr;
 
   if (astat)
     {				/* is axis active ? */
 
-      if (NOT txflag)
+      if (! txflag)
 	{
 
 	  /* GOING ACTIVE */
@@ -960,7 +960,7 @@ txstd ()
 	  txstop = tkwait;
 	  txlast = aval;
 
-	  if (tyflag AND (NOT tkboth))
+	  if (tyflag && (! tkboth))
 	    txydn ();		/* both active now */
 
 /* 
@@ -969,13 +969,13 @@ txstd ()
       else
 	{			/* finger moved ? */
 
-	  if (txstop LE 0)
+	  if (txstop <= 0)
 	    {			/* debounced ? */
 
 	      txdelta = txlast - aval;
 	      oldcx = cxval;
 
-	      if (txdelta GE txcdvr)
+	      if (txdelta >= txcdvr)
 		{
 
 		  /* FINGER MOVED LEFT */
@@ -984,14 +984,14 @@ txstd ()
 
 		  (*cx_upd) ();	/* update cxval */
 
-		  if (oldcx NE cxval)	/* new cxval ? */
+		  if (oldcx != cxval)	/* new cxval ? */
 		    (*curmove) ();	/* move cursor */
 
 		  txlast = aval;
 		  cxrate = 0;
 
 		}
-	      else if ((txdelta = abs (txdelta)) GE txcdvr)
+	      else if ((txdelta = abs (txdelta)) >= txcdvr)
 		{
 
 		  /* FINGER MOVED RIGHT */
@@ -1000,7 +1000,7 @@ txstd ()
 
 		  (*cx_upd) ();	/* update cxval */
 
-		  if (oldcx NE cxval)	/* new cxval ? */
+		  if (oldcx != cxval)	/* new cxval ? */
 		    (*curmove) ();	/* move cursor */
 
 		  txlast = aval;
@@ -1024,7 +1024,7 @@ txstd ()
       txlast = aval;		/* get current value */
       txflag = FALSE;		/* X axis inactive */
 
-      if (NOT tyflag)		/* check other axis */
+      if (! tyflag)		/* check other axis */
 	txyup ();		/* both inactive now */
     }
 }
@@ -1050,12 +1050,12 @@ tystd ()
 
   /* get rate divisor */
 
-  tycdvr = (cmtype EQ CT_GRAF) ? tkthr : tkvdvr;
+  tycdvr = (cmtype == CT_GRAF) ? tkthr : tkvdvr;
 
   if (astat)
     {				/* if axis active ? */
 
-      if (NOT tyflag)
+      if (! tyflag)
 	{
 
 	  /* GOING ACTIVE */
@@ -1064,7 +1064,7 @@ tystd ()
 	  tystop = tkwait;
 	  tylast = aval;
 
-	  if (txflag AND (NOT tkboth))
+	  if (txflag && (! tkboth))
 	    txydn ();		/* both active now */
 /* 
 */
@@ -1072,13 +1072,13 @@ tystd ()
       else
 	{			/* finger moved ? */
 
-	  if (tystop LE 0)
+	  if (tystop <= 0)
 	    {			/* debounced ? */
 
 	      tydelta = tylast - aval;
 	      oldcy = cyval;
 
-	      if (tydelta GE tycdvr)
+	      if (tydelta >= tycdvr)
 		{
 
 		  /* FINGER MOVED DOWN */
@@ -1087,14 +1087,14 @@ tystd ()
 
 		  (*cy_upd) ();	/* update cyval */
 
-		  if (oldcy NE cyval)	/* new cyval ? */
+		  if (oldcy != cyval)	/* new cyval ? */
 		    (*curmove) ();	/* move cursor */
 
 		  tylast = aval;
 		  cyrate = 0;
 
 		}
-	      else if ((tydelta = abs (tydelta)) GE tycdvr)
+	      else if ((tydelta = abs (tydelta)) >= tycdvr)
 		{
 
 		  /* FINGER MOVED UP */
@@ -1103,7 +1103,7 @@ tystd ()
 
 		  (*cy_upd) ();	/* udpate cyval */
 
-		  if (oldcy NE cyval)	/* new cyval ? */
+		  if (oldcy != cyval)	/* new cyval ? */
 		    (*curmove) ();	/* move cursor */
 
 		  tylast = aval;
@@ -1127,7 +1127,7 @@ tystd ()
       tylast = aval;		/* get current value */
       tyflag = FALSE;		/* Y axis inactive */
 
-      if (NOT txflag)		/* check other axis */
+      if (! txflag)		/* check other axis */
 	txyup ();		/* both inactive now */
     }
 }
@@ -1155,7 +1155,7 @@ curproc ()
   if (trkball)
     {				/* are we tracking ? */
 
-      if (txflag AND (chwait LE 0))
+      if (txflag && (chwait <= 0))
 	{
 
 	  /* SAMPLE THE TRACKBALL X AXIS */
@@ -1166,11 +1166,11 @@ curproc ()
 	  ++txficnt;
 #endif
 
-	  if (++txfiin GE NTKFIFO)
+	  if (++txfiin >= NTKFIFO)
 	    txfiin = 0;
 	}
 
-      if (tyflag AND (cvwait LE 0))
+      if (tyflag && (cvwait <= 0))
 	{
 
 	  /* SAMPLE THE TRACKBALL Y AXIS */
@@ -1181,7 +1181,7 @@ curproc ()
 	  ++tyficnt;
 #endif
 
-	  if (++tyfiin GE NTKFIFO)
+	  if (++tyfiin >= NTKFIFO)
 	    tyfiin = 0;
 	}
     }
@@ -1199,7 +1199,7 @@ curproc ()
 
   /* PROCESS THE CURSORS */
 
-  if (cvwait LE 0)
+  if (cvwait <= 0)
     {				/* has the vertical timer run out ? */
 
       if (ss_ptsw)		/* see if the patches need scrolled */
@@ -1209,11 +1209,11 @@ curproc ()
 	sqy_up (ss_sqsw);	/* scroll the sequence display */
     }
 
-  if (msctrl OR			/* is the mouse moving ? */
-      (cvwait LE 0) OR (chwait LE 0))
+  if (msctrl ||			/* is the mouse moving ? */
+      (cvwait <= 0) || (chwait <= 0))
     {				/* has X or Y timer runout ? */
 
-      if (msctrl OR tkctrl OR (xkstat AND ykstat))
+      if (msctrl || tkctrl || (xkstat && ykstat))
 	{			/* cursor moving ? */
 
 	  oldcx = cxrate;	/* save old cxrate, cyrate */
@@ -1223,15 +1223,15 @@ curproc ()
 	  vtprow = vtcrow;	/* save old vtrow, vtcol */
 	  vtpcol = vtccol;
 
-	  if (NOT msctrl)	/* if it's not the mouse ... */
+	  if (! msctrl)	/* if it's not the mouse ... */
 	    cmfix ();		/* ... adjust the rates */
 
 /* 
 */
-	  if ((cxrate NE 0) AND (msctrl OR (chwait LE 0)))	/* UPDATE X VALUES */
+	  if ((cxrate != 0) && (msctrl || (chwait <= 0)))	/* UPDATE X VALUES */
 	    (*cx_upd) ();
 
-	  if ((cyrate NE 0) AND (msctrl OR (cvwait LE 0)))	/* UPDATE Y VALUES */
+	  if ((cyrate != 0) && (msctrl || (cvwait <= 0)))	/* UPDATE Y VALUES */
 	    (*cy_upd) ();
 
 	  cxrate = oldcx;
@@ -1239,8 +1239,8 @@ curproc ()
 
 	  /* see if cursor should be moved */
 
-	  if ((cxprev NE cxval) OR (cyprev NE cyval) OR
-	      (vtprow NE vtcrow) OR (vtpcol NE vtccol))
+	  if ((cxprev != cxval) || (cyprev != cyval) ||
+	      (vtprow != vtcrow) || (vtpcol != vtccol))
 	    {
 
 	      (*curmove) ();	/* MOVE CURSOR */
@@ -1248,13 +1248,13 @@ curproc ()
 	      if (ebflag)
 		{		/* FIXUP EDIT BUFFER */
 
-		  if ((struct fet *) NULL NE curfet)
+		  if ((struct fet *) NULL != curfet)
 		    {
 
 		      if (infield (stcrow, stccol, curfet))
 			{
 
-			  if ((cfetp NE NULL) AND (cfetp NE infetp))
+			  if ((cfetp != NULL) && (cfetp != infetp))
 			    {
 
 			      (*cfetp->redisp) (cfetp->ftags);
@@ -1265,7 +1265,7 @@ curproc ()
 		      else
 			{	/* isn't in a field */
 
-			  if (cfetp NE NULL)
+			  if (cfetp != NULL)
 			    (*cfetp->redisp) (cfetp->ftags);
 
 			  ebflag = FALSE;
@@ -1285,7 +1285,7 @@ curproc ()
 */
   /* CHECK THE MOUSE MOTION TIMER */
 
-  if (msflag AND (0 EQ timers[MSTIMER]))
+  if (msflag && (0 == timers[MSTIMER]))
     {
 
       (*xy_up) ();		/* indicate key up */
@@ -1298,7 +1298,7 @@ curproc ()
 
   /* CHECK THE MOUSE ACTIVITY TIMER */
 
-  if (0 EQ timers[MUTIMER])
+  if (0 == timers[MUTIMER])
     {
 
       if (M_state)
@@ -1318,7 +1318,7 @@ curproc ()
 */
   /* UPDATE THE CURSOR TIMERS */
 
-  if (cvwait LE 0)
+  if (cvwait <= 0)
     {				/* reset vertical timer */
 
       cvwait = ncvwait;
@@ -1330,7 +1330,7 @@ curproc ()
     }
 
 
-  if (chwait LE 0)
+  if (chwait <= 0)
     {				/* reset horizontal timer */
 
       chwait = nchwait;
@@ -1344,7 +1344,7 @@ curproc ()
 */
   /* PROCESS THE SCROLL WHEEL */
 
-  if (0 EQ timers[SWTIMER])
+  if (0 == timers[SWTIMER])
     {				/* is it time ? */
 
       if (swflag)
@@ -1352,7 +1352,7 @@ curproc ()
 
 	  swfifo[swfiin] = sigtab[59][0];
 
-	  if (++swfiin GE NSWFIFO)
+	  if (++swfiin >= NSWFIFO)
 	    swfiin = 0;
 	}
 
@@ -1363,13 +1363,13 @@ curproc ()
 	  swcount = swtemp & 0x0000FFFFL;
 	  swtemp >>= 16;
 
-	  if (swdir EQ D_FWD)
+	  if (swdir == D_FWD)
 	    {			/* ... FORWARD */
 
 	      oldi = setipl (TIM_DI);
 	      fc_val += swtemp;
 
-	      if (fc_val GE 0x00FFFFFFL)
+	      if (fc_val >= 0x00FFFFFFL)
 		{
 
 		  swctrl = FALSE;
@@ -1397,7 +1397,7 @@ curproc ()
 	}
 /* 
 */
-      if (swflag OR swctrl)
+      if (swflag || swctrl)
 	{			/* RESET THE SCROLL TIMER */
 
 	  oldi = setipl (TIM_DI);

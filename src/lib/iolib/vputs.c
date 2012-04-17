@@ -37,12 +37,12 @@ vputs (sbase, row, col, str, attrib)
 
       vputc (sbase, row, col, c, attrib);
 
-      if (++col GE 64)
+      if (++col >= 64)
 	{
 
 	  col = 0;
 
-	  if (++row GE 25)
+	  if (++row >= 25)
 	    row = 0;
 	}
     }
@@ -70,12 +70,12 @@ vputsa (sbase, row, col, str, attrib)
 
       vputc (sbase, row, col, c, *attrib++);
 
-      if (++col GE 64)
+      if (++col >= 64)
 	{
 
 	  col = 0;
 
-	  if (++row GE 25)
+	  if (++row >= 25)
 	    row = 0;
 	}
     }

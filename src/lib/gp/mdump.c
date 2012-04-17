@@ -49,7 +49,7 @@ prifp (chars, length)
 
       c = 0x00FF & *chars++;
 
-      if (isascii (c) AND (isprint (c)))
+      if (isascii (c) && (isprint (c)))
 	printf ("%c", c);
       else
 	printf (".");
@@ -80,12 +80,12 @@ mdump (begin, end, start)
   ii = start;
   j = 0;
 
-  while (begin LE end)
+  while (begin <= end)
     {
 
       c = *begin++;
 
-      if (NOT (i % PERLINE))
+      if (! (i % PERLINE))
 	{
 
 	  if (i)

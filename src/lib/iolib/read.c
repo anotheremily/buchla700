@@ -77,7 +77,7 @@ read (fd, buff, len)
 {
   register struct channel *chp;
 
-  if (fd < 0 OR fd > MAXCHAN)
+  if (fd < 0 || fd > MAXCHAN)
     {				/* check fd range */
 
       errno = EBADF;		/* bad fd */
@@ -104,12 +104,12 @@ _getsec (fp, buf, len)
      char *buf;
      unsigned len;
 {
-  if ((errno = ReadRN (fp, Wrkbuf)) NE 0)	/* get current sector */
+  if ((errno = ReadRN (fp, Wrkbuf)) != 0)	/* get current sector */
     return (FAILURE);
 
   memcpy (buf, Wrkbuf + fp->offset, len);	/* move what we need */
 
-  if ((fp->offset = (fp->offset + len) & (BPSEC - 1)) EQ 0)
+  if ((fp->offset = (fp->offset + len) & (BPSEC - 1)) == 0)
     {
 
       ++fp->curlsn;		/* advance the sector number */
@@ -151,7 +151,7 @@ _filerd (fp, buffer, len)
 	    len, curpos, newpos, fp->curlen);
 #endif
 
-  if (newpos GT fp->curlen)
+  if (newpos > fp->curlen)
     {
 
       len = fp->curlen - curpos;
@@ -173,7 +173,7 @@ _filerd (fp, buffer, len)
     }
 
   if (k = (len - l) / BPSEC)	/* see what we still need */
-    if ((j = blkrd (fp, buffer + l, k)) NE 0)
+    if ((j = blkrd (fp, buffer + l, k)) != 0)
       return ((k - j) * BPSEC + l);	/* return bytes read */
 
   l += k * BPSEC;		/* adjust l by what we just read */

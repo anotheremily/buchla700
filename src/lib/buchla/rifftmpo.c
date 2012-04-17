@@ -43,7 +43,7 @@ main ()
 
   FILE *fp;
 
-  if ((FILE *) NULL EQ (fp = fopen (RTFILE, "w")))
+  if ((FILE *) NULL == (fp = fopen (RTFILE, "w")))
     {
 
       printf ("ERROR:  Unable to open \"%s\" for output\n", RTFILE);

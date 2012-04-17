@@ -48,7 +48,7 @@ et_whrv (n)
   register short harv;
   register char hvsgn;
 
-  if (curwhrv LT 0)
+  if (curwhrv < 0)
     {
 
       hvsgn = '-';
@@ -92,10 +92,10 @@ ef_whrv (n)
   for (i = 1; i < 4; i++)	/* convert from ASCII to binary */
     tmpval = (tmpval * 10) + (ebuf[i] - '0');
 
-  if (tmpval GT 100)
+  if (tmpval > 100)
     return (FAILURE);
 
-  if (ebuf[0] EQ '-')
+  if (ebuf[0] == '-')
     curwhrv = -tmpval;
   else
     curwhrv = tmpval;
@@ -131,7 +131,7 @@ rd_whrv (nn)
 
   n = nn & 0x00FF;
 
-  if (curwhrv LT 0)
+  if (curwhrv < 0)
     {
 
       hvsgn = '-';
@@ -173,17 +173,17 @@ nd_whrv (nn, k)
   n = nn & 0x00FF;
   ec = stccol - cfetp->flcol;	/* setup edit buffer column */
 
-  if (ec EQ 0)
+  if (ec == 0)
     {
 
-      if (k EQ 8)
+      if (k == 8)
 	{
 
 	  ebuf[0] = dspbuf[0] = '-';
 	  ebuf[4] = dspbuf[1] = '\0';
 
 	}
-      else if (k EQ 9)
+      else if (k == 9)
 	{
 
 	  ebuf[0] = dspbuf[0] = '+';

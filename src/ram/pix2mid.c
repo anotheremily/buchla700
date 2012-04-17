@@ -127,7 +127,7 @@ pix2mid ()
   cnote = -1;
   ctime = -1L;
   cflag = -1;
-  mpc = ac_code EQ N_SHARP ? 2 : 3;
+  mpc = ac_code == N_SHARP ? 2 : 3;
 
   ct = t_cur + ((long) cxval - (long) PCENTER);
 
@@ -140,7 +140,7 @@ pix2mid ()
   for (i = 0; i < 52; i++)
     {
 
-      if ((cy GE mpixtab[i][0]) AND (cy LE mpixtab[i][0] + 2))
+      if ((cy >= mpixtab[i][0]) && (cy <= mpixtab[i][0] + 2))
 	{
 
 	  cnote = mpixtab[i][1];
@@ -149,5 +149,5 @@ pix2mid ()
 	}
     }
 
-  return ((cnote EQ - 1L) ? FAILURE : SUCCESS);
+  return ((cnote == - 1L) ? FAILURE : SUCCESS);
 }

@@ -38,12 +38,12 @@ vputsv (sbase, row, col, str, attrib, len)
 
       vputcv (sbase, row, col, c, attrib, len);
 
-      if (++col GE 64)
+      if (++col >= 64)
 	{
 
 	  col = 0;
 
-	  if (++row GE 25)
+	  if (++row >= 25)
 	    row = 0;
 	}
     }
@@ -73,12 +73,12 @@ vputsav (sbase, row, col, str, attrib, len)
 
       vputcv (sbase, row, col, c, *attrib++, len);
 
-      if (++col GE 64)
+      if (++col >= 64)
 	{
 
 	  col = 0;
 
-	  if (++row GE 25)
+	  if (++row >= 25)
 	    row = 0;
 	}
     }

@@ -47,7 +47,7 @@ et_woff (n)
 
   lstwoff = curwoff;
 
-  if (curwoff LT 0)
+  if (curwoff < 0)
     {
 
       hosgn = '-';
@@ -91,15 +91,15 @@ ef_woff (n)
   for (i = 1; i < 5; i++)	/* convert from ASCII to binary */
     tmpval = (tmpval * 10) + (ebuf[i] - '0');
 
-  if (tmpval GT 1023)
+  if (tmpval > 1023)
     return (FAILURE);
 
-  if (ebuf[0] EQ '-')
+  if (ebuf[0] == '-')
     curwoff = -tmpval;
   else
     curwoff = tmpval;
 
-  if (curwdth EQ NUMWIDS)
+  if (curwdth == NUMWIDS)
     wdintp ();
   else
     pntsup ();
@@ -129,7 +129,7 @@ rd_woff (nn)
   n = nn & 0xFF;
   lstwoff = curwoff;
 
-  if (curwoff LT 0)
+  if (curwoff < 0)
     {
 
       hosgn = '-';
@@ -175,10 +175,10 @@ nd_woff (nn, k)
   n = nn & 0xFF;
   ec = stccol - cfetp->flcol;	/* setup edit buffer column */
 
-  if (ec EQ 0)
+  if (ec == 0)
     {
 
-      if (k EQ 8)
+      if (k == 8)
 	{
 
 	  ebuf[0] = '-';
@@ -188,7 +188,7 @@ nd_woff (nn, k)
 	  dspbuf[1] = '\0';
 
 	}
-      else if (k EQ 9)
+      else if (k == 9)
 	{
 
 	  ebuf[0] = '+';

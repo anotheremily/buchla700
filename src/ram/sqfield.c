@@ -108,10 +108,10 @@ sqmkey ()
   if (astat)
     {
 
-      if (stccol EQ 48)
+      if (stccol == 48)
 	{
 
-	  if (ss_ptsw EQ 0)
+	  if (ss_ptsw == 0)
 	    {
 
 	      (*xy_dn) ();	/* handle KEY_DOWN functions */
@@ -136,7 +136,7 @@ sqmkey ()
   else
     {
 
-      if (stccol EQ 48)
+      if (stccol == 48)
 	{
 
 	  ss_sqsw = 0;
@@ -144,7 +144,7 @@ sqmkey ()
 	  ncvwait = cvtime;
 	  cmfirst = TRUE;
 
-	  if (ss_ptsw EQ 0)
+	  if (ss_ptsw == 0)
 	    (*xy_up) ();
 
 	  (*pstmove) ();	/* handle POST-MOVE functions */
@@ -171,10 +171,10 @@ sqekey ()
   if (astat)
     {
 
-      if (stccol EQ 48)
+      if (stccol == 48)
 	{
 
-	  if (ss_ptsw EQ 0)
+	  if (ss_ptsw == 0)
 	    {
 
 	      (*xy_dn) ();	/* handle KEY_DOWN functions */
@@ -199,7 +199,7 @@ sqekey ()
   else
     {
 
-      if (stccol EQ 48)
+      if (stccol == 48)
 	{
 
 	  ss_sqsw = 0;
@@ -207,7 +207,7 @@ sqekey ()
 	  ncvwait = cvtime;
 	  cmfirst = TRUE;
 
-	  if (ss_ptsw EQ 0)
+	  if (ss_ptsw == 0)
 	    (*xy_up) ();
 
 	  (*pstmove) ();	/* handle POST-MOVE functions */
@@ -229,7 +229,7 @@ sqekey ()
 
 sqxkey ()
 {
-  if (NOT astat)
+  if (! astat)
     return;
 
   if (inrange (stccol, 2, 4))
@@ -289,14 +289,14 @@ sqfield ()
 {
 
 #if	DEBUGIT
-  if (debugsw AND debugqf)
+  if (debugsw && debugqf)
     printf ("sqfield(): ENTRY\n");
 #endif
 
   curset (&sq_flds);
 
 #if	DEBUGIT
-  if (debugsw AND debugqf)
+  if (debugsw && debugqf)
     printf ("sqfield(): EXIT\n");
 #endif
 

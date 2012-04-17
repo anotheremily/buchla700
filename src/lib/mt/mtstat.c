@@ -39,7 +39,7 @@ MTStat (tid)
 
 /* 
 */
-  if ((struct _mt_def *) NIL EQ _MT_)
+  if ((struct _mt_def *) NIL == _MT_)
     _MT_ = (struct _nt_def *) XBIOS (X_MTDEFS);
 
   tcp = _MT_->mtp->TCBs;	/* point at start of  TCB list */
@@ -53,7 +53,7 @@ MTStat (tid)
       if (tcp->flags & MTF_OCC)
 	{			/* occupied ? */
 
-	  if (tcp->tid NE tid)	/* continue if not tid */
+	  if (tcp->tid != tid)	/* continue if not tid */
 	    goto nexttcb;
 
 	  if (tcp->flags & MTF_RUN)

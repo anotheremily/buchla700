@@ -67,7 +67,7 @@ dofmt_ (putsub, format, args)
   for (;;)
     {
 
-      for (bp = format; (fcode = *format) NE '\0' AND fcode NE '%'; format++)
+      for (bp = format; (fcode = *format) != '\0' && fcode != '%'; format++)
 	;
 
       if (n = (long) format - (long) bp)
@@ -79,7 +79,7 @@ dofmt_ (putsub, format, args)
 	    (*putsub) (*bp++);
 	}
 
-      if (fcode EQ '\0')
+      if (fcode == '\0')
 	return (count);
 
       fplus = fminus = fblank = fsharp = flzero = 0;
@@ -113,7 +113,7 @@ dofmt_ (putsub, format, args)
 /* 
 */
 
-      if (fcode EQ '*')
+      if (fcode == '*')
 	{
 
 	  width = va_arg (args, int);
@@ -131,16 +131,16 @@ dofmt_ (putsub, format, args)
       else
 	{
 
-	  if (fcode EQ '0')
+	  if (fcode == '0')
 	    flzero++;
 
 	  for (width = 0; isdigit (fcode = *format); format++)
 	    width = width * 10 + tonum (fcode);
 	}
 
-      if (*format NE '.')
+      if (*format != '.')
 	prec = -1;
-      else if (*++format EQ '*')
+      else if (*++format == '*')
 	{
 
 	  prec = va_arg (args, int);
@@ -152,7 +152,7 @@ dofmt_ (putsub, format, args)
 
       length = 0;
 
-      if (*format EQ 'l')
+      if (*format == 'l')
 	{
 
 	  length++;
@@ -183,19 +183,19 @@ dofmt_ (putsub, format, args)
 	fixed:
 
 	  if (prec < 0)
-	    if (flzero AND width > 0)
+	    if (flzero && width > 0)
 	      prec = width;
 	    else
 	      prec = 1;
 
 	  if (length)
 	    val = va_arg (args, long);
-	  else if (fcode EQ 'd')
+	  else if (fcode == 'd')
 	    val = va_arg (args, int);
 	  else
 	    val = va_arg (args, unsigned);
 
-	  if (fcode EQ 'd')
+	  if (fcode == 'd')
 	    {
 
 	      if (val < 0)
@@ -203,7 +203,7 @@ dofmt_ (putsub, format, args)
 
 		  prefix = "-";
 
-		  if (val NE HIBITL)
+		  if (val != HIBITL)
 		    val = -val;
 
 		}
@@ -213,7 +213,7 @@ dofmt_ (putsub, format, args)
 		prefix = " ";
 	    }
 
-	  tab = (fcode EQ 'X') ? "0123456789ABCDEF" : "0123456789abcdef";
+	  tab = (fcode == 'X') ? "0123456789ABCDEF" : "0123456789abcdef";
 
 	  p = bp = buf + MAXDIGS;
 
@@ -224,7 +224,7 @@ dofmt_ (putsub, format, args)
 
 	    case 4:
 
-	      while (val NE 0)
+	      while (val != 0)
 		{
 
 		  *--bp = tab[val & 0x07L];
@@ -235,7 +235,7 @@ dofmt_ (putsub, format, args)
 
 	    case 5:
 
-	      while (val NE 0)
+	      while (val != 0)
 		{
 
 #if	CRUFTY
@@ -258,7 +258,7 @@ dofmt_ (putsub, format, args)
 
 	    case 8:
 
-	      while (val NE 0)
+	      while (val != 0)
 		{
 
 		  *--bp = tab[val & 0x0FL];
@@ -268,7 +268,7 @@ dofmt_ (putsub, format, args)
 
 	  lzero = (long) bp - (long) p + (long) prec;
 
-	  if (fsharp AND bp NE p)
+	  if (fsharp && bp != p)
 	    switch (fcode)
 	      {
 
@@ -306,7 +306,7 @@ dofmt_ (putsub, format, args)
 	    p += strlen (bp);
 	  else
 	    {
-	      while (*p++ NE '\0' AND-- prec GE 0)
+	      while (*p++ != '\0' AND-- prec >= 0)
 		;
 	      --p;
 	    }
@@ -324,27 +324,27 @@ dofmt_ (putsub, format, args)
 	lzero = 0;
 
       k = (n = (long) p - (long) bp) + (long) (lzero +
-					       (prefix[0] EQ '\0' ? 0
-						: (prefix[1] EQ '\0' ? 1 :
+					       (prefix[0] == '\0' ? 0
+						: (prefix[1] == '\0' ? 1 :
 						   2)));
 
       count += (width > k) ? width : k;
 
       if (!fminus)
-	while (--width GE k)
+	while (--width >= k)
 	  (*putsub) (' ');
 
-      while (*prefix NE '\0')
+      while (*prefix != '\0')
 	(*putsub) (*prefix++);
 
-      while (--lzero GE 0)
+      while (--lzero >= 0)
 	(*putsub) ('0');
 
       if (n > 0)
 	while (n--)
 	  (*putsub) (*bp++);
 
-      while (--width GE k)
+      while (--width >= k)
 	(*putsub) (' ');
     }
 }

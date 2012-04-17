@@ -66,23 +66,23 @@ ef_inst (n)
   ival = ((ebuf[0] - '0') * 10) + (ebuf[1] - '0');
   ebflag = FALSE;
 
-  if (ival GE NINST)
+  if (ival >= NINST)
     return (FAILURE);
 
   ins2grp[n] = ival | (ins2grp[n] & 0xFF00);
   setv2gi (n);
   setinst ();
 
-  if (recsw AND grpstat[n] AND (2 EQ grpmode[n]))
+  if (recsw && grpstat[n] && (2 == grpmode[n]))
     {
 
-      if (E_NULL NE (ep = findev (p_cur, t_cur, EV_INST, n, -1)))
+      if (E_NULL != (ep = findev (p_cur, t_cur, EV_INST, n, -1)))
 	{
 
 	  ep->e_data2 = ival;
 
 	}
-      else if (E_NULL NE (ep = e_alc (E_SIZE2)))
+      else if (E_NULL != (ep = e_alc (E_SIZE2)))
 	{
 
 	  ep->e_type = EV_INST;

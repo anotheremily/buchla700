@@ -99,7 +99,7 @@ endatyp ()
   adnamsw = FALSE;
   submenu = FALSE;
 
-  if (admctl EQ - 1)
+  if (admctl == - 1)
     adswin (7);			/* refresh key map window */
   else
     admenu (admctl);		/* refresh menu window */
@@ -139,7 +139,7 @@ admenu (n)
 {
   register short i;
 
-  if (n GE 0)
+  if (n >= 0)
     {				/* put up a submenu */
 
       itxput = admtxt;		/* setup output function */
@@ -218,13 +218,13 @@ adfnbox (n)
 
     case 0:			/* asignment number or name */
 
-      if ((NOT adnamsw) AND (row EQ 0))
+      if ((! adnamsw) && (row == 0))
 	{			/* menu or table */
 
-	  if ((col GE 1) AND (col LE 7))
+	  if ((col >= 1) && (col <= 7))
 	    {			/* menu */
 
-	      if (admctl NE 1)
+	      if (admctl != 1)
 		{
 
 		  lastam = 0;
@@ -234,7 +234,7 @@ adfnbox (n)
 	      else
 		{
 
-		  if (lastam EQ 0)
+		  if (lastam == 0)
 		    {		/* show page 2 */
 
 		      lastam = 60;
@@ -265,7 +265,7 @@ adfnbox (n)
 	  if (vtyper ())
 	    {
 
-	      if (NOT asgmod)
+	      if (! asgmod)
 		{
 
 		  asgmod = TRUE;
@@ -320,10 +320,10 @@ adfnbox (n)
 */
     case 1:
 
-      if ((col GE 1) AND (col LE 4))
+      if ((col >= 1) && (col <= 4))
 	{			/* store */
 
-	  if (curasg EQ 0)
+	  if (curasg == 0)
 	    return (FAILURE);
 
 	  putasg (curasg);
@@ -331,7 +331,7 @@ adfnbox (n)
 	  return (SUCCESS);
 
 	}
-      else if ((col GE 6) AND (col LE 10))
+      else if ((col >= 6) && (col <= 10))
 	{			/* retrieve */
 
 	  getasg (curasg);
@@ -341,10 +341,10 @@ adfnbox (n)
 
     case 5:			/* toggle controller omni mode */
 
-      if (col EQ 25)
+      if (col == 25)
 	{
 
-	  if ((row LT 5) OR (row GT 8))
+	  if ((row < 5) || (row > 8))
 	    return (FAILURE);
 
 	  mctlnum[row - 5] ^= GTAG1;
@@ -371,13 +371,13 @@ adfnbox (n)
 */
     case 6:			/* instruments, groups, ports, channels */
 
-      if (((col EQ 41) OR (col EQ 42) OR
-	   (col EQ 54) OR (col EQ 55)) AND (row EQ 3))
+      if (((col == 41) || (col == 42) ||
+	   (col == 54) || (col == 55)) && (row == 3))
 	{
 
 	  /* instrument menu */
 
-	  if (admctl NE 0)
+	  if (admctl != 0)
 	    admenu (0);		/* put up menu */
 	  else
 	    admenu (-1);	/* take down menu */
@@ -385,10 +385,10 @@ adfnbox (n)
 	  return (SUCCESS);
 
 	}
-      else if (col EQ 39)
+      else if (col == 39)
 	{			/* groups 1..6 */
 
-	  if ((row LT 4) OR (row GT 9))
+	  if ((row < 4) || (row > 9))
 	    return (FAILURE);
 
 	  /* toggle "legato" mode */
@@ -411,10 +411,10 @@ adfnbox (n)
 /* 
 */
 	}
-      else if (col EQ 52)
+      else if (col == 52)
 	{			/* groups 7..12 */
 
-	  if ((row LT 4) OR (row GT 9))
+	  if ((row < 4) || (row > 9))
 	    return (FAILURE);
 
 	  /* toggle "legato" mode */
@@ -445,13 +445,13 @@ adfnbox (n)
 */
     case 7:			/* assignment map */
 
-      if (admctl NE - 1)
+      if (admctl != - 1)
 	return (FAILURE);
 
       if (asghit)
 	{
 
-	  if (asghit EQ (hitcy / 14))
+	  if (asghit == (hitcy / 14))
 	    {			/* previous hit ? */
 
 	      /* toggle selected key status */
@@ -461,14 +461,14 @@ adfnbox (n)
 	      key = 0;
 
 	      for (i = 0; i < 88; i++)
-		if ((hitcx GE (asgkble[i] + 24)) AND
-		    (hitcx LE (asgkble[i] + (i EQ 87 ? 31 : 28))))
+		if ((hitcx >= (asgkble[i] + 24)) &&
+		    (hitcx <= (asgkble[i] + (i == 87 ? 31 : 28))))
 		  key = i + 1;
 
-	      if (key-- EQ 0)
+	      if (key-- == 0)
 		return (FAILURE);
 
-	      if (key LT asgfks)
+	      if (key < asgfks)
 		{
 
 		  i = asgfks;
@@ -476,13 +476,13 @@ adfnbox (n)
 		  key = i;
 		}
 
-	      for (i = asgfks; i LE key; i++)
+	      for (i = asgfks; i <= key; i++)
 		key2grp[i] ^= (0x0001 << grp);
 
 	      drawk2g (grp);
 	      asghit = 0;
 
-	      if (NOT asgmod)
+	      if (! asgmod)
 		{
 
 		  asgmod = TRUE;
@@ -509,7 +509,7 @@ adfnbox (n)
 	  asghit = hitcy / 14;
 	  grp = asghit - 11;
 
-	  if (grp2prt[grp][0] NE 1)
+	  if (grp2prt[grp][0] != 1)
 	    {
 
 	      asghit = 0;
@@ -520,11 +520,11 @@ adfnbox (n)
 	  key = 0;
 
 	  for (i = 0; i < 88; i++)
-	    if ((hitcx GE (asgkble[i] + 24)) AND
-		(hitcx LE (asgkble[i] + (i EQ 87 ? 31 : 28))))
+	    if ((hitcx >= (asgkble[i] + 24)) &&
+		(hitcx <= (asgkble[i] + (i == 87 ? 31 : 28))))
 	      key = i + 1;
 
-	  if (key-- EQ 0)
+	  if (key-- == 0)
 	    {
 
 	      asghit = 0;
@@ -534,7 +534,7 @@ adfnbox (n)
 	  asgfks = key;
 
 	  vbfill4 (asgob, 128, asgkble[key] + 24, line,
-		   asgkble[key] + (key EQ 87 ? 31 : 28),
+		   asgkble[key] + (key == 87 ? 31 : 28),
 		   line + 3, exp_c (AK_SELC2));
 
 	}
@@ -543,16 +543,16 @@ adfnbox (n)
 
     case 8:			/* aux ctl */
 
-      setaux (NOT auxctl);
+      setaux (! auxctl);
       adswin (8);
       return (SUCCESS);
 
     case 9:			/* tuning menu */
 
-      if ((col GE 6) AND (col LE 8))
+      if ((col >= 6) && (col <= 8))
 	{
 
-	  if (admctl NE 2)
+	  if (admctl != 2)
 	    admenu (2);		/* put up menu */
 	  else
 	    admenu (-1);	/* take down menu */

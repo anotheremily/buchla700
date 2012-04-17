@@ -201,7 +201,7 @@ uslice (slice, mask1, mask2, gdstb)
   ncptr = gtctab;		/* group to color table */
   wrote = 0;			/* reset count of active groups */
 
-  lintab = (ac_code EQ N_SHARP) ? lintab1 : lintab2;	/* line table */
+  lintab = (ac_code == N_SHARP) ? lintab1 : lintab2;	/* line table */
 
   if (gdstb[NGDSEL - 1])
     {				/* check for a bar marker */
@@ -248,7 +248,7 @@ uslice (slice, mask1, mask2, gdstb)
 
 	      /* update and check update note status code */
 
-	      if (0 EQ (gdsep->code = nctabp[gdsep->code]))
+	      if (0 == (gdsep->code = nctabp[gdsep->code]))
 		{
 
 		  /* if it's zero, delete the element */
@@ -422,7 +422,7 @@ rslice (gdstb)
 
 	      /* update and check update note status code */
 
-	      if (0 EQ (gdsep->code = nctabp[nc = gdsep->code]))
+	      if (0 == (gdsep->code = nctabp[nc = gdsep->code]))
 		{
 
 #if DEBUGIT
@@ -536,7 +536,7 @@ cslice (slice, mask1, mask2, gdstb)
   ncptr = gtctab;		/* group to color table */
   wrote = 0;			/* reset count of active groups */
 
-  lintab = (ac_code EQ N_SHARP) ? lintab1 : lintab2;	/* line table */
+  lintab = (ac_code == N_SHARP) ? lintab1 : lintab2;	/* line table */
 
   if (gdstb[NGDSEL - 1])
     {				/* check for a bar marker */

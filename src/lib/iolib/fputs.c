@@ -13,7 +13,7 @@ puts (str)
      register char *str;
 {
   while (*str)
-    if (putchar (*str++) EQ EOF)
+    if (putchar (*str++) == EOF)
       return (EOF);
 
   return (putchar ('\n'));
@@ -26,8 +26,8 @@ aputc (c, ptr)
 {
   c &= 127;
 
-  if (c EQ '\n')
-    if (putc ('\r', ptr) EQ EOF)
+  if (c == '\n')
+    if (putc ('\r', ptr) == EOF)
       return (EOF);
 
   return (putc (c, ptr));
@@ -39,7 +39,7 @@ fputs (s, fp)
      FILE *fp;
 {
   while (*s)
-    if (aputc (*s++, fp) EQ EOF)
+    if (aputc (*s++, fp) == EOF)
       return (EOF);
   return (0);
 }

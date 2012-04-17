@@ -70,7 +70,7 @@ main (argc, argv)
 
   FILE *stdprn;
 
-  if ((FILE *) NULL EQ (stdprn = fopenb ("LST:", "w")))
+  if ((FILE *) NULL == (stdprn = fopenb ("LST:", "w")))
     {
 
       fprintf (MSGFILE, "ERROR:  Unable to open PRN:\n");
@@ -223,7 +223,7 @@ main (argc, argv)
 	}
     }
 
-  if (NOT optused)
+  if (! optused)
     Usage ();
   else
     exit (0);

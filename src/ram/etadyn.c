@@ -96,7 +96,7 @@ setdyn (grp, dyn)
 /* 
 */
   for (i = 0; i < 12; i++)
-    if (g EQ vce2grp[i])
+    if (g == vce2grp[i])
       {
 
 	fp = &vbufs[i].idhfnc[8];

@@ -78,17 +78,17 @@ _secrd (buf, rec)
   register short track, side, sector;
   long brc;
 
-  if (_thebpb->dspt NE 9)	/* make sure we can do this */
+  if (_thebpb->dspt != 9)	/* make sure we can do this */
     return (ERR07);
 
-  if (_thebpb->recsiz NE 512)
+  if (_thebpb->recsiz != 512)
     return (ERR07);
 
   track = rec / _thebpb->dspc;	/* desired track */
   _b_tsec = track * _thebpb->dspc;	/* base sector of track */
   sector = rec - _b_tsec;	/* logical sector in cylinder */
 
-  if (sector GE _thebpb->dspt)
+  if (sector >= _thebpb->dspt)
     {				/* adjust sector and side */
 
       sector -= _thebpb->dspt;	/* sector now in track */
@@ -109,7 +109,7 @@ _secrd (buf, rec)
        buf, rec, track, side, sector, _b_tsec);
 #endif
 
-  if ((track NE _b_trak) OR (side NE _b_side))
+  if ((track != _b_trak) || (side != _b_side))
     {				/* track in buffer ? */
 
       if (brc = BIOS (B_RDWR, 0, &_b_tbuf, _thebpb->dspt, _b_tsec, 0))
@@ -178,7 +178,7 @@ blkrd (fcp, buf, ns)
       if (rb = _nsic (fcp, _thebpb, _thefat))
 	{			/* find next sector */
 
-	  if (rb EQ - 1)	/* see if we had an error */
+	  if (rb == - 1)	/* see if we had an error */
 	    errno = EIO;	/* set error number */
 
 	  return (ns);		/* return unread sector count */

@@ -192,7 +192,7 @@ ftkind (ns)
   register short i;
 
   for (i = 0; i < NFTYPES; i++)
-    if (0 EQ memcmpu (filecat[ns].fcextn, ftypes[i][0], 3))
+    if (0 == memcmpu (filecat[ns].fcextn, ftypes[i][0], 3))
       return (++i);
 
   return (-1);
@@ -215,7 +215,7 @@ fctstr (ns, just)
   register short i;
 
   for (i = 0; i < NFTYPES; i++)
-    if (0 EQ memcmpu (filecat[ns].fcextn, ftypes[i][0], 3))
+    if (0 == memcmpu (filecat[ns].fcextn, ftypes[i][0], 3))
       return (ftypes[i][just ? 2 : 1]);
 
   sprintf (fcbad, "?? %3.3s  ??", filecat[ns].fcextn);
@@ -236,7 +236,7 @@ ocslot (slot)
      short slot;
 {
   if (memcmp (filecat[slot].fcsize, "000", 3)
-      AND (0 NE filecat[slot].fcsize[0]))
+      && (0 != filecat[slot].fcsize[0]))
     return (TRUE);
   else
     return (FALSE);
@@ -282,7 +282,7 @@ lin2slt (line)
 
   for (slot = 0; slot < FCMAX; slot++)
     if (ocslot (slot))
-      if (++row EQ line)
+      if (++row == line)
 	return (slot);
 
   return (-1);
@@ -322,7 +322,7 @@ ldwmsg (line1, line2, line3, fgcolor, bgcolor)
   lmwtype = 2;			/* message type */
   submenu = FALSE;
 
-  if (ndisp NE 0)
+  if (ndisp != 0)
     return;
 
   bgcolor = exp_c (bgcolor);	/* expand background color */
@@ -336,14 +336,14 @@ ldwmsg (line1, line2, line3, fgcolor, bgcolor)
   vbfill4 (librob, 128, ldbox[10][0], ldbox[10][1],
 	   ldbox[10][2], ldbox[10][3], bgcolor);
 
-  if ((char *) NULL NE line1)
+  if ((char *) NULL != line1)
     tsplot4 (librob, 64, fgcolor, ldbox[10][6], ldbox[10][7], line1, 14);
 
-  if ((char *) NULL NE line2)
+  if ((char *) NULL != line2)
     tsplot4 (librob, 64, fgcolor, (ldbox[10][6] + 1), ldbox[10][7],
 	     line2, 14);
 
-  if ((char *) NULL NE line3)
+  if ((char *) NULL != line3)
     tsplot4 (librob, 64, fgcolor, (ldbox[10][6] + 2), ldbox[10][7],
 	     line3, 14);
 }
@@ -401,7 +401,7 @@ makelh (kind)
 ldbusy (msg)
      char *msg;
 {
-  if (ndisp NE 0)
+  if (ndisp != 0)
     return;
 
   ldwmsg ((char *) NULL, "    Busy - Please stand by", msg,
@@ -445,7 +445,7 @@ wr_ec (fp, from, len)
       errno = 0;
       c = *from++;
 
-      if (EOF EQ putc (c, fp))
+      if (EOF == putc (c, fp))
 	{
 
 	  sprintf (errbuf, "errno = %d", errno);
@@ -459,7 +459,7 @@ wr_ec (fp, from, len)
 	}
 
 #if	DEBUGWE
-      if (debugsw AND debugwe)
+      if (debugsw && debugwe)
 	printf (" %02.2X", 0x00FF & c);
 #endif
     }
@@ -490,7 +490,7 @@ rd_ec (fp, to, len)
 
       errno = 0;
 
-      if (EOF EQ (c = getc (fp)))
+      if (EOF == (c = getc (fp)))
 	{
 
 	  sprintf (errbuf, "errno = %d", errno);
@@ -508,7 +508,7 @@ rd_ec (fp, to, len)
 	  *to++ = c;
 
 #if	DEBUGRE
-	  if (debugsw AND debugre)
+	  if (debugsw && debugre)
 	    printf (" %02.2X", 0x00FF & c);
 #endif
 	}
@@ -538,8 +538,8 @@ srchcat (extn)
     {
 
       if (ocslot (fcslot))
-	if (0 EQ (memcmp (filecat[fcslot].fcname, ldfile, 8))
-	    AND (0 EQ memcmpu (filecat[fcslot].fcextn, extn, 3)))
+	if (0 == (memcmp (filecat[fcslot].fcname, ldfile, 8))
+	    && (0 == memcmpu (filecat[fcslot].fcextn, extn, 3)))
 	  return (fcslot);
     }
 
@@ -714,39 +714,39 @@ short
 ckdups ()
 {
   if (lasgsw)
-    if (-1 NE srchcat ("asg"))
+    if (-1 != srchcat ("asg"))
       return (FT_ASG);
 
   if (lorchsw)
-    if (-1 NE srchcat ("orh"))
+    if (-1 != srchcat ("orh"))
       return (FT_ORH);
 
   if (lorclsw)
-    if (-1 NE srchcat ("orl"))
+    if (-1 != srchcat ("orl"))
       return (FT_ORL);
 
-  if (lorchsw OR lorclsw)
-    if (-1 NE srchcat ("orc"))
+  if (lorchsw || lorclsw)
+    if (-1 != srchcat ("orc"))
       return (FT_ORC);
 
   if (lpatsw)
-    if (-1 NE srchcat ("pat"))
+    if (-1 != srchcat ("pat"))
       return (FT_PAT);
 
   if (lscrsw)
-    if (-1 NE srchcat ("scr"))
+    if (-1 != srchcat ("scr"))
       return (FT_SCR);
 
   if (lseqsw)
-    if (-1 NE srchcat ("seq"))
+    if (-1 != srchcat ("seq"))
       return (FT_SEQ);
 
   if (ltunsw)
-    if (-1 NE srchcat ("tun"))
+    if (-1 != srchcat ("tun"))
       return (FT_TUN);
 
   if (lwavsw)
-    if (-1 NE srchcat ("wav"))
+    if (-1 != srchcat ("wav"))
       return (FT_WAV);
   return (0);
 }
@@ -770,7 +770,7 @@ showsiz ()
 
   dcap = dspace (0);
 
-  if (dcap EQ - 1)
+  if (dcap == - 1)
     {
 
       ldermsg ("Disk not ready ?",
@@ -813,7 +813,7 @@ getcat (msgsw)
   preio ();			/* kill LCD backlight */
   fp = fopenb (CATNAME, "r");	/* open the catalog file */
 
-  if (NULL EQ fp)
+  if (NULL == fp)
     {
 
       clrcat ();
@@ -837,7 +837,7 @@ getcat (msgsw)
   errno = 0;
   rc = fread (filecat, fesize, FCMAX, fp);
 
-  if (rc NE FCMAX)
+  if (rc != FCMAX)
     {
 
       if (rc)
@@ -899,7 +899,7 @@ putcat ()
   preio ();			/* kill LCD backlight */
   fp = fopenb (CATNAME, "w");	/* open the catalog file */
 
-  if (NULL EQ fp)
+  if (NULL == fp)
     {
 
       sprintf (ldmsg2, "  errno = %d", errno);
@@ -917,7 +917,7 @@ putcat ()
   errno = 0;
   rc = fwrite (filecat, fesize, FCMAX, fp);
 
-  if (rc NE FCMAX)
+  if (rc != FCMAX)
     {
 
       if (rc)
@@ -966,7 +966,7 @@ dslslot (slot, fg, row)
   short c;
   char buf[40];
 
-  if (ndisp NE 0)
+  if (ndisp != 0)
     return;
 
   color = exp_c (fg);		/* foreground color */
@@ -1019,7 +1019,7 @@ showcat ()
   register short i, fcslot, fcrow, fcount;
   register unsigned color;
 
-  if (ndisp NE 0)
+  if (ndisp != 0)
     return;
 
   ldswin (0);			/* fix up the title */
@@ -1064,18 +1064,18 @@ showcat ()
 short
 fcindex ()
 {
-  if (NOT lderrsw)
+  if (! lderrsw)
     ldbusy ("       Reading catalog");
 
   if (getcat (1))		/* get catalog, possibly display size */
     return (FAILURE);
 
-  if (NOT lderrsw)
+  if (! lderrsw)
     showcat ();			/* display the catalog */
 
   /* show size if getcat() didn't */
 
-  if ((NOT ldidsiz) AND (NOT lderrsw))
+  if ((! ldidsiz) && (! lderrsw))
     showsiz ();
 
   return (SUCCESS);
@@ -1136,7 +1136,7 @@ getslot ()
   register short i;
 
   for (i = 0; i < FCMAX; i++)
-    if (NOT ocslot (i))
+    if (! ocslot (i))
       return (i);
 
   return (-1);
@@ -1177,7 +1177,7 @@ wrtfile (kind)
 
   slot = getslot ();
 
-  if (-1 EQ slot)
+  if (-1 == slot)
     {
 
       noslot (kind);
@@ -1264,7 +1264,7 @@ wrtfile (kind)
 
   /* update the file catalog */
 
-  if ((kind EQ FT_ORL) OR (kind EQ FT_ORH))
+  if ((kind == FT_ORL) || (kind == FT_ORH))
     tkind = FT_ORC;
   else
     tkind = kind;
@@ -1350,7 +1350,7 @@ storit ()
 
   /* make sure the file is named */
 
-  if (0 EQ memcmp (ldfile, "        ", 8))
+  if (0 == memcmp (ldfile, "        ", 8))
     {
 
       ldermsg ("File must be named", ld_em1, ld_em2, LD_EMCF, LD_EMCB);
@@ -1370,7 +1370,7 @@ storit ()
       return (FAILURE);
     }
 
-  if (NOT lderrsw)
+  if (! lderrsw)
     ldbusy ("       Storing files");
 
   if (getcat (0))
@@ -1460,7 +1460,7 @@ storit ()
   slothv = 0;
 
   for (i = 0; i < FCMAX; i++)
-    if (NOT ocslot (i))
+    if (! ocslot (i))
       ++slothv;
 
   if (slothv < slotnd)
@@ -1490,7 +1490,7 @@ storit ()
 
   rc = writem ();
 
-  if (NOT rc)
+  if (! rc)
     ldbusy ("       Writing catalog");
 
   if (putcat ())
@@ -1533,7 +1533,7 @@ advlcur ()
 
   newcol = stccol + 1;
 
-  if (newcol LE cfetp->frcol)
+  if (newcol <= cfetp->frcol)
     itcpos (stcrow, newcol);
 
   cxval = stccol * 8;
@@ -1557,7 +1557,7 @@ bsplcur ()
 
   newcol = stccol - 1;
 
-  if (newcol GE cfetp->flcol)
+  if (newcol >= cfetp->flcol)
     itcpos (stcrow, newcol);
 
   cxval = stccol * 8;
@@ -1578,10 +1578,10 @@ ldswin (n)
 {
   register short cx, cy;
 
-  if (ndisp NE 0)
+  if (ndisp != 0)
     return;
 
-  if ((n EQ 10) AND (lmwtype EQ 1))
+  if ((n == 10) && (lmwtype == 1))
     cx = exp_c (TTBACK);	/* use black for the typewriter */
   else
     cx = exp_c (ldbox[n][5]);	/* expand the background color */
@@ -1650,7 +1650,7 @@ ldswin (n)
 
 	  ldkind = ftkind (ldslot);
 
-	  if ((ldkind EQ FT_ORC) OR (ldkind EQ FT_ORL) OR (ldkind EQ FT_ORH))
+	  if ((ldkind == FT_ORC) || (ldkind == FT_ORL) || (ldkind == FT_ORH))
 	    cy = exp_c (LD_SELC);
 	  else
 	    cy = ldbox[n][4];

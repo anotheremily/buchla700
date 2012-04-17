@@ -168,7 +168,7 @@ timeto (fn, pj)
   pm = pn + pj;
   tf = 0;
 
-  while (pn LE pm)
+  while (pn <= pm)
     {
 
       tf += fromfpu (pt->iptim);
@@ -199,7 +199,7 @@ pntsel ()
 
   npts = fp->idfpif;
 
-  if (npts EQ 1)
+  if (npts == 1)
     {				/* detemine editing case */
 
       pecase = 0;		/* single point */
@@ -207,7 +207,7 @@ pntsel ()
       temax = 32767;
 
     }
-  else if (subj EQ (npts - 1))
+  else if (subj == (npts - 1))
     {
 
       pecase = 1;		/* last point */
@@ -246,7 +246,7 @@ vtoy (val, window)
 {
   register short yval;
 
-  if (val GT 1000)
+  if (val > 1000)
     val = 1000;
 
   yval = 56 + (((1000 - val) * 14) / 100);
@@ -333,16 +333,16 @@ selpnt ()
 
       xv = ttox (timeto (curfunc, i), 12);
 
-      if (xv LE cxval)		/* largest x LE cxval */
-	if (xv GE lo_x)
+      if (xv <= cxval)		/* largest x <= cxval */
+	if (xv >= lo_x)
 	  {
 
 	    lo_x = xv;
 	    lo_x_pt = i;
 	  }
 
-      if (xv GE cxval)		/* smallest x GE cxval */
-	if (xv LT hi_x)
+      if (xv >= cxval)		/* smallest x >= cxval */
+	if (xv < hi_x)
 	  {
 
 	    hi_x = xv;
@@ -350,10 +350,10 @@ selpnt ()
 	  }
     }
 
-  if (lo_x EQ hi_x)
+  if (lo_x == hi_x)
     return (lo_x_pt);
 
-  if ((cxval - lo_x) LT (hi_x - cxval))
+  if ((cxval - lo_x) < (hi_x - cxval))
     return (lo_x_pt);
   else
     return (hi_x_pt);
@@ -474,14 +474,14 @@ modinst ()
 {
   short f, i, grp, oldi;
 
-  if (NOT instmod[curvce])
+  if (! instmod[curvce])
     {
 
       instmod[curvce] = TRUE;
       dswin (19);
     }
 
-  if (NOT editsw)
+  if (! editsw)
     {
 
       if ((grp = vce2grp[curvce]) > 0)
@@ -492,7 +492,7 @@ modinst ()
 	  for (i = 0; i < 12; i++)
 	    {
 
-	      if (vce2grp[i] EQ grp)
+	      if (vce2grp[i] == grp)
 		{
 
 		  memcpyw (&vbufs[i], &vbufs[curvce],
@@ -545,7 +545,7 @@ initi (ip)
 
       /* initialize the function header */
 
-      rb = ((i < 4) AND (i NE 0)) ? 0 : I_NRATIO;
+      rb = ((i < 4) && (i != 0)) ? 0 : I_NRATIO;
       ip->idhfnc[i].idfpif = 1;
       ip->idhfnc[i].idfpt1 = i;
       ip->idhfnc[i].idftmd = (I_TM_KEY | 0x0010) | rb;

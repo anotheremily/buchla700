@@ -75,7 +75,7 @@ SetMBuf ()
   oldbhi = m_buff->ibufhi;
   oldblo = m_buff->ibuflo;
 
-  if ((char *) NULL EQ (newbuf = (char *) malloc (size)))
+  if ((char *) NULL == (newbuf = (char *) malloc (size)))
     {
 
       printf ("ERROR -- unable to allocate MIDI buffer.\n");
@@ -170,10 +170,10 @@ main (argc, argv)
 
   cleanbf ();			/* clear out MIDI buffer */
 
-  if (argc EQ 2)
+  if (argc == 2)
     {
 
-      if ((FILE *) NULL EQ (ofp = fopen (argv[1], "w")))
+      if ((FILE *) NULL == (ofp = fopen (argv[1], "w")))
 	{
 
 	  printf ("ERROR -- Unable to open \"%s\" for output.\n", argv[1]);
@@ -191,7 +191,7 @@ main (argc, argv)
   else
     {
 
-      if ((FILE *) NULL EQ (ofp = fopen (DFLTFILE, "w")))
+      if ((FILE *) NULL == (ofp = fopen (DFLTFILE, "w")))
 	{
 
 	  printf ("ERROR -- Unable to open \"%s\" for output.\n", DFLTFILE);

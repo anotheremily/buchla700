@@ -39,7 +39,7 @@ main (argc, argv)
   printf ("Initializing queue:  size = %u, lo water = %u, hi water = %u\n",
 	  QSIZE, QLO, QHI);
 
-  if (QSIZE NE (qsiz = setcq (qp, chars, QSIZE, QHI, QLO)))
+  if (QSIZE != (qsiz = setcq (qp, chars, QSIZE, QHI, QLO)))
     {
 
       printf ("ERROR -- setcq() returned %u\n", qsiz);
@@ -66,7 +66,7 @@ main (argc, argv)
       if (rc = getcq (qp, &rs))
 	printf ("getcq() returned %d on entry %u\n", rc, i);
 
-      if ((rs NE i) AND (i < QSIZE))
+      if ((rs != i) && (i < QSIZE))
 	printf ("ERROR -- value %u should have been %u\n", rs, i);
     }
 

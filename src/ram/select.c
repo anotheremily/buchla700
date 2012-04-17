@@ -43,12 +43,12 @@ whatbox ()
   hitbox = -1;
 
 #if	DEBUGIT
-  if (debugsw AND debugsf)
+  if (debugsw && debugsf)
     printf ("whatbox():  ENTRY  cxval=%d  cyval=%d  cursbox=%d  csbp=$%lX\n",
 	    cxval, cyval, cursbox, csbp);
 #endif
 
-  if (0L EQ sb)
+  if (0L == sb)
     return (FALSE);
 
   while (sb->boxhit)
@@ -56,9 +56,9 @@ whatbox ()
 
       hitbox++;
 
-      if ((cxval GE sb->sbxmin) AND
-	  (cxval LE sb->sbxmax) AND
-	  (cyval GE sb->sbymin) AND (cyval LE sb->sbymax))
+      if ((cxval >= sb->sbxmin) &&
+	  (cxval <= sb->sbxmax) &&
+	  (cyval >= sb->sbymin) && (cyval <= sb->sbymax))
 	{
 
 	  hitcx = cxval;
@@ -66,7 +66,7 @@ whatbox ()
 	  curboxp = sb;
 
 #if	DEBUGIT
-	  if (debugsw AND debugsf)
+	  if (debugsw && debugsf)
 	    printf
 	      ("whatbox():  HIT  hitbox=%d, curboxp=$%lX, sbarg=$%04.4X\n",
 	       hitbox, curboxp, sb->sbarg);
@@ -79,7 +79,7 @@ whatbox ()
     }
 
 #if	DEBUGIT
-  if (debugsw AND debugsf)
+  if (debugsw && debugsf)
     printf ("whatbox():  FAILED\n");
 #endif
 
@@ -102,7 +102,7 @@ select ()
     {				/* only when the E key goes down */
 
 #if	DEBUGIT
-      if (debugsw AND debugsf)
+      if (debugsw && debugsf)
 	printf ("select():  ENTRY\n");
 #endif
 
@@ -110,7 +110,7 @@ select ()
 	{			/* see if we're in a box */
 
 #if	DEBUGIT
-	  if (debugsw AND debugsf)
+	  if (debugsw && debugsf)
 	    printf ("select():  HIT  hitbox = %d  curboxp $%lX\n",
 		    hitbox, curboxp);
 #endif
@@ -123,7 +123,7 @@ select ()
 	{
 
 #if	DEBUGIT
-	  if (debugsw AND debugsf)
+	  if (debugsw && debugsf)
 	    printf ("select():  FAILED\n");
 #endif
 

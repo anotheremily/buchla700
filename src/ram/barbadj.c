@@ -67,7 +67,7 @@ BarBadj (bar, val)
   curbar = BarBcur[bar];	/* get the current bar position */
   bardif = newbar - curbar;	/* calculate how far to move the bar */
 
-  if (0 EQ bardif)		/* done if bar doesn't need to be moved */
+  if (0 == bardif)		/* done if bar doesn't need to be moved */
     return;
 
   GLCcurs (G_ON);		/* turn on GLC cursor to enable writing */
@@ -176,7 +176,7 @@ BarBset (bar, val)
 
       LCD_WC = G_MWRITE;	/* setup to write */
 
-      while (barpos++ LE newbar)	/* write new dots */
+      while (barpos++ <= newbar)	/* write new dots */
 	LCD_WD = bardot;
 
       while (barpos++ < BTop)	/* erase old dots */
@@ -209,7 +209,7 @@ BarCadj (bar, val)
   curbar = BarCcur[bar];	/* get the current bar position */
   bardif = newbar - curbar;	/* calculate how far to move the bar */
 
-  if (0 EQ bardif)		/* done if bar doesn't need to be moved */
+  if (0 == bardif)		/* done if bar doesn't need to be moved */
     return;
 
   GLCcurs (G_ON);		/* turn on GLC cursor to enable writing */
@@ -239,7 +239,7 @@ BarCadj (bar, val)
 
 	  LCD_WC = G_MWRITE;	/* setup to write */
 
-	  while (barpos NE newbar)	/* write bar on LCD */
+	  while (barpos != newbar)	/* write bar on LCD */
 	    if (barpos++ < BCenter)
 	      LCD_WD = 0x00;	/* dots off */
 	    else
@@ -267,7 +267,7 @@ BarCadj (bar, val)
 
 	  LCD_WC = G_MWRITE;	/* setup to write */
 
-	  while (barpos NE newbar)	/* write bar to LCD */
+	  while (barpos != newbar)	/* write bar to LCD */
 	    if (barpos-- > BCenter)
 	      LCD_WD = 0x00;	/* dots off */
 	    else
@@ -345,14 +345,14 @@ BarCset (bar, val)
 	  barpos++;
 	}
 
-      while (barpos LE barloc2)
+      while (barpos <= barloc2)
 	{			/* write "on" dots */
 
 	  LCD_WD = bardot;
 	  barpos++;
 	}
 
-      while (barpos LE BTop)
+      while (barpos <= BTop)
 	{			/* write "off" dots */
 
 	  LCD_WD = 0x00;

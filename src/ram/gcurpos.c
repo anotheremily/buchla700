@@ -251,12 +251,12 @@ gcurpos (xloc, yloc)
   register int ab, xo, yo;
   register struct octent *op;
 
-  if (xloc LT XCTR)
+  if (xloc < XCTR)
     {
 
       xo = 0;			/* arrow points left */
 
-      if (yloc LT YCTR)
+      if (yloc < YCTR)
 	{
 	  ab = 0;
 	  yo = 0;
@@ -273,7 +273,7 @@ gcurpos (xloc, yloc)
 
       xo = -XOFF;		/* arrow points right */
 
-      if (yloc LT YCTR)
+      if (yloc < YCTR)
 	{
 	  ab = 2;
 	  yo = 0;
@@ -336,7 +336,7 @@ arcurs (icolor)
 
   color = exp_c (icolor);
 
-  if ((v_regs[5] & 0x0180) NE 0x0100)
+  if ((v_regs[5] & 0x0180) != 0x0100)
     vbank (1);
 
   andcopy (v_curs0, ar_ule, color, 64);	/* setup arrow cursor */

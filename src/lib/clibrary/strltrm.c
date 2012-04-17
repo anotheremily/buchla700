@@ -16,13 +16,13 @@ strltrm (s)
   register char c;
   register char *lp, *rp;
 
-  if (*s NE ' ')
+  if (*s != ' ')
     return (s);
 
   lp = s;
   rp = s;
 
-  while (*rp EQ ' ')
+  while (*rp == ' ')
     ++rp;
 
   while (c = *rp++)

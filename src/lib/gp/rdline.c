@@ -40,13 +40,13 @@ rdline (fp, buf, maxc)
   for (i = 0; i < maxc; i++)
     {
 
-      if (EOF EQ (c = fgetc (fp)))
+      if (EOF == (c = fgetc (fp)))
 	return (i ? 1 : -1);
 
       *buf++ = c;
       *buf = '\0';
 
-      if (c EQ '\n')
+      if (c == '\n')
 	return (0);
     }
 

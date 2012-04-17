@@ -51,7 +51,7 @@ main ()
 
   /* first, read the version message object file */
 
-  if ((FILE *) NULL EQ (fp = fopenb (VERFILE, "r")))
+  if ((FILE *) NULL == (fp = fopenb (VERFILE, "r")))
     {
 
       printf ("ERROR -- Unable to open \"%s\" for reading  (errno = %d)\n",
@@ -62,7 +62,7 @@ main ()
 
   rewind (fp);
 
-  if (1 NE (rc = fread (&verbuf, len, 1, fp)))
+  if (1 != (rc = fread (&verbuf, len, 1, fp)))
     {
 
       printf ("ERROR -- Unable to read \"%s\"  (rc = %d, errno = %d)\n",

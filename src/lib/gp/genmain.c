@@ -56,8 +56,8 @@ int nfdone = 0;			/* number of file arguments processed */
 int exitarg = 0;		/* exit() argument */
 int nerrors = 0;		/* number of errors encountered */
 
-#define	L_PLURAL(N)	((N) ? ((N) GT 1 ? "s" : "") : "")
-#define	U_PLURAL(N)	((N) ? ((N) GT 1 ? "S" : "") : "")
+#define	L_PLURAL(N)	((N) ? ((N) > 1 ? "s" : "") : "")
+#define	U_PLURAL(N)	((N) ? ((N) > 1 ? "S" : "") : "")
 
 #define	EN_MSGL(X)	((X) ? "enabled" : "disabled")
 #define	EN_MSGM(X)	((X) ? "Enabled" : "Disabled")
@@ -106,9 +106,9 @@ Die (s)
 
 	If n is:
 
-	 	LE 0	"No errors were"
-		EQ 1	"One error was"
-		GT 1	"n errors were"		(n is the number of errors)
+	 	<= 0	"No errors were"
+		== 1	"One error was"
+		> 1	"n errors were"		(n is the number of errors)
    =============================================================================
 */
 
@@ -118,14 +118,14 @@ n_errs (n)
 {
   static char buf[100];
 
-  if (n GT 1)
+  if (n > 1)
     {
 
       sprintf (buf, "%d errors were", n);
       return (buf);
 
     }
-  else if (n EQ 1)
+  else if (n == 1)
     return ("One error was");
   else
     return ("No errors were");
@@ -293,13 +293,13 @@ intopt (argv, optp)
 {
   int c;
 
-  if ((c = (*argv)[1]) NE '\0' && !isdigit (c))
+  if ((c = (*argv)[1]) != '\0' && !isdigit (c))
     {
       *optp = c;
       ++*argv;
     }
 
-  return ((c = atoix (argv)) NE 0 ? c : -1);
+  return ((c = atoix (argv)) != 0 ? c : -1);
 }
 
 /* 
@@ -335,7 +335,7 @@ findopt (argc, argv)
 
 	case '+':		/* ... or they can start with '+' */
 
-	  if ((c = *++*argv) EQ '\0')	/* just '-' is end */
+	  if ((c = *++*argv) == '\0')	/* just '-' is end */
 	    break;
 /* 
 */
@@ -381,7 +381,7 @@ findopt (argc, argv)
 
 		  case 's':	/* -sc */
 
-		    if ((s_argc = (*argv)[1]) NE '\0')
+		    if ((s_argc = (*argv)[1]) != '\0')
 		      ++ * argv;
 		    else
 		      s_argc = S_ALTC;
@@ -392,7 +392,7 @@ findopt (argc, argv)
 
 		  case 'x':	/* -x */
 
-		    x_argf = NOT x_argf;
+		    x_argf = ! x_argf;
 		    continue;
 
 		  default:	/* unrecognized option */
@@ -402,7 +402,7 @@ findopt (argc, argv)
 		  }
 
 	    }
-	  while ((c = *++*argv) NE '\0');
+	  while ((c = *++*argv) != '\0');
 
 	  if (strsw)
 	    {			/* if we've eaten an argument */

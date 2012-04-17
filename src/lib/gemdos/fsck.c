@@ -85,7 +85,7 @@ pipc (chars, length)
   int i;
 
   for (i = 0; i < length; i++)
-    if (isascii (0x00FF & chars[i]) AND (isprint (0x00FF & chars[i])))
+    if (isascii (0x00FF & chars[i]) && (isprint (0x00FF & chars[i])))
       printf ("%c", chars[i]);
     else
       printf (".");
@@ -112,10 +112,10 @@ mdump (begin, end, start)
   ii = start;
   j = 0;
 
-  if (begin GT end)
+  if (begin > end)
     return;
 
-  while (begin LE end)
+  while (begin <= end)
     {
 
       c = *begin++;
@@ -185,7 +185,7 @@ trim (s)
 {
   register char *sp;
 
-  if (*s EQ '\0')		/* handle empty string */
+  if (*s == '\0')		/* handle empty string */
     return (s);
 
   sp = s;
@@ -193,12 +193,12 @@ trim (s)
   while (*sp)			/* find end of string */
     ++sp;
 
-  while (' ' EQ * --sp)
+  while (' ' == * --sp)
     {
 
       *sp = '\0';
 
-      if (sp EQ s)
+      if (sp == s)
 	break;
     }
 
@@ -303,13 +303,13 @@ ckdir (fat, dir, ent)
   char fn1[FNLEN];
   char fn2[FNLEN];
 
-  if ((dir[ent].name[0] & 0x00FF) EQ 0x00E5)
+  if ((dir[ent].name[0] & 0x00FF) == 0x00E5)
     return (FALSE);
 
-  if ((dir[ent].name[0] & 0x00FF) EQ 0)
+  if ((dir[ent].name[0] & 0x00FF) == 0)
     return (TRUE);
 
-  if (verbose OR clslist OR dirlist)
+  if (verbose || clslist || dirlist)
     {
 
       printf ("  Checking entry %d:  \"%s\"", ent, fileid (&dir[ent], fn1));
@@ -339,7 +339,7 @@ ckdir (fat, dir, ent)
 */
   dirclus = getiwd (dir[ent].clus);
 
-  if (fatmap[dirclus] NE - 1)
+  if (fatmap[dirclus] != - 1)
     {
 
       printf ("ERROR:  Overlapping allocations --\n");
@@ -365,7 +365,7 @@ ckdir (fat, dir, ent)
       if (clslist)
 	{
 
-	  if (cln EQ MAXCLINE)
+	  if (cln == MAXCLINE)
 	    {
 
 	      printf ("\n      ");
@@ -379,7 +379,7 @@ ckdir (fat, dir, ent)
       curclus = getcl (fat, dirclus, cltype);
 /* 
 */
-      if (curclus LT 2)
+      if (curclus < 2)
 	{
 
 	  printf ("ERROR:  Bad FAT entry ($%x) at %u ($%x)",
@@ -390,10 +390,10 @@ ckdir (fat, dir, ent)
 	  ok = FALSE;
 
 	}
-      else if (curclus LT badclus)
+      else if (curclus < badclus)
 	{
 
-	  if (fatmap[curclus] NE - 1)
+	  if (fatmap[curclus] != - 1)
 	    {
 
 	      printf ("ERROR:  Overlapping allocations --\n");
@@ -408,7 +408,7 @@ ckdir (fat, dir, ent)
 	  dirclus = curclus;
 
 	}
-      else if (curclus LT eofclus)
+      else if (curclus < eofclus)
 	{
 
 	  printf ("ERROR:  Bad FAT entry ($%x) at %u ($%x)",
@@ -422,7 +422,7 @@ ckdir (fat, dir, ent)
       else
 	{
 
-	  if (clslist AND cln)
+	  if (clslist && cln)
 	    printf ("\n");
 
 	  ok = FALSE;
@@ -546,7 +546,7 @@ main (argc, argv)
 
   /* identify the program */
 
-  if (NOT quiet)
+  if (! quiet)
     printf ("\n%s for the Atari ST -- Version %s\n\n", PROGID, VERMSG);
 
   if (verbose)
@@ -630,7 +630,7 @@ main (argc, argv)
   if (verbose)
     printf ("Checking BPB for consistency ...\n");
 
-  if (datloc NE bpb.datrec)
+  if (datloc != bpb.datrec)
     {
 
       printf ("ERROR:  Data locations inconsistent:\n");
@@ -698,7 +698,7 @@ main (argc, argv)
   for (i = 0; i < fatlen; i++)
     {
 
-      if (fat1[i] NE fat2[i])
+      if (fat1[i] != fat2[i])
 	{
 
 	  printf ("ERROR:  FATs differ at offset %lu ($%lx)\n\n", i, i);
@@ -760,7 +760,7 @@ main (argc, argv)
 	printf ("\nWARNING -- Primary file system damaged.\n");
       }
 
-  if (NOT quiet)
+  if (! quiet)
     printf ("\nPrimary file system check complete on drive %c.\n\n",
 	    drive + 'A');
 

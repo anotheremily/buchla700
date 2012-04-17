@@ -14,7 +14,7 @@ static FILE *scnfp;
 static int
 gchar (what)
 {
-  if (what EQ 0)
+  if (what == 0)
     {
 
       if (feof (scnfp))

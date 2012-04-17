@@ -66,7 +66,7 @@ ef_wpnt (n)
   for (i = 0; i < 3; i++)	/* convert from ASCII to binary */
     tmpval = (tmpval * 10) + (ebuf[i] - '0');
 
-  if (tmpval GE NUMWPNT)
+  if (tmpval >= NUMWPNT)
     return (FAILURE);
 
   curwpnt = tmpval;

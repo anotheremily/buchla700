@@ -17,7 +17,7 @@ agetc (ptr)
   register int c;
 
 top:
-  if ((c = getc (ptr)) NE EOF)
+  if ((c = getc (ptr)) != EOF)
     {
 
       switch (c &= 0x7F)
@@ -45,12 +45,12 @@ gets (line)
 
   cp = line;
 
-  while ((i = getchar ())NE EOF AND i NE '\n')
+  while ((i = getchar ())NE EOF && i != '\n')
     *cp++ = i;
 
   *cp = 0;			/* terminate the line */
 
-  if ((i EQ EOF) AND (cp EQ line))
+  if ((i == EOF) && (cp == line))
     return (NULL);
 
   return (line);
@@ -67,18 +67,18 @@ fgets (s, n, fp)
 
   cp = s;
 
-  while (--n > 0 AND (c = agetc (fp)) NE EOF)
+  while (--n > 0 && (c = agetc (fp)) != EOF)
     {
 
       *cp++ = c;
 
-      if (c EQ '\n')
+      if (c == '\n')
 	break;
     }
 
   *cp = 0;
 
-  if (c EQ EOF AND cp EQ s)
+  if (c == EOF && cp == s)
     return (NULL);
 
   return (s);

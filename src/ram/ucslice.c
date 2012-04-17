@@ -82,7 +82,7 @@ ucslice ()
   nctabp = sd ? nttab2 : nttab1;	/* note transition table */
   ncptr = gtctab;		/* group to color table */
 
-  lintab = (ac_code EQ N_SHARP) ? lintab1 : lintab2;	/* line table */
+  lintab = (ac_code == N_SHARP) ? lintab1 : lintab2;	/* line table */
 
 /* 
 */
@@ -100,7 +100,7 @@ ucslice ()
 	  do
 	    {			/* ... for each note played by the group ... */
 
-	      if (ndisp EQ 2)
+	      if (ndisp == 2)
 		{		/* ... if display is up */
 
 		  /* setup slice and pixel pointers */
@@ -125,7 +125,7 @@ ucslice ()
 
 	      /* update and check element code */
 
-	      if (0 EQ (gdsep->code = nctabp[gdsep->code]))
+	      if (0 == (gdsep->code = nctabp[gdsep->code]))
 		{
 
 		  /* if it's zero, delete the element */
@@ -159,7 +159,7 @@ ucslice ()
 	  do
 	    {			/* ... for each event of this priority  ... */
 
-	      if (ndisp EQ 2)
+	      if (ndisp == 2)
 		{		/* ... if display is up */
 
 		  /* setup slice and pixel pointers */

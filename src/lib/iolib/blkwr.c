@@ -68,16 +68,16 @@ _secwr (buf, rec)
 {
   register short track, side, sector;
 
-  if (_thebpb->dspt NE 9)	/* make sure we can do this */
+  if (_thebpb->dspt != 9)	/* make sure we can do this */
     return (ERR07);
 
-  if (_thebpb->recsiz NE 512)
+  if (_thebpb->recsiz != 512)
     return (ERR07);
 
   track = rec / _thebpb->dspc;	/* desired track */
   sector = rec - (track * _thebpb->dspc);	/* logical sector */
 
-  if (sector GE _thebpb->dspt)
+  if (sector >= _thebpb->dspt)
     {				/* adjust sector and side */
 
       sector -= _thebpb->dspt;
@@ -101,7 +101,7 @@ _secwr (buf, rec)
     }
 #endif
 
-  if ((track NE _b_trak) OR (side NE _b_side))	/* track in buffer ? */
+  if ((track != _b_trak) || (side != _b_side))	/* track in buffer ? */
     return (0L);
 
   memcpy ((char *) _b_tbuf[sector], buf, 512);	/* update the buffer */
@@ -141,7 +141,7 @@ blkwr (fcp, buf, ns)
       if (fcp->asects)
 	{
 
-	  if (fcp->curlsn LT fcp->asects)
+	  if (fcp->curlsn < fcp->asects)
 	    {
 
 #if	DEBUGIT
@@ -175,7 +175,7 @@ blkwr (fcp, buf, ns)
 		printf ("blkwr():  _nsic() rc=%ld\n", rc);
 #endif
 
-	      if (--ns EQ 0)	/* done if no more to do */
+	      if (--ns == 0)	/* done if no more to do */
 		return (0);
 
 	      if (rc < 0)
@@ -189,7 +189,7 @@ blkwr (fcp, buf, ns)
 /* 
 */
 	    }
-	  else if (fcp->curlsn EQ fcp->asects)
+	  else if (fcp->curlsn == fcp->asects)
 	    {
 
 	      if (_alcnew (fcp))
@@ -229,7 +229,7 @@ blkwr (fcp, buf, ns)
 	      ++fcp->clsec;
 	      ++fcp->curdsn;
 
-	      if (--ns EQ 0)
+	      if (--ns == 0)
 		return (0);
 
 	      buf += _thebpb->recsiz;	/* advance buffer pointer */
@@ -240,7 +240,7 @@ blkwr (fcp, buf, ns)
       else
 	{
 
-	  if (0 EQ (clustr = _newcls ()))
+	  if (0 == (clustr = _newcls ()))
 	    {
 
 	      errno = EIO;
@@ -286,7 +286,7 @@ blkwr (fcp, buf, ns)
 	  ++fcp->clsec;
 	  ++fcp->curdsn;
 
-	  if (--ns EQ 0)
+	  if (--ns == 0)
 	    return (0);
 
 	  buf += _thebpb->recsiz;	/* advance buffer pointer */

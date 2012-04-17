@@ -48,7 +48,7 @@ readit (fp, to, len)
   for (count = 0; count < len; count++)
     {
 
-      if (EOF EQ (c = getc (fp)))
+      if (EOF == (c = getc (fp)))
 	{
 
 	  printf ("ERROR: Unexpected EOF -- errno = %d\n", errno);
@@ -96,7 +96,7 @@ main ()
   register struct instdef *ip;
   register short i, npl, count;
 
-  if ((FILE *) NULL EQ (fp = fopenb (LIBNAME, "r")))
+  if ((FILE *) NULL == (fp = fopenb (LIBNAME, "r")))
     {
 
       printf ("Unable to open [%s]\n", LIBNAME);
@@ -135,7 +135,7 @@ main ()
   fclose (fp);
 /* 
 */
-  if ((FILE *) NULL EQ (fp = fopena (DFLTNAME, "w")))
+  if ((FILE *) NULL == (fp = fopena (DFLTNAME, "w")))
     {
 
       printf ("Unable to open [%s] for output\n", DFLTNAME);
@@ -156,7 +156,7 @@ main ()
 
       fprintf (fp, "0x%04.4x", *wp++);
 
-      if (++npl EQ MAXPERL)
+      if (++npl == MAXPERL)
 	{
 
 	  if (count)

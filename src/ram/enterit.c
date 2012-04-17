@@ -72,11 +72,11 @@ short LastCol = -1;
 
 enterit ()
 {
-  if (NOT astat)		/* only on closures */
+  if (! astat)		/* only on closures */
     return;
 
 #if	DEBUGIT
-  if (debugsw AND debugen)
+  if (debugsw && debugen)
     printf ("enterit():  ENTRY  row = %d  col = %d  curfet =$%lX\n",
 	    stcrow, stccol, curfet);
 #endif
@@ -86,7 +86,7 @@ enterit ()
 
       cfetp = infetp;		/* set fet pointer */
 
-      if ((cfetp) AND (NOT ebflag))
+      if ((cfetp) && (! ebflag))
 	(*cfetp->ebto) (cfetp->ftags);	/* load ebuf */
 
       if (cfetp)
@@ -134,7 +134,7 @@ cmvgen ()
   newrow = YTOR (cyval);	/* setup new row */
   newcol = XTOC (cxval);	/* setup new column */
 
-  if (cmtype NE nc)
+  if (cmtype != nc)
     {				/* if changed ... */
 
       nchwait = curhold;	/* set hold time */
@@ -146,22 +146,22 @@ cmvgen ()
 
   /* see if we've got a new text cursor position */
 
-  if ((newrow NE LastRow) OR (newcol NE LastCol))
+  if ((newrow != LastRow) || (newcol != LastCol))
     newpos = TRUE;
   else
     newpos = FALSE;
 
   /* setup horizontal and vertical timer counts */
 
-  chtime = (nc EQ CT_GRAF) ? hcwval : thcwval;
-  cvtime = (nc EQ CT_GRAF) ? vcwval : ((nc EQ CT_SMTH) ? syrate : tvcwval);
+  chtime = (nc == CT_GRAF) ? hcwval : thcwval;
+  cvtime = (nc == CT_GRAF) ? vcwval : ((nc == CT_SMTH) ? syrate : tvcwval);
 
   switch (nc)
     {				/* switch on new cursor type */
 
     case CT_GRAF:		/* GRAPHIC CURSOR */
 
-      if (cmtype EQ CT_SCOR)
+      if (cmtype == CT_SCOR)
 	{			/* change from score text */
 
 	  stcoff ();		/* turn off text */
@@ -191,7 +191,7 @@ cmvgen ()
 
     case CT_SCOR:		/* SCORE TEXT CURSOR */
 
-      if (cmtype EQ CT_GRAF)	/* change from graphics */
+      if (cmtype == CT_GRAF)	/* change from graphics */
 	sgcoff ();		/* turn off graphics */
 
       cmtype = nc;		/* set cursor type */
@@ -238,7 +238,7 @@ crxrate (cv)
 {
   register short cs;
 
-  if (cv GE xycntr)
+  if (cv >= xycntr)
     {
 
       cv -= xycntr;
@@ -275,7 +275,7 @@ cryrate (cv)
 {
   register short cs;
 
-  if (cv GE xycntr)
+  if (cv >= xycntr)
     {
 
       cv -= xycntr;
@@ -322,7 +322,7 @@ cmfix ()
   if (cmfirst)
     {				/* first motion ? */
 
-      if (acx GE acy)
+      if (acx >= acy)
 	{			/* vertical movement */
 
 	  cyrate = 0;
@@ -348,8 +348,8 @@ cmfix ()
 
       /* limit text movement to 1 axis */
 
-      if (cmtype NE CT_GRAF)
-	if (acx GE acy)
+      if (cmtype != CT_GRAF)
+	if (acx >= acy)
 	  cyrate = 0;
 	else
 	  cxrate = 0;
@@ -375,7 +375,7 @@ cxkstd ()
   if (astat)
     {				/* contact */
 
-      if (xkstat EQ FALSE)
+      if (xkstat == FALSE)
 	{
 
 	  if (xkcount)
@@ -400,14 +400,14 @@ cxkstd ()
   else
     {				/* release */
 
-      if (xkstat AND ykstat)
+      if (xkstat && ykstat)
 	(*xy_up) ();
 
       xkstat = FALSE;
       xkcount = 1;
       cxrate = 0;
 
-      if (ykstat EQ FALSE)
+      if (ykstat == FALSE)
 	{
 
 	  cyrate = 0;
@@ -442,7 +442,7 @@ cykstd ()
   if (astat)
     {				/* contact */
 
-      if (ykstat EQ FALSE)
+      if (ykstat == FALSE)
 	{
 
 	  if (ykcount)
@@ -467,14 +467,14 @@ cykstd ()
   else
     {				/* release */
 
-      if (xkstat AND ykstat)
+      if (xkstat && ykstat)
 	(*xy_up) ();
 
       ykstat = FALSE;
       ykcount = 1;
       cyrate = 0;
 
-      if (xkstat EQ FALSE)
+      if (xkstat == FALSE)
 	{
 
 	  cxrate = 0;

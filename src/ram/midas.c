@@ -60,10 +60,10 @@ dopls1 ()
 {
   putwq (&ptefifo, 0x1180);	/* pulse 1 trigger -> STM fifo */
 
-  if (NOT clkrun)		/* check for clock enable */
+  if (! clkrun)		/* check for clock enable */
     return;			/* done if not enabled */
 
-  if (clksrc EQ CK_PLS24)
+  if (clksrc == CK_PLS24)
     {				/* Pulse 24 mode ? */
 
       fc_val += 2L;		/* 2 clocks per pulse */
@@ -72,7 +72,7 @@ dopls1 ()
 	fc_val = 0x00FFFFFFL;
 
     }
-  else if (clksrc EQ CK_PLS48)
+  else if (clksrc == CK_PLS48)
     {				/* Pulse 48 mode ? */
 
       ++fc_val;			/* 1 clock per pulse */
@@ -81,7 +81,7 @@ dopls1 ()
 	fc_val = 0x00FFFFFFL;
 
     }
-  else if (clksrc EQ CK_PLS96)
+  else if (clksrc == CK_PLS96)
     {				/* Pulse 96 mode ? */
 
       if (clkdiv++)
@@ -232,7 +232,7 @@ newdisp:
 startup:
 
 #if	DEBUGIT
-  if (debugsw AND debugmm)
+  if (debugsw && debugmm)
     printf ("main():  switching to MAIN MENU\N");
 #endif
 
@@ -240,7 +240,7 @@ startup:
   msl ();			/* run the main menu */
 
 #if	DEBUGIT
-  if (debugsw AND debugmm)
+  if (debugsw && debugmm)
     printf ("main():  switching to %d\n", ndisp);
 #endif
 
@@ -304,7 +304,7 @@ startup:
     default:
 
 #if	DEBUGIT
-      if (debugsw AND debugmm)
+      if (debugsw && debugmm)
 	printf ("main():  UNKNOWN display (%d)\n", ndisp);
 #endif
 
@@ -313,7 +313,7 @@ startup:
     }
 
 #if	DEBUGIT
-  if (debugsw AND debugmm)
+  if (debugsw && debugmm)
     printf ("main():  display switch complete to %d\n", ndisp);
 #endif
 

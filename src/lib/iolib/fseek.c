@@ -34,7 +34,7 @@ fseek (fp, pos, mode)
   else
     {
 
-      if (mode EQ 1 AND fp->_bp)
+      if (mode == 1 && fp->_bp)
 	pos -= (long) fp->_bend - (long) fp->_bp;
     }
 

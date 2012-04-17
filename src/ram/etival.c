@@ -103,33 +103,33 @@ ef_ival (n)
       idsrcsw = FALSE;
       submenu = FALSE;
 
-      if (vtcrow EQ 22)
+      if (vtcrow == 22)
 	{
 
 	  /*  'PchW/HT", 'Pch/Frq', 'Random', 'Ctl V1' */
 
-	  if (vtccol LT 24)
+	  if (vtccol < 24)
 	    srctmp = SM_HTPW;
-	  else if ((vtccol GT 24) AND (vtccol LT 28))
+	  else if ((vtccol > 24) && (vtccol < 28))
 	    srctmp = SM_PTCH;
-	  else if ((vtccol GT 28) AND (vtccol LT 32))
+	  else if ((vtccol > 28) && (vtccol < 32))
 	    srctmp = SM_FREQ;
-	  else if ((vtccol GT 32) AND (vtccol LT 40))
+	  else if ((vtccol > 32) && (vtccol < 40))
 	    srctmp = SM_RAND;
 	  else
 	    srctmp = SM_CTL1;
 
 	}
-      else if (vtcrow EQ 23)
+      else if (vtcrow == 23)
 	{
 
 	  /* 'ModW/VT', 'Key Vel', 'Pedal 1' */
 
-	  if (vtccol LT 24)
+	  if (vtccol < 24)
 	    srctmp = SM_VTMW;
-	  else if ((vtccol GT 24) AND (vtccol LT 32))
+	  else if ((vtccol > 24) && (vtccol < 32))
 	    srctmp = SM_KVEL;
-	  else if ((vtccol GT 32) AND (vtccol LT 40))
+	  else if ((vtccol > 32) && (vtccol < 40))
 	    srctmp = SM_PED1;
 	  else
 	    srctmp = SM_NONE;
@@ -140,9 +140,9 @@ ef_ival (n)
 
 	  /* 'Brth/LP', 'Key Prs' */
 
-	  if (vtccol LT 24)
+	  if (vtccol < 24)
 	    srctmp = SM_LPBR;
-	  else if ((vtccol GT 24) AND (vtccol LT 32))
+	  else if ((vtccol > 24) && (vtccol < 32))
 	    srctmp = SM_KPRS;
 	  else
 	    srctmp = SM_NONE;
@@ -156,7 +156,7 @@ ef_ival (n)
 /* 
 */
     }
-  else if (stccol LT 32)
+  else if (stccol < 32)
     {				/* entering value */
 
       tmpval = 0;
@@ -167,7 +167,7 @@ ef_ival (n)
       for (i = 3; i < 5; i++)	/* convert from ASCII to binary */
 	tmpval = (tmpval * 10) + (ebuf[i] - '0');
 
-      if (tmpval GT 1000)
+      if (tmpval > 1000)
 	{
 
 #if	DEBUGIT
@@ -183,7 +183,7 @@ ef_ival (n)
       modinst ();
 
     }
-  else if ((stccol GE 33) AND (stccol LE 39))
+  else if ((stccol >= 33) && (stccol <= 39))
     {				/* selecting the source */
 
       idsrcsw = TRUE;		/* set the select switch */
@@ -194,12 +194,12 @@ ef_ival (n)
       ttcpos (22, 17);		/* position the typewriter cusor */
 
     }
-  else if ((stccol GE 41) AND (stccol LE 44))
+  else if ((stccol >= 41) && (stccol <= 44))
     {				/* entering the multiplier */
 
       tmpval = dec2fr (&ebuf[6]);
 
-      if (tmpval EQ 0xFFFF)
+      if (tmpval == 0xFFFF)
 	{
 
 #if	DEBUGIT
@@ -276,10 +276,10 @@ nd_ival (n, k)
   if (idsrcsw)			/* not in source menu */
     return (FAILURE);
 
-  if ((stccol GE 32) AND (stccol LE 40))	/* not in source */
+  if ((stccol >= 32) && (stccol <= 40))	/* not in source */
     return (FAILURE);
 
-  if (stccol EQ 29)		/* not in decimal point */
+  if (stccol == 29)		/* not in decimal point */
     return (FAILURE);
 
   ebuf[2] = '.';		/* setup the fixed stuff */
@@ -287,24 +287,24 @@ nd_ival (n, k)
 
 /* 
 */
-  if (stccol LT 32)
+  if (stccol < 32)
     {				/* value */
 
       ebuf[stccol - 27] = k + '0';
       dspbuf[0] = k + '0';
 
     }
-  else if (stccol EQ 41)
+  else if (stccol == 41)
     {				/* mutiplier sign */
 
-      if (k EQ 8)
+      if (k == 8)
 	{			/* - */
 
 	  ebuf[9] = '-';
 	  dspbuf[0] = '-';
 
 	}
-      else if (k EQ 9)
+      else if (k == 9)
 	{			/* + */
 
 	  ebuf[9] = '+';
@@ -315,17 +315,17 @@ nd_ival (n, k)
 	return (FAILURE);
 
     }
-  else if (stccol EQ 42)
+  else if (stccol == 42)
     {				/* 1st digit */
 
-      if (k EQ 0)
+      if (k == 0)
 	{			/* 0 */
 
 	  ebuf[6] = '0';
 	  dspbuf[0] = '.';
 
 	}
-      else if (k EQ 1)
+      else if (k == 1)
 	{			/* 1 */
 
 	  ebuf[6] = '1';
@@ -351,12 +351,12 @@ nd_ival (n, k)
   vcputsv (instob, 64, ID_ENTRY, idbox[n][5],
 	   idbox[n][6] + 1, stccol, dspbuf, 14);
 
-  if ((stccol EQ 31) OR (stccol EQ 44))	/* last column of field ? */
+  if ((stccol == 31) || (stccol == 44))	/* last column of field ? */
     return (SUCCESS);
 
   advicur ();
 
-  if (stccol EQ 29)		/* decimal point ? */
+  if (stccol == 29)		/* decimal point ? */
     advicur ();
 
   return (SUCCESS);

@@ -197,7 +197,7 @@ _nsic (fcp, bpp, fp)
       return (IO_ERR);
     }
 
-  if (fcp->de.bclust EQ 0)
+  if (fcp->de.bclust == 0)
     {				/* no sectors allocated  (empty file) */
 
       fcp->modefl |= FC_EOF;
@@ -209,7 +209,7 @@ _nsic (fcp, bpp, fp)
 
   ++fcp->curlsn;
 
-  if (++fcp->clsec GE bpp->clsiz)
+  if (++fcp->clsec >= bpp->clsiz)
     {
 
       /* new cluster needed -- follow the chain */
@@ -294,12 +294,12 @@ _dsrch (de)
 
       /* see if we've found it */
 
-      if (0 EQ memcmpu (de->fname, dp->fname, 11))
+      if (0 == memcmpu (de->fname, dp->fname, 11))
 	return (dp);
 
       /* check for end of used entries */
 
-      if ('\0' EQ dp->fname[0])
+      if ('\0' == dp->fname[0])
 	return (DE_NULL);
 
       dp++;			/* point at next entry to check */
@@ -332,12 +332,12 @@ _dsnew ()
 
       /* check for a deleted entry */
 
-      if (0x00E5 EQ (0x00FF & dp->fname[0]))
+      if (0x00E5 == (0x00FF & dp->fname[0]))
 	return (dp);
 
       /* check for end of used entries */
 
-      if ('\0' EQ dp->fname[0])
+      if ('\0' == dp->fname[0])
 	return (dp);
 
       dp++;			/* point at next entry to check */
@@ -393,7 +393,7 @@ _seek (fcp)
       return (-1);		/* return with an error */
     }
 
-  if (fcp->curlsn GT fcp->asects)
+  if (fcp->curlsn > fcp->asects)
     {				/* error if seek past EOF */
 
 #if	DEBUGIT
@@ -424,7 +424,7 @@ _seek (fcp)
     }
 #endif
 
-  if (fcp->curlsn EQ fcp->asects)
+  if (fcp->curlsn == fcp->asects)
     {				/* see if we seeked to EOF */
 
       fcp->modefl |= FC_EOF;	/* flag the EOF condition */
@@ -435,10 +435,10 @@ _seek (fcp)
 		fcp->curlsn, acls, sic, fcp->curdsn);
 #endif
 
-      if (acls EQ 0)		/* see if anything allocated */
+      if (acls == 0)		/* see if anything allocated */
 	return (2);		/* hard EOF if nothing there */
 
-      if (sic EQ 0)		/* see if first in cluster */
+      if (sic == 0)		/* see if first in cluster */
 	return (2);		/* hard EOF if so */
     }
 
@@ -449,13 +449,13 @@ _seek (fcp)
 
       acls = _gtcl12 (_thefat, acls);	/* next cluster pointer */
 
-      if (acls LT 0x0FF0)	/* OK if it's a good cluster */
+      if (acls < 0x0FF0)	/* OK if it's a good cluster */
 	continue;
 
       fcp->modefl |= FC_ERR;	/* EOF or bad cluster hit */
       errno = EINVAL;		/* mark it as an invalid seek */
 
-      if (acls LT 0x0FF8)
+      if (acls < 0x0FF8)
 	{			/* bad cluster ? */
 
 	  errno = EIO;		/* mark it as an I/O error */
@@ -476,7 +476,7 @@ _seek (fcp)
 	    fcp->curlsn, acls, sic, fcp->curdsn);
 #endif
 
-  if (fcp->curlsn EQ fcp->asects)	/* see if we're at EOF */
+  if (fcp->curlsn == fcp->asects)	/* see if we're at EOF */
     return (1);			/* soft EOF */
 
   return (0);			/* not EOF */
@@ -508,10 +508,10 @@ _ftrnc (dp)
   /* zap entries until EOF or bad cluster */
 
 #if	DEBUGIT
-  while (lim-- AND (acls LT 0x0FF0))
+  while (lim-- && (acls < 0x0FF0))
     {
 #else
-  while (acls LT 0x0FF0)
+  while (acls < 0x0FF0)
     {
 #endif
 
@@ -535,7 +535,7 @@ _ftrnc (dp)
   _dirmod = TRUE;		/* directory got changed */
 
 #if	DEBUGIT
-  if (lim LE 0)
+  if (lim <= 0)
     {
 
       errno = EIO;
@@ -566,7 +566,7 @@ _newcls ()
   tc = _thebpb->numcl;
 
   for (i = 2; i < tc; i++)
-    if (0 EQ _gtcl12 (_thefat, i))
+    if (0 == _gtcl12 (_thefat, i))
       return (i);
 
   return (0);			/* ERROR:  no empty clusters left */
@@ -602,10 +602,10 @@ _alcnew (fcp)
       pc = micons (fcp->de.bclust);	/* get first cluster */
 
 #if	DEBUGIT
-      if (pc EQ 0)
+      if (pc == 0)
 	{
 
-	  printf ("_alcnew():  ERROR - pc EQ 0, bclust=$%04.4X, nc=%d\n",
+	  printf ("_alcnew():  ERROR - pc == 0, bclust=$%04.4X, nc=%d\n",
 		  fcp->de.bclust, nc);
 	  xtrap15 ();
 	}
@@ -614,7 +614,7 @@ _alcnew (fcp)
       /* find end of allocation chain */
 
 #if	DEBUGIT
-      while (lim-- AND ((ac = _gtcl12 (_thefat, pc)) < 0x0FF0))
+      while (lim-- && ((ac = _gtcl12 (_thefat, pc)) < 0x0FF0))
 	{
 #else
       while ((ac = _gtcl12 (_thefat, pc)) < 0x0FF0)
@@ -628,7 +628,7 @@ _alcnew (fcp)
 */
 
 #if	DEBUGIT
-      if (lim LE 0)
+      if (lim <= 0)
 	{
 
 	  printf ("_alcnew():  ERROR - lim ran out, nc=%d\n", nc);
@@ -685,7 +685,7 @@ _fmake (fcp)
 {
   register struct dirent *dp;
 
-  if (DE_NULL EQ (dp = _dsnew ()))	/* find a dirent */
+  if (DE_NULL == (dp = _dsnew ()))	/* find a dirent */
     return (FAILURE);
 
   _dptr = dp;			/* set the directory pointer */
@@ -745,7 +745,7 @@ _opnvol ()
       _fatin = FALSE;		/* invalidate the FAT and directory */
       _dirin = FALSE;
 
-      if ((struct bpb *) 0L EQ (_thebpb = BIOS (B_GBPB, 0)))
+      if ((struct bpb *) 0L == (_thebpb = BIOS (B_GBPB, 0)))
 	{
 
 	  errno = EIO;		/* couldn't read the BPB */
@@ -824,7 +824,7 @@ _opfcb (fcp)
 
   /* search the directory for the file */
 
-  if (DE_NULL EQ (_dptr = _dsrch (&fcp->de)))
+  if (DE_NULL == (_dptr = _dsrch (&fcp->de)))
     {
 
       /* file doesn't exist -- see if we should create it */
@@ -854,7 +854,7 @@ _opfcb (fcp)
 
       /* file exists -- check for writes to a read-only file */
 
-      if ((fcp->de.atrib & F_RDONLY) AND
+      if ((fcp->de.atrib & F_RDONLY) &&
 	  (fcp->modefl & (FC_AP | FC_WR | FC_TR)))
 	{
 
@@ -866,7 +866,7 @@ _opfcb (fcp)
 
       /* check for append and not write */
 
-      if ((fcp->modefl & FC_AP) AND ! (fcp->modefl & FC_WR))
+      if ((fcp->modefl & FC_AP) && ! (fcp->modefl & FC_WR))
 	{
 
 	  /* can't append if not open to write */
@@ -877,7 +877,7 @@ _opfcb (fcp)
 
       /* check for create and exclusive with extant file */
 
-      if ((fcp->modefl & FC_CR) AND (fcp->modefl & FC_EX))
+      if ((fcp->modefl & FC_CR) && (fcp->modefl & FC_EX))
 	{
 
 	  /* file exists and open was create-exclusive */
@@ -985,7 +985,7 @@ _inifcb (fcp, name, ext, mode)
   s1 = name;
 
   for (i = 0; i < 9; i++)
-    if (*s1++ EQ '\0')
+    if (*s1++ == '\0')
       {
 
 	fl = FALSE;
@@ -1001,7 +1001,7 @@ _inifcb (fcp, name, ext, mode)
   s1 = ext;
 
   for (i = 0; i < 4; i++)
-    if (*s1++ EQ '\0')
+    if (*s1++ == '\0')
       {
 
 	fl = FALSE;
@@ -1027,7 +1027,7 @@ _inifcb (fcp, name, ext, mode)
 
       c = *s2++;
 
-      if ((c EQ '\0') OR (c EQ ' '))
+      if ((c == '\0') || (c == ' '))
 	break;
 
       *s1++ = c;
@@ -1043,7 +1043,7 @@ _inifcb (fcp, name, ext, mode)
 
       c = *s2++;
 
-      if ((c EQ '\0') OR (c EQ ' '))
+      if ((c == '\0') || (c == ' '))
 	break;
 
       *s1++ = c;
@@ -1251,7 +1251,7 @@ DelFile (fcp)
   if (_opnvol ())		/* open the volume */
     return (FAILURE);
 
-  if (DE_NULL EQ (_dptr = _dsrch (&fcp->de)))
+  if (DE_NULL == (_dptr = _dsrch (&fcp->de)))
     {				/* find the file */
 
       errno = ENOENT;		/* can't find the file */

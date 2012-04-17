@@ -133,7 +133,7 @@ showim ()
       for (row = 1; row < 15; row++)
 	{
 
-	  if (ins GE NINST)
+	  if (ins >= NINST)
 	    break;
 
 	  sprintf (bfs, "%02d %-16.16s", ins, idefs[ins].idhname);
@@ -261,7 +261,7 @@ edfunc (n)
 	   ((ip->idhfnc[12].idftmd & I_TM_KEY) ? idbox[n][4] : ID_INST),
 	   idbox[n][6], idbox[n][7], idbxlbl[12], 14);
 
-  if (n NE 12)			/* if not editing the level, draw it in the label */
+  if (n != 12)			/* if not editing the level, draw it in the label */
     drawfn (12, 0, ID_CLVL, n);
 
 /* 
@@ -296,14 +296,14 @@ edfunc (n)
 
   /* plot functions:  first level, then selected function */
 
-  if (n NE 12)			/* if not editing level, draw it as a reference */
+  if (n != 12)			/* if not editing level, draw it as a reference */
     drawfn (12, 0, ID_CLVL, 12);
 
   drawfn (n, pntsv, ID_CLIN, 12);
 
   curfunc = n;			/* make n the current function */
 
-  if (curfunc EQ 4)
+  if (curfunc == 4)
     {
 
       tsplot4 (instob, 64,
@@ -349,7 +349,7 @@ showpt (q)
 
       ptx = ttox (timeto (curfunc, i), 12);
       pty = vtoy ((ip->idhpnt[k + i].ipval) >> 5, 12);
-      ptc = ((ip->idhpnt[k + i].ipvsrc) OR (ip->idhpnt[k + i].ipact) ?
+      ptc = ((ip->idhpnt[k + i].ipvsrc) || (ip->idhpnt[k + i].ipact) ?
 	     ID_ACTP : ID_CPNT);
 
       drawpt (ptx, pty, ptc);
@@ -442,12 +442,12 @@ idfnbox (n)
 
 /* 
 */
-  if (hitbox EQ 12)
+  if (hitbox == 12)
     {				/* process a hit in the level window */
 
       /* handle data entry special case for resonance in filter fn. */
 
-      if ((curfunc EQ 4) AND (row EQ 5) AND (col EQ 62))
+      if ((curfunc == 4) && (row == 5) && (col == 62))
 	return (enterit ());
 
       switch (pntsv)
@@ -482,10 +482,10 @@ idfnbox (n)
       return (TRUE);
 
     }
-  else if (hitbox EQ 18)
+  else if (hitbox == 18)
     {				/* configuration */
 
-      if ((row EQ 17) AND (col GE 4) AND (col LE 9))
+      if ((row == 17) && (col >= 4) && (col <= 9))
 	{
 
 	  wcmenu (0);
@@ -500,10 +500,10 @@ idfnbox (n)
 /* 
 */
     }
-  else if (hitbox EQ 19)
+  else if (hitbox == 19)
     {				/* voice & inst. */
 
-      if ((col GE 26) AND (col LE 29) AND (row EQ 17))
+      if ((col >= 26) && (col <= 29) && (row == 17))
 	{
 
 	  if (idimsw)
@@ -529,10 +529,10 @@ idfnbox (n)
 
 	      vbfill4 (instob, 128, 1, 1, 510, 208, exp_c (idbox[19][5]));
 
-	      for (i = 13; i LE 18; i++)
+	      for (i = 13; i <= 18; i++)
 		iclrwin (i);
 
-	      for (i = 20; i LE 22; i++)
+	      for (i = 20; i <= 22; i++)
 		iclrwin (i);
 
 	      showim ();
@@ -549,10 +549,10 @@ idfnbox (n)
 /* 
 */
     }
-  else if (hitbox EQ 21)
+  else if (hitbox == 21)
     {				/* waveshapes */
 
-      if ((row EQ 17) AND (col GE 48) AND (col LE 54))
+      if ((row == 17) && (col >= 48) && (col <= 54))
 	{
 
 	  wcmenu (1);
@@ -566,7 +566,7 @@ idfnbox (n)
 	}
 
     }
-  else if (hitbox EQ 23)
+  else if (hitbox == 23)
     {				/* process a hit in the name window */
 
       if (idnamsw)
@@ -581,11 +581,11 @@ idfnbox (n)
 
 	  /* set data pointer */
 
-	  if (row EQ 18)
+	  if (row == 18)
 	    ivtdptr = ip->idhname;
-	  else if (row EQ 19)
+	  else if (row == 19)
 	    ivtdptr = ip->idhcom1;
-	  else if (row EQ 20)
+	  else if (row == 20)
 	    ivtdptr = ip->idhcom2;
 	  else
 	    ivtdptr = ip->idhcom3;
@@ -614,10 +614,10 @@ idfnbox (n)
       arcurs (ID_NCUR);		/* set cursor color */
       gcurpos (cxval, cyval);
 
-      if (n NE curfunc)
+      if (n != curfunc)
 	{			/* new function selected */
 
-	  if (curfunc NE 12)
+	  if (curfunc != 12)
 	    dswin (curfunc);	/* stow old function */
 
 	  edfunc (n);		/* select new function */

@@ -91,7 +91,7 @@ MTPrTCB (ptcb, msg)
   register short i;
   char flbuf[64];
 
-  if (msg NE (char *)NULL)
+  if (msg != (char *)NULL)
       printf ("%s\n", msg);
 
   printf ("TCB Addr: $%08.8lX   Next: $%08.8lX   FWD: $%08.8lX\n",
@@ -295,7 +295,7 @@ MTSDump (sem, msg)
 
   printf ("SEMAPHORE at $%08.8lX = $%08.8lX", sem, *sem);
 
-  if ((char *) 0L NE msg)
+  if ((char *) 0L != msg)
     printf (" --  %s", msg);
 
   printf ("\n");
@@ -341,7 +341,7 @@ DumpIOR (ip, msg)
 {
   printf ("########## IOREC at $%08.8lX", ip);
 
-  if ((char *) 0L NE msg)
+  if ((char *) 0L != msg)
     printf (" -- %s", msg);
 
   printf (" ##########\n");

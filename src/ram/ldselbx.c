@@ -197,7 +197,7 @@ skp_ec (fp, len)
 
       errno = 0;
 
-      if (EOF EQ (c = getc (fp)))
+      if (EOF == (c = getc (fp)))
 	{
 
 	  sprintf (errbuf, "errno = %d", errno);
@@ -252,7 +252,7 @@ scskip (fp, ns)
       return (FAILURE);
     }
 
-  if (etype NE EV_SCORE)
+  if (etype != EV_SCORE)
     {				/* complain if it's not a score event */
 
       sprintf (erms, "  score %d  etype = %d", ns + 1, etype);
@@ -291,7 +291,7 @@ scskip (fp, ns)
 	  return (FAILURE);
 	}
 
-      if (etype EQ EV_FINI)	/* check for score end */
+      if (etype == EV_FINI)	/* check for score end */
 	go = FALSE;
 
     }
@@ -315,7 +315,7 @@ ldermsg (p1, p2, p3, p4, p5)
 {
   char msgbuf[64];
 
-  if (NOT lderrsw)
+  if (! lderrsw)
     {				/* put up new messages only */
 
       strcpy (msgbuf, "ERROR: ");
@@ -409,7 +409,7 @@ savefc (kind)
 
   fi = ft2lt[kind - 1];
 
-  if (kind EQ FT_ORC)
+  if (kind == FT_ORC)
     fi = lorchl ? LT_ORH : LT_ORL;
 
   memcpy (loadedf[fi], ldfile, 8);
@@ -433,21 +433,21 @@ lcancel (lct)
 
   rc = FALSE;
 
-  if ((lct NE 0) AND lselsw)
+  if ((lct != 0) && lselsw)
     {
 
       rc = TRUE;
       clrlsel ();
     }
 
-  if ((lct NE 1) AND (lstrsw OR (NOT ckstor ())))
+  if ((lct != 1) && (lstrsw || (! ckstor ())))
     {
 
       rc = TRUE;
       streset ();
     }
 
-  if ((lct NE 2) AND ldelsw)
+  if ((lct != 2) && ldelsw)
     {
 
       rc = TRUE;
@@ -474,20 +474,20 @@ dpy_scr (color, ns)
   char buf[40];
   long scl;
 
-  if (ndisp NE 0)
+  if (ndisp != 0)
     return;
 
   if (v_regs[5] & 0x0180)
     vbank (0);
 
-  if (ldmap[ns] EQ - 1)
+  if (ldmap[ns] == - 1)
     strcpy (buf, "  ");
   else
     sprintf (buf, "%02d", 1 + ldmap[ns]);
 
   vcputsv (librob, 64, ldbox[1][4], ldbox[1][5], 1 + ns, 1, buf, 14);
 
-  if (-1L EQ (scl = sindex[ns].sclen))
+  if (-1L == (scl = sindex[ns].sclen))
     strcpy (buf, "{ empty score  }      0");
   else
     sprintf (buf, "%-16.16s  %5ld", sindex[ns].scfnm, scl);
@@ -509,7 +509,7 @@ lst_scr ()
   register short i;
   unsigned cx;
 
-  if (ndisp NE 0)
+  if (ndisp != 0)
     return;
 
   point = ldpoint;
@@ -569,7 +569,7 @@ ndx_scr (slot)
 
   errno = 0;
 
-  if ((FILE *) NULL EQ (fp = fopenb (slotnam (slot, FT_SCR), "r")))
+  if ((FILE *) NULL == (fp = fopenb (slotnam (slot, FT_SCR), "r")))
     {
 
       sprintf (msgbuf2, "  errno = %d", errno);
@@ -633,7 +633,7 @@ ndx_scr (slot)
 
       sindex[i].sclen = rdlen;
 
-      if (-1L NE rdlen)
+      if (-1L != rdlen)
 	{
 
 	  if (rd_ec (fp, sindex[i].scfnm, 16L))
@@ -690,7 +690,7 @@ ndx_scr (slot)
   point = GLCplot;
   GLCcurs (G_ON);
 
-  if (ismode NE IS_NULL)
+  if (ismode != IS_NULL)
     {				/* cancel inst. mode */
 
       ismode = IS_NULL;
@@ -700,7 +700,7 @@ ndx_scr (slot)
       lcdlbls ();
     }
 
-  if (gomode NE GO_NULL)
+  if (gomode != GO_NULL)
     {				/* cancel goto mode */
 
       gomode = GO_NULL;
@@ -717,10 +717,10 @@ ndx_scr (slot)
       lseg (ASGN_XL, ASGN_Y, ASGN_XR, ASGN_Y, 0);
     }
 
-  if ((pkctrl EQ PK_PFRM) OR (pkctrl EQ PK_NOTE))
+  if ((pkctrl == PK_PFRM) || (pkctrl == PK_NOTE))
     oldpk = pkctrl;
 
-  if (sliders NE LS_LIBR)
+  if (sliders != LS_LIBR)
     oldsl = sliders;
 
   oldsw = swpt;
@@ -748,7 +748,7 @@ getit ()
 {
   ldkind = ftkind (ldslot);
 
-  if (ldkind EQ - 1)
+  if (ldkind == - 1)
     {
 
       ldermsg ("Unknown file type",
@@ -878,15 +878,15 @@ ldfnbox (n)
 	  if (lrasw)
 	    {			/* content mode ? */
 
-	      if (ldkind EQ FT_SCR)
+	      if (ldkind == FT_SCR)
 		{		/* score */
 
 		  sn = ldline (hitcy) - 1;
 
-		  if (sindex[sn].sclen NE - 1L)
+		  if (sindex[sn].sclen != - 1L)
 		    {
 
-		      if ((1 + sn) NE ldrow)
+		      if ((1 + sn) != ldrow)
 			{
 
 			  dpy_scr (ldbox[1][4], ldrow - 1);
@@ -907,7 +907,7 @@ ldfnbox (n)
 		}
 	    }
 
-	  if (ldrow NE ldline (hitcy))
+	  if (ldrow != ldline (hitcy))
 	    {
 
 	      clrlsel ();
@@ -921,18 +921,18 @@ ldfnbox (n)
       else
 	{			/* nothing selected yet */
 
-	  if (0 NE (ldrow = ldline (hitcy)))
+	  if (0 != (ldrow = ldline (hitcy)))
 	    {
 
-	      if (col EQ 11)
+	      if (col == 11)
 		{
 
-		  if (catin AND ltagged)
+		  if (catin && ltagged)
 		    {
 
 		      slot = lin2slt (ldrow);
 
-		      if (slot EQ tagslot)
+		      if (slot == tagslot)
 			{
 
 			  putcat ();
@@ -945,7 +945,7 @@ ldfnbox (n)
 	      else
 		{
 
-		  if (-1 NE (ldslot = lin2slt (ldrow)))
+		  if (-1 != (ldslot = lin2slt (ldrow)))
 		    {
 
 		      lselsw = TRUE;
@@ -955,7 +955,7 @@ ldfnbox (n)
 		      for (i = 0; i < N_SCORES; i++)
 			ldmap[i] = i;
 
-		      if (lrasw AND (ldkind EQ FT_SCR))
+		      if (lrasw && (ldkind == FT_SCR))
 			return (ndx_scr (ldslot));
 
 		      dslslot (ldslot, exp_c (LD_SELC), ldrow);
@@ -974,7 +974,7 @@ ldfnbox (n)
       if (lcancel (3))
 	return (SUCCESS);
 
-      if (lmwtype NE 1)
+      if (lmwtype != 1)
 	{
 
 	  lmwvtyp ();		/* setup for the typewriter */
@@ -998,7 +998,7 @@ ldfnbox (n)
       if (lcancel (3))
 	return (SUCCESS);
 
-      if (lmwtype NE 1)
+      if (lmwtype != 1)
 	{
 
 	  lmwvtyp ();		/* setup for the typewriter */
@@ -1030,16 +1030,16 @@ ldfnbox (n)
 
     case 7:			/* "Content" */
 
-      if (lselsw AND lrasw)
+      if (lselsw && lrasw)
 	return (getit ());
 
-      lrasw = NOT lrasw;
+      lrasw = ! lrasw;
       ldswin (7);
       return (SUCCESS);
 
     case 8:			/* "Hi Orch" / "Lo Orch" */
 
-      lorchl = NOT lorchl;
+      lorchl = ! lorchl;
       ldswin (8);
       return (SUCCESS);
 
@@ -1076,12 +1076,12 @@ ldfnbox (n)
 	      return (SUCCESS);
 
 	    }
-	  else if ((cxval > 135) AND (cxval < 176))
+	  else if ((cxval > 135) && (cxval < 176))
 	    {
 
 	      /* "Score" */
 
-	      lscrsw = NOT lscrsw;
+	      lscrsw = ! lscrsw;
 	      ldswin (9);
 
 	      if (lstrsw)
@@ -1095,7 +1095,7 @@ ldfnbox (n)
 
 	      /* "Hi Orch" */
 
-	      lorchsw = NOT lorchsw;
+	      lorchsw = ! lorchsw;
 	      ldswin (9);
 
 	      if (lstrsw)
@@ -1106,7 +1106,7 @@ ldfnbox (n)
 /* 
 */
 	}
-      else if ((cyval > 321) AND (cyval < 335))
+      else if ((cyval > 321) && (cyval < 335))
 	{
 
 	  /* row 23:  "Waves",  "Patch",  or "Lo Orch" */
@@ -1114,7 +1114,7 @@ ldfnbox (n)
 	  if (cxval < 120)
 	    {			/* "Waves" */
 
-	      lwavsw = NOT lwavsw;
+	      lwavsw = ! lwavsw;
 	      ldswin (9);
 
 	      if (lstrsw)
@@ -1123,12 +1123,12 @@ ldfnbox (n)
 	      return (SUCCESS);
 
 	    }
-	  else if ((cxval > 135) AND (cxval < 176))
+	  else if ((cxval > 135) && (cxval < 176))
 	    {
 
 	      /* "Patch" */
 
-	      lpatsw = NOT lpatsw;
+	      lpatsw = ! lpatsw;
 	      ldswin (9);
 
 	      if (lstrsw)
@@ -1140,7 +1140,7 @@ ldfnbox (n)
 	  else if (cxval > 191)
 	    {			/* "Lo Orch" */
 
-	      lorclsw = NOT lorclsw;
+	      lorclsw = ! lorclsw;
 	      ldswin (9);
 
 	      if (lstrsw)
@@ -1159,7 +1159,7 @@ ldfnbox (n)
 	  if (cxval < 120)
 	    {			/* "Assgn" */
 
-	      lasgsw = NOT lasgsw;
+	      lasgsw = ! lasgsw;
 	      ldswin (9);
 
 	      if (lstrsw)
@@ -1168,12 +1168,12 @@ ldfnbox (n)
 	      return (SUCCESS);
 
 	    }
-	  else if ((cxval > 135) AND (cxval < 176))
+	  else if ((cxval > 135) && (cxval < 176))
 	    {
 
 	      /* "Seqnc" */
 
-	      lseqsw = NOT lseqsw;
+	      lseqsw = ! lseqsw;
 	      ldswin (9);
 
 	      if (lstrsw)
@@ -1185,7 +1185,7 @@ ldfnbox (n)
 	  else if (cxval > 191)
 	    {			/* "Tunings" */
 
-	      ltunsw = NOT ltunsw;
+	      ltunsw = ! ltunsw;
 	      ldswin (9);
 
 	      if (lstrsw)

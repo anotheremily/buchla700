@@ -132,7 +132,7 @@ SendB (byte)
 
 /*
    =============================================================================
-	SendM() -- send a byte string to the MIDI port -- Checksum NOT updated.
+	SendM() -- send a byte string to the MIDI port -- Checksum ! updated.
    =============================================================================
 */
 
@@ -202,10 +202,10 @@ ThSysEx (mt, mp1, mp2)
 
       SendM (7, sxhead);	/* send the header */
 
-      if ((0 EQ mt) OR (3 EQ mt))	/* optional Address */
+      if ((0 == mt) || (3 == mt))	/* optional Address */
 	SendW (Addr);
 
-      if (0 EQ mt)		/* optional Data */
+      if (0 == mt)		/* optional Data */
 	SendW (Data);
 
       Bconout (3, -thsum & 0x007F);	/* checksum */
@@ -248,10 +248,10 @@ GetUInt (msg, parm)
   iv = 0L;
   ten = 10;
 
-  if ((char *) NULL NE msg)
+  if ((char *) NULL != msg)
     printf ("%s", msg);
 
-  while (0x000D NE (ch = 0x00FF & Bconin (2)))
+  while (0x000D != (ch = 0x00FF & Bconin (2)))
     {
 
       if (isdigit (ch))
@@ -315,7 +315,7 @@ SetMBuf ()
   oldbhi = m_buff->ibufhi;
   oldblo = m_buff->ibuflo;
 
-  if ((char *) NULL EQ (newbuf = (char *) malloc (size)))
+  if ((char *) NULL == (newbuf = (char *) malloc (size)))
     {
 
       printf ("ERROR -- unable to allocate MIDI buffer.\n");
@@ -363,15 +363,15 @@ void
 PrMIDI (M_Byte)
      unsigned int M_Byte;
 {
-  if ((0x00FF & M_Byte) EQ 0x00FE)
+  if ((0x00FF & M_Byte) == 0x00FE)
     {
 
-      if (NOT feseen)
+      if (! feseen)
 	{
 
 	  printf ("\nActive sense is active\n");
 
-	  if ((FILE *) NULL NE ofp)
+	  if ((FILE *) NULL != ofp)
 	    fprintf (ofp, "\nActive sense is active\n");
 	}
 
@@ -390,7 +390,7 @@ PrMIDI (M_Byte)
 	  printf (FORMAT1, indx, M_Byte);
 	  nol = 0;
 
-	  if ((FILE *) NULL NE ofp)
+	  if ((FILE *) NULL != ofp)
 	    fprintf (ofp, FORMAT1, indx, M_Byte);
 
 	}
@@ -403,20 +403,20 @@ PrMIDI (M_Byte)
 	      printf (FORMAT3, indx);
 	      nol = 1;
 
-	      if ((FILE *) NULL NE ofp)
+	      if ((FILE *) NULL != ofp)
 		fprintf (ofp, FORMAT3, indx);
 	    }
 
 	  printf (FORMAT2, M_Byte);
 
-	  if ((FILE *) NULL NE ofp)
+	  if ((FILE *) NULL != ofp)
 	    fprintf (ofp, FORMAT2, M_Byte);
 	}
     }
 
   fflush (stdout);
 
-  if ((FILE *) NULL NE ofp)
+  if ((FILE *) NULL != ofp)
     fflush (ofp);
 }
 
@@ -504,10 +504,10 @@ main (argc, argv)
 
   cleanbf ();			/* clear out MIDI buffer */
 
-  if (argc EQ 2)
+  if (argc == 2)
     {
 
-      if ((FILE *) NULL EQ (ofp = fopen (argv[1], "w")))
+      if ((FILE *) NULL == (ofp = fopen (argv[1], "w")))
 	{
 
 	  printf ("\nERROR -- Unable to open \"%s\" for output.\n", argv[1]);
@@ -555,7 +555,7 @@ main (argc, argv)
 	      printf ("\033E");
 	      printf ("Ready.\n");
 
-	      if ((FILE *) NULL NE ofp)
+	      if ((FILE *) NULL != ofp)
 		{
 
 		  fprintf (ofp, "\n\nMIDI buffer flushed.\n\n");
@@ -567,10 +567,10 @@ main (argc, argv)
 	    case 'B':
 	    case 'b':		/* b = set base channel */
 
-	      if (SUCCESS EQ GetUInt ("\nChan: ", &Chan))
+	      if (SUCCESS == GetUInt ("\nChan: ", &Chan))
 		{
 
-		  if ((Chan > 0) AND (Chan < 17))
+		  if ((Chan > 0) && (Chan < 17))
 		    thchan = Chan - 1;
 		  else
 		    printf ("\nERROR:  out of range  (1..16)\n");
@@ -589,7 +589,7 @@ main (argc, argv)
 	    case 'E':
 	    case 'e':		/* e = examine a word in a Thunder config */
 
-	      if (SUCCESS EQ GetUInt ("\nAddr: ", &Addr))
+	      if (SUCCESS == GetUInt ("\nAddr: ", &Addr))
 		ThSysEx (3, Addr, 0);
 
 	      break;
@@ -597,7 +597,7 @@ main (argc, argv)
 	    case 'F':
 	    case 'f':		/* f = write THTEST.FFF to MIDI */
 
-	      if ((FILE *) NULL EQ (ifp = fopenb (FILE_1, "r")))
+	      if ((FILE *) NULL == (ifp = fopenb (FILE_1, "r")))
 		{
 
 		  printf ("\nERROR:  Unable to open \"%s\" for input\n",
@@ -609,7 +609,7 @@ main (argc, argv)
 	      else
 		{
 
-		  while (0 EQ feof (ifp))
+		  while (0 == feof (ifp))
 		    Bconout (3, 0x00FF & getc (ifp));
 
 		  fclose (ifp);
@@ -622,7 +622,7 @@ main (argc, argv)
 	    case 'G':
 	    case 'g':		/* g = write THTEST.GGG to MIDI */
 
-	      if ((FILE *) NULL EQ (ifp = fopenb (FILE_2, "r")))
+	      if ((FILE *) NULL == (ifp = fopenb (FILE_2, "r")))
 		{
 
 		  printf ("\nERROR:  Unable to open \"%s\" for input\n",
@@ -634,7 +634,7 @@ main (argc, argv)
 	      else
 		{
 
-		  while (0 EQ feof (ifp))
+		  while (0 == feof (ifp))
 		    Bconout (3, 0x00FF & getc (ifp));
 
 		  fclose (ifp);
@@ -663,16 +663,16 @@ main (argc, argv)
 	    case 'M':
 	    case 'm':		/* m = toggle output monitor state */
 
-	      mstate = NOT mstate;
+	      mstate = ! mstate;
 	      break;
 
 	    case 'P':
 	    case 'p':		/* p = send program change */
 
-	      if (SUCCESS EQ GetUInt ("\nProg: ", &Prog))
+	      if (SUCCESS == GetUInt ("\nProg: ", &Prog))
 		{
 
-		  if ((Prog GE 0) AND (Prog < 128))
+		  if ((Prog >= 0) && (Prog < 128))
 		    {
 
 		      Bconout (3, 0x00C0 | (thchan & 0x000F));
@@ -691,10 +691,10 @@ main (argc, argv)
 	    case 'S':
 	    case 's':		/* s = set a word in a Thunder config */
 
-	      if (SUCCESS EQ GetUInt ("\nAddr: ", &Addr))
+	      if (SUCCESS == GetUInt ("\nAddr: ", &Addr))
 		{
 
-		  if (SUCCESS EQ GetUInt ("Data: ", &Data))
+		  if (SUCCESS == GetUInt ("Data: ", &Data))
 		    ThSysEx (0, Addr, Data);
 		}
 
@@ -703,10 +703,10 @@ main (argc, argv)
 	    case 'U':
 	    case 'u':		/* u = set Thunder unit number */
 
-	      if (SUCCESS EQ GetUInt ("\nUnit: ", &Unit))
+	      if (SUCCESS == GetUInt ("\nUnit: ", &Unit))
 		{
 
-		  if ((Unit > 0) AND (Unit < 10))
+		  if ((Unit > 0) && (Unit < 10))
 		    thunit = Unit - 1;
 		  else
 		    printf ("\nERROR:  out of range  (1..9)\n");
@@ -719,16 +719,16 @@ main (argc, argv)
 	    case 'v':
 	    case 'V':		/* v = send control change */
 
-	      if (SUCCESS EQ GetUInt ("\nCtrl: ", &Ctrl))
+	      if (SUCCESS == GetUInt ("\nCtrl: ", &Ctrl))
 		{
 
-		  if ((Ctrl GE 0) AND (Ctrl < 128))
+		  if ((Ctrl >= 0) && (Ctrl < 128))
 		    {
 
-		      if (SUCCESS EQ GetUInt ("\nValue: ", &Valu))
+		      if (SUCCESS == GetUInt ("\nValue: ", &Valu))
 			{
 
-			  if ((Valu GE 0) AND (Valu < 128))
+			  if ((Valu >= 0) && (Valu < 128))
 			    {
 
 			      Bconout (3, 0x00B0 | (thchan & 0x000F));
@@ -756,7 +756,7 @@ main (argc, argv)
 	    case 'W':
 	    case 'w':		/* w = write to SNAPFILE */
 
-	      if ((FILE *) NULL EQ (sfp = fopenb (SNAPFILE, "w")))
+	      if ((FILE *) NULL == (sfp = fopenb (SNAPFILE, "w")))
 		{
 
 		  printf ("ERROR -- Unable to open \"%s\" for output.\n",
@@ -784,11 +784,11 @@ main (argc, argv)
       if (m_stat ())
 	PrMIDI (midi_in ());
 
-      if ((FILE *) NULL NE ofp)
+      if ((FILE *) NULL != ofp)
 	fflush (ofp);
     }
 
-  if ((FILE *) NULL NE ofp)
+  if ((FILE *) NULL != ofp)
     {				/* close the log file if it's open */
 
       fprintf (ofp, "\n");

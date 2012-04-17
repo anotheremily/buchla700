@@ -105,31 +105,31 @@ Croot (cp)
   while (Argc < MAXARGS)
     {				/* handle command line arguments */
 
-      while (*cp EQ ' ' OR * cp EQ '\t')	/* skip whitespace */
+      while (*cp == ' ' || * cp == '\t')	/* skip whitespace */
 	++cp;
 
-      if (*cp EQ 0)		/* check for end of line */
+      if (*cp == 0)		/* check for end of line */
 	break;
 
-      if (*cp EQ '>')
+      if (*cp == '>')
 	{			/* > - redirect output */
 
 	  k = 1;		/* stdout */
 	  goto redir;
 
 	}
-      else if (*cp EQ '<')
+      else if (*cp == '<')
 	{			/* < - redirect input */
 
 	  k = 0;		/* stdin */
 	redir:
-	  while (*++cp EQ ' ' OR * cp EQ '\t')	/* skip whitespace */
+	  while (*++cp == ' ' || * cp == '\t')	/* skip whitespace */
 	    ;
 
 	  fname = cp;		/* pointer to start of name */
 
 	  while (*++cp)		/* skip to whitespace */
-	    if (*cp EQ ' ' OR * cp EQ '\t')
+	    if (*cp == ' ' || * cp == '\t')
 	      {
 
 		*cp++ = 0;
@@ -143,7 +143,7 @@ Croot (cp)
 	  else
 	    k = open (fname, O_RDONLY);	/* stdin */
 
-	  if (k EQ - 1)
+	  if (k == - 1)
 	    _eredir (fname);
 
 	}
@@ -153,7 +153,7 @@ Croot (cp)
 	  Argv[Argc++] = cp;
 
 	  while (*++cp)		/* find end of argument */
-	    if (*cp EQ ' ' OR * cp EQ '\t')
+	    if (*cp == ' ' || * cp == '\t')
 	      {
 
 		*cp++ = 0;

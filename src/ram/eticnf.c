@@ -69,7 +69,7 @@ ef_icnf (n)
   for (i = 0; i < 2; i++)	/* convert from ASCII to binary */
     tmpval = (tmpval * 10) + (ebuf[i] - '0');
 
-  if (tmpval GE NUMCFG)		/* check against limit */
+  if (tmpval >= NUMCFG)		/* check against limit */
     return (FAILURE);
 
   vbufs[curvce].idhcfg = tmpval;

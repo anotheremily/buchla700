@@ -215,14 +215,14 @@ makeln (lnc, lew)
 
       /* stuff data into line object */
 
-      if ((i EQ 42) OR		/* top ledger line */
-	  (i EQ 50) OR		/* top ledger line */
-	  (i EQ 58) OR		/* top ledger line */
-	  (i EQ 66) OR		/* top ledger line */
-	  (i EQ 162) OR		/* bottom ledger line */
-	  (i EQ 170) OR		/* bottom ledger line */
-	  (i EQ 178) OR		/* bottom ledger line */
-	  (i EQ 186))
+      if ((i == 42) ||		/* top ledger line */
+	  (i == 50) ||		/* top ledger line */
+	  (i == 58) ||		/* top ledger line */
+	  (i == 66) ||		/* top ledger line */
+	  (i == 162) ||		/* bottom ledger line */
+	  (i == 170) ||		/* bottom ledger line */
+	  (i == 178) ||		/* bottom ledger line */
+	  (i == 186))
 	{
 
 	  lbg = lew;
@@ -284,7 +284,7 @@ makeln (lnc, lew)
 
 ds_vmod ()
 {
-  if (ndisp NE 2)
+  if (ndisp != 2)
     return;
 
   if (v_regs[5] & 0x0180)
@@ -305,7 +305,7 @@ ds_vel ()
   register short i;
   char buf[6];
 
-  if (ndisp NE 2)
+  if (ndisp != 2)
     return;
 
   if (v_regs[5] & 0x0180)
@@ -333,7 +333,7 @@ ds_vel ()
 dsvmode (n)
      short n;
 {
-  if (ndisp NE 2)
+  if (ndisp != 2)
     return;
 
   if (v_regs[5] & 0x0180)
@@ -353,7 +353,7 @@ ds_anmd ()
 {
   register short i;
 
-  if (ndisp NE 2)
+  if (ndisp != 2)
     return;
 
   for (i = 0; i < 6; i++)
@@ -373,7 +373,7 @@ ds_angr ()
 {
   char buf[4];
 
-  if (ndisp NE 2)
+  if (ndisp != 2)
     return;
 
   if (v_regs[5] & 0x0180)
@@ -397,7 +397,7 @@ ds_anrs ()
   register short i;
   char buf[3];
 
-  if (ndisp NE 2)
+  if (ndisp != 2)
     return;
 
   if (v_regs[5] & 0x0180)
@@ -429,7 +429,7 @@ dsanval (var)
   register short tmp, val, v1, v2;
   char buf[16];
 
-  if (ndisp NE 2)
+  if (ndisp != 2)
     return;
 
   if (v_regs[5] & 0x0180)
@@ -453,7 +453,7 @@ ds_anvl ()
 {
   register short i;
 
-  if (ndisp NE 2)
+  if (ndisp != 2)
     return;
 
   for (i = 0; i < 6; i++)
@@ -471,7 +471,7 @@ ds_anvl ()
 
 uclk ()
 {
-  if (sliders NE LS_VOICE)
+  if (sliders != LS_VOICE)
     {
 
       point = GLCplot;
@@ -500,7 +500,7 @@ dclkmd ()
 {
   uclk ();
 
-  if (ndisp NE 2)
+  if (ndisp != 2)
     return;
 
   if (v_regs[5] & 0x0180)
@@ -524,7 +524,7 @@ dsclk ()
 
   uclk ();
 
-  if (ndisp NE 2)
+  if (ndisp != 2)
     return;
 
   memsetw (atr, SDW02ATR, 26);
@@ -551,7 +551,7 @@ dsclk ()
 
 dssect ()
 {
-  if (ndisp NE 2)
+  if (ndisp != 2)
     return;
 
   sprintf (bfs, "%02d", cursect + 1);
@@ -576,7 +576,7 @@ dslocn ()
   register long curfr, beat;
   register short frame;
 
-  if (ndisp NE 2)
+  if (ndisp != 2)
     return;
 
   curfr = t_ctr;
@@ -602,7 +602,7 @@ dslocn ()
 
 dnedmod ()
 {
-  if (ndisp NE 2)
+  if (ndisp != 2)
     return;
 
   if (v_regs[5] & 0x0180)
@@ -610,7 +610,7 @@ dnedmod ()
 
   vputs (obj8, 0, 55, nedlbl[noteop],
 	 (notesel ? ((SD_CHNG << 4) | SDBG03) : SDW03ATR) |
-	 (noteop EQ NOP_NUL ? 0 : C_BLINK));
+	 (noteop == NOP_NUL ? 0 : C_BLINK));
 }
 
 /*
@@ -621,7 +621,7 @@ dnedmod ()
 
 dsmem ()
 {
-  if (ndisp NE 2)
+  if (ndisp != 2)
     return;
 
   sprintf (bfs, "M %05ld", evleft ());
@@ -646,7 +646,7 @@ dsgstat (n)
 {
   char c;
 
-  if (ndisp NE 2)
+  if (ndisp != 2)
     return;
 
   if (v_regs[5] & 0x0180)
@@ -665,7 +665,7 @@ dsgstat (n)
 dsgmode (n)
      short n;
 {
-  if (ndisp NE 2)
+  if (ndisp != 2)
     return;
 
   if (v_regs[5] & 0x0180)
@@ -687,7 +687,7 @@ dsgmods ()
 {
   register short i;
 
-  if (ndisp NE 2)
+  if (ndisp != 2)
     return;
 
   for (i = 0; i < 12; i++)
@@ -708,7 +708,7 @@ dsgmodz ()
 {
   register short i;
 
-  if (ndisp NE 2)
+  if (ndisp != 2)
     return;
 
   for (i = 0; i < 12; i++)	/* group modes */
@@ -761,7 +761,7 @@ dsrpmod ()
     }
 /* 
 */
-  if (ndisp NE 2)
+  if (ndisp != 2)
     return;
 
   memsetw (atr, SDW14ATR, 25);
@@ -796,7 +796,7 @@ dsimode ()
 {
   short atr[7];
 
-  if (ndisp NE 2)
+  if (ndisp != 2)
     return;
 
   if (insmode)
@@ -824,7 +824,7 @@ sdwin (n)
 {
   short atr[64], atrib, i;
 
-  if (ndisp NE 2)		/* only if score is selected */
+  if (ndisp != 2)		/* only if score is selected */
     return;
 
   if (v_regs[5] & 0x0180)	/* select bank 0 */
@@ -835,7 +835,7 @@ sdwin (n)
 
     case 0:			/* score location */
 
-      vputs (obj8, 0, 0, ac_code EQ N_SHARP ? "\250 " : "\251 ", SDW00ATR);
+      vputs (obj8, 0, 0, ac_code == N_SHARP ? "\250 " : "\251 ", SDW00ATR);
 
       vputs (obj8, 0, 2, "Sec    ", SDW01ATR);
       vputs (obj8, 0, 9, "B       F    ", SDW00ATR);
@@ -984,7 +984,7 @@ sdwins ()
 {
   register short i;
 
-  if (ndisp NE 2)		/* only if score display is selected */
+  if (ndisp != 2)		/* only if score display is selected */
     return;
 
   for (i = 0; i < 17; i++)	/* refresh each of the windows */
@@ -1053,7 +1053,7 @@ sdsetup ()
 
 /* 
 */
-  if ((v_regs[5] & 0x0180) NE 0x0100)
+  if ((v_regs[5] & 0x0180) != 0x0100)
     vbank (1);			/* select bank 1 */
 
   memcpyw (obj13, kbobj, 896);	/* setup 'keyboard' object */

@@ -30,16 +30,16 @@ addfpu (t, k)
 
   x = fromfpu (t);
 
-  if (x EQ MAXSEGT)
+  if (x == MAXSEGT)
     return (t);
 
   y = t;
   z = x + k;
 
-  if (z GE MAXSEGT)
+  if (z >= MAXSEGT)
     return (tofpu (MAXSEGT));
 
-  while ((y EQ t) OR (z > x))
+  while ((y == t) || (z > x))
     y = tofpu (++x);
 
   return (y);
@@ -64,16 +64,16 @@ subfpu (t, k)
 
   x = fromfpu (t);
 
-  if (x EQ 1)
+  if (x == 1)
     return (t);
 
   y = t;
   z = x - k;
 
-  if (z LE 1)
+  if (z <= 1)
     return (tofpu (1));
 
-  while ((y EQ t) OR (z < x))
+  while ((y == t) || (z < x))
     y = tofpu (--x);
 
   return (y);

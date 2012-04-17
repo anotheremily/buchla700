@@ -112,7 +112,7 @@ ef_itim (n)
 
   setseg (subj, tmpval);
 
-  if (pecase EQ 2)
+  if (pecase == 2)
     setseg (subj + 1, temax);
 #if DEBUGIT
   printf ("ef_itim():  SUCCESS   time %d set at point %d <%d> = %d\r\n",
@@ -172,7 +172,7 @@ nd_itim (n, k)
 
   ec = stccol - cfetp->flcol;	/* setup edit buffer column */
 
-  if (ec EQ 2)
+  if (ec == 2)
     return (FAILURE);
 
   ebuf[ec] = k + '0';
@@ -189,7 +189,7 @@ nd_itim (n, k)
 
   advicur ();
 
-  if (stccol EQ (idbox[n][7] + 2))
+  if (stccol == (idbox[n][7] + 2))
     advicur ();
 
   return (SUCCESS);

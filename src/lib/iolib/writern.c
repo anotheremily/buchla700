@@ -67,7 +67,7 @@ WriteRN (fcp, buf)
 	  return (FAILURE);
 
 	}
-      else if (sv EQ 2)
+      else if (sv == 2)
 	{			/* at hard EOF ? */
 
 	  if (_alcnew (fcp))

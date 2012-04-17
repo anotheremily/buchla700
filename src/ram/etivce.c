@@ -68,7 +68,7 @@ ef_ivce (n)
   for (i = 0; i < 2; i++)	/* convert from ASCII to binary */
     tmpval = (tmpval * 10) + (ebuf[i] - '0');
 
-  if ((tmpval EQ 0) OR (tmpval GT 12))
+  if ((tmpval == 0) || (tmpval > 12))
     return (FAILURE);
 
   newvce (tmpval - 1);

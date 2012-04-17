@@ -65,7 +65,7 @@ main ()
 {
   /* check horizontal constants */
 
-  if (hc0 GE hc1)
+  if (hc0 >= hc1)
     {
 
       printf ("ERROR:  hc0 {%d} must be < hc1 {%d}\n", hc0, hc1);
@@ -74,21 +74,21 @@ main ()
 
   hc4 = hc3 >> 1;
 
-  if (hc1 GE hc4)
+  if (hc1 >= hc4)
     {
 
       printf ("ERROR:  hc1 {%d} must be < (hc3 / 2) {%d}\n", hc1, hc4);
       exit (1);
     }
 
-  if (hc4 GE hc2)
+  if (hc4 >= hc2)
     {
 
       printf ("ERROR:  hc2 {%d} must be > (hc3 / 2) {%d}\n", hc2, hc4);
       exit (1);
     }
 
-  if (hc2 GE hc3)
+  if (hc2 >= hc3)
     {
 
       printf ("ERROR:  hc2 {%d} must be < hc3 {%d}\n", hc2, hc3);
@@ -97,21 +97,21 @@ main ()
 
   /* check vertical constants */
 
-  if (vc0 GE vc1)
+  if (vc0 >= vc1)
     {
 
       printf ("ERROR:  vc0 {%d} must be < vc1 {%d}\n", vc0, vc1);
       exit (1);
     }
 
-  if (vc1 GE vc2)
+  if (vc1 >= vc2)
     {
 
       printf ("ERROR:  vc1 {%d} must be < vc2 {%d}\n", vc1, vc2);
       exit (1);
     }
 
-  if (vc2 GE vc3)
+  if (vc2 >= vc3)
     {
 
       printf ("ERROR:  vc2 {%d} must be < vc3 {%d}\n", vc2, vc3);

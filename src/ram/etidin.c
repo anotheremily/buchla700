@@ -67,23 +67,23 @@ ef_idin (n)
   if (idcfsw)
     {				/* 'E' with menu up */
 
-      if (vtcrow EQ 22)
+      if (vtcrow == 22)
 	{			/* fetch or escape */
 
-	  if (vtccol LT 35)
+	  if (vtccol < 35)
 	    {
 
 	      newinst (idintmp);
 	      execins (curvce, curinst, 1);
 
-	      if (NOT editsw)
+	      if (! editsw)
 		{
 
 		  if ((i = vce2grp[curvce]) > 0)
 		    {
 
 		      for (j = 0; j < 12; j++)
-			if (vce2grp[j] EQ i)
+			if (vce2grp[j] == i)
 			  execins (j, curinst, 1);
 		    }
 		}
@@ -94,7 +94,7 @@ ef_idin (n)
 	  idcfsw = FALSE;
 	  submenu = FALSE;
 
-	  if (vtccol LT 35)
+	  if (vtccol < 35)
 	    {
 
 	      allwins ();
@@ -109,7 +109,7 @@ ef_idin (n)
 /* 
 */
 	}
-      else if (vtcrow EQ 23)
+      else if (vtcrow == 23)
 	{			/* copy to library */
 
 	  if (idintmp)
@@ -129,7 +129,7 @@ ef_idin (n)
 	  dswin (22);
 	  dswin (19);
 
-	  if (idintmp EQ 0)
+	  if (idintmp == 0)
 	    return (FAILURE);
 
 	}
@@ -151,7 +151,7 @@ ef_idin (n)
       for (i = 0; i < 2; i++)	/* convert from ASCII to binary */
 	tmpval = (tmpval * 10) + (ebuf[i] - '0');
 
-      if (tmpval GE NINST)	/* check the range */
+      if (tmpval >= NINST)	/* check the range */
 	return (FAILURE);
 
       idintmp = tmpval;		/* save selected value */

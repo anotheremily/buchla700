@@ -62,7 +62,7 @@ open (name, flag, mode)
   /* search for a free channel */
 
   for (chp = chantab, fd = 0; fd < MAXCHAN; ++chp, ++fd)
-    if (chp->c_close EQ _badfd)
+    if (chp->c_close == _badfd)
       goto fndchan;
 
   errno = EMFILE;		/* no channels available */
@@ -74,7 +74,7 @@ open (name, flag, mode)
 fndchan:			/* found a channel to use */
 
   for (dp = devtabl; dp->d_name; ++dp)	/* search for the device */
-    if (strcmp (dp->d_name, name) EQ 0)
+    if (strcmp (dp->d_name, name) == 0)
       break;
 
   dev = dp->d_dev;
@@ -83,7 +83,7 @@ fndchan:			/* found a channel to use */
   if (mdmask & 1)
     {				/* see if device is readable */
 
-      if ((chp->c_read = dev->d_read) EQ 0)
+      if ((chp->c_read = dev->d_read) == 0)
 	{
 
 	  errno = EACCES;	/* can't read */
@@ -94,7 +94,7 @@ fndchan:			/* found a channel to use */
   if (mdmask & 2)
     {				/* see if device is writeable */
 
-      if ((chp->c_write = dev->d_write) EQ 0)
+      if ((chp->c_write = dev->d_write) == 0)
 	{
 
 	  errno = EACCES;	/* can't write */
@@ -240,7 +240,7 @@ _fileop (name, flag, mode, chp, dp)
   /* search for an available fcb entry */
 
   for (fp = _fcbtab; fp < (_fcbtab + MAXDFILE); ++fp)
-    if (fp->modefl EQ 0)
+    if (fp->modefl == 0)
       goto havefcb;
 
   errno = ENFILE;		/* no fcb space available for file */

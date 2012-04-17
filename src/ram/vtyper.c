@@ -196,11 +196,11 @@ vtyper ()
 
       /* convert (vtcrow, vtccol) to data entry character */
 
-      if (vtcrow EQ vtwrow)
+      if (vtcrow == vtwrow)
 	vtdechr = vtlin1[vtccol - vtwcol];
-      else if (vtcrow EQ (vtwrow + 1))
+      else if (vtcrow == (vtwrow + 1))
 	vtdechr = vtlin2[vtccol - vtwcol];
-      else if (vtcrow EQ (vtwrow + 2))
+      else if (vtcrow == (vtwrow + 2))
 	vtdechr = vtlin3[vtccol - vtwcol];
       else
 	{
@@ -225,7 +225,7 @@ vtyper ()
       /* check for exit or cursor controls */
 
     }
-  else if ((vtcrow EQ (vtwrow + 1)) AND (vtccol EQ (vtwcol + 28)))
+  else if ((vtcrow == (vtwrow + 1)) && (vtccol == (vtwcol + 28)))
     {				/* exit */
 
       objclr (TTCPRI);		/* turn off typewriter cursor */
@@ -233,28 +233,28 @@ vtyper ()
       return (FALSE);
 
     }
-  else if ((vtcrow EQ vtwrow) AND (vtccol EQ (vtwcol + 28)))
+  else if ((vtcrow == vtwrow) && (vtccol == (vtwcol + 28)))
     {				/* cursor up */
 
       (*vt_cup) ();		/* move cursor up a row */
       return (FALSE);
 
     }
-  else if ((vtcrow EQ (vtwrow + 2)) AND (vtccol EQ (vtwcol + 28)))
+  else if ((vtcrow == (vtwrow + 2)) && (vtccol == (vtwcol + 28)))
     {				/* cursor down */
 
       (*vt_cdn) ();		/* move cursor down a row */
       return (FALSE);
 
     }
-  else if ((vtcrow EQ (vtwrow + 1)) AND (vtccol EQ (vtwcol + 27)))
+  else if ((vtcrow == (vtwrow + 1)) && (vtccol == (vtwcol + 27)))
     {				/* cursor lft */
 
       (*vt_bsp) ();		/* move cursor left a column */
       return (FALSE);
 
     }
-  else if ((vtcrow EQ (vtwrow + 1)) AND (vtccol EQ (vtwcol + 29)))
+  else if ((vtcrow == (vtwrow + 1)) && (vtccol == (vtwcol + 29)))
     {				/* cursor rgt */
 
       (*vt_adv) ();		/* move cursor right a column */

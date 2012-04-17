@@ -25,18 +25,18 @@ _opener (name, mode, aflag)
   while (fp->_flags)
     {
 
-      if (++fp GE (Cbuffs + NSTREAMS))
+      if (++fp >= (Cbuffs + NSTREAMS))
 	return (NULL);
     }
 
-  plusopt = mode[1] EQ '+';
+  plusopt = mode[1] == '+';
 
   switch (0x007F & *mode)
     {
 
     case 'r':			/* read mode */
       if ((fp->_unit =
-	   open (name, (plusopt ? O_RDWR : O_RDONLY) | aflag)) EQ - 1)
+	   open (name, (plusopt ? O_RDWR : O_RDONLY) | aflag)) == - 1)
 	return (NULL);
       break;
 
@@ -44,7 +44,7 @@ _opener (name, mode, aflag)
       if ((fp->_unit =
 	   open (name,
 		 (plusopt ? O_RDWR : O_WRONLY) | aflag | O_CREAT | O_TRUNC))
-	  EQ - 1)
+	  == - 1)
 	return (NULL);
 
       break;
@@ -52,7 +52,7 @@ _opener (name, mode, aflag)
     case 'a':			/* append mode */
       if ((fp->_unit =
 	   open (name,
-		 (plusopt ? O_RDWR : O_WRONLY) | aflag | O_CREAT)) EQ - 1)
+		 (plusopt ? O_RDWR : O_WRONLY) | aflag | O_CREAT)) == - 1)
 	return (NULL);
 
       if (lseek (fp->_unit, 0L, 2) < 0)

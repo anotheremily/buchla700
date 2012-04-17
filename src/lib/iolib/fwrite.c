@@ -35,7 +35,7 @@ fwrite (buffer, size, number, stream)
 
   for (i = 0; i < number; ++i)
     for (j = 0; j < size; ++j)
-      if (putc (*buffer++, stream) EQ EOF)
+      if (putc (*buffer++, stream) == EOF)
 	return (i);
 
   return (number);

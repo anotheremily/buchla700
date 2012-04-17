@@ -101,7 +101,7 @@ booter (fn, textadr)
 
   /* open the file */
 
-  if (NULL EQ (B_file = fopenb (fn, "r")))
+  if (NULL == (B_file = fopenb (fn, "r")))
     {
 
 
@@ -138,7 +138,7 @@ booter (fn, textadr)
 
   /* read in the file header */
 
-  if (1 NE fread (&B_fhdr, sizeof B_fhdr, 1, B_file))
+  if (1 != fread (&B_fhdr, sizeof B_fhdr, 1, B_file))
     {
 
 
@@ -158,7 +158,7 @@ booter (fn, textadr)
 
   /* check the magic */
 
-  if ((B_fhdr.F_Magic NE F_R_C) AND (B_fhdr.F_Magic NE F_R_D))
+  if ((B_fhdr.F_Magic != F_R_C) && (B_fhdr.F_Magic != F_R_D))
     {
 
 
@@ -182,7 +182,7 @@ booter (fn, textadr)
 
   /* if it's a discontinuous file, read the origins */
 
-  if (B_fhdr.F_Magic EQ F_R_D)
+  if (B_fhdr.F_Magic == F_R_D)
     {
 
 
@@ -201,7 +201,7 @@ booter (fn, textadr)
   B_lod_l = B_fhdr.F_Text + B_fhdr.F_Data;
 
 
-  if (0 NE flread (B_buf_a, B_lod_l, B_file))
+  if (0 != flread (B_buf_a, B_lod_l, B_file))
     {
 
 

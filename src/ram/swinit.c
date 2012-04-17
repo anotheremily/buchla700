@@ -75,7 +75,7 @@ PFS (*swpt)[];			/* switch dispatch table pointer */
 
      short BarBcur[14];		/* current bottom-zero bar values */
      short BarCcur[14];		/* current centered-zero bar values */
-     short BGeq[14];		/* current EQ bar settings */
+     short BGeq[14];		/* current == bar settings */
      short BGother[14];		/* current other pot bar settings */
      short BGprmtr[14];		/* current parameter pot bar settings */
 
@@ -107,7 +107,7 @@ PFS (*swpt)[];			/* switch dispatch table pointer */
      short tyfifo[NTKFIFO];	/* trackball Y fifo */
      short tuntab[128];		/* current tuning table */
      short vce2grp[12];		/* voice to group table (-1, 1..12) */
-     short vce2trg[12];		/* voice to trigger map (-1 EQ NULL) */
+     short vce2trg[12];		/* voice to trigger map (-1 == NULL) */
      short veltab[NTRIGS];	/* velocity */
      short vmtab[NUMHARM];	/* harmonics for current waveshape */
      short wsbuf[NUMWPCAL];	/* final values for current waveshape */

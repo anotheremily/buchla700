@@ -17,7 +17,7 @@ atol (cp)
 
   sign = 0;
 
-  if (*cp EQ '-')
+  if (*cp == '-')
     {
 
       ++cp;
@@ -27,7 +27,7 @@ atol (cp)
   else
     {
 
-      if (*cp EQ '+')
+      if (*cp == '+')
 	++cp;
     }
 

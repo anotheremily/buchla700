@@ -170,7 +170,7 @@ clk_ped (stat)
 pch_ped (stat)
      short stat;
 {
-  if (stat AND pchsw)
+  if (stat && pchsw)
     tglpch = TRUE;
 }
 
@@ -195,7 +195,7 @@ msl ()
   long fctemp;
 
 #if	DEBUGIT
-  if (debugsw AND debugms)
+  if (debugsw && debugms)
     printf ("msl():  ENTRY  ndisp=%d\n", ndisp);
 #endif
 
@@ -209,13 +209,13 @@ msl ()
       ioadr = &io_ser + 2L;	/* get edit switch status */
       esi = *ioadr & 0x0008;
 
-      if (editss NE esi)
+      if (editss != esi)
 	{			/* check for edit switch change */
 
 	  editss = esi;
 
 	  if (editss)		/* toggle edit state if it went hi */
-	    editsw = NOT editsw;
+	    editsw = ! editsw;
 	}
 
       if (editsw)		/* update edit LED */
@@ -223,7 +223,7 @@ msl ()
       else
 	io_leds = 0x1E;
 
-      if ((NOT lampsw) AND lcdtime)
+      if ((! lampsw) && lcdtime)
 	{
 
 	  if (0 EQ-- lcdtime)
@@ -241,7 +241,7 @@ msl ()
 	  tglclk = FALSE;	/* cancel toggle flag */
 	  setsr (oldsr);	/* enable interrupts */
 
-	  clkset (NOT clkrun);	/* toggle clock mode */
+	  clkset (! clkrun);	/* toggle clock mode */
 	  dclkmd ();		/* update display */
 	}
 
@@ -252,27 +252,27 @@ msl ()
 	  tglpch = FALSE;	/* cancel toggle flag */
 	  setsr (oldsr);	/* enable interrupts */
 
-	  if ((ndisp EQ 2) AND (v_regs[5] & 0x0180))
+	  if ((ndisp == 2) && (v_regs[5] & 0x0180))
 	    vbank (0);
 
 	  for (i = 0; i < 12; i++)
 	    {			/* scan the groups */
 
-	      if (grpmode[i] EQ 1)
+	      if (grpmode[i] == 1)
 		{		/* stdby -> rec */
 
 		  grpmode[i] = 2;
 
-		  if (ndisp EQ 2)
+		  if (ndisp == 2)
 		    vputc (obj8, 2, 6 + (i * 5), '*', simled[grpmode[i]]);
 
 		}
-	      else if (grpmode[i] EQ 2)
+	      else if (grpmode[i] == 2)
 		{		/* rec -> play */
 
 		  grpmode[i] = 0;
 
-		  if (ndisp EQ 2)
+		  if (ndisp == 2)
 		    vputc (obj8, 2, 6 + (i * 5), '*', simled[grpmode[i]]);
 		}
 	    }
@@ -282,7 +282,7 @@ msl ()
 */
       /* process stimulli from the patch stimulus fifo */
 
-      if (getwq (&ptefifo, &fifoval) GE 0)
+      if (getwq (&ptefifo, &fifoval) >= 0)
 	{
 
 	  crel = 0x8000 & fifoval;
@@ -303,7 +303,7 @@ msl ()
 	      for (i = 0; i < 12; i++)
 		{
 
-		  if (vce2trg[i] EQ trg)
+		  if (vce2trg[i] == trg)
 		    {
 
 		      vce2trg[i] = -1;
@@ -323,14 +323,14 @@ msl ()
 	      stmproc (fifoval);	/* do it as a patch stimulus */
 
 	      for (i = 0; i < 12; i++)
-		if ((grp2prt[i][0] EQ 1 + port) AND
-		    (grp2prt[i][1] EQ 1 + chan))
+		if ((grp2prt[i][0] == 1 + port) &&
+		    (grp2prt[i][1] == 1 + chan))
 		  asgvce (i, port, chan, trig, vel);
 	    }
 	}
 /* 
 */
-      if (-1L NE (afi = XBIOS (X_ANALOG)))
+      if (-1L != (afi = XBIOS (X_ANALOG)))
 	{			/* check panel inputs */
 
 	  asig = (afi >> 8) & 0x007F;	/* signal number */
@@ -341,7 +341,7 @@ msl ()
 	    {			/* active signal */
 
 	      aflag = TRUE;
-	      newsig = astat AND (NOT sigtab[asig][1]);
+	      newsig = astat && (! sigtab[asig][1]);
 
 	      sigtab[asig][0] = aval;
 	      sigtab[asig][1] = astat;
@@ -362,7 +362,7 @@ msl ()
 	  if (aflag)
 	    {			/* anything changed ? */
 
-	      if ((asig GE 1) AND (asig LE 24))
+	      if ((asig >= 1) && (asig <= 24))
 		{
 
 		  /* local keyboard performance key */
@@ -370,17 +370,17 @@ msl ()
 		  localkb (asig);
 
 		}
-	      else if ((asig GE 25) AND (asig LE 38))
+	      else if ((asig >= 25) && (asig <= 38))
 		{
 
 		  if (astat)
 		    lcd_on ();
 
-		  if (NOT newsig)
+		  if (! newsig)
 		    doslide ();
 
 		}
-	      else if ((asig GE 39) AND (asig LE 52))
+	      else if ((asig >= 39) && (asig <= 52))
 		{
 
 		  if (astat)
@@ -389,7 +389,7 @@ msl ()
 		  (*(*swpt)[asig - 39]) (astat, (asig - 39));
 
 		}
-	      else if ((asig GE 60) AND (asig LE 69))
+	      else if ((asig >= 60) && (asig <= 69))
 		{
 
 		  (*d_key) (asig - 60);
@@ -408,19 +408,19 @@ msl ()
 		    for (i = 0; i < 12; i++)
 		      {
 
-			if (grp2prt[i][0] EQ LCL_PRT)
+			if (grp2prt[i][0] == LCL_PRT)
 			  {
 
 			    if (newsv (i, SM_HTPW, val))
 			      {
 
-				if (recsw AND grpstat[i] AND
+				if (recsw && grpstat[i] &&
 				    (2
-				     EQ (ancmsw ? varmode[0][i] :
+				     == (ancmsw ? varmode[0][i] :
 					 grpmode[i])))
 				  {
 
-				    if (E_NULL NE (ep = e_alc (E_SIZE2)))
+				    if (E_NULL != (ep = e_alc (E_SIZE2)))
 				      {
 
 					ep->e_time = t_cur;
@@ -439,7 +439,7 @@ msl ()
 				      }
 
 				  }
-				else if ((angroup - 1) EQ i)
+				else if ((angroup - 1) == i)
 				  {
 
 				    dsanval (0);
@@ -458,19 +458,19 @@ msl ()
 		    for (i = 0; i < 12; i++)
 		      {
 
-			if (grp2prt[i][0] EQ LCL_PRT)
+			if (grp2prt[i][0] == LCL_PRT)
 			  {
 
 			    if (newsv (i, SM_VTMW, val))
 			      {
 
-				if (recsw AND grpstat[i] AND
+				if (recsw && grpstat[i] &&
 				    (2
-				     EQ (ancmsw ? varmode[1][i] :
+				     == (ancmsw ? varmode[1][i] :
 					 grpmode[i])))
 				  {
 
-				    if (E_NULL NE (ep = e_alc (E_SIZE2)))
+				    if (E_NULL != (ep = e_alc (E_SIZE2)))
 				      {
 
 					ep->e_time = t_cur;
@@ -489,7 +489,7 @@ msl ()
 				      }
 
 				  }
-				else if ((angroup - 1) EQ i)
+				else if ((angroup - 1) == i)
 				  {
 
 				    dsanval (1);
@@ -518,19 +518,19 @@ msl ()
 		    for (i = 0; i < 12; i++)
 		      {
 
-			if (grp2prt[i][0] EQ LCL_PRT)
+			if (grp2prt[i][0] == LCL_PRT)
 			  {
 
 			    if (newsv (i, SM_LPBR, val))
 			      {
 
-				if (recsw AND grpstat[i] AND
+				if (recsw && grpstat[i] &&
 				    (2
-				     EQ (ancmsw ? varmode[2][i] :
+				     == (ancmsw ? varmode[2][i] :
 					 grpmode[i])))
 				  {
 
-				    if (E_NULL NE (ep = e_alc (E_SIZE2)))
+				    if (E_NULL != (ep = e_alc (E_SIZE2)))
 				      {
 
 					ep->e_time = t_cur;
@@ -549,7 +549,7 @@ msl ()
 				      }
 
 				  }
-				else if ((angroup - 1) EQ i)
+				else if ((angroup - 1) == i)
 				  {
 
 				    dsanval (2);
@@ -575,14 +575,14 @@ msl ()
 		  case 71:	/* E key */
 
 #if	DEBUGIT
-		    if (debugsw AND debugms)
+		    if (debugsw && debugms)
 		      printf ("msl():  -> e_key ($%lX)  astat=%d  ndisp=%d\n",
 			      e_key, astat, ndisp);
 #endif
 		    (*e_key) ();
 
 #if	DEBUGIT
-		    if (debugsw AND debugms)
+		    if (debugsw && debugms)
 		      printf
 			("msl():  <- e_key ($%lX)  astat=%d  ndisp=%d  runit=%d\n",
 			 e_key, astat, ndisp, runit);
@@ -614,14 +614,14 @@ msl ()
 		    TIME_T2H = ti >> 8;
 		    TIME_T2L = ti & 0x00FF;
 
-		    if (tmpomlt EQ 50)
+		    if (tmpomlt == 50)
 		      {		/* 0 */
 
 			io_leds = 0x18;	/* green off */
 			io_leds = 0x19;	/* red off */
 
 		      }
-		    else if (tmpomlt GT 50)
+		    else if (tmpomlt > 50)
 		      {		/* hi */
 
 			io_leds = 0x98;	/* green on */
@@ -649,14 +649,14 @@ msl ()
 		    ti = aval > 100 ? 100 : aval;
 		    timemlt = tmultab[ti];
 
-		    if (ti EQ 50)
+		    if (ti == 50)
 		      {		/* 0 */
 
 			io_leds = 0x1A;	/* green off */
 			io_leds = 0x1B;	/* red off */
 
 		      }
-		    else if (ti GT 50)
+		    else if (ti > 50)
 		      {		/* hi */
 
 			io_leds = 0x9A;	/* green on */
@@ -686,14 +686,14 @@ msl ()
 		    tuneval = (i - 50) << 2;
 		    settune ();
 
-		    if (i EQ 50)
+		    if (i == 50)
 		      {
 
 			io_leds = 0x1C;	/* green off */
 			io_leds = 0x1D;	/* red off */
 
 		      }
-		    else if (i GT 50)
+		    else if (i > 50)
 		      {
 
 			io_leds = 0x9C;	/* green on */
@@ -728,19 +728,19 @@ msl ()
 		    for (i = 0; i < 12; i++)
 		      {
 
-			if (grp2prt[i][0] EQ LCL_PRT)
+			if (grp2prt[i][0] == LCL_PRT)
 			  {
 
 			    if (newsv (i, SM_PED1, val))
 			      {
 
-				if (recsw AND grpstat[i] AND
+				if (recsw && grpstat[i] &&
 				    (2
-				     EQ (ancmsw ? varmode[4][i] :
+				     == (ancmsw ? varmode[4][i] :
 					 grpmode[i])))
 				  {
 
-				    if (E_NULL NE (ep = e_alc (E_SIZE2)))
+				    if (E_NULL != (ep = e_alc (E_SIZE2)))
 				      {
 
 					ep->e_time = t_cur;
@@ -759,7 +759,7 @@ msl ()
 				      }
 
 				  }
-				else if ((angroup - 1) EQ i)
+				else if ((angroup - 1) == i)
 				  {
 
 				    dsanval (4);
@@ -779,19 +779,19 @@ msl ()
 		    for (i = 0; i < 12; i++)
 		      {
 
-			if (grp2prt[i][0] EQ LCL_PRT)
+			if (grp2prt[i][0] == LCL_PRT)
 			  {
 
 			    if (newsv (i, SM_CTL1, val))
 			      {
 
-				if (recsw AND grpstat[i] AND
+				if (recsw && grpstat[i] &&
 				    (2
-				     EQ (ancmsw ? varmode[3][i] :
+				     == (ancmsw ? varmode[3][i] :
 					 grpmode[i])))
 				  {
 
-				    if (E_NULL NE (ep = e_alc (E_SIZE2)))
+				    if (E_NULL != (ep = e_alc (E_SIZE2)))
 				      {
 
 					ep->e_time = t_cur;
@@ -810,7 +810,7 @@ msl ()
 				      }
 
 				  }
-				if ((angroup - 1) EQ i)
+				if ((angroup - 1) == i)
 				  {
 
 				    dsanval (3);
@@ -828,13 +828,13 @@ msl ()
 */
 
 #if	DEBUGIT
-      if (debugsw AND debugms AND (NOT runit))
+      if (debugsw && debugms && (! runit))
 	printf ("msl():  end of asig cases -- dsp_ok = %d\n", dsp_ok);
 #endif
 
       /* memory allocation changed ? */
 
-      if ((ndisp EQ 2) AND se_chg AND dsp_ok)
+      if ((ndisp == 2) && se_chg && dsp_ok)
 	{
 
 	  dsmem ();		/* display memory remaining */
@@ -844,13 +844,13 @@ msl ()
       nxtflag = FALSE;		/* clear 'next score' flag */
       fctemp = fc_val;		/* sample the frame clock */
 
-      if (t_cur NE fctemp)
+      if (t_cur != fctemp)
 	{			/* see if frame clock changed */
 
-	  if (t_cur LT fctemp)
+	  if (t_cur < fctemp)
 	    {			/* clock incremented */
 
-	      if (se EQ D_BAK)	/* change direction ? */
+	      if (se == D_BAK)	/* change direction ? */
 		chgsef ();
 
 	      sc_trek (fctemp);	/* track frame clock */
@@ -859,7 +859,7 @@ msl ()
 	  else
 	    {			/* clock decremented */
 
-	      if (se EQ D_FWD)	/* change direction ? */
+	      if (se == D_FWD)	/* change direction ? */
 		chgseb ();
 
 	      sc_trek (fctemp);	/* track frame clock */
@@ -868,13 +868,13 @@ msl ()
 	  /* handle display update if there's time for it */
 
 	}
-      else if (dsp_ok AND (t_ctr NE t_cur))
+      else if (dsp_ok && (t_ctr != t_cur))
 	{
 
-	  if (t_ctr LT t_cur)
+	  if (t_ctr < t_cur)
 	    {			/* clock incremented */
 
-	      if (sd EQ D_BAK)	/* change direction ? */
+	      if (sd == D_BAK)	/* change direction ? */
 		chgsdf ();
 
 	      sc_trak (t_ctr + 1);	/* track frame clock */
@@ -883,7 +883,7 @@ msl ()
 	  else
 	    {			/* clock decremented */
 
-	      if (sd EQ D_FWD)	/* change direction ? */
+	      if (sd == D_FWD)	/* change direction ? */
 		chgsdb ();
 
 	      sc_trak (t_ctr - 1);	/* track frame clock */
@@ -892,13 +892,13 @@ msl ()
 /* 
 */
 #if	DEBUGIT
-      if (debugsw AND debugms AND (NOT runit))
+      if (debugsw && debugms && (! runit))
 	printf ("msl():  end of clock processing -- dsp_ok = %d\n", dsp_ok);
 #endif
 
       /* handle 'next score' flag */
 
-      if (nxtflag AND (sd EQ D_FWD))
+      if (nxtflag && (sd == D_FWD))
 	{			/* switch scores ? */
 
 	  oldrec = recsw;
@@ -906,20 +906,20 @@ msl ()
 
 	  ti = curscor + 1;
 
-	  if (ti GE N_SCORES)
+	  if (ti >= N_SCORES)
 	    ti = 0;
 
 	  for (i = 0; i < N_SCORES; i++)
 	    {
 
-	      if (E_NULL NE scores[ti])
+	      if (E_NULL != scores[ti])
 		{
 
 		  selscor (ti);
 		  break;
 		}
 
-	      if (++ti GE N_SCORES)
+	      if (++ti >= N_SCORES)
 		ti = 0;
 	    }
 
@@ -931,14 +931,14 @@ msl ()
 	}
 
 #if	DEBUGIT
-      if (debugsw AND debugms AND (NOT runit))
+      if (debugsw && debugms && (! runit))
 	printf ("msl():  curproc\n");
 #endif
 
       curproc ();		/* process wheel and ball */
 
 #if	DEBUGIT
-      if (debugsw AND debugms AND (NOT runit))
+      if (debugsw && debugms && (! runit))
 	printf ("msl():  seqproc\n");
 #endif
 
@@ -946,7 +946,7 @@ msl ()
     }
 
 #if	DEBUGIT
-  if (debugsw AND debugms)
+  if (debugsw && debugms)
     printf ("msl():  EXIT  ndisp=%d\n", ndisp);
 #endif
 }

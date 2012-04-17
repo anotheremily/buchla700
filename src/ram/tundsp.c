@@ -179,16 +179,16 @@ tt_trcp (start, finish, dest)
   if (start > finish)
     {
 
-      for (i = finish; ((i LE start) AND (dest < 128)); i++)
+      for (i = finish; ((i <= start) && (dest < 128)); i++)
 	{
 
 	  /* reverse copy */
 
 	  v = oldtun[i] + (long) tunval;	/* transpose */
 
-	  if (v GT (long) PITCHMAX)	/* limit */
+	  if (v > (long) PITCHMAX)	/* limit */
 	      v = (long) PITCHMAX;
-	  else if (v LT (long) PITCHMIN)
+	  else if (v < (long) PITCHMIN)
 	      v = (long) PITCHMIN;
 
 	  tuntab[dest++] = (short) v;	/* store the value */
@@ -198,16 +198,16 @@ tt_trcp (start, finish, dest)
   else
     {
 
-      for (i = start; ((i LE finish) AND (dest < 128)); i++)
+      for (i = start; ((i <= finish) && (dest < 128)); i++)
 	{
 
 	  /* forward copy */
 
 	  v = oldtun[i] + (long) tunval;	/* transpose */
 
-	  if (v GT (long) PITCHMAX)	/* limit */
+	  if (v > (long) PITCHMAX)	/* limit */
 	      v = (long) PITCHMAX;
-	  else if (v LT (long) PITCHMIN)
+	  else if (v < (long) PITCHMIN)
 	      v = (long) PITCHMIN;
 
 	  tuntab[dest++] = (short) v;	/* store the value */
@@ -289,17 +289,17 @@ tt_incr (from, to)
 
   v = (long) oldtun[from];	/* initial value */
 
-  if (from++ EQ to)		/* interval has to be at least 1 */
+  if (from++ == to)		/* interval has to be at least 1 */
     return (FAILURE);
 
-  for (i = from; i LE to; i++)
+  for (i = from; i <= to; i++)
     {
 
       v += (long) tunval;	/* increment */
 
-      if (v GT (long) PITCHMAX)	/* limit */
+      if (v > (long) PITCHMAX)	/* limit */
 	  v = (long) PITCHMAX;
-      else if (v LT (long) PITCHMIN)
+      else if (v < (long) PITCHMIN)
 	  v = (long) PITCHMIN;
 
       tuntab[i] = (short) v;	/* store the value */
@@ -381,7 +381,7 @@ advtcur ()
 
   newcol = stccol + 1;
 
-  if (newcol LE cfetp->frcol)
+  if (newcol <= cfetp->frcol)
     itcpos (stcrow, newcol);
 
   cxval = stccol * 8;
@@ -405,7 +405,7 @@ bsptcur ()
 
   newcol = stccol - 1;
 
-  if (newcol GE cfetp->flcol)
+  if (newcol >= cfetp->flcol)
     itcpos (stcrow, newcol);
 
   cxval = stccol * 8;
@@ -484,7 +484,7 @@ tdswin (n)
 	  sprintf (bfs, "%2d", 1 + i);
 	  tsplot4 (tunob, 64, TDMKEYC, i, 3, bfs, 14);
 	  dsttval (i, 6, tuntab[i],
-		   ((tuntab[i] EQ 320) OR (tuntab[i] EQ 21920))
+		   ((tuntab[i] == 320) || (tuntab[i] == 21920))
 		   ? TDMKEYC : tdbox[n][4], tdbox[n][5]);
 	}
 
@@ -498,7 +498,7 @@ tdswin (n)
 	  sprintf (bfs, "%2d", 1 + i);
 	  tsplot4 (tunob, 64, TDMKEYC, i - 24, 13, bfs, 14);
 	  dsttval (i - 24, 16, tuntab[i],
-		   ((tuntab[i] EQ 320) OR (tuntab[i] EQ 21920))
+		   ((tuntab[i] == 320) || (tuntab[i] == 21920))
 		   ? TDMKEYC : tdbox[n][4], tdbox[n][5]);
 	}
 
@@ -512,7 +512,7 @@ tdswin (n)
 	  sprintf (bfs, "%2d", 1 + i);
 	  tsplot4 (tunob, 64, TDMKEYC, i - 48, 23, bfs, 14);
 	  dsttval (i - 48, 26, tuntab[i],
-		   ((tuntab[i] EQ 320) OR (tuntab[i] EQ 21920))
+		   ((tuntab[i] == 320) || (tuntab[i] == 21920))
 		   ? TDMKEYC : tdbox[n][4], tdbox[n][5]);
 	}
 
@@ -527,7 +527,7 @@ tdswin (n)
 	  sprintf (bfs, "%2d", 1 + i);
 	  tsplot4 (tunob, 64, TDMKEYC, i - 72, 33, bfs, 14);
 	  dsttval (i - 72, 36, tuntab[i],
-		   ((tuntab[i] EQ 320) OR (tuntab[i] EQ 21920))
+		   ((tuntab[i] == 320) || (tuntab[i] == 21920))
 		   ? TDMKEYC : tdbox[n][4], tdbox[n][5]);
 	}
 
@@ -541,7 +541,7 @@ tdswin (n)
 	  sprintf (bfs, "%3d", 1 + i);
 	  tsplot4 (tunob, 64, TDMKEYC, i - 96, 43, bfs, 14);
 	  dsttval (i - 96, 47, tuntab[i],
-		   ((tuntab[i] EQ 320) OR (tuntab[i] EQ 21920))
+		   ((tuntab[i] == 320) || (tuntab[i] == 21920))
 		   ? TDMKEYC : tdbox[n][4], tdbox[n][5]);
 	}
 
@@ -555,7 +555,7 @@ tdswin (n)
 	  sprintf (bfs, "%3d", 1 + i);
 	  tsplot4 (tunob, 64, TDMKEYC, i - 120, 54, bfs, 14);
 	  dsttval (i - 120, 58, tuntab[i],
-		   ((tuntab[i] EQ 320) OR (tuntab[i] EQ 21920))
+		   ((tuntab[i] == 320) || (tuntab[i] == 21920))
 		   ? TDMKEYC : tdbox[n][4], tdbox[n][5]);
 	}
 
@@ -569,8 +569,8 @@ tdswin (n)
       td_intp (0);
       tsplot4 (tunob, 64, tdbox[n][4], 16, 54, "Undo", 14);
 
-      tv = (tunval GE 0 ? tunval : -tunval) >> 1;
-      ts = tunval GE 0 ? '+' : '-';
+      tv = (tunval >= 0 ? tunval : -tunval) >> 1;
+      ts = tunval >= 0 ? '+' : '-';
       sprintf (bfs, "Val %c%04d", ts, tv);
       tsplot4 (tunob, 64, tdbox[n][4], 18, 54, bfs, 14);
 

@@ -78,7 +78,7 @@ SetMBuf ()
   oldbhi = m_buff->ibufhi;
   oldblo = m_buff->ibuflo;
 
-  if ((char *) NULL EQ (newbuf = (char *) malloc (size)))
+  if ((char *) NULL == (newbuf = (char *) malloc (size)))
     {
 
       printf ("ERROR -- unable to allocate MIDI buffer.\n");
@@ -126,15 +126,15 @@ void
 PrMIDI (M_Byte)
      unsigned int M_Byte;
 {
-  if ((0x00FF & M_Byte) EQ 0x00FE)
+  if ((0x00FF & M_Byte) == 0x00FE)
     {
 
-      if (NOT feseen)
+      if (! feseen)
 	{
 
 	  printf ("\nActive sense is active\n");
 
-	  if ((FILE *) NULL NE ofp)
+	  if ((FILE *) NULL != ofp)
 	    fprintf (ofp, "\nActive sense is active\n");
 	}
 
@@ -153,7 +153,7 @@ PrMIDI (M_Byte)
 	  printf (FORMAT1, indx, M_Byte);
 	  nol = 0;
 
-	  if ((FILE *) NULL NE ofp)
+	  if ((FILE *) NULL != ofp)
 	    fprintf (ofp, FORMAT1, indx, M_Byte);
 
 	}
@@ -166,20 +166,20 @@ PrMIDI (M_Byte)
 	      printf (FORMAT3, indx);
 	      nol = 1;
 
-	      if ((FILE *) NULL NE ofp)
+	      if ((FILE *) NULL != ofp)
 		fprintf (ofp, FORMAT3, indx);
 	    }
 
 	  printf (FORMAT2, M_Byte);
 
-	  if ((FILE *) NULL NE ofp)
+	  if ((FILE *) NULL != ofp)
 	    fprintf (ofp, FORMAT2, M_Byte);
 	}
     }
 
   fflush (stdout);
 
-  if ((FILE *) NULL NE ofp)
+  if ((FILE *) NULL != ofp)
     fflush (ofp);
 }
 
@@ -263,10 +263,10 @@ main (argc, argv)
 
   cleanbf ();			/* clear out MIDI buffer */
 
-  if (argc EQ 2)
+  if (argc == 2)
     {
 
-      if ((FILE *) NULL EQ (ofp = fopen (argv[1], "w")))
+      if ((FILE *) NULL == (ofp = fopen (argv[1], "w")))
 	{
 
 	  printf ("ERROR -- Unable to open \"%s\" for output.\n", argv[1]);
@@ -314,7 +314,7 @@ main (argc, argv)
 	      printf ("\033E");
 	      printf ("Ready for MIDI data.\n");
 
-	      if ((FILE *) NULL NE ofp)
+	      if ((FILE *) NULL != ofp)
 		{
 
 		  fprintf (ofp, "\n\nMIDI buffer flushed.\n\n");
@@ -325,7 +325,7 @@ main (argc, argv)
 
 	    case 'w':		/* w = write to SNAPFILE */
 
-	      if ((FILE *) NULL EQ (sfp = fopenb (SNAPFILE, "w")))
+	      if ((FILE *) NULL == (sfp = fopenb (SNAPFILE, "w")))
 		{
 
 		  printf ("ERROR -- Unable to open \"%s\" for output.\n",
@@ -353,11 +353,11 @@ main (argc, argv)
       if (m_stat ())
 	PrMIDI (midi_in ());
 
-      if ((FILE *) NULL NE ofp)
+      if ((FILE *) NULL != ofp)
 	fflush (ofp);
     }
 
-  if ((FILE *) NULL NE ofp)
+  if ((FILE *) NULL != ofp)
     {
 
       fprintf (ofp, "\n");

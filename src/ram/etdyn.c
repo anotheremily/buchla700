@@ -64,16 +64,16 @@ ef_dyn (n)
 
   setdyn (n, ival);
 
-  if (recsw AND grpmode[n] AND (2 EQ grpmode[n]))
+  if (recsw && grpmode[n] && (2 == grpmode[n]))
     {
 
-      if (E_NULL NE (ep = findev (p_cur, t_cur, EV_DYN, n, -1)))
+      if (E_NULL != (ep = findev (p_cur, t_cur, EV_DYN, n, -1)))
 	{
 
 	  ep->e_data2 = ival;
 
 	}
-      else if (E_NULL NE (ep = e_alc (E_SIZE2)))
+      else if (E_NULL != (ep = e_alc (E_SIZE2)))
 	{
 
 	  ep->e_type = EV_DYN;

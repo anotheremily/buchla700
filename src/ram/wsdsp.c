@@ -116,7 +116,7 @@ advwcur ()
 
   newcol = stccol + 1;
 
-  if (newcol LE cfetp->frcol)
+  if (newcol <= cfetp->frcol)
     itcpos (stcrow, newcol);
 }
 
@@ -304,7 +304,7 @@ wdswin (n)
       tsplot4 (waveob, 64, wdbox[n][4], wdbox[n][6],
 	       wdbox[n][7] + WOFF_OFF, bfs, 14);
 
-      if (curwdth EQ NUMWIDS)
+      if (curwdth == NUMWIDS)
 	{
 
 	  tsplot4 (waveob, 64, wdbox[n][4], wdbox[n][6] + 1,

@@ -100,7 +100,7 @@ SMSig (psem)
 
   DB_ENTR ("SMSig");
 
-  if ((struct _mt_def *) NIL EQ _MT_)
+  if ((struct _mt_def *) NIL == _MT_)
     _MT_ = (struct _mt_def *) XBIOS (X_MTDEFS);
 
   oldipl = setipl (7);		/* DISABLE INTERRUPTS */
@@ -108,14 +108,14 @@ SMSig (psem)
   semval = (long) *psem;	/* get semaphore value */
 
   if (semval & 1L)
-    {				/* is it a count ?  (LSB EQ 1) */
+    {				/* is it a count ?  (LSB == 1) */
 
-      if (~1L NE (semval & ~1L))	/* check for overflow */
+      if (~1L != (semval & ~1L))	/* check for overflow */
 	semval += 2L;		/* update the counter */
 
     }
   else
-    {				/* ... it may be a queue  (LSB EQ 0) */
+    {				/* ... it may be a queue  (LSB == 0) */
 
 /* 
 */
@@ -144,7 +144,7 @@ SMSig (psem)
 	      rprv = rcur;	/* previous TCB = current TCB */
 	      rcur = rprv->next;	/* current TCB = next TCB */
 
-	      if (rcur EQ (TCB *) NIL)	/* enqueue here if next was NIL */
+	      if (rcur == (TCB *) NIL)	/* enqueue here if next was NIL */
 		break;
 
 	      if (rpri > rcur->pri)	/* enqueue here if priority is greater */
@@ -187,7 +187,7 @@ SMWait (psem)
 
   DB_ENTR ("SMWait");
 
-  if ((struct _mt_def *) NIL EQ _MT_)
+  if ((struct _mt_def *) NIL == _MT_)
     _MT_ = (struct _mt_def *) XBIOS (X_MTDEFS);
 
   oldipl = setipl (7);		/* DISABLE INTERRUPTS */
@@ -195,7 +195,7 @@ SMWait (psem)
   semval = (long) *psem;	/* get semaphore value */
 
   if (semval & 1L)
-    {				/* is it a count ?  (LSB EQ 1) */
+    {				/* is it a count ?  (LSB == 1) */
 
       if (semval & ~1L)
 	{			/* is count non-zero ? */
@@ -252,7 +252,7 @@ SMCSig (psem)
 
   oldipl = setipl (7);		/* DISABLE INTERRUPTS */
 
-  if ((struct _mt_def *) NIL EQ _MT_)
+  if ((struct _mt_def *) NIL == _MT_)
     _MT_ = (struct _mt_def *) XBIOS (X_MTDEFS);
 
   semval = (long) *psem;	/* get semaphore value */
@@ -295,7 +295,7 @@ SMCSig (psem)
 	      rprv = rcur;	/* previous TCB = current TCB */
 	      rcur = rprv->next;	/* current TCB = next TCB */
 
-	      if (rcur EQ (TCB *) NIL)	/* enqueue here if next was NIL */
+	      if (rcur == (TCB *) NIL)	/* enqueue here if next was NIL */
 		break;
 
 	      if (rpri > rcur->pri)	/* enqueue here if priority is greater */

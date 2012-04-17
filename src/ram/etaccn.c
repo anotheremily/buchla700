@@ -69,7 +69,7 @@ ef_accn (n)
   ebflag = FALSE;
   tmpval = 0;
 
-  if ((ebuf[0] EQ ' ') AND (ebuf[1] EQ ' '))
+  if ((ebuf[0] == ' ') && (ebuf[1] == ' '))
     {
 
       tmpval = -1;
@@ -81,14 +81,14 @@ ef_accn (n)
       for (i = 0; i < 2; i++)
 	{
 
-	  if (ebuf[i] EQ ' ')
+	  if (ebuf[i] == ' ')
 	    ebuf[i] = '0';
 
 	  tmpval = (tmpval * 10) + (ebuf[i] - '0');
 	}
     }
 
-  if (mctlnum[ctl] EQ - 1)
+  if (mctlnum[ctl] == - 1)
     mctlnum[ctl] = tmpval;
   else
     mctlnum[ctl] = (mctlnum[ctl] & 0xFF00) | tmpval;

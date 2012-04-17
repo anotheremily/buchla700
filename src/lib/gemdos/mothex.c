@@ -18,8 +18,8 @@
 
 #define	CHUNK		16384	/* input buffer read size */
 
-#define	SWITCHAR(c)	((c) EQ '\\')	/* TOS definition */
-#define	DRIVES(c)	((c) EQ ':')	/* TOS / MSDOS / PCDOS definition */
+#define	SWITCHAR(c)	((c) == '\\')	/* TOS definition */
+#define	DRIVES(c)	((c) == ':')	/* TOS / MSDOS / PCDOS definition */
 
 extern char *sbrk ();
 
@@ -80,12 +80,12 @@ base_nm (s1, s2)
   cp = s2;
   s3 = s1;
 
-  while ('\0' NE * s2)
+  while ('\0' != * s2)
     {
 
       c = *s2++;
 
-      if (SWITCHAR (c) OR DRIVES (c))
+      if (SWITCHAR (c) || DRIVES (c))
 	cp = s2;
     }
 
@@ -121,7 +121,7 @@ root_nm (s1, s2)
   while (c = 0x00FF & *s4++)
     {
 
-      if (c EQ '.')
+      if (c == '.')
 	break;
 
       *s1++ = c;
@@ -209,7 +209,7 @@ findopt (argc, argv)
 
 	case '-':
 
-	  if ((c = *++*argv) EQ '\0')
+	  if ((c = *++*argv) == '\0')
 	    break;
 
 	  do
@@ -244,7 +244,7 @@ findopt (argc, argv)
 		}
 
 	    }
-	  while ((c = *++*argv) NE '\0');
+	  while ((c = *++*argv) != '\0');
 
 	  continue;
 	}
@@ -276,10 +276,10 @@ lread (buff, len, fp)
   while (len > 0)
     {
 
-      if (len GE (long) CHUNK)
+      if (len >= (long) CHUNK)
 	{
 
-	  if (1 NE fread (buff, CHUNK, 1, fp))
+	  if (1 != fread (buff, CHUNK, 1, fp))
 	    return (EOF);
 
 	  buff += (long) CHUNK;
@@ -291,7 +291,7 @@ lread (buff, len, fp)
 
 	  ilen = len;
 
-	  if (1 NE fread (buff, ilen, 1, fp))
+	  if (1 != fread (buff, ilen, 1, fp))
 	    return (EOF);
 
 	  len = 0L;
@@ -324,7 +324,7 @@ process (fn)
 
   /* open the input file */
 
-  if ((FILE *) NULL EQ (curfp = fopenb (fn, "r")))
+  if ((FILE *) NULL == (curfp = fopenb (fn, "r")))
     {
 
       fprintf (stderr, "mothex:  Unable to open \"%s\"\n", fn);
@@ -335,7 +335,7 @@ process (fn)
 
   fprintf (stderr, "mothex:  Reading \"%s\"\n", fn);
 
-  if (1 NE fread (&fhdr, sizeof fhdr, 1, curfp))
+  if (1 != fread (&fhdr, sizeof fhdr, 1, curfp))
     {
 
       fprintf (stderr, "mothex:  Unable to read \"%s\"\n", fn);
@@ -345,7 +345,7 @@ process (fn)
 
   /* check the magic */
 
-  if ((fhdr.F_Magic NE F_R_C) AND (fhdr.F_Magic NE F_R_D))
+  if ((fhdr.F_Magic != F_R_C) && (fhdr.F_Magic != F_R_D))
     {
 
       fprintf (stderr, "mothex:  Bad magic [0x%04x] in \"%s\"",
@@ -358,7 +358,7 @@ process (fn)
 */
   /* if it's a discontinuous file, read the origins */
 
-  if (fhdr.F_Magic EQ F_R_D)
+  if (fhdr.F_Magic == F_R_D)
     {
 
       dataorg = getl (curfp);
@@ -368,7 +368,7 @@ process (fn)
   bufneed = fhdr.F_Text + fhdr.F_Data;
   buffer = (char *) sbrk (0);
 
-  if (-1 EQ brk ((char *) (buffer + bufneed)))
+  if (-1 == brk ((char *) (buffer + bufneed)))
     {
 
       fprintf (stderr,
@@ -387,7 +387,7 @@ process (fn)
 
       obuf = sbrk (0);
 
-      if (-1 EQ brk ((char *) (obuf + 1 + (bufneed >> 1))))
+      if (-1 == brk ((char *) (obuf + 1 + (bufneed >> 1))))
 	{
 
 	  fprintf (stderr, "mothex:  Unable to allocate bytesplit buffer\n");
@@ -396,7 +396,7 @@ process (fn)
 	}
     }
 
-  if (0 NE lread (buffer, bufneed, curfp))
+  if (0 != lread (buffer, bufneed, curfp))
     {
 
       fprintf (stderr, "mothex:  Unable to read \"%s\"\n", fn);
@@ -411,7 +411,7 @@ process (fn)
   else
     textorg = fhdr.F_Res2;
 
-  if ((fhdr.F_Magic EQ F_R_D) AND (dataorg NE 0L) AND (fhdr.F_Data NE 0L))
+  if ((fhdr.F_Magic == F_R_D) && (dataorg != 0L) && (fhdr.F_Data != 0L))
     {
 
       fprintf (stderr, "mothex:  ERROR - can't split text and data\n");
@@ -429,7 +429,7 @@ process (fn)
 
       ofn = out_nm (fnbuf, fn, MOT_EVN);
 
-      if ((FILE *) NULL EQ (motfp = fopena (ofn, "w")))
+      if ((FILE *) NULL == (motfp = fopena (ofn, "w")))
 	{
 
 	  fprintf (stderr, "mothex:  Unable to open \"%s\"\n", fn);
@@ -464,7 +464,7 @@ process (fn)
 
       ofn = out_nm (fnbuf, fn, MOT_ODD);
 
-      if ((FILE *) NULL EQ (motfp = fopena (ofn, "w")))
+      if ((FILE *) NULL == (motfp = fopena (ofn, "w")))
 	{
 
 	  fprintf (stderr, "mothex:  Unable to open \"%s\"\n", fn);
@@ -484,7 +484,7 @@ process (fn)
 
       ofn = out_nm (fnbuf, fn, MOT_ALL);
 
-      if ((FILE *) NULL EQ (motfp = fopena (ofn, "w")))
+      if ((FILE *) NULL == (motfp = fopena (ofn, "w")))
 	{
 
 	  fprintf (stderr, "mothex:  Unable to open \"%s\"\n", fn);

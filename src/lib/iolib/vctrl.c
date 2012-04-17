@@ -42,7 +42,7 @@ vbank (b)
   oldb = v_regs[5] >> 6;	/* get old bank value */
   oldb = (oldb & 2) | ((oldb >> 2) & 1);
 
-  if (oldb EQ b)		/* done if same as b */
+  if (oldb == b)		/* done if same as b */
     return (b);
 
   newb = b << 6;		/* calculate new bank value */
@@ -50,9 +50,9 @@ vbank (b)
 
   v_regs[5] = newb;		/* set new bank value */
 
-  while (v_regs[11] GT 300);	/* wait for FRAMESTOP */
-  while (v_regs[11] LT 175);
-  while (v_regs[11] GE 175);
+  while (v_regs[11] > 300);	/* wait for FRAMESTOP */
+  while (v_regs[11] < 175);
+  while (v_regs[11] >= 175);
 
   return (oldb);		/* return old bank value */
 }
@@ -68,7 +68,7 @@ vbank (b)
 
 vfwait ()
 {
-  while (v_regs[11] GT 300);	/* wait for FRAMESTOP */
-  while (v_regs[11] LT 175);
-  while (v_regs[11] GE 175);
+  while (v_regs[11] > 300);	/* wait for FRAMESTOP */
+  while (v_regs[11] < 175);
+  while (v_regs[11] >= 175);
 }

@@ -51,7 +51,7 @@ fpsub (c)
 {
   /* KLUDGE:  since we aren't Unix(tm) we prepend a CR to LF's */
 
-  if (c EQ '\n')
+  if (c == '\n')
     BIOS (B_PUTC, CON_DEV, '\r');
 
   BIOS (B_PUTC, CON_DEV, c);

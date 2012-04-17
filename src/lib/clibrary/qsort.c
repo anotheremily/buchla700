@@ -86,7 +86,7 @@ qsort1 (a, l)
   es = qscnt;
 
 start:
-  if ((n = (long) l - (long) a) LE es)
+  if ((n = (long) l - (long) a) <= es)
     return;
 
   n = es * (n / (2 * es));
@@ -100,7 +100,7 @@ start:
       if (i < lp)
 	{
 
-	  if ((c = (*qscmp) (i, lp)) EQ 0)
+	  if ((c = (*qscmp) (i, lp)) == 0)
 	    {
 
 	      qsexch (i, lp -= es);
@@ -122,7 +122,7 @@ start:
       if (j > hp)
 	{
 
-	  if ((c = (*qscmp) (hp, j)) EQ 0)
+	  if ((c = (*qscmp) (hp, j)) == 0)
 	    {
 
 	      qsexch (hp += es, j);
@@ -132,7 +132,7 @@ start:
 	  if (c > 0)
 	    {
 
-	      if (i EQ lp)
+	      if (i == lp)
 		{
 
 		  qstexc (i, hp += es, j);
@@ -150,10 +150,10 @@ start:
 	  goto loop;
 	}
 
-      if (i EQ lp)
+      if (i == lp)
 	{
 
-	  if (((long) lp - (long) a) GE ((long) l - (long) hp))
+	  if (((long) lp - (long) a) >= ((long) l - (long) hp))
 	    {
 
 	      qsort1 (hp + es, l);

@@ -26,7 +26,7 @@ _conin (x, buff, len)
   int nbp;
   register int l;
 
-  if (_ConBuf[1] EQ 0)
+  if (_ConBuf[1] == 0)
     {
 
       _ConBuf[0] = 255;
@@ -35,7 +35,7 @@ _conin (x, buff, len)
       readbuf (CON_DEV, _ConBuf);
       writeln (CON_DEV, "\r\n");
 
-      if (_ConBuf[2] EQ 0x1a)
+      if (_ConBuf[2] == 0x1a)
 	{
 
 	  _ConBuf[1] = 0;

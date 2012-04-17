@@ -73,7 +73,7 @@ ef_mcfn (n)
 
   tmpval = ((ebuf[0] - '0') * 10) + (ebuf[1] - '0');
 
-  if (tmpval GE NUMCFG)		/* check against limit */
+  if (tmpval >= NUMCFG)		/* check against limit */
     return (FAILURE);
 
   vbufs[curvce].idhcfg = tmpval;
@@ -189,7 +189,7 @@ ef_mwsn (nn)
 
   tmpval = ((ebuf[0] - '0') * 10) + (ebuf[1] - '0');
 
-  if ((tmpval < 1) OR (tmpval > NUMWAVS))
+  if ((tmpval < 1) || (tmpval > NUMWAVS))
     return (FAILURE);
 /* 
 */

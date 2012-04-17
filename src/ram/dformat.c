@@ -80,7 +80,7 @@ dformat (dt)
 	  return (FAILURE);
 	}
 
-      if (dfsides EQ 2)
+      if (dfsides == 2)
 	{			/* format second side */
 
 	  if (dferror = (short) XBIOS (X_FORMAT, dfbuf, 0L, 0, 9,
@@ -111,7 +111,7 @@ dformat (dt)
 
   memsetw (dfbuf, 0, 4096);
 
-  if (dfsides EQ 2)
+  if (dfsides == 2)
     {
 
       dfbuf[0] = 0xFDFF;

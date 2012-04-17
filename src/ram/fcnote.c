@@ -62,7 +62,7 @@ fcnote (grp, tnote)
     en = bp->e_note;
     eg = bp->e_group;
 
-    if ((bp->e_time LT t_left) OR (et EQ EV_SCORE))
+    if ((bp->e_time < t_left) || (et == EV_SCORE))
       {
 
 	/* done -- can't see begin,  or note not there */
@@ -70,7 +70,7 @@ fcnote (grp, tnote)
 	return (E_NULL);
 
       }
-    else if ((et EQ EV_NEND) AND (en EQ tnote) AND (eg EQ grp))
+    else if ((et == EV_NEND) && (en == tnote) && (eg == grp))
       {
 
 	/* done -- hit note end first -- notes overlap */
@@ -79,7 +79,7 @@ fcnote (grp, tnote)
 /* 
 */
       }
-    else if ((et EQ EV_NBEG) AND (en EQ tnote) AND (eg EQ grp))
+    else if ((et == EV_NBEG) && (en == tnote) && (eg == grp))
       {
 
 	/* found note begin -- possible note starting at bp */
@@ -93,7 +93,7 @@ fcnote (grp, tnote)
 	  en = ep->e_note;	/* note */
 	  eg = ep->e_group;	/* group */
 
-	  if ((et EQ EV_NBEG) AND (en EQ tnote) AND (eg EQ grp))
+	  if ((et == EV_NBEG) && (en == tnote) && (eg == grp))
 	    {
 
 	      /* hit note begin first -- done -- notes overlap */
@@ -102,7 +102,7 @@ fcnote (grp, tnote)
 /* 
 */
 	    }
-	  else if ((et EQ EV_NEND) AND (en EQ tnote) AND (eg EQ grp))
+	  else if ((et == EV_NEND) && (en == tnote) && (eg == grp))
 	    {
 
 	      /* hit note end -- done -- found complete note */
@@ -113,7 +113,7 @@ fcnote (grp, tnote)
 	      return (bp);
 
 	    }
-	  else if (et EQ EV_FINI)
+	  else if (et == EV_FINI)
 	    {
 
 	      /* hit score end -- done -- can't find end */

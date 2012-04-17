@@ -79,9 +79,9 @@ main (argc, argv)
 
       c = **++argv;
 
-      if (c GE 'A' AND c LE 'Z')
+      if (c >= 'A' && c <= 'Z')
 	d = c - 'A';
-      else if (c GE 'a' AND c LE 'z')
+      else if (c >= 'a' && c <= 'z')
 	d = c - 'a';
       else
 	continue;

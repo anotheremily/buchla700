@@ -47,7 +47,7 @@ delnote ()
 
   disptag = FALSE;		/* nothing changed yet */
 
-  if (NOT recsw)		/* must be in record mode */
+  if (! recsw)		/* must be in record mode */
     return (FAILURE);
 
   /* convert cursor position to note number and time */
@@ -68,8 +68,8 @@ delnote ()
       for (grp = 0; grp < 12; grp++)
 	{			/* for each group ... */
 
-	  if ((grpstat[grp] EQ 0) OR	/* ... enabled and ... */
-	      (grpmode[grp] NE 2))	/* ... in record mode: */
+	  if ((grpstat[grp] == 0) ||	/* ... enabled and ... */
+	      (grpmode[grp] != 2))	/* ... in record mode: */
 	    continue;
 
 	  runtag = TRUE;
@@ -78,7 +78,7 @@ delnote ()
 	  while (runtag)
 	    {			/* scan left from cursor until: */
 
-	      if ((bp->e_time LT t_left) OR (bp->e_type EQ EV_SCORE))
+	      if ((bp->e_time < t_left) || (bp->e_type == EV_SCORE))
 		{		/* left edge */
 
 		  /* done -- nothing to delete */
@@ -88,8 +88,8 @@ delnote ()
 /* 
 */
 		}
-	      else if ((bp->e_type EQ EV_NEND) AND
-		       (bp->e_note EQ tnote) AND (bp->e_group EQ grp))
+	      else if ((bp->e_type == EV_NEND) &&
+		       (bp->e_note == tnote) && (bp->e_group == grp))
 		{		/* note end */
 
 		  /* done -- overlap */
@@ -100,8 +100,8 @@ delnote ()
 */
 
 		}
-	      else if ((bp->e_type EQ EV_NBEG) AND
-		       (bp->e_note EQ tnote) AND (bp->e_group EQ grp))
+	      else if ((bp->e_type == EV_NBEG) &&
+		       (bp->e_note == tnote) && (bp->e_group == grp))
 		{		/* note begin */
 
 		  /* possible deletion */
@@ -116,8 +116,8 @@ delnote ()
 
 		      /* note begin -- done -- overlap */
 
-		      if ((ep->e_type EQ EV_NBEG) AND
-			  (ep->e_note EQ tnote) AND (ep->e_group EQ grp))
+		      if ((ep->e_type == EV_NBEG) &&
+			  (ep->e_note == tnote) && (ep->e_group == grp))
 			{
 
 			  scantag = FALSE;
@@ -127,27 +127,27 @@ delnote ()
 */
 
 			}
-		      else if ((ep->e_type EQ EV_NEND) AND
-			       (ep->e_note EQ tnote) AND (ep->e_group EQ grp))
+		      else if ((ep->e_type == EV_NEND) &&
+			       (ep->e_note == tnote) && (ep->e_group == grp))
 			{
 
 			  /* note end */
 
 			  /* delete note end */
 
-			  if (cp EQ ep)
+			  if (cp == ep)
 			    cp = cp->e_bak;
 
-			  if (p_ctr EQ ep)
+			  if (p_ctr == ep)
 			    p_ctr = p_ctr->e_bak;
 
-			  if (p_bak EQ ep)
+			  if (p_bak == ep)
 			    p_bak = p_bak->e_bak;
 
-			  if (p_fwd EQ ep)
+			  if (p_fwd == ep)
 			    p_fwd = p_fwd->e_bak;
 
-			  if (p_cur EQ ep)
+			  if (p_cur == ep)
 			    p_cur = p_cur->e_bak;
 
 			  e_del (e_rmv (ep));
@@ -156,19 +156,19 @@ delnote ()
 
 			  /* delete note begin */
 
-			  if (cp EQ bp)
+			  if (cp == bp)
 			    cp = cp->e_bak;
 
-			  if (p_ctr EQ bp)
+			  if (p_ctr == bp)
 			    p_ctr = p_ctr->e_bak;
 
-			  if (p_bak EQ bp)
+			  if (p_bak == bp)
 			    p_bak = p_bak->e_bak;
 
-			  if (p_fwd EQ bp)
+			  if (p_fwd == bp)
 			    p_fwd = p_fwd->e_bak;
 
-			  if (p_cur EQ bp)
+			  if (p_cur == bp)
 			    p_cur = p_cur->e_bak;
 
 			  e_del (e_rmv (bp));
@@ -181,26 +181,26 @@ delnote ()
 */
 
 			}
-		      else if (ep->e_type EQ EV_FINI)
+		      else if (ep->e_type == EV_FINI)
 			{
 
 			  /* score end */
 
 			  /* delete note begin */
 
-			  if (cp EQ bp)
+			  if (cp == bp)
 			    cp = cp->e_bak;
 
-			  if (p_ctr EQ bp)
+			  if (p_ctr == bp)
 			    p_ctr = p_ctr->e_bak;
 
-			  if (p_bak EQ bp)
+			  if (p_bak == bp)
 			    p_bak = p_bak->e_bak;
 
-			  if (p_fwd EQ bp)
+			  if (p_fwd == bp)
 			    p_fwd = p_fwd->e_bak;
 
-			  if (p_cur EQ bp)
+			  if (p_cur == bp)
 			    p_cur = p_cur->e_bak;
 
 			  e_del (e_rmv (bp));
@@ -231,7 +231,7 @@ delnote ()
 
       /* handle accidentals */
 
-      if (ac_code EQ N_SHARP)
+      if (ac_code == N_SHARP)
 	++tnote;		/* treat accidentals as sharps */
       else
 	--tnote;		/* treat accidentals as flats */
@@ -246,7 +246,7 @@ notnote:			/* jumped to if pix2mid() returned FAILURE (not on a note) */
 
   /* check for a bar marker delete operation */
 
-  if (NOT disptag)
+  if (! disptag)
     {				/* if no notes were deleted, try for a bar */
 
       if (ctime < 0L)		/* time has to be good */
@@ -256,24 +256,24 @@ notnote:			/* jumped to if pix2mid() returned FAILURE (not on a note) */
 
       ep = ep_adj (p_cur, 1, ctime);
 
-      while (ctime EQ ep->e_time)
+      while (ctime == ep->e_time)
 	{
 
 	  bp = ep->e_fwd;
 
-	  if (EV_BAR EQ ep->e_type)
+	  if (EV_BAR == ep->e_type)
 	    {
 
-	      if (ep EQ p_bak)
+	      if (ep == p_bak)
 		p_bak = p_bak->e_bak;
 
-	      if (ep EQ p_ctr)
+	      if (ep == p_ctr)
 		p_ctr = p_ctr->e_bak;
 
-	      if (ep EQ p_cur)
+	      if (ep == p_cur)
 		p_cur = p_cur->e_bak;
 
-	      if (ep EQ p_fwd)
+	      if (ep == p_fwd)
 		p_fwd = p_fwd->e_bak;
 
 	      e_del (e_rmv (ep));

@@ -34,7 +34,7 @@ FilName (s, p)
       if (*s)
 	{			/* ... until we hit a '\0' */
 
-	  if (*s EQ '.')	/* ... or a '.' */
+	  if (*s == '.')	/* ... or a '.' */
 	    break;
 
 	  *p++ = *s++;		/* ... copying as we go */
@@ -75,7 +75,7 @@ FilExt (s, p)
   while (c = *s)
     {				/* scan the string */
 
-      if (c EQ '.')
+      if (c == '.')
 	{			/* ... until we hit the dot */
 
 	  ++s;			/* point past the dot */

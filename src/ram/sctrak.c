@@ -49,7 +49,7 @@ extern struct gdsel *gdstbp[];
 
 /*
    =============================================================================
-	sc_trak(tval) -- position score display such that t_ctr EQ 'tval'
+	sc_trak(tval) -- position score display such that t_ctr == 'tval'
 	Assumes that the pointers are correct.
    =============================================================================
 */
@@ -65,10 +65,10 @@ sc_trak (tval)
 
   DB_ENTR ("sc_trak");
 
-  if (ndisp NE 2)
+  if (ndisp != 2)
     {
 
-      DB_EXIT ("sc_trak - ndisp NE 2");
+      DB_EXIT ("sc_trak - ndisp != 2");
       return (FAILURE);
     }
 
@@ -78,7 +78,7 @@ sc_trak (tval)
   Pcheck (p_bak, "p_bak - sc_trak - entry");
 #endif
 
-  if ((p_fwd EQ E_NULL) OR (p_ctr EQ E_NULL) OR (p_bak EQ E_NULL))
+  if ((p_fwd == E_NULL) || (p_ctr == E_NULL) || (p_bak == E_NULL))
     {
 
       DB_EXIT ("sc_trak - NULL ptr");
@@ -121,12 +121,12 @@ sc_trak (tval)
 */
   DB_CMNT ("sc_trak - update loop");
 
-  if (sd EQ D_FWD)
+  if (sd == D_FWD)
     {				/* scroll forward */
 
       DB_CMNT ("sc_trak - forward");
 
-      while (rtc++ LT tval)
+      while (rtc++ < tval)
 	{			/* advance to tval */
 
 	  sreset ();		/* reset highlighting */
@@ -134,24 +134,24 @@ sc_trak (tval)
 	  ++rtb;		/* update target time at p_bak */
 	  ++rtf;		/* update target time at p_fwd */
 
-	  if (rpb->e_type NE EV_FINI)
+	  if (rpb->e_type != EV_FINI)
 	    {			/* up to end of score */
 
-	      while (rpb->e_time EQ rtb)
+	      while (rpb->e_time == rtb)
 		{		/* check event time */
 
 		  se_disp (rpb, D_FWD, gdstbp, 0);	/* display event */
 		  rpb = rpb->e_fwd;	/* point at next event */
 
-		  if (rpb->e_type EQ EV_FINI)	/* stop at end of score */
+		  if (rpb->e_type == EV_FINI)	/* stop at end of score */
 		    break;
 		}
 	    }
 
-	  if (0 EQ (rtb % mod48))
+	  if (0 == (rtb % mod48))
 	    {			/* handle beat markers */
 
-	      if ((struct gdsel *) NULL NE (gdsp = gdfsep))
+	      if ((struct gdsel *) NULL != (gdsp = gdfsep))
 		{
 
 		  gdfsep = gdsp->next;
@@ -165,38 +165,38 @@ sc_trak (tval)
 	    }
 /* 
 */
-	  if (rpc->e_type NE EV_FINI)
+	  if (rpc->e_type != EV_FINI)
 	    {			/* up to end of score */
 
-	      while (rpc->e_time EQ rtc)
+	      while (rpc->e_time == rtc)
 		{		/* check event time */
 
 		  se_disp (rpc, D_FWD, gdstbc, 1);	/* display event */
 		  rpc = rpc->e_fwd;	/* point at next event */
 
-		  if (rpc->e_type EQ EV_FINI)	/* stop at end of score */
+		  if (rpc->e_type == EV_FINI)	/* stop at end of score */
 		    break;
 		}
 	    }
 
-	  if (rpf->e_type NE EV_FINI)
+	  if (rpf->e_type != EV_FINI)
 	    {			/* up to end of score */
 
-	      while (rpf->e_time EQ rtf)
+	      while (rpf->e_time == rtf)
 		{		/* check event time */
 
 		  se_disp (rpf, D_FWD, gdstbn, 0);	/* display event */
 		  rpf = rpf->e_fwd;	/* next event pointer */
 
-		  if (rpf->e_type EQ EV_FINI)	/* stop at end of score */
+		  if (rpf->e_type == EV_FINI)	/* stop at end of score */
 		    break;
 		}
 	    }
 
-	  if (0 EQ (rtf % mod48))
+	  if (0 == (rtf % mod48))
 	    {			/* handle beat markers */
 
-	      if ((struct gdsel *) NULL NE (gdsp = gdfsep))
+	      if ((struct gdsel *) NULL != (gdsp = gdfsep))
 		{
 
 		  gdfsep = gdsp->next;
@@ -220,7 +220,7 @@ sc_trak (tval)
 
       DB_CMNT ("sc_trak - backward");
 
-      while (rtc-- GT tval)
+      while (rtc-- > tval)
 	{			/* advance to tval */
 
 	  sreset ();		/* reset highlighting */
@@ -228,24 +228,24 @@ sc_trak (tval)
 	  --rtb;		/* update target time at p_bak */
 	  --rtf;		/* update target time at p_fwd */
 
-	  if (rpb->e_type NE EV_SCORE)
+	  if (rpb->e_type != EV_SCORE)
 	    {			/* up to start of score */
 
-	      while (rpb->e_time EQ rtb)
+	      while (rpb->e_time == rtb)
 		{		/* check event time */
 
 		  se_disp (rpb, D_BAK, gdstbp, 0);
 		  rpb = rpb->e_bak;	/* point at next event */
 
-		  if (rpb->e_type EQ EV_SCORE)	/* stop at end of score */
+		  if (rpb->e_type == EV_SCORE)	/* stop at end of score */
 		    break;
 		}
 	    }
 
-	  if (0 EQ (rtb % mod48))
+	  if (0 == (rtb % mod48))
 	    {			/* handle beat markers */
 
-	      if ((struct gdsel *) NULL NE (gdsp = gdfsep))
+	      if ((struct gdsel *) NULL != (gdsp = gdfsep))
 		{
 
 		  gdfsep = gdsp->next;
@@ -259,38 +259,38 @@ sc_trak (tval)
 	    }
 /* 
 */
-	  if (rpc->e_type NE EV_SCORE)
+	  if (rpc->e_type != EV_SCORE)
 	    {			/* up to start of score */
 
-	      while (rpc->e_time EQ rtc)
+	      while (rpc->e_time == rtc)
 		{		/* check event time */
 
 		  se_disp (rpc, D_BAK, gdstbc, 1);	/* display event */
 		  rpc = rpc->e_bak;	/* point at next event */
 
-		  if (rpc->e_type EQ EV_SCORE)	/* stop at end of score */
+		  if (rpc->e_type == EV_SCORE)	/* stop at end of score */
 		    break;
 		}
 	    }
 
-	  if (rpf->e_type NE EV_SCORE)
+	  if (rpf->e_type != EV_SCORE)
 	    {			/* up to end of score */
 
-	      while (rpf->e_time EQ rtf)
+	      while (rpf->e_time == rtf)
 		{		/* check event time */
 
 		  se_disp (rpf, D_BAK, gdstbn, 0);	/* display event */
 		  rpf = rpf->e_bak;	/* next event pointer */
 
-		  if (rpf->e_type EQ EV_SCORE)	/* stop at end of score */
+		  if (rpf->e_type == EV_SCORE)	/* stop at end of score */
 		    break;
 		}
 	    }
 
-	  if (0 EQ (rtf % mod48))
+	  if (0 == (rtf % mod48))
 	    {			/* handle beat markers */
 
-	      if ((struct gdsel *) NULL NE (gdsp = gdfsep))
+	      if ((struct gdsel *) NULL != (gdsp = gdfsep))
 		{
 
 		  gdfsep = gdsp->next;
@@ -348,7 +348,7 @@ sc_trak (tval)
 
 /*
    =============================================================================
-	sc_trek(tval) -- follow score chain such that t_cur EQ 'tval'
+	sc_trek(tval) -- follow score chain such that t_cur == 'tval'
    =============================================================================
 */
 
@@ -366,7 +366,7 @@ sc_trek (tval)
   Pcheck (p_cur, "p_cur - sc_trek - entry");
 #endif
 
-  if (p_cur EQ E_NULL)
+  if (p_cur == E_NULL)
     {
 
       DB_EXIT ("sc_trek - NULL ptr");
@@ -379,7 +379,7 @@ sc_trek (tval)
   DB_CMNT ("sc_trek - chasing p_cur");
 
 #ifdef DEBUGGER
-  if (se EQ D_FWD)
+  if (se == D_FWD)
     DB_CMNT ("sc_trek - forward");
   else
     DB_CMNT ("sc_trek - backward");
@@ -387,33 +387,33 @@ sc_trek (tval)
 
 /* 
 */
-  while (rt NE tval)
+  while (rt != tval)
     {				/* track tval */
 
-      if (se EQ D_FWD)
+      if (se == D_FWD)
 	++rt;
       else
 	--rt;
 
-      if (rp->e_type NE EV_FINI)
+      if (rp->e_type != EV_FINI)
 	{
 
-	  while (rp->e_time EQ rt)
+	  while (rp->e_time == rt)
 	    {			/* process events a rt */
 
 	      /* "erase head" logic */
 
-	      if (recsw AND (se EQ D_FWD))
+	      if (recsw && (se == D_FWD))
 		{
 
 		  et = 0x007F & rp->e_type;
 
-		  if ((NOT dubsw) AND ((et EQ EV_NBEG) OR (et EQ EV_NEND)))
+		  if ((! dubsw) && ((et == EV_NBEG) || (et == EV_NEND)))
 		    {
 
 		      grp = rp->e_data2;
 
-		      if (grpstat[grp] AND (2 EQ grpmode[grp]))
+		      if (grpstat[grp] && (2 == grpmode[grp]))
 			{
 
 			  DB_CMNT ("sc_trek - erasing note");
@@ -422,16 +422,16 @@ sc_trek (tval)
 
 			  ep = rp->e_fwd;
 
-			  if (rp EQ p_bak)
+			  if (rp == p_bak)
 			    p_bak = ep;
 
-			  if (rp EQ p_cur)
+			  if (rp == p_cur)
 			    p_cur = ep;
 
-			  if (rp EQ p_ctr)
+			  if (rp == p_ctr)
 			    p_ctr = ep;
 
-			  if (rp EQ p_fwd)
+			  if (rp == p_fwd)
 			    p_fwd = ep;
 
 			  e_del (e_rmv (rp));
@@ -441,12 +441,12 @@ sc_trek (tval)
 /* 
 */
 		    }
-		  else if (et EQ EV_ANVL)
+		  else if (et == EV_ANVL)
 		    {
 
 		      grp = 0x000F & rp->e_data1;
 
-		      if (grpstat[grp] AND (2 EQ (ancmsw ?
+		      if (grpstat[grp] && (2 == (ancmsw ?
 						  varmode[0x000F &
 							  (rp->
 							   e_data1 >> 4)][grp]
@@ -459,16 +459,16 @@ sc_trek (tval)
 
 			  ep = rp->e_fwd;
 
-			  if (rp EQ p_bak)
+			  if (rp == p_bak)
 			    p_bak = ep;
 
-			  if (rp EQ p_cur)
+			  if (rp == p_cur)
 			    p_cur = ep;
 
-			  if (rp EQ p_ctr)
+			  if (rp == p_ctr)
 			    p_ctr = ep;
 
-			  if (rp EQ p_fwd)
+			  if (rp == p_fwd)
 			    p_fwd = ep;
 
 			  e_del (e_rmv (rp));
@@ -478,20 +478,20 @@ sc_trek (tval)
 		    }
 		}
 
-	      if (rp->e_time EQ rt)
+	      if (rp->e_time == rt)
 		{		/* check event time */
 
 		  se_exec (rp, se);	/* execute event */
 
-		  if (se EQ D_FWD)
+		  if (se == D_FWD)
 		    rp = rp->e_fwd;	/* point at next event */
 		  else
 		    rp = rp->e_bak;	/* point at next event */
 		}
 
 	    nextev:
-	      if (((se EQ D_FWD) AND (rp->e_type EQ EV_FINI)) OR
-		  ((se EQ D_BAK) AND (rp->e_type EQ EV_SCORE)))
+	      if (((se == D_FWD) && (rp->e_type == EV_FINI)) ||
+		  ((se == D_BAK) && (rp->e_type == EV_SCORE)))
 		break;
 	    }
 	}

@@ -60,7 +60,7 @@ static short ttcur[] = {
 ttcini (color)
      unsigned color;
 {
-  if ((v_regs[5] & 0x0180) NE 0x0100)
+  if ((v_regs[5] & 0x0180) != 0x0100)
     vbank (1);
 
   andcopy (v_tcur, ttcur, exp_c (color), 64);

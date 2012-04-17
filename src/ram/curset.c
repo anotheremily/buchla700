@@ -181,7 +181,7 @@ stdctp3 ()
   if (submenu)
     return (CT_VIRT);
 
-  return (((cyval < 14) OR (cyval > 237)) ? CT_SCOR : CT_GRAF);
+  return (((cyval < 14) || (cyval > 237)) ? CT_SCOR : CT_GRAF);
 }
 
 /*
@@ -224,7 +224,7 @@ curset (s)
      register struct curpak *s;
 {
 #if	DEBUGIT
-  if (debugsw AND debugcs)
+  if (debugsw && debugcs)
     printf ("curset($%lX): ENTRY old cmtype=%d\n", s, cmtype);
 #endif
 
@@ -266,13 +266,13 @@ curset (s)
   cyval = s->cyval;
 
 #if	DEBUGIT
-  if (debugsw AND debugcs)
+  if (debugsw && debugcs)
     printf ("curset($%lX): new cmtype=%d\n", s, cmtype);
 #endif
 
 /* 
 */
-  if (cmtype EQ CT_GRAF)
+  if (cmtype == CT_GRAF)
     {				/* graphics */
 
       chtime = hcwval;
@@ -283,7 +283,7 @@ curset (s)
     {				/* text of some sort */
 
       chtime = thcwval;
-      cvtime = (cmtype EQ CT_SMTH) ? syrate : tvcwval;
+      cvtime = (cmtype == CT_SMTH) ? syrate : tvcwval;
     }
 
   stccol = XTOC (cxval);
@@ -304,7 +304,7 @@ curset (s)
   infetp = (struct fet *) NULL;
 
 #if	DEBUGIT
-  if (debugsw AND debugcs)
+  if (debugsw && debugcs)
     {
 
       printf

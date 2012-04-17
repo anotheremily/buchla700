@@ -65,7 +65,7 @@ ef_wavs (n)
   for (i = 0; i < 2; i++)	/* convert from ASCII to binary */
     tmpval = (tmpval * 10) + (ebuf[i] - '0');
 
-  if ((tmpval GT NUMWAVS) OR (tmpval EQ 0))
+  if ((tmpval > NUMWAVS) || (tmpval == 0))
     return (FAILURE);
 
   wsnmod[curvce][curwslt] = TRUE;

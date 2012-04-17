@@ -83,13 +83,13 @@ DB_Entr (str)
 
   ++DB_Levl;
 
-  if (++DB_In GE DB_DEPTH)	/* update the 'in' pointer */
+  if (++DB_In >= DB_DEPTH)	/* update the 'in' pointer */
     DB_In = 0;
 
-  if (DB_In EQ DB_Out)
+  if (DB_In == DB_Out)
     {				/* bump the output pointer if full */
 
-      if (++DB_Out GE DB_DEPTH)
+      if (++DB_Out >= DB_DEPTH)
 	DB_Out = 0;
     }
 }
@@ -116,13 +116,13 @@ DB_Exit (str)
   else
     DB_Levl = 0L;
 
-  if (++DB_In GE DB_DEPTH)	/* update the 'in' pointer */
+  if (++DB_In >= DB_DEPTH)	/* update the 'in' pointer */
     DB_In = 0;
 
-  if (DB_In EQ DB_Out)
+  if (DB_In == DB_Out)
     {				/* bump the output pointer if full */
 
-      if (++DB_Out GE DB_DEPTH)
+      if (++DB_Out >= DB_DEPTH)
 	DB_Out = 0;
     }
 }
@@ -144,13 +144,13 @@ DB_Cmnt (str)
 
   DB_Last = str;
 
-  if (++DB_In GE DB_DEPTH)	/* update the 'in' pointer */
+  if (++DB_In >= DB_DEPTH)	/* update the 'in' pointer */
     DB_In = 0;
 
-  if (DB_In EQ DB_Out)
+  if (DB_In == DB_Out)
     {				/* bump the output pointer if full */
 
-      if (++DB_Out GE DB_DEPTH)
+      if (++DB_Out >= DB_DEPTH)
 	DB_Out = 0;
     }
 }
@@ -196,7 +196,7 @@ DB_Dump ()
   register short tag;
   register long i, lev;
 
-  if ((DB_In GE DB_DEPTH) OR (DB_In < 0))
+  if ((DB_In >= DB_DEPTH) || (DB_In < 0))
     {				/* check DB_In */
 
       printf ("DB_In was corrupt:  %d\n", DB_In);
@@ -207,7 +207,7 @@ DB_Dump ()
       return;
     }
 
-  if ((DB_Out GE DB_DEPTH) OR (DB_Out < 0))
+  if ((DB_Out >= DB_DEPTH) || (DB_Out < 0))
     {				/* check DB_Out */
 
       printf ("DB_Out was corrupt:  %d\n", DB_Out);
@@ -218,7 +218,7 @@ DB_Dump ()
       return;
     }
 
-  if (DB_In EQ DB_Out)
+  if (DB_In == DB_Out)
     {				/* check for an emtpy buffer */
 
       printf ("Debug buffer is empty:  In = Out = %d\n", DB_In);
@@ -229,7 +229,7 @@ DB_Dump ()
       if (DB_Last)
 	printf ("Latest entry = \"%s\"\n", DB_Last);
 
-      if (DB_Flag EQ 0)		/* trap to ROMP */
+      if (DB_Flag == 0)		/* trap to ROMP */
 	xtrap15 ();
 
       DB_Clr ();		/* clear the buffer */
@@ -241,7 +241,7 @@ DB_Dump ()
 
   lev = 0L;
 
-  while (DB_Out NE DB_In)
+  while (DB_Out != DB_In)
     {				/* print the buffer entries */
 
       for (i = 0L; i < lev; i++)
@@ -271,7 +271,7 @@ DB_Dump ()
 	  break;
 	}
 
-      if (++DB_Out GE DB_DEPTH)
+      if (++DB_Out >= DB_DEPTH)
 	DB_Out = 0;
     }
 
@@ -279,7 +279,7 @@ DB_Dump ()
 
   DB_Clr ();			/* clear the buffer */
 
-  if (DB_Flag EQ 0)
+  if (DB_Flag == 0)
     xtrap15 ();
 
   return;

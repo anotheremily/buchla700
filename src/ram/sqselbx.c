@@ -168,7 +168,7 @@ postcm ()
 
       if (inrange (stccol, 12, 13))
 	hilitsq (ST_0);
-      else if ((sqopreq[seqbuf.seqact1 & SQ_MACT]) AND (stccol EQ 19))
+      else if ((sqopreq[seqbuf.seqact1 & SQ_MACT]) && (stccol == 19))
 	hilitsq (ST_1);
       else
 	hilitsq (ST_OFF);
@@ -181,7 +181,7 @@ postcm ()
 
       if (inrange (stccol, 24, 25))
 	hilitsq (ST_0);
-      else if ((sqopreq[seqbuf.seqact2 & SQ_MACT]) AND (stccol EQ 31))
+      else if ((sqopreq[seqbuf.seqact2 & SQ_MACT]) && (stccol == 31))
 	hilitsq (ST_1);
       else
 	hilitsq (ST_OFF);
@@ -194,7 +194,7 @@ postcm ()
 
       if (inrange (stccol, 36, 37))
 	hilitsq (ST_2);
-      else if ((sqopreq[seqbuf.seqact3 & SQ_MACT]) AND (stccol EQ 43))
+      else if ((sqopreq[seqbuf.seqact3 & SQ_MACT]) && (stccol == 43))
 	hilitsq (ST_1);
       else
 	hilitsq (ST_OFF);
@@ -323,7 +323,7 @@ sqenter ()
       for (i = lcol + 3; i < lcol + 6; i++)
 	ltemp = (ltemp * 10) + (sqdebuf[i] - '0');
 
-      if ((ltemp < 1L) OR (ltemp > 128L))
+      if ((ltemp < 1L) || (ltemp > 128L))
 	{
 
 	  movestc (DATAROW, actlft[action] + 3);
@@ -335,13 +335,13 @@ sqenter ()
 */
       i = sqdebuf[lcol + 7];
 
-      if ((i EQ '1') OR (i EQ '2'))
+      if ((i == '1') || (i == '2'))
 	{
 
 	  port = i - '1';
 
 	}
-      else if (i EQ 'L')
+      else if (i == 'L')
 	{
 
 	  port = 2;
@@ -356,7 +356,7 @@ sqenter ()
 
       ltemp = ((sqdebuf[lcol + 9] - '0') * 10) + (sqdebuf[lcol + 10] - '0');
 
-      if ((ltemp < 1L) OR (ltemp > 16L))
+      if ((ltemp < 1L) || (ltemp > 16L))
 	{
 
 	  movestc (DATAROW, actlft[action] + 9);
@@ -375,7 +375,7 @@ sqenter ()
 
       ltemp = ((sqdebuf[lcol + 9] - '0') * 10) + (sqdebuf[lcol + 10] - '0');
 
-      if ((ltemp < 1L) OR (ltemp > 16))
+      if ((ltemp < 1L) || (ltemp > 16))
 	{
 
 	  movestc (DATAROW, actlft[action] + 9);
@@ -415,7 +415,7 @@ sqenter ()
 
       ltemp = ((sqdebuf[lcol + 5] - '0') * 10) + (sqdebuf[lcol + 6] - '0');
 
-      if ((ltemp < 1) OR (ltemp > 16))
+      if ((ltemp < 1) || (ltemp > 16))
 	{
 
 	  movestc (DATAROW, actlft[action] + 5);
@@ -432,7 +432,7 @@ sqenter ()
 	  ltemp = ((sqdebuf[lcol + 9] - '0') * 10) +
 	    (sqdebuf[lcol + 10] - '0');
 
-	  if ((ltemp < 1) OR (ltemp > 16))
+	  if ((ltemp < 1) || (ltemp > 16))
 	    {
 
 	      movestc (DATAROW, actlft[action] + 9);
@@ -465,7 +465,7 @@ sqenter ()
 	  return (FAILURE);
 	}
 
-      if (((*ap & SQ_MACT) EQ SQ_AREG) AND (sqdebuf[lcol + 7] EQ '-'))
+      if (((*ap & SQ_MACT) == SQ_AREG) && (sqdebuf[lcol + 7] == '-'))
 	val |= 0x1000;
 
       *ap = (*ap & SQ_MACT) | (obj << 8);
@@ -506,7 +506,7 @@ sqfnbox (n)
   register short i;
   register long ltemp;
 
-  if (NOT submenu)
+  if (! submenu)
     {				/* SEQUENCE DATA ENTRY LINE */
 
       if (inrange (stccol, 2, 4))
@@ -557,7 +557,7 @@ sqfnbox (n)
 	      return (SUCCESS);
 
 	    }
-	  else if ((sqopreq[seqbuf.seqact1 & SQ_MACT]) AND (stccol EQ 19))
+	  else if ((sqopreq[seqbuf.seqact1 & SQ_MACT]) && (stccol == 19))
 	    {
 
 	      setsqm (19, 53);
@@ -583,7 +583,7 @@ sqfnbox (n)
 	      return (SUCCESS);
 
 	    }
-	  else if ((sqopreq[seqbuf.seqact2 & SQ_MACT]) AND (stccol EQ 31))
+	  else if ((sqopreq[seqbuf.seqact2 & SQ_MACT]) && (stccol == 31))
 	    {
 
 	      setsqm (19, 53);
@@ -610,7 +610,7 @@ sqfnbox (n)
 	      return (SUCCESS);
 
 	    }
-	  else if ((sqopreq[seqbuf.seqact3 & SQ_MACT]) AND (stccol EQ 43))
+	  else if ((sqopreq[seqbuf.seqact3 & SQ_MACT]) && (stccol == 43))
 	    {
 
 	      setsqm (19, 53);
@@ -674,7 +674,7 @@ sqfnbox (n)
 
 	    case 2:		/* action 3 */
 
-	      if ((box EQ 4) OR (box EQ 8) OR (box EQ 12) OR
+	      if ((box == 4) || (box == 8) || (box == 12) ||
 		  inrange (box, 15, 17))
 		return (FAILURE);
 
@@ -690,7 +690,7 @@ sqfnbox (n)
 
 	  if (sqopreq[act])
 	    endssm (stcrow, actlft[action] + sqvcol[vtype]);
-	  else if ((act EQ SQ_ISTM) OR (act EQ SQ_STOP))
+	  else if ((act == SQ_ISTM) || (act == SQ_STOP))
 	    endssm (stcrow, nextact[action]);
 	  else
 	    endssm (stcrow, actlft[action] + actcol[act]);
@@ -700,7 +700,7 @@ sqfnbox (n)
 */
 	case ST_1:		/* operand type */
 
-	  if (NOT inrange (box, 18, 21))
+	  if (! inrange (box, 18, 21))
 	    return (FAILURE);
 
 	  switch (action)
@@ -708,7 +708,7 @@ sqfnbox (n)
 
 	    case 0:		/* action 1 */
 
-	      if (NOT sqopreq[act = SQ_MACT & seqbuf.seqact1])
+	      if (! sqopreq[act = SQ_MACT & seqbuf.seqact1])
 		return (FAILURE);
 
 	      seqbuf.seqdat1 = (seqbuf.seqdat1 & SQ_MFLG) | sqndata[box - 18];
@@ -716,7 +716,7 @@ sqfnbox (n)
 
 	    case 1:		/* action 2 */
 
-	      if (NOT sqopreq[act = SQ_MACT & seqbuf.seqact2])
+	      if (! sqopreq[act = SQ_MACT & seqbuf.seqact2])
 		return (FAILURE);
 
 	      seqbuf.seqdat2 = (seqbuf.seqdat2 & SQ_MFLG) | sqndata[box - 18];
@@ -724,7 +724,7 @@ sqfnbox (n)
 
 	    case 2:		/* action 3 */
 
-	      if (NOT sqopreq[act = SQ_MACT & seqbuf.seqact3])
+	      if (! sqopreq[act = SQ_MACT & seqbuf.seqact3])
 		return (FAILURE);
 
 	      seqbuf.seqdat3 = (seqbuf.seqdat3 & SQ_MFLG) | sqndata[box - 18];

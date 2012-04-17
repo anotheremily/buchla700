@@ -42,7 +42,7 @@ MTRun (tid, pri, stat, slice, pstack, func, par)
 
   DB_ENTR ("MTRun");
 
-  if ((struct _mt_def *) NIL EQ _MT_)
+  if ((struct _mt_def *) NIL == _MT_)
     _MT_ = (struct _mt_def *) XBIOS (X_MTDEFS);
 
   tcp = _MT_->mtp->TCBs;	/* point at the first TCB */
@@ -51,7 +51,7 @@ MTRun (tid, pri, stat, slice, pstack, func, par)
   while (tcp)
     {				/* search for a free TCB */
 
-      if (NOT (tcp->flags & MTF_OCC))
+      if (! (tcp->flags & MTF_OCC))
 	{
 
 	  /* setup the TCB */
@@ -82,7 +82,7 @@ MTRun (tid, pri, stat, slice, pstack, func, par)
 	      rprv = rcur;	/* previous TCB = current TCB */
 	      rcur = rprv->next;	/* current TCB = next TCB */
 
-	      if (rcur EQ (TCB *) NIL)	/* enqueue here if next was NIL */
+	      if (rcur == (TCB *) NIL)	/* enqueue here if next was NIL */
 		break;
 
 	      if (pri > rcur->pri)	/* enqueue here if priority is greater */

@@ -28,10 +28,10 @@ getword (string, ioptr)
 {
   register int c;
 
-  while (((c = getc (ioptr)) NE EOF) AND isspace (c))
+  while (((c = getc (ioptr)) != EOF) && isspace (c))
     ;
 
-  if (c EQ EOF)
+  if (c == EOF)
     return (NULL);
 
   do
@@ -39,7 +39,7 @@ getword (string, ioptr)
       *string++ = c;
 
     }
-  while (((c = getc (ioptr)) NE EOF) AND (NOT isspace (c)));
+  while (((c = getc (ioptr)) != EOF) && (! isspace (c)));
 
   *string = '\0';		/* terminate the string */
 

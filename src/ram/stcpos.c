@@ -171,7 +171,7 @@ stcclr ()
   register short i, j;
   register unsigned k;
 
-  if ((v_regs[5] & 0x0180) NE 0x0100)
+  if ((v_regs[5] & 0x0180) != 0x0100)
     vbank (1);			/* select the correct bank */
 
   stcrow = 0;			/* leave score cursor row,col = 0,0 */
@@ -194,7 +194,7 @@ stcclr ()
       for (j = 0; j < 64; j++)
 	{			/* bottom cursor row */
 
-	  k = exp_c (sctctab[i EQ 5 ? 9 : i][j]);
+	  k = exp_c (sctctab[i == 5 ? 9 : i][j]);
 
 	  *obj++ = k;
 	  *obj++ = k;
@@ -218,7 +218,7 @@ stcoff ()
 
   tcrow = stcrow ? (stcrow - 16) : 0;	/* get old object row */
 
-  if ((v_regs[5] & 0x0180) NE 0x0100)
+  if ((v_regs[5] & 0x0180) != 0x0100)
     vbank (1);
 
   tcp = STCOBJ + (tcrow << 8) + (stccol << 1);	/* object pointer */
@@ -250,7 +250,7 @@ stcpos (row, col)
   tcrow = stcrow ? (stcrow - 16) : 0;	/* get old object row */
   ncrow = row ? (row - 16) : 0;	/* get new object row */
 
-  if ((v_regs[5] & 0x0180) NE 0x0100)
+  if ((v_regs[5] & 0x0180) != 0x0100)
     vbank (1);			/* select the cursor bank */
 
   curson = exp_c (SDCURSR);	/* get cursor color */
@@ -292,7 +292,7 @@ advscur ()
 
   newcol = stccol + 1;
 
-  if (newcol LE cfetp->frcol)
+  if (newcol <= cfetp->frcol)
     stcpos (stcrow, newcol);
 }
 

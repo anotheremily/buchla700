@@ -73,7 +73,7 @@ close (fd)
   register struct channel *chp;
   register int rc;
 
-  if ((fd < 0) OR (fd > MAXCHAN))
+  if ((fd < 0) || (fd > MAXCHAN))
     {
 
       errno = EBADF;
@@ -130,7 +130,7 @@ _fd_cls ()
   register int fd;
 
   for (fd = 0; fd < MAXCHAN; ++fd)
-    if (chantab[fd].c_close NE _badfd)
+    if (chantab[fd].c_close != _badfd)
       close (fd);
 
   _clsvol ();			/* write modified directory adn FAT */

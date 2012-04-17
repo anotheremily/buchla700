@@ -80,7 +80,7 @@ wrt_asg (slot)
 
   fp = fopenb (slotnam (slot, FT_ASG), "w");
 
-  if ((FILE *) NULL EQ fp)
+  if ((FILE *) NULL == fp)
     {
 
       ldermsg ("Couldn't create a file",
@@ -148,7 +148,7 @@ get_asg ()
 
   fp = fopenb (slotnam (ldslot, FT_ASG), "r");
 
-  if ((FILE *) NULL EQ fp)
+  if ((FILE *) NULL == fp)
     {
 
       ldermsg ("Couldn't open the file",
@@ -223,7 +223,7 @@ wrt_orc (slot, lorh)
 
   fp = fopenb (slotnam (slot, FT_ORC), "w");
 
-  if ((FILE *) NULL EQ fp)
+  if ((FILE *) NULL == fp)
     {
 
       ldermsg ("Couldn't create a file",
@@ -321,7 +321,7 @@ get_orc (lorh, kind)
 
   fp = fopenb (slotnam (ldslot, kind), "r");
 
-  if ((FILE *) NULL EQ fp)
+  if ((FILE *) NULL == fp)
     {
 
       ldermsg ("Couldn't open the file",
@@ -411,7 +411,7 @@ wrt_tun (slot)
 
   fp = fopenb (slotnam (slot, FT_TUN), "w");
 
-  if ((FILE *) NULL EQ fp)
+  if ((FILE *) NULL == fp)
     {
 
       ldermsg ("Couldn't create a file",
@@ -490,7 +490,7 @@ get_tun ()
 
   fp = fopenb (slotnam (ldslot, FT_TUN), "r");
 
-  if ((FILE *) NULL EQ fp)
+  if ((FILE *) NULL == fp)
     {
 
       ldermsg ("Couldn't open the file",
@@ -565,7 +565,7 @@ wrt_pat (slot)
 
   fp = fopenb (slotnam (slot, FT_PAT), "w");
 
-  if ((FILE *) NULL EQ fp)
+  if ((FILE *) NULL == fp)
     {
 
       ldermsg ("Couldn't create a file",
@@ -625,7 +625,7 @@ get_pat ()
 
   fp = fopenb (slotnam (ldslot, FT_PAT), "r");
 
-  if ((FILE *) NULL EQ fp)
+  if ((FILE *) NULL == fp)
     {
 
       ldermsg ("Couldn't open the file",
@@ -655,7 +655,7 @@ get_pat ()
     printf ("get_pat():  hdr=[%-.56s]\n", &ldhead);
 #endif
 
-  if (lrasw EQ 0)		/* clear all patches if in replace mode */
+  if (lrasw == 0)		/* clear all patches if in replace mode */
     initpt ();
 
   if (ptread (fp))
@@ -693,7 +693,7 @@ wrt_scr (slot)
 
   fp = fopenb (slotnam (slot, FT_SCR), "w");
 
-  if ((FILE *) NULL EQ fp)
+  if ((FILE *) NULL == fp)
     {
 
       ldermsg ("Couldn't create a file",
@@ -768,7 +768,7 @@ get_scr ()
 
   fp = fopenb (slotnam (ldslot, FT_SCR), "r");
 
-  if ((FILE *) NULL EQ fp)
+  if ((FILE *) NULL == fp)
     {
 
       ldermsg ("Couldn't open the file",
@@ -806,7 +806,7 @@ get_scr ()
       return (FAILURE);
     }
 
-  if (lrasw EQ 0)		/* clear all scores if in replace mode */
+  if (lrasw == 0)		/* clear all scores if in replace mode */
     scinit ();
 
   for (i = 0; i < N_SCORES; i++)
@@ -854,7 +854,7 @@ wrt_seq (slot)
 
   fp = fopenb (slotnam (slot, FT_SEQ), "w");
 
-  if ((FILE *) NULL EQ fp)
+  if ((FILE *) NULL == fp)
     {
 
       ldermsg ("Couldn't create a file",
@@ -914,7 +914,7 @@ get_seq ()
 
   fp = fopenb (slotnam (ldslot, FT_SEQ), "r");
 
-  if ((FILE *) NULL EQ fp)
+  if ((FILE *) NULL == fp)
     {
 
       ldermsg ("Couldn't open the file",
@@ -981,7 +981,7 @@ wrt_wav (slot)
 
   fp = fopenb (slotnam (slot, FT_WAV), "w");
 
-  if ((FILE *) NULL EQ fp)
+  if ((FILE *) NULL == fp)
     {
 
       ldermsg ("Couldn't create a file",
@@ -1065,7 +1065,7 @@ get_wav ()
 
   fp = fopenb (slotnam (ldslot, FT_WAV), "r");
 
-  if ((FILE *) NULL EQ fp)
+  if ((FILE *) NULL == fp)
     {
 
       ldermsg ("Couldn't open the file",

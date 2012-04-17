@@ -62,8 +62,8 @@ sc_goto (tval)
 
   /* quick check of pointers so we don't crash */
 
-  if ((p_fwd EQ E_NULL) OR (p_cur EQ E_NULL) OR
-      (p_bak EQ E_NULL) OR (p_ctr EQ E_NULL))
+  if ((p_fwd == E_NULL) || (p_cur == E_NULL) ||
+      (p_bak == E_NULL) || (p_ctr == E_NULL))
     return (FAILURE);
 
   if (v_regs[5] & 0x0180)	/* setup for VSDD bank 0 */
@@ -76,7 +76,7 @@ sc_goto (tval)
   recsw = FALSE;		/* force play mode on goto */
   dsrpmod ();			/* update video and LCD displays */
 
-  if (ndisp EQ 2)
+  if (ndisp == 2)
     sreset ();			/* reset highlighting if score is up */
 
   quiet ();			/* quiet the instrument */
@@ -96,7 +96,7 @@ sc_goto (tval)
 */
   /* reset the display pointers to the target time */
 
-  if ((t_fwd LE 0) AND (p_fwd->e_type EQ EV_SCORE))
+  if ((t_fwd <= 0) && (p_fwd->e_type == EV_SCORE))
     p_fwd = p_fwd->e_fwd;	/* skip score header */
 
   rp = p_fwd;			/* current forward event pointer */
@@ -120,32 +120,32 @@ sc_goto (tval)
 /* 
 */
 
-  while (rt++ LT tf)
+  while (rt++ < tf)
     {				/* advance p_fwd chain to tf */
 
-      if (rp->e_type NE EV_FINI)
+      if (rp->e_type != EV_FINI)
 	{			/* don't pass end of score */
 
-	  while (rp->e_time LE rt)
+	  while (rp->e_time <= rt)
 	    {			/* check event time */
 
-	      if (ndisp EQ 2)	/* display event */
+	      if (ndisp == 2)	/* display event */
 		se_disp (rp, D_FWD, gdstbn, 0);
 
 	      rp = rp->e_fwd;	/* point at next event */
 
-	      if (rp->e_type EQ EV_FINI)	/* done if at end */
+	      if (rp->e_type == EV_FINI)	/* done if at end */
 		break;
 	    }
 	}
 
-      if (ndisp EQ 2)
+      if (ndisp == 2)
 	{
 
-	  if (0 EQ (rt % mod48))
+	  if (0 == (rt % mod48))
 	    {			/* handle beat markers */
 
-	      if ((struct gdsel *) NULL NE (gdsp = gdfsep))
+	      if ((struct gdsel *) NULL != (gdsp = gdfsep))
 		{
 
 		  gdfsep = gdsp->next;
@@ -169,29 +169,29 @@ sc_goto (tval)
 */
   /* execute & display things at current time to start things out right */
 
-  if (ndisp EQ 2)		/* if score is up ... */
+  if (ndisp == 2)		/* if score is up ... */
     dssect ();			/* display section */
 
   rp = p_cur;			/* current event pointer */
   rt = t_cur;			/* current event time */
 
-  if ((rt LE 0) AND (rp->e_type EQ EV_SCORE))	/* skip score header */
+  if ((rt <= 0) && (rp->e_type == EV_SCORE))	/* skip score header */
     rp = rp->e_fwd;
 
-  if (rp->e_type NE EV_FINI)
+  if (rp->e_type != EV_FINI)
     {				/* if we aren't at end of score */
 
-      while (rp->e_time EQ rt)
+      while (rp->e_time == rt)
 	{			/* do events at current time */
 
 	  se_exec (rp, D_FWD);	/* execute event */
 
-	  if (ndisp EQ 2)
+	  if (ndisp == 2)
 	    se_disp (rp, D_FWD, gdstbc, 1);	/* update center slice */
 
 	  rp = rp->e_fwd;	/* point at next event */
 
-	  if (rp->e_type EQ EV_FINI)	/* done if at end */
+	  if (rp->e_type == EV_FINI)	/* done if at end */
 	    break;
 	}
     }
@@ -199,7 +199,7 @@ sc_goto (tval)
   p_cur = rp;			/* update p_cur */
   p_ctr = rp;			/* update p_ctr */
 
-  if (ndisp EQ 2)
+  if (ndisp == 2)
     {				/* if score is up ... */
 
       scupd ();			/* update event display */

@@ -80,7 +80,7 @@ xdtoi (c)
   register char *ap = &ahex[0];
 
   for (i = 0; i < 22; i++)
-    if (c EQ * ap++)
+    if (c == * ap++)
       if (i > 15)
 	return (i - 6);
       else
@@ -105,7 +105,7 @@ csrec (line)
 
   int csum, val;
 
-  if ('S' NE (c = *line++))
+  if ('S' != (c = *line++))
     return (-1);
 
   switch (c = *line++)
@@ -172,14 +172,14 @@ csrec (line)
       else
 	return (-1);
 
-      if (csum NE (val & 0377))
+      if (csum != (val & 0377))
 	return (-1);
 
       return (1);
 
     case '9':
 
-      if (memcmpu (line, SREC9, 10) EQ 0)
+      if (memcmpu (line, SREC9, 10) == 0)
 	return (0);
       else
 	return (-1);
@@ -219,7 +219,7 @@ main (argc, argv)
       ++argv;
       fileid = *argv;
 
-      if (NULL EQ (sfile = fopena (fileid, "r")))
+      if (NULL == (sfile = fopena (fileid, "r")))
 	{
 
 	  printf ("csrec:  Unable to open [%s]\n", fileid);
@@ -237,13 +237,13 @@ main (argc, argv)
       memset (iobuf, ' ', MAXBUFLN + 1);
       rc = fgets (iobuf, MAXBUFLN, sfile);
 
-      if (rc EQ NULL)
+      if (rc == NULL)
 	{
 
 	  printf ("csrec:  Could not read record %ld on [%s]\n",
 		  recnum, fileid);
 
-	  if (sfile NE stdin)
+	  if (sfile != stdin)
 	    fclose (sfile);
 
 	  printf ("csrec:  Processing aborted.\n");
@@ -255,7 +255,7 @@ main (argc, argv)
 
 	  printf ("csrec:  Record %ld on [%s] is in error\n", recnum, fileid);
 
-	  if (sfile NE stdin)
+	  if (sfile != stdin)
 	    fclose (sfile);
 
 	  printf ("csrec:  Processing aborted.\n");
@@ -265,7 +265,7 @@ main (argc, argv)
     }
   while (rc);
 
-  if (sfile NE stdin)
+  if (sfile != stdin)
     fclose (sfile);
 
   printf ("csrec:  S-Record file [%s] is valid\n", fileid);

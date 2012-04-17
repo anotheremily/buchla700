@@ -309,12 +309,12 @@ drawfn (fn, how, pen, wn)
   ptx = ttox (timeto (fn, npt1), wn);
   pty = vtoy ((pt1->ipval >> 5), wn);
 
-  ptc = how ? ID_SELD : ((pt1->ipact OR pt1->ipvsrc) ? ID_ACTP : ID_CPNT);
+  ptc = how ? ID_SELD : ((pt1->ipact || pt1->ipvsrc) ? ID_ACTP : ID_CPNT);
 
-  if (np EQ 1)
+  if (np == 1)
     {				/* single point ? */
 
-      if (wn EQ 12)
+      if (wn == 12)
 	drawpt (ptx, pty, ptc);
       else
 	idpoint (ptx, pty, ptc);
@@ -322,8 +322,8 @@ drawfn (fn, how, pen, wn)
       return;
     }
 
-  if (how AND (xp EQ 0))
-    if (wn EQ 12)
+  if (how && (xp == 0))
+    if (wn == 12)
       drawpt (ptx, pty, ID_SELD);
     else
       idpoint (ptx, pty, ID_SELD);
@@ -334,24 +334,24 @@ drawfn (fn, how, pen, wn)
       ptx = ttox (timeto (fn, npt2), wn);
       pty = vtoy ((pt2->ipval >> 5), wn);
 
-      ptc = (pt2->ipact OR pt2->ipvsrc) ? ID_ACTP : ID_CPNT;
+      ptc = (pt2->ipact || pt2->ipvsrc) ? ID_ACTP : ID_CPNT;
 
-      if (how AND (xp EQ (i - 1)))
+      if (how && (xp == (i - 1)))
 	{
 
 
-	  if (wn EQ 12)
+	  if (wn == 12)
 	    drawpt (ptx, pty, ptc);
 	  else
 	    idpoint (ptx, pty, ptc);
 
 	}
-      else if (how AND (xp EQ i))
+      else if (how && (xp == i))
 	{
 
 	  ptc = ID_SELD;
 
-	  if (wn EQ 12)
+	  if (wn == 12)
 	    drawpt (ptx, pty, ptc);
 	  else
 	    idpoint (ptx, pty, ptc);
@@ -364,12 +364,12 @@ drawfn (fn, how, pen, wn)
 	  lseg (ttox (timeto (fn, npt1), wn),
 		vtoy ((pt1->ipval >> 5), wn), ptx, pty, color);
 
-	  if (wn EQ 12)
+	  if (wn == 12)
 	    {
 
 	      drawpt (ttox (timeto (fn, npt1), wn),
 		      vtoy ((pt1->ipval >> 5), wn),
-		      (pt1->ipact OR pt1->ipvsrc) ? ID_ACTP : ID_CPNT);
+		      (pt1->ipact || pt1->ipvsrc) ? ID_ACTP : ID_CPNT);
 
 	      drawpt (ptx, pty, ptc);
 
@@ -379,7 +379,7 @@ drawfn (fn, how, pen, wn)
 
 	      idpoint (ttox (timeto (fn, npt1), wn),
 		       vtoy ((pt1->ipval >> 5), wn),
-		       (pt1->ipact OR pt1->ipvsrc) ? ID_ACTP : ID_CPNT);
+		       (pt1->ipact || pt1->ipvsrc) ? ID_ACTP : ID_CPNT);
 
 	      idpoint (ptx, pty, ptc);
 	    }
@@ -430,7 +430,7 @@ short
 irand (range)
      short range;
 {
-  if (range LE 0)		/* limit things to 'reasonable' values */
+  if (range <= 0)		/* limit things to 'reasonable' values */
     return (0);
 
   if (range > 9)		/* limit things to 'reasonable' values */
@@ -556,7 +556,7 @@ oscdsp (row, val, n, lbl, frq)
 
   tsplot4 (instob, 64, idbox[n][4], row, 40, idbuf, 14);
 
-  if (row NE 21)
+  if (row != 21)
     tsplot4 (instob, 64, idbox[n][4], row, 46,
 	     ((val & OC_SYN) ? "S" : "s"), 14);
 }
@@ -606,15 +606,15 @@ dswin (n)
   register struct idfnhdr *fp;
   register struct instpnt *pp;
 
-  if (wcflag NE - 1)
+  if (wcflag != - 1)
     return;
 
-  if (idimsw AND (n NE 19) AND (n < 22))
+  if (idimsw && (n != 19) && (n < 22))
     return;
 
   ip = &vbufs[curvce];
 
-  fp = &ip->idhfnc[n LE 12 ? n : curfunc];
+  fp = &ip->idhfnc[n <= 12 ? n : curfunc];
 
   curpnt = subj + fp->idfpt1;
   pp = &ip->idhpnt[curpnt];
@@ -639,7 +639,7 @@ dswin (n)
 
   /* put in the box label */
 
-  if (n GT 12)
+  if (n > 12)
     {
 
       tsplot4 (instob, 64, idbox[n][4], idbox[n][6], idbox[n][7],
@@ -766,7 +766,7 @@ dswin (n)
 
 	  sprintf (bfs, "GoTo %02d %02d times", pnt, par);
 
-	  if (bfs[8] EQ '9')	/* random */
+	  if (bfs[8] == '9')	/* random */
 	    bfs[8] = 'R';
 
 	  s1 = bfs;

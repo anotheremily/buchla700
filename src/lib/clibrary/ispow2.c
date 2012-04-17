@@ -24,10 +24,10 @@ ispow2 (x)
   for (i = 32; i--;)
     {				/* check each bit in x ... */
 
-      if ((x & k) NE 0L)
+      if ((x & k) != 0L)
 	{			/* ... for the 1st 1 and ... */
 
-	  if ((x & ~k) NE 0L)	/* ... if there are others ... */
+	  if ((x & ~k) != 0L)	/* ... if there are others ... */
 	    return (FALSE);	/* ... it's not a power of 2 */
 	  else			/* ... otherwise .. */
 	    return (TRUE);	/* ... it is a power of 2 */

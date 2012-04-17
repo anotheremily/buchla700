@@ -27,8 +27,8 @@ prbits (n, l, r, gs)
   register int i;
   char buf[66];
 
-  if ((l < 0) OR (l > 31) OR
-      (r < 0) OR (r > 31) OR (gs < 1) OR (gs > 32) OR (r > l))
+  if ((l < 0) || (l > 31) ||
+      (r < 0) || (r > 31) || (gs < 1) || (gs > 32) || (r > l))
     return;
 
   bp = &buf[65];
@@ -37,7 +37,7 @@ prbits (n, l, r, gs)
   for (i = r; i < (l + 1); i++)
     {
 
-      if ((i NE 0) AND (0 EQ (i % gs)))
+      if ((i != 0) && (0 == (i % gs)))
 	*bp-- = ' ';
 
       if (n & (1L << i))
@@ -48,9 +48,9 @@ prbits (n, l, r, gs)
 
   ++bp;
 
-  if (*bp EQ ' ')
+  if (*bp == ' ')
     ++bp;
 
-  while ('\0' NE (c = *bp++))
+  while ('\0' != (c = *bp++))
     putchar (c);
 }

@@ -51,7 +51,7 @@ main ()
 
   fname1 = THE_FILE;
 
-  if ((fp1 = fopen (fname1, "wa")) EQ NULL)
+  if ((fp1 = fopen (fname1, "wa")) == NULL)
     {
 
       printf ("curtab:  ERROR - couldn't open [%s]\n", fname1);
@@ -67,7 +67,7 @@ main ()
 
       k[i] = sin ((double) i * q);
 
-      if (k[i] GE (double) 1.0)
+      if (k[i] >= (double) 1.0)
 	  k[i] = (double) 0.999999;
 
       m[i] = (k[i] + (double) 1.0) / (double) 2.0;

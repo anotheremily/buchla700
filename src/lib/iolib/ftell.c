@@ -32,7 +32,7 @@ ftell (fp)
   register struct channel *chp;
   register long dpos, pos, diff;
 
-  if (fp EQ (FILE *) 0L)
+  if (fp == (FILE *) 0L)
     {				/* see if we point at a FILE */
 
 #if	DEBUGIT
@@ -56,7 +56,7 @@ ftell (fp)
 
   chp = &chantab[fp->_unit];	/* point at the channel */
 
-  if (chp->c_close NE _filecl)
+  if (chp->c_close != _filecl)
     {				/* see if it's seekable */
 
 #if	DEBUGIT
@@ -90,7 +90,7 @@ ftell (fp)
       printf ("ftell($%08.8lX):  curlsn=%ld, offset=%u\n", fp, fcp->curlsn,
 	      fcp->offset);
 
-      if ((fp->_flags & _DIRTY) AND (fp->_bp EQ NULL))
+      if ((fp->_flags & _DIRTY) && (fp->_bp == NULL))
 	printf ("ftell($%08.8lX):  ERROR - file is DIRTY and bp is NULL\n",
 		fp);
     }

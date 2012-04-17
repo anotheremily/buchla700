@@ -56,7 +56,7 @@ short
 et_ires (n)
      short n;
 {
-  if (curfunc NE 4)
+  if (curfunc != 4)
     return (FAILURE);
 
   ebuf[0] = '0' + vbufs[curvce].idhfnc[4].idfprm;
@@ -77,7 +77,7 @@ ef_ires (n)
 {
   register short tmpval;
 
-  if (curfunc NE 4)
+  if (curfunc != 4)
     return (FAILURE);
 
   ebuf[1] = '\0';
@@ -106,7 +106,7 @@ rd_ires (n)
 
   fp = &vbufs[curvce].idhfnc[4];
 
-  if (curfunc NE 4)
+  if (curfunc != 4)
     return (FAILURE);
 
   dspbuf[0] = '0' + fp->idfprm;
@@ -135,7 +135,7 @@ nd_ires (n, k)
      short n;
      register short k;
 {
-  if (curfunc NE 4)
+  if (curfunc != 4)
     return (FAILURE);
 
   dspbuf[0] = ebuf[0] = k + '0';

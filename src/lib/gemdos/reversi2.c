@@ -860,7 +860,7 @@ stop ()
   char buffer[32];
   char string[10];
 
-  if (score[2] EQ score[3])
+  if (score[2] == score[3])
     {
 
       ++pgames;

@@ -278,10 +278,10 @@ dopatch (pp)
 
     case PA_KEY:		/* key action */
 
-      if ((dat2 EQ 0) OR (dat2 EQ 2))
+      if ((dat2 == 0) || (dat2 == 2))
 	putwq (&ptefifo, suba & 0x1FFF);	/* closure */
 
-      if ((dat2 EQ 0) OR (dat2 EQ 1))
+      if ((dat2 == 0) || (dat2 == 1))
 	putwq (&ptefifo, suba | 0x8000);	/* release */
 
       break;
@@ -352,21 +352,21 @@ dopatch (pp)
 	  curled = i + baseled;
 	  ledctl = 0x0003 & (dat1 >> (14 - (i << 1)));
 
-	  if (ledctl EQ 1)
+	  if (ledctl == 1)
 	    {			/* on */
 
 	      ledstat[curled] = TRUE;
 	      io_leds = curled;
 
 	    }
-	  else if (ledctl EQ 2)
+	  else if (ledctl == 2)
 	    {			/* off */
 
 	      ledstat[curled] = FALSE;
 	      io_leds = curled | 0x0080;
 
 	    }
-	  else if (ledctl EQ 3)
+	  else if (ledctl == 3)
 	    {			/* toggle */
 
 	      if (ledstat[curled])
@@ -403,7 +403,7 @@ dopatch (pp)
 	  seqtime[suba] = seqtab[seqline[suba]].seqtime;
 
 #if	DEBUGPA
-	  if (debugsw AND debugpa)
+	  if (debugsw && debugpa)
 	    printf ("dopatch($%08lX):  SLIN %02u %03u %5u RUN\n",
 		    pp, suba, seqline[suba], seqtime[suba]);
 #endif
@@ -416,7 +416,7 @@ dopatch (pp)
 	  seqtime[suba] = 0;
 
 #if	DEBUGPA
-	  if (debugsw AND debugpa)
+	  if (debugsw && debugpa)
 	    printf ("dopatch($%08lX):  SLIN %02u %03u STOP\n",
 		    pp, suba, seqline[suba]);
 #endif
@@ -463,7 +463,7 @@ dopatch (pp)
       else
 	{			/* voice */
 
-	  if (curvce EQ vgn)
+	  if (curvce == vgn)
 	    curinst = dat1;
 
 	  s_inst[vgn] = dat1;
@@ -480,7 +480,7 @@ dopatch (pp)
 	{			/* group */
 
 	  for (i = 0; i < 12; i++)
-	    if (vce2grp[i] EQ (1 + vgn))
+	    if (vce2grp[i] == (1 + vgn))
 	      pdoctl (i, osc, dat1, dat2);
 
 	}
@@ -499,7 +499,7 @@ dopatch (pp)
 	{			/* group */
 
 	  for (i = 0; i < 12; i++)
-	    if (vce2grp[i] EQ (1 + vgn))
+	    if (vce2grp[i] == (1 + vgn))
 	      pdows (0, i, dat1);
 
 	}
@@ -517,7 +517,7 @@ dopatch (pp)
 	{			/* group */
 
 	  for (i = 0; i < 12; i++)
-	    if (vce2grp[i] EQ (1 + vgn))
+	    if (vce2grp[i] == (1 + vgn))
 	      pdows (1, i, dat1);
 
 	}
@@ -535,7 +535,7 @@ dopatch (pp)
 	{
 
 	  for (i = 0; i < 12; i++)
-	    if (vce2grp[i] EQ (1 + vgn))
+	    if (vce2grp[i] == (1 + vgn))
 	      {
 
 		vbufs[i].idhcfg = dat1;
@@ -558,7 +558,7 @@ dopatch (pp)
 	{			/* group */
 
 	  for (i = 0; i < 12; i++)
-	    if (vce2grp[i] EQ (1 + vgn))
+	    if (vce2grp[i] == (1 + vgn))
 	      pfpufn (i, 2, dat1, dat2);
 
 	}
@@ -576,7 +576,7 @@ dopatch (pp)
 	{			/* group */
 
 	  for (i = 0; i < 12; i++)
-	    if (vce2grp[i] EQ (1 + vgn))
+	    if (vce2grp[i] == (1 + vgn))
 	      pfpufn (i, ind2par[osc], dat1, dat2);
 
 	}
@@ -595,7 +595,7 @@ dopatch (pp)
 	{			/* group */
 
 	  for (i = 0; i < 12; i++)
-	    if (vce2grp[i] EQ (1 + vgn))
+	    if (vce2grp[i] == (1 + vgn))
 	      pfpufn (i, frq2par[osc], dat1, dat2);
 
 	}
@@ -613,7 +613,7 @@ dopatch (pp)
 	{			/* group */
 
 	  for (i = 0; i < 12; i++)
-	    if (vce2grp[i] EQ (1 + vgn))
+	    if (vce2grp[i] == (1 + vgn))
 	      pfpufn (i, 10, dat1, dat2);
 
 	}
@@ -632,7 +632,7 @@ dopatch (pp)
 	{			/* group */
 
 	  for (i = 0; i < 12; i++)
-	    if (vce2grp[i] EQ (1 + vgn))
+	    if (vce2grp[i] == (1 + vgn))
 	      pfpufn (i, 6, dat1, dat2);
 
 	}
@@ -650,7 +650,7 @@ dopatch (pp)
 	{			/* group */
 
 	  for (i = 0; i < 12; i++)
-	    if (vce2grp[i] EQ (1 + vgn))
+	    if (vce2grp[i] == (1 + vgn))
 	      pfpufn (i, 4, dat1, dat2);
 
 	}
@@ -669,7 +669,7 @@ dopatch (pp)
 	{			/* group */
 
 	  for (i = 0; i < 12; i++)
-	    if (vce2grp[i] EQ (1 + vgn))
+	    if (vce2grp[i] == (1 + vgn))
 	      pfpufn (i, 8, dat1, dat2);
 
 	}

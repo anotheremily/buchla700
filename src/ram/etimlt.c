@@ -63,7 +63,7 @@ dsimlt (buf, src, mltval)
 
   mltstr[0] = mlttmp[3];	/* sign */
 
-  if (mlttmp[0] EQ '0')		/* 1st digit & decimal point */
+  if (mlttmp[0] == '0')		/* 1st digit & decimal point */
     mltstr[1] = '.';
   else
     mltstr[1] = SP_1P;
@@ -151,33 +151,33 @@ ef_imlt (n)
       idsrcsw = FALSE;
       submenu = FALSE;
 
-      if (vtcrow EQ 22)
+      if (vtcrow == 22)
 	{
 
 	  /*  'PchW/HT', 'Pitch', 'Random', 'GPC/CV1' */
 
-	  if (vtccol LT 24)
+	  if (vtccol < 24)
 	    srctmp = SM_HTPW;
-	  else if ((vtccol GT 24) AND (vtccol LT 28))
+	  else if ((vtccol > 24) && (vtccol < 28))
 	    srctmp = SM_PTCH;
-	  else if ((vtccol GT 28) AND (vtccol LT 32))
+	  else if ((vtccol > 28) && (vtccol < 32))
 	    srctmp = SM_FREQ;
-	  else if ((vtccol GT 32) AND (vtccol LT 40))
+	  else if ((vtccol > 32) && (vtccol < 40))
 	    srctmp = SM_RAND;
 	  else
 	    srctmp = SM_CTL1;
 
 	}
-      else if (vtcrow EQ 23)
+      else if (vtcrow == 23)
 	{
 
 	  /* 'ModW/VT', 'Key Vel', 'Pedal 1' */
 
-	  if (vtccol LT 24)
+	  if (vtccol < 24)
 	    srctmp = SM_VTMW;
-	  else if ((vtccol GT 24) AND (vtccol LT 32))
+	  else if ((vtccol > 24) && (vtccol < 32))
 	    srctmp = SM_KVEL;
-	  else if ((vtccol GT 32) AND (vtccol LT 40))
+	  else if ((vtccol > 32) && (vtccol < 40))
 	    srctmp = SM_PED1;
 	  else
 	    srctmp = SM_NONE;
@@ -188,9 +188,9 @@ ef_imlt (n)
 
 	  /* 'PchW/LP', 'Key Prs' */
 
-	  if (vtccol LT 24)
+	  if (vtccol < 24)
 	    srctmp = SM_LPBR;
-	  else if ((vtccol GT 24) AND (vtccol LT 32))
+	  else if ((vtccol > 24) && (vtccol < 32))
 	    srctmp = SM_KPRS;
 	  else
 	    srctmp = SM_NONE;
@@ -204,7 +204,7 @@ ef_imlt (n)
 /* 
 */
     }
-  else if (stccol LT 8)
+  else if (stccol < 8)
     {				/* selecting the source */
 
       idsrcsw = TRUE;		/* set the select switch */
@@ -215,12 +215,12 @@ ef_imlt (n)
       ttcpos (22, 17);		/* position the typewriter cusor */
 
     }
-  else if (stccol GT 8)
+  else if (stccol > 8)
     {				/* entering the multiplier */
 
       tmpval = dec2fr (&ebuf[1]);
 
-      if (tmpval EQ 0xFFFF)
+      if (tmpval == 0xFFFF)
 	return (FAILURE);
       else
 	fp->idfmlt = tmpval;
@@ -285,7 +285,7 @@ nd_imlt (n, k)
   if (idsrcsw)			/* not if the source menu is up */
     return (FAILURE);
 
-  if (stccol LT 9)		/* only in the multiplier field */
+  if (stccol < 9)		/* only in the multiplier field */
     return (FAILURE);
 
   ec = stccol - 9;		/* calculate edit buffer column */
@@ -295,14 +295,14 @@ nd_imlt (n, k)
 
     case 0:			/* sign position */
 
-      if (k EQ 8)
+      if (k == 8)
 	{			/* - */
 
 	  ebuf[4] = '-';
 	  dspbuf[0] = '-';	/* setup display buffer */
 
 	}
-      else if (k EQ 9)
+      else if (k == 9)
 	{			/* + */
 
 	  ebuf[4] = '+';
@@ -316,14 +316,14 @@ nd_imlt (n, k)
 
     case 1:			/* 1st digit position  (0 or 1) */
 
-      if (k EQ 0)
+      if (k == 0)
 	{			/* '0' -> '.' */
 
 	  ebuf[1] = '0';
 	  dspbuf[0] = '.';	/* setup display buffer */
 
 	}
-      else if (k EQ 1)
+      else if (k == 1)
 	{			/* '1' -> '1.' */
 
 	  ebuf[1] = '1';
@@ -359,7 +359,7 @@ nd_imlt (n, k)
   vcputsv (instob, 64, ID_ENTRY, idbox[n][5],
 	   idbox[n][6] + 1, stccol, dspbuf, 14);
 
-  if (ec EQ 4)
+  if (ec == 4)
     return (SUCCESS);
 
   advicur ();

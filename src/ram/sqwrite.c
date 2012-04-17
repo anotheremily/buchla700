@@ -117,7 +117,7 @@ sqwrite (fp)
       if (seqtab[seq].seqact3)
 	cb |= 0x01;
 
-      if (0 EQ cb)
+      if (0 == cb)
 	continue;
 
       if (wr_ec (fp, &cb, 1L))	/* Control byte */

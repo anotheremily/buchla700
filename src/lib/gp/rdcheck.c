@@ -29,14 +29,14 @@ main (argc, argv)
 
   line = 0;
 
-  if (argc NE 2)
+  if (argc != 2)
     {
 
       printf ("ERROR:  File name required\n");
       exit (1);
     }
 
-  if ((FILE *) NULL EQ (fp = fopenb (argv[1], "r")))
+  if ((FILE *) NULL == (fp = fopenb (argv[1], "r")))
     {
 
       printf ("ERROR:  Unable to open \"%s\"\n", argv[1]);

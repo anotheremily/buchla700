@@ -147,7 +147,7 @@ ef_iact (nn)
       for (i = 0; i < 2; i++)
 	tmp1 = (tmp1 * 10) + (ebuf[i] - '0');
 
-      if (tmp1 GE fp->idfpif)
+      if (tmp1 >= fp->idfpif)
 	return (FAILURE);
 
       pp->ipact = aform;
@@ -172,7 +172,7 @@ ef_iact (nn)
       for (i = 0; i < 2; i++)
 	tmp1 = (tmp1 * 10) + (ebuf[i] - '0');
 
-      if (tmp1 GE fp->idfpif)
+      if (tmp1 >= fp->idfpif)
 	return (FAILURE);
 
       tmp2 = 0;
@@ -257,7 +257,7 @@ rd_iact (nn)
 
       sprintf (dspbuf, "GoTo %02d %02d times", pnt, par);
 
-      if (dspbuf[8] EQ '9')
+      if (dspbuf[8] == '9')
 	dspbuf[8] = 'R';
 
       s1 = dspbuf;
@@ -391,10 +391,10 @@ nd_iact (nn, k)
 
   n = nn & 0xFF;
 
-  if (stccol LT (idbox[n][7] + 5))
+  if (stccol < (idbox[n][7] + 5))
     {
 
-      if (k EQ 8)
+      if (k == 8)
 	{
 
 	  if (--aform < 0)
@@ -404,7 +404,7 @@ nd_iact (nn, k)
 	  return (SUCCESS);
 
 	}
-      else if (k EQ 9)
+      else if (k == 9)
 	{
 
 	  if (++aform > AC_KYDN)
@@ -436,7 +436,7 @@ nd_iact (nn, k)
 	case AC_KYDN:
 	case AC_JUMP:
 
-	  if ((stccol EQ (idbox[n][7] + 5)) OR (stccol EQ (idbox[n][7] + 6)))
+	  if ((stccol == (idbox[n][7] + 5)) || (stccol == (idbox[n][7] + 6)))
 	    {
 
 	      ebuf[stccol - (idbox[n][7] + 5)] = k + '0';
@@ -460,19 +460,19 @@ nd_iact (nn, k)
 */
 	case AC_LOOP:
 
-	  if ((stccol GE (idbox[n][7] + 5)) AND (stccol LE (idbox[n][7] + 9)))
+	  if ((stccol >= (idbox[n][7] + 5)) && (stccol <= (idbox[n][7] + 9)))
 	    {
 
 	      ec = stccol - (idbox[n][7] + 5);
 
-	      if (ec EQ 2)
+	      if (ec == 2)
 		return (FAILURE);
 
 	      ebuf[ec] = k + '0';
 	      dspbuf[0] = k + '0';
 	      dspbuf[1] = '\0';
 
-	      if ((ec EQ 3) AND (k EQ 9))
+	      if ((ec == 3) && (k == 9))
 		dspbuf[0] = 'R';
 
 	      vbank (0);
@@ -481,7 +481,7 @@ nd_iact (nn, k)
 
 	      advicur ();
 
-	      if (ec EQ 1)
+	      if (ec == 1)
 		advicur ();
 
 	      return (SUCCESS);

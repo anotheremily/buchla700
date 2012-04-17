@@ -46,16 +46,16 @@ dec2fr (s)
 {
   register short i;
 
-  if (s[0] EQ '1')
+  if (s[0] == '1')
     {
 
-      if (s[1] EQ '0')
+      if (s[1] == '0')
 	{
 
-	  if (s[2] EQ '0')
+	  if (s[2] == '0')
 	    {
 
-	      if (s[3] EQ '-')
+	      if (s[3] == '-')
 		return (0x8000);	/* -100 */
 	      else
 		return (0x7FFF);	/* +100 */
@@ -79,12 +79,12 @@ dec2fr (s)
 */
 
     }
-  else if (s[0] EQ '0')
+  else if (s[0] == '0')
     {
 
       i = (d2f[0][s[1] - '0'] + d2f[1][s[2] - '0']) >> 1;
 
-      if (s[3] EQ '-')
+      if (s[3] == '-')
 	{
 
 	  if (i)
@@ -123,14 +123,14 @@ fr2dec (v, s)
   register long acc, sc;
   register short i, p;
 
-  if (v EQ 0x7FFF)
+  if (v == 0x7FFF)
     {				/* +100 */
 
       sprintf (s, "100+");
       return (s);
     }
 
-  if (v EQ 0x8000)
+  if (v == 0x8000)
     {				/* -100 */
 
       sprintf (s, "100-");
@@ -152,7 +152,7 @@ fr2dec (v, s)
 
   acc = 0;
 
-  for (i = 0; i LT 15; i++)
+  for (i = 0; i < 15; i++)
     if (v & (1 << (14 - i)))
       acc += f2d[i];
 
@@ -187,13 +187,13 @@ main ()
   for (i = 0; i < 101; i++)
     {
 
-      if (i EQ 50)
+      if (i == 50)
 	printf ("\f");
 
       sprintf (t, "%03d+", i);
       u = dec2fr (t);
 
-      if (u EQ 0xFFFF)
+      if (u == 0xFFFF)
 	{
 
 	  printf ("[%s] = ERROR  = ??????    ", t);
@@ -211,7 +211,7 @@ main ()
       sprintf (t, "%03d-", i);
       u = dec2fr (t);
 
-      if (u EQ 0xFFFF)
+      if (u == 0xFFFF)
 	{
 
 	  printf ("    [%s] = ERROR  = ??????\n", t);

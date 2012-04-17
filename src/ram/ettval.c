@@ -34,7 +34,7 @@ extern char dspbuf[];
 
 modtun ()
 {
-  if (NOT tunmod)
+  if (! tunmod)
     {
 
       tunmod = TRUE;
@@ -92,7 +92,7 @@ ef_tval (n)
   for (i = 1; i < 5; i++)	/* convert from ASCII to binary */
     tmpval = (tmpval * 10) + (ebuf[i] - '0');
 
-  if (ebuf[0] EQ '-')
+  if (ebuf[0] == '-')
     tunval = -tmpval << 1;
   else
     tunval = tmpval << 1;
@@ -155,10 +155,10 @@ nd_tval (nn, k)
   n = nn & 0xFF;
   ec = stccol - cfetp->flcol;	/* setup edit buffer column */
 
-  if (ec EQ 0)
+  if (ec == 0)
     {
 
-      if (k EQ 8)
+      if (k == 8)
 	{
 
 	  ebuf[0] = '-';
@@ -168,7 +168,7 @@ nd_tval (nn, k)
 	  dspbuf[1] = '\0';
 
 	}
-      else if (k EQ 9)
+      else if (k == 9)
 	{
 
 	  ebuf[0] = '+';

@@ -31,19 +31,19 @@ getnum (list, values, base)
   int c;
   int sign;
 
-  if (maxwide LE 0)
+  if (maxwide <= 0)
     return (0L);
 
   val = sign = 0;
 
-  if ((c = (*gsub) (0)) EQ '-')
+  if ((c = (*gsub) (0)) == '-')
     {
 
       sign = 1;
       --maxwide;
 
     }
-  else if (c EQ '+')
+  else if (c == '+')
     --maxwide;
   else
     (*gsub) (1);
@@ -51,7 +51,7 @@ getnum (list, values, base)
   while (maxwide--)
     {
 
-      if ((cp = index (list, (*gsub) (0))) EQ NULL)
+      if ((cp = index (list, (*gsub) (0))) == NULL)
 	{
 
 	  (*gsub) (1);
@@ -77,7 +77,7 @@ skipblk ()
   while (isspace ((*gsub) (0)))
     ;
 
-  if ((*gsub) (1) EQ EOF)
+  if ((*gsub) (1) == EOF)
     return (EOF);
 
   return (0);
@@ -86,7 +86,7 @@ skipblk ()
 static
 sgetc (what)
 {
-  if (what EQ 0)
+  if (what == 0)
     {
 
       if (*scnstr)
@@ -139,13 +139,13 @@ scanfmt (getsub, fmt, args)
   while (c = *fmt++)
     {
 
-      if (c EQ '%')
+      if (c == '%')
 	{
 
 	  lflag = dontdo = FALSE;
 	  maxwide = 127;
 
-	  if (*fmt EQ '*')
+	  if (*fmt == '*')
 	    {
 	      ++fmt;
 	      dontdo = 1;
@@ -165,7 +165,7 @@ scanfmt (getsub, fmt, args)
 	      while (isdigit (*++fmt));
 	    }
 
-	  if (*fmt EQ 'l')
+	  if (*fmt == 'l')
 	    {
 
 	      lflag = TRUE;
@@ -259,7 +259,7 @@ scanfmt (getsub, fmt, args)
 	    case '[':
 	      lflag = FALSE;
 
-	      if (*fmt EQ '^' || *fmt EQ '~')
+	      if (*fmt == '^' || *fmt == '~')
 		{
 
 		  ++fmt;
@@ -288,11 +288,11 @@ scanfmt (getsub, fmt, args)
 	      while (maxwide--)
 		{
 
-		  if ((c = (*gsub) (0)) EQ EOF)
+		  if ((c = (*gsub) (0)) == EOF)
 		    break;
 
 		  if (lflag ?
-		      (index (tlist, c) NE 0) : (index (tlist, c) EQ 0))
+		      (index (tlist, c) != 0) : (index (tlist, c) == 0))
 		    {
 
 		      (*gsub) (1);	/* unget last character */
@@ -314,7 +314,7 @@ scanfmt (getsub, fmt, args)
 /* 
 */
 	    case 'c':
-	      if ((c = (*gsub) (0)) EQ EOF)
+	      if ((c = (*gsub) (0)) == EOF)
 		goto ateof;
 
 	      if (!dontdo)
@@ -334,7 +334,7 @@ scanfmt (getsub, fmt, args)
 	  if (skipblk ())
 	    {
 	    ateof:
-	      if (count EQ 0)
+	      if (count == 0)
 		return (EOF);
 
 	      return (count);
@@ -378,11 +378,11 @@ getflt (buffer)
 
       c = (*gsub) (0);
 
-      if (!sign AND (c EQ '-' OR c EQ '+'))
+      if (!sign && (c == '-' || c == '+'))
 	sign = 1;
-      else if (!decpt AND c EQ '.')
+      else if (!decpt && c == '.')
 	decpt = 1;
-      else if (!exp AND (c EQ 'e' OR c EQ 'E'))
+      else if (!exp && (c == 'e' || c == 'E'))
 	{
 
 	  sign = 0;

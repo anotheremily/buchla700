@@ -80,7 +80,7 @@ readln (unit, nc, ctl, nb, buf)
   register char c;
 
 
-  if (unit LT 1 OR unit GT 4)	/* verify unit number is in range */
+  if (unit < 1 || unit > 4)	/* verify unit number is in range */
     return (ERR15);		/* return ERR15 if not */
 
   bp = buf;			/* setup buffer pointer */
@@ -96,7 +96,7 @@ readln (unit, nc, ctl, nb, buf)
       cp = ctl;			/* setup to scan ctl for the character */
 
       for (j = 0; j < nc; j++)	/* scan each byte of ctl */
-	if (*ctl++ EQ c)	/* done if we find it */
+	if (*ctl++ == c)	/* done if we find it */
 	  return ((int) c);
 
       BIOS (B_PUTC, unit, c);	/* echo the character */
@@ -121,7 +121,7 @@ getln (unit, nb, buf)
   bp = buf;			/* current buffer pointer */
   *bp = '\0';			/* initial null into buffer */
 
-  while (bc LT nb)
+  while (bc < nb)
     {
 
       c = BIOS (B_GETC, unit) & 0xFF;
@@ -132,7 +132,7 @@ getln (unit, nb, buf)
 	case A_BS:
 	case A_DEL:
 
-	  if (bc EQ 0)
+	  if (bc == 0)
 	    {
 
 	      BIOS (B_PUTC, unit, A_BEL);
@@ -193,7 +193,7 @@ getrln (unit, nb, buf)
   bp = buf;			/* current buffer pointer */
   *bp = '\0';			/* initial null into buffer */
 
-  while (bc LT nb)
+  while (bc < nb)
     {
 
       c = BIOS (B_GETC, unit) & 0xFF;

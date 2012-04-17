@@ -93,7 +93,7 @@ setloc (grp, loc)
 /* 
 */
   for (i = 0; i < 12; i++)
-    if (g EQ vce2grp[i])
+    if (g == vce2grp[i])
       {
 
 	fp = &vbufs[i].idhfnc[4];
@@ -153,23 +153,23 @@ ef_loc (n)
   ival = ebuf[0] - '0';
   ebflag = FALSE;
 
-  if (ival EQ 0)
+  if (ival == 0)
     return (FAILURE);
 
   --ival;
 
   setloc (n, ival);
 
-  if (recsw AND grpstat[n] AND (2 EQ grpmode[n]))
+  if (recsw && grpstat[n] && (2 == grpmode[n]))
     {
 
-      if (E_NULL NE (ep = findev (p_cur, t_cur, EV_LOCN, n, -1)))
+      if (E_NULL != (ep = findev (p_cur, t_cur, EV_LOCN, n, -1)))
 	{
 
 	  ep->e_data2 = ival;
 
 	}
-      else if (E_NULL NE (ep = e_alc (E_SIZE2)))
+      else if (E_NULL != (ep = e_alc (E_SIZE2)))
 	{
 
 	  ep->e_type = EV_LOCN;

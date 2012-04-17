@@ -63,7 +63,7 @@ ef_strn ()
 
   ebflag = FALSE;
 
-  if ((ival NE 0) AND (ebuf[0] EQ '-'))
+  if ((ival != 0) && (ebuf[0] == '-'))
     ival = -ival;
 
   grptran = ival;
@@ -105,20 +105,20 @@ nd_strn (n, k)
 {
   register short ec;
 
-  if (sdmctl NE 4)
+  if (sdmctl != 4)
     return (FAILURE);
 
-  if ((vtccol GE 22) AND (vtccol LE 24))
+  if ((vtccol >= 22) && (vtccol <= 24))
     ec = vtccol - 22;
   else
     return (FAILURE);
 
-  if (ec EQ 0)
+  if (ec == 0)
     {
 
-      if (k EQ 8)
+      if (k == 8)
 	k = '-';
-      else if (k EQ 9)
+      else if (k == 9)
 	k = '+';
       else
 	return (FAILURE);

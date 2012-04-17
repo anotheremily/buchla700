@@ -318,10 +318,10 @@ istart ()
 
   ep = ep_adj (p_cur, 1, t_cur);	/* locate tail */
 
-  if (EV_SCORE EQ (0x007F & ep->e_type))	/* skip begin score event */
+  if (EV_SCORE == (0x007F & ep->e_type))	/* skip begin score event */
     ep = ep->e_fwd;
 
-  if (EV_FINI EQ (0x007F & ep->e_type))	/* null if at end of score */
+  if (EV_FINI == (0x007F & ep->e_type))	/* null if at end of score */
     return;
 
   tp = scores[curscor]->e_bak;	/* locate end of score */
@@ -359,7 +359,7 @@ icancel ()
   struct s_entry *pp;
   long endtime;
 
-  if (NOT insmode)
+  if (! insmode)
     return;
 
   tp = scores[curscor]->e_bak;	/* locate end of score */
@@ -372,7 +372,7 @@ icancel ()
 
   rp = peg;			/* point at start of tail */
 
-  while (E_NULL NE rp)
+  while (E_NULL != rp)
     {				/* scan each event in the tail */
 
       ep = rp;			/* update pointers */
@@ -406,7 +406,7 @@ icancel ()
 
 sdcxu ()
 {
-  if (sdmctl EQ 0)
+  if (sdmctl == 0)
     {				/* typewriter up */
 
       vtcxupd ();
@@ -448,7 +448,7 @@ sdcxu ()
 
 sdcyu ()
 {
-  if (sdmctl EQ 0)
+  if (sdmctl == 0)
     {
 
       vtcyupd ();
@@ -495,22 +495,22 @@ scntfld (k)
 {
   register short grp, fnc, var;
 
-  if (NOT astat)
+  if (! astat)
     return (FAILURE);
 
-  if (stcrow EQ 18)
+  if (stcrow == 18)
     {				/* group status or mode */
 
-      if (stccol LT 5)
+      if (stccol < 5)
 	return (FAILURE);
 
       grp = (stccol - 5) / 5;	/* group */
       fnc = (stccol - 5) % 5;	/* status or mode */
 
-      if (fnc EQ 0)
+      if (fnc == 0)
 	{			/* status */
 
-	  if (k EQ 8)
+	  if (k == 8)
 	    {			/* '-' */
 
 	      grpstat[grp] = FALSE;
@@ -518,7 +518,7 @@ scntfld (k)
 	      return (SUCCESS);
 
 	    }
-	  else if (k EQ 9)
+	  else if (k == 9)
 	    {			/* '+' */
 
 	      grpstat[grp] = TRUE;
@@ -531,10 +531,10 @@ scntfld (k)
 /* 
 */
 	}
-      else if (fnc EQ 1)
+      else if (fnc == 1)
 	{			/* mode */
 
-	  if (k EQ 8)
+	  if (k == 8)
 	    {			/* '-' */
 
 	      grpmode[grp] = 0;
@@ -542,10 +542,10 @@ scntfld (k)
 	      return (SUCCESS);
 
 	    }
-	  else if (k EQ 9)
+	  else if (k == 9)
 	    {			/* '+' */
 
-	      if (++grpmode[grp] GT 1)
+	      if (++grpmode[grp] > 1)
 		grpmode[grp] = 2;
 
 	      dsgmode (grp);
@@ -561,7 +561,7 @@ scntfld (k)
 /* 
 */
     }
-  else if (stcrow EQ 22)
+  else if (stcrow == 22)
     {				/* analog variables */
 
       if (stccol < 5)
@@ -571,10 +571,10 @@ scntfld (k)
       fnc = (stccol - 5) % 9;	/* field column */
       grp = abs (angroup) - 1;	/* group */
 
-      if (fnc EQ 0)
+      if (fnc == 0)
 	{			/* mode column */
 
-	  if (k EQ 8)
+	  if (k == 8)
 	    {			/* '-' */
 
 	      varmode[var][grp] = 0;
@@ -582,10 +582,10 @@ scntfld (k)
 	      return (SUCCESS);
 
 	    }
-	  else if (k EQ 9)
+	  else if (k == 9)
 	    {			/* '+' */
 
-	      if (++varmode[var][grp] GT 1)
+	      if (++varmode[var][grp] > 1)
 		varmode[var][grp] = 2;
 
 	      dsvmode (var);
@@ -648,34 +648,34 @@ delevts (etp, thetime)
 
 /* 
 */
-  while (ep->e_time EQ thetime)
+  while (ep->e_time == thetime)
     {				/* for each event at ctime ... */
 
       np = ep->e_fwd;		/* get next event pointer */
       et = 0x007F & ep->e_type;	/* get type */
       dsw = oktode (ep);	/* get deletion status */
 
-      if (dsw AND		/* delete event if it's deletable ... */
-	  ((etp EQ - 1) OR (et EQ etp)))
+      if (dsw &&		/* delete event if it's deletable ... */
+	  ((etp == - 1) || (et == etp)))
 	{			/* ... and the right kind */
 
 	  rc = TRUE;
 
-	  if (-1 NE ehdlist[et])	/* if this is a header event ... */
+	  if (-1 != ehdlist[et])	/* if this is a header event ... */
 	    eh_rmv (ep, ehdlist[et]);	/* remove from hdr list */
 
 	  /* fix up any effected pointers */
 
-	  if (p_bak EQ ep)
+	  if (p_bak == ep)
 	    p_bak = np;
 
-	  if (p_cur EQ ep)
+	  if (p_cur == ep)
 	    p_cur = np;
 
-	  if (p_ctr EQ ep)
+	  if (p_ctr == ep)
 	    p_ctr = np;
 
-	  if (p_fwd EQ ep)
+	  if (p_fwd == ep)
 	    p_fwd = np;
 
 	  e_del (e_rmv (ep));	/* delete the event */
@@ -715,36 +715,36 @@ deladat ()
 
   ep = ep_adj (p_cur, 1, t_cur);	/* start at left end of chain */
 
-  if (vc EQ 0)
+  if (vc == 0)
     {				/* resolution */
 
-      while (t_cur EQ ep->e_time)
+      while (t_cur == ep->e_time)
 	{
 
 	  rp = ep->e_fwd;
 
-	  if (EV_ANRS EQ (0x007F & ep->e_type))
+	  if (EV_ANRS == (0x007F & ep->e_type))
 	    {
 
 	      grp = 0x000F & ep->e_data1;
 	      var = 0x000F & (ep->e_data1 >> 4);
 
-	      if ((var EQ vn) AND grpstat[grp] AND
-		  (2 EQ (ancmsw ? varmode[var][grp] : grpmode[grp])))
+	      if ((var == vn) && grpstat[grp] &&
+		  (2 == (ancmsw ? varmode[var][grp] : grpmode[grp])))
 		{
 
 		  /* fix pointers */
 
-		  if (p_bak EQ ep)
+		  if (p_bak == ep)
 		    p_bak = rp;
 
-		  if (p_cur EQ ep)
+		  if (p_cur == ep)
 		    p_cur = rp;
 
-		  if (p_ctr EQ ep)
+		  if (p_ctr == ep)
 		    p_ctr = rp;
 
-		  if (p_fwd EQ ep)
+		  if (p_fwd == ep)
 		    p_fwd = rp;
 
 		  /* delete event */
@@ -760,36 +760,36 @@ deladat ()
 /* 
 */
     }
-  else if ((vc GE 2) AND (vc LE 6))
+  else if ((vc >= 2) && (vc <= 6))
     {				/* value */
 
-      while (t_cur EQ ep->e_time)
+      while (t_cur == ep->e_time)
 	{
 
 	  rp = ep->e_fwd;
 
-	  if (EV_ANVL EQ (0x007F & ep->e_type))
+	  if (EV_ANVL == (0x007F & ep->e_type))
 	    {
 
 	      grp = 0x000F & ep->e_data1;
 	      var = 0x000F & (ep->e_data1 >> 4);
 
-	      if ((var EQ vn) AND grpstat[grp] AND
-		  (2 EQ (ancmsw ? varmode[var][grp] : grpmode[grp])))
+	      if ((var == vn) && grpstat[grp] &&
+		  (2 == (ancmsw ? varmode[var][grp] : grpmode[grp])))
 		{
 
 		  /* fix pointers */
 
-		  if (p_bak EQ ep)
+		  if (p_bak == ep)
 		    p_bak = rp;
 
-		  if (p_cur EQ ep)
+		  if (p_cur == ep)
 		    p_cur = rp;
 
-		  if (p_ctr EQ ep)
+		  if (p_ctr == ep)
 		    p_ctr = rp;
 
-		  if (p_fwd EQ ep)
+		  if (p_fwd == ep)
 		    p_fwd = rp;
 
 		  e_del (e_rmv (ep));	/* delete */
@@ -826,28 +826,28 @@ sdxkey ()
   register short col, grp, sect;
   register struct s_entry *ep, *rp;
 
-  if (NOT astat)		/* only do when key goes down */
+  if (! astat)		/* only do when key goes down */
     return;
 
   if (clkrun)			/* ... and not while clock is running */
     return;
 
-  if (scmctl NE - 1)		/* ... and area 1 menu is down */
+  if (scmctl != - 1)		/* ... and area 1 menu is down */
     return;
 /* 
 */
-  if (sdmctl EQ 4)
+  if (sdmctl == 4)
     {				/* section menu is up */
 
-      if (((vtcrow EQ 19) OR (vtcrow EQ 20)) AND (vtccol GE 24))
+      if (((vtcrow == 19) || (vtcrow == 20)) && (vtccol >= 24))
 	{
 
-	  if (NOT recsw)
+	  if (! recsw)
 	    return;
 
 	  /* set up to delete a section marker */
 
-	  sect = ((vtccol - 24) >> 2) + ((vtcrow EQ 20) ? 10 : 0);
+	  sect = ((vtccol - 24) >> 2) + ((vtcrow == 20) ? 10 : 0);
 	  col = (vtccol - 24) & 3;
 
 	  switch (col)
@@ -856,23 +856,23 @@ sdxkey ()
 	    case 0:		/* delete begin section */
 
 
-	      if (E_NULL NE (ep = seclist[curscor][sect]))
+	      if (E_NULL != (ep = seclist[curscor][sect]))
 		{
 
 		  /* fix pointers */
 
 		  rp = ep->e_fwd;
 
-		  if (p_bak EQ ep)
+		  if (p_bak == ep)
 		    p_bak = rp;
 
-		  if (p_cur EQ ep)
+		  if (p_cur == ep)
 		    p_cur = rp;
 
-		  if (p_ctr EQ ep)
+		  if (p_ctr == ep)
 		    p_ctr = rp;
 
-		  if (p_fwd EQ ep)
+		  if (p_fwd == ep)
 		    p_fwd = rp;
 
 		  eh_rmv (ep, EH_SBGN);	/* delete */
@@ -891,23 +891,23 @@ sdxkey ()
 
 	    case 3:		/* delete end section */
 
-	      if (E_NULL NE (ep = ehfind (EV_SEND, -1L, sect, -1)))
+	      if (E_NULL != (ep = ehfind (EV_SEND, -1L, sect, -1)))
 		{
 
 		  /* fix pointers */
 
 		  rp = ep->e_fwd;
 
-		  if (p_bak EQ ep)
+		  if (p_bak == ep)
 		    p_bak = rp;
 
-		  if (p_cur EQ ep)
+		  if (p_cur == ep)
 		    p_cur = rp;
 
-		  if (p_ctr EQ ep)
+		  if (p_ctr == ep)
 		    p_ctr = rp;
 
-		  if (p_fwd EQ ep)
+		  if (p_fwd == ep)
 		    p_fwd = rp;
 
 		  eh_rmv (ep, EH_SEND);	/* delete */
@@ -924,14 +924,14 @@ sdxkey ()
 /* 
 */
 	}
-      else if ((vtcrow EQ 23) AND (vtccol GE 28) AND (vtccol LE 62))
+      else if ((vtcrow == 23) && (vtccol >= 28) && (vtccol <= 62))
 	{
 
 	  /* group map entry */
 
 	  col = vtccol - 28;
 
-	  if (2 EQ (col % 3))
+	  if (2 == (col % 3))
 	    return;
 
 	  grp = col / 3;
@@ -941,16 +941,16 @@ sdxkey ()
 	}
     }
 
-  if (NOT recsw)		/* do only if recording */
+  if (! recsw)		/* do only if recording */
     return;
 
-  if ((cyval GE 14) AND (cyval LE 223))
+  if ((cyval >= 14) && (cyval <= 223))
     {				/* notes */
 
       delnote ();		/* delete a note */
 
     }
-  else if ((cyval GE 224) AND (cyval LE 237))
+  else if ((cyval >= 224) && (cyval <= 237))
     {				/* new data */
 
       if (cp2time (cxval))
@@ -960,67 +960,67 @@ sdxkey ()
 */
 
     }
-  else if (stcrow EQ 17)
+  else if (stcrow == 17)
     {
 
-      if ((stccol GE 11) AND (stccol LE 12))
+      if ((stccol >= 11) && (stccol <= 12))
 	delevts (EV_ASGN, t_cur);	/* assignment */
-      else if (stccol EQ 19)
+      else if (stccol == 19)
 	delevts (EV_TUNE, t_cur);	/* tuning */
-      else if ((stccol GE 27) AND (stccol LE 29))
+      else if ((stccol >= 27) && (stccol <= 29))
 	delevts (EV_TMPO, t_cur);	/* tempo */
-      else if ((stccol GE 36) AND (stccol LE 38))
+      else if ((stccol >= 36) && (stccol <= 38))
 	delevts (EV_INTP, t_cur);	/* interpolation */
-      else if ((stccol GE 40) AND (stccol LE 43))
+      else if ((stccol >= 40) && (stccol <= 43))
 	delevts (EV_STOP, t_cur);	/* stop */
-      else if ((stccol GE 45) AND (stccol LE 48))
+      else if ((stccol >= 45) && (stccol <= 48))
 	delevts (EV_NEXT, t_cur);	/* next */
-      else if ((stccol GE 50) AND (stccol LE 55))
+      else if ((stccol >= 50) && (stccol <= 55))
 	delevts (EV_PNCH, t_cur);	/* punch in/out */
 
     }
-  else if ((stcrow EQ 18) AND (0 EQ ((stccol - 5) % 5)))
+  else if ((stcrow == 18) && (0 == ((stccol - 5) % 5)))
     {				/* group status */
 
       delevts (EV_GRP, t_cur);
 
     }
-  else if ((stcrow EQ 18) AND
-	   ((2 EQ ((stccol - 5) % 5)) OR (3 EQ ((stccol - 5) % 5))))
+  else if ((stcrow == 18) &&
+	   ((2 == ((stccol - 5) % 5)) || (3 == ((stccol - 5) % 5))))
     {				/* instrument */
 
       delevts (EV_INST, t_cur);
 
     }
-  else if (stcrow EQ 19)
+  else if (stcrow == 19)
     {				/* transposition */
 
       delevts (EV_TRNS, t_cur);
 
     }
-  else if ((stcrow EQ 20) AND (stccol GE 6) AND (0 EQ ((stccol - 6) % 5)))
+  else if ((stcrow == 20) && (stccol >= 6) && (0 == ((stccol - 6) % 5)))
     {				/* dynamics */
 
       delevts (EV_DYN, t_cur);
 
     }
-  else if ((stcrow EQ 20) AND (stccol GE 6) AND (2 EQ ((stccol - 6) % 5)))
+  else if ((stcrow == 20) && (stccol >= 6) && (2 == ((stccol - 6) % 5)))
     {				/* location */
 
       delevts (EV_LOCN, t_cur);
 
     }
-  else if (stcrow EQ 23)
+  else if (stcrow == 23)
     {				/* analog */
 
       deladat ();
 /* 
 */
     }
-  else if (stcrow EQ 24)
+  else if (stcrow == 24)
     {				/* score */
 
-      if (stccol LE 4)
+      if (stccol <= 4)
 	{
 
 	  /* clear score */
@@ -1032,7 +1032,7 @@ sdxkey ()
 	  selscor (curscor);	/* refresh the display */
 
 	}
-      else if ((stccol GE 10) AND (stccol LE 25))
+      else if ((stccol >= 10) && (stccol <= 25))
 	{
 
 	  /* clear score name */

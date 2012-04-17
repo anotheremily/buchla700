@@ -104,10 +104,10 @@ LineFwd ()
   TheBuf[0] = '\260';
   TheBuf[48] = '\0';
 
-  if (0 EQ ptecpos)
+  if (0 == ptecpos)
     return ((char *) NULL);
 
-  if (0 EQ (j = findnxt (ptecpos)))
+  if (0 == (j = findnxt (ptecpos)))
     return ((char *) NULL);
 
   ptecpos = j;
@@ -119,7 +119,7 @@ LineFwd ()
   k = ptecpos;
 
   for (j = 0; j < 8; j++)
-    if (0 EQ (k = findnxt (k)))
+    if (0 == (k = findnxt (k)))
       return (TheBuf);
 
   dspdfst (&TheBuf[2], patches[k].defnum);
@@ -127,7 +127,7 @@ LineFwd ()
   dspdest (&TheBuf[28], &patches[k]);
 
   for (j = 0; j < 50; j++)
-    if (TheBuf[j] EQ '\0')
+    if (TheBuf[j] == '\0')
       TheBuf[j] = ' ';
 
   TheBuf[48] = '\0';
@@ -154,10 +154,10 @@ LineBak ()
   TheBuf[0] = '\260';
   TheBuf[48] = '\0';
 
-  if (0 EQ ptecpos)
+  if (0 == ptecpos)
     return ((char *) NULL);
 
-  if (0 EQ (j = findprv (ptecpos)))
+  if (0 == (j = findprv (ptecpos)))
     return ((char *) NULL);
 
   ptecpos = j;
@@ -169,7 +169,7 @@ LineBak ()
   k = ptecpos;
 
   for (j = 0; j < 7; j++)
-    if (0 EQ (k = findprv (k)))
+    if (0 == (k = findprv (k)))
       return (TheBuf);
 
   dspdfst (&TheBuf[2], patches[k].defnum);
@@ -177,7 +177,7 @@ LineBak ()
   dspdest (&TheBuf[28], &patches[k]);
 
   for (j = 0; j < 50; j++)
-    if (TheBuf[j] EQ '\0')
+    if (TheBuf[j] == '\0')
       TheBuf[j] = ' ';
 
   TheBuf[48] = '\0';
@@ -203,10 +203,10 @@ WrVideo (row, col, str, atr)
   if (v_regs[5] & 0x0180)
     vbank (0);
 
-  while ('\0' NE (chr = *str++))
+  while ('\0' != (chr = *str++))
     {
 
-      vputcv (ScObAdr, row, col, chr, (col EQ 0) ? PTBATR : atr, LineLen);
+      vputcv (ScObAdr, row, col, chr, (col == 0) ? PTBATR : atr, LineLen);
 
       col++;
     }
@@ -229,7 +229,7 @@ SetDTop (row, scan)
 
   LineBuf = (unsigned short *) ((char *) ScObAdr + (row * LineCon));
 
-  if (OldLine NE LineBuf)
+  if (OldLine != LineBuf)
     v_odtab[ScrlObj][2] = ((char *) LineBuf >> 1) & 0xFFFF;
 
   OldLine = LineBuf;
@@ -260,7 +260,7 @@ UpdVid (row, col, str, atr)
 
   DupLine = CurLine - SmScNsl - 2 + row;
 
-  if (DupLine GE 0)
+  if (DupLine >= 0)
     WrVideo (DupLine, col, str, PTPATR);
 }
 
@@ -284,7 +284,7 @@ bgncm ()
   memcpy (TheBuf, ptdebuf, 48);
 
   for (j = 0; j < 50; j++)
-    if (TheBuf[j] EQ '\0')
+    if (TheBuf[j] == '\0')
       TheBuf[j] = ' ';
 
   TheBuf[0] = '\260';
@@ -313,7 +313,7 @@ stopcm ()
   else if (PdScUpF)
     SetDTop (++CurLine, CurScan = TOPSCAN);
 
-  if (NOT ctcsw)
+  if (! ctcsw)
     {				/* if we scrolled ... */
 
       if (ptecpos)
@@ -381,13 +381,13 @@ smscrl ()
   if (PdScUpF)
     {				/* SCROLL UP (toward NEW data) ? */
 
-      if (CurScan EQ TOPSCAN)
+      if (CurScan == TOPSCAN)
 	{			/* ready for a new line ? */
 
-	  if ((char *) NULL NE (LinePtr = (*FwdLine) ()))
+	  if ((char *) NULL != (LinePtr = (*FwdLine) ()))
 	    {			/* get a line */
 
-	      if (CurLine EQ SmScLim)
+	      if (CurLine == SmScLim)
 		{		/* *** swap display pages *** */
 
 		  /* update page we're going to */
@@ -410,7 +410,7 @@ smscrl ()
 
 		  DupLine = CurLine - 2;
 
-		  if (DupLine GE 0)
+		  if (DupLine >= 0)
 		    WrVideo (DupLine, 0, LinePtr, LineAtr);
 		}
 
@@ -423,7 +423,7 @@ smscrl ()
       else
 	{			/* scrolling -- scroll some more */
 
-	  if (CurScan EQ 0)
+	  if (CurScan == 0)
 	    SetDTop (++CurLine, CurScan = TOPSCAN);
 	  else
 	    SetDTop (CurLine, --CurScan);
@@ -434,13 +434,13 @@ smscrl ()
   else if (PdScDnF)
     {				/* SCROLL DOWN (toward old data) ? */
 
-      if (CurScan EQ TOPSCAN)
+      if (CurScan == TOPSCAN)
 	{			/* ready for a new line ? */
 
-	  if ((char *) NULL NE (LinePtr = (*BakLine) ()))
+	  if ((char *) NULL != (LinePtr = (*BakLine) ()))
 	    {			/* get a line */
 
-	      if (CurLine EQ 0)
+	      if (CurLine == 0)
 		{		/* *** swap display pages *** */
 
 		  /* update page we're going to */
@@ -476,7 +476,7 @@ smscrl ()
       else
 	{			/* scrolling -- scroll some more */
 
-	  if (CurScan NE TOPSCAN)
+	  if (CurScan != TOPSCAN)
 	    SetDTop (CurLine, ++CurScan);
 	}
     }
@@ -518,10 +518,10 @@ smxupd ()
       else if (cxval < CTOX (2))
 	cxval = CTOX (2);
 
-      if (cxval EQ oldcx)
+      if (cxval == oldcx)
 	return;
 
-      if (47 EQ XTOC (cxval))
+      if (47 == XTOC (cxval))
 	{
 
 	  if (v_regs[5] & 0x0180)
@@ -532,7 +532,7 @@ smxupd ()
 	  vsplot4 (obj10, 16, PDPTRFG, 7, 0, "\274", 14, 14, cg3);
 
 	}
-      else if (48 EQ XTOC (cxval))
+      else if (48 == XTOC (cxval))
 	{
 
 	  if (v_regs[5] & 0x0180)
@@ -561,7 +561,7 @@ smy_up (tag)
      short tag;
 {
 
-  if (0 EQ ptecpos)
+  if (0 == ptecpos)
     {				/* see if anything is there */
 
       dptw ();			/* try to find something ... */
@@ -574,7 +574,7 @@ smy_up (tag)
   if (tag < 0)
     {				/* scroll up */
 
-      if (0 EQ findnxt (ptecpos))
+      if (0 == findnxt (ptecpos))
 	return;
 
       PdScUpF = TRUE;
@@ -585,7 +585,7 @@ smy_up (tag)
   else if (tag > 0)
     {				/* scroll down */
 
-      if (0 EQ findprv (ptecpos))
+      if (0 == findprv (ptecpos))
 	return;
 
       PdScDnF = TRUE;

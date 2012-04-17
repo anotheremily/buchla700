@@ -190,13 +190,13 @@ idcyupd ()
 {
   register short pval, vh, vl;
 
-  if (wcflag NE - 1)		/* ws/cf menu page can't be up */
+  if (wcflag != - 1)		/* ws/cf menu page can't be up */
     return;
 
   if (idimsw)			/* no y update if instrument menu is up */
     return;
 
-  if (idsrcsw OR idcfsw)
+  if (idsrcsw || idcfsw)
     {				/* see if we're in the menu area */
 
       vtcrow = YTOR (vtyval += cyrate);
@@ -218,9 +218,9 @@ idcyupd ()
 
       pval = (pntptr->ipval >> 5) - (cyrate * 7);
 
-      if (pval GT 1000)		/* limit at +10.00 */
+      if (pval > 1000)		/* limit at +10.00 */
 	pval = 1000;
-      else if (pval LT 0)	/* limit at +00.00 */
+      else if (pval < 0)	/* limit at +00.00 */
 	pval = 0;
 
       cyval = vtoy (pval, 12);	/* new cursor location */
@@ -244,9 +244,9 @@ idcyupd ()
 
       cyval += cyrate;
 
-      if (cyval GT (CYMAX - 1))
+      if (cyval > (CYMAX - 1))
 	cyval = CYMAX - 1;
-      else if (cyval LT 1)
+      else if (cyval < 1)
 	cyval = 1;
     }
 }
@@ -277,7 +277,7 @@ idcxupd ()
 	cxval = CTOX (26);
 
     }
-  if (idsrcsw OR idcfsw)
+  if (idsrcsw || idcfsw)
     {				/* see if we're in a submenu */
 
       vtccol = XTOC (vtxval += cxrate);
@@ -298,8 +298,8 @@ idcxupd ()
   else if (pntsv)
     {				/* see if we're moving a point */
 
-      for (zone = 0; zone LE 8; zone++)	/* find display zone */
-	if (cxval LE zonemax[zone])
+      for (zone = 0; zone <= 8; zone++)	/* find display zone */
+	if (cxval <= zonemax[zone])
 	  break;
 
       switch (pecase)
@@ -308,21 +308,21 @@ idcxupd ()
 	case 0:		/* single point */
 	case 1:		/* last point */
 
-	  if (cxrate GE 0)
+	  if (cxrate >= 0)
 	    fptime = addfpu (pntptr->iptim, cxrate * zoneinc[zone]);
 	  else
 	    fptime = subfpu (pntptr->iptim, -cxrate * zoneinc[zone]);
 
 	  stime = segtime (subj, fptime);
 
-	  if (stime GE temax)
+	  if (stime >= temax)
 	    {
 
 	      setseg (subj, temax - 1);
 	      break;
 
 	    }
-	  else if (stime EQ 0)
+	  else if (stime == 0)
 	    {
 
 	      setseg (subj, 1);
@@ -336,14 +336,14 @@ idcxupd ()
 */
 	case 2:		/* interior point */
 
-	  if (cxrate GE 0)
+	  if (cxrate >= 0)
 	    fptime = addfpu (pntptr->iptim, cxrate * zoneinc[zone]);
 	  else
 	    fptime = subfpu (pntptr->iptim, -cxrate * zoneinc[zone]);
 
 	  stime = temin + fromfpu (fptime);
 
-	  if (stime GE temax)
+	  if (stime >= temax)
 	    break;
 
 	  setseg (subj, segtime (subj, fptime));
@@ -372,9 +372,9 @@ idcxupd ()
 
       cxval += cxrate;
 
-      if (cxval GT (CXMAX - 1))
+      if (cxval > (CXMAX - 1))
 	cxval = CXMAX - 1;
-      else if (cxval LT 1)
+      else if (cxval < 1)
 	cxval = 1;
     }
 }
@@ -405,10 +405,10 @@ idnfld (k)
       if (whatbox ())
 	{
 
-	  if (hitbox EQ 12)
+	  if (hitbox == 12)
 	    {			/* edit window */
 
-	      if (k EQ 8)
+	      if (k == 8)
 		{		/* - = toggle I_TM_KEY */
 
 		  t = (fp->idftmd ^= I_TM_KEY);
@@ -426,16 +426,16 @@ idnfld (k)
 /* 
 */
 		}
-	      else if (k EQ 9)
+	      else if (k == 9)
 		{		/* + = new point */
 
 		  basepnt = fp->idfpt1;
 		  endpnt = basepnt + fp->idfpif - 1;
 
-		  if (fp->idfpif EQ 99)
+		  if (fp->idfpif == 99)
 		    return (FAILURE);
 
-		  if (FALSE EQ inspnt (ip, curfunc, endpnt))
+		  if (FALSE == inspnt (ip, curfunc, endpnt))
 		    {
 
 		      return (FAILURE);
@@ -467,9 +467,9 @@ idnfld (k)
 	  else if (hitbox < 12)
 	    {			/* label window */
 
-	      fn = (hitbox EQ curfunc) ? 12 : hitbox;
+	      fn = (hitbox == curfunc) ? 12 : hitbox;
 
-	      if (k EQ 8)
+	      if (k == 8)
 		{		/* + = toggle I_TM_KEY */
 
 		  if (v_regs[5] & 0x0180)
@@ -509,13 +509,13 @@ idx_key ()
   if (astat)
     {
 
-      if (idsrcsw OR idcfsw OR idnamsw OR (wcflag NE - 1))
+      if (idsrcsw || idcfsw || idnamsw || (wcflag != - 1))
 	return;
 
-      if (stcrow EQ 16)
+      if (stcrow == 16)
 	{
 
-	  if ((stccol GE 1) AND (stccol LE 7))
+	  if ((stccol >= 1) && (stccol <= 7))
 	    {
 
 	      /* general source */
@@ -523,7 +523,7 @@ idx_key ()
 	      vep = &valents[0];
 	      smp = vpsms[(curvce << 4) + fnoff[curfunc]];
 
-	      if (smp->sm NE SM_NONE)
+	      if (smp->sm != SM_NONE)
 		{		/* check for new general S/M */
 
 		  (smp->prv)->nxt = smp->nxt;	/* unlink from old S/M chain */
@@ -543,7 +543,7 @@ idx_key ()
 /* 
 */
 	    }
-	  else if ((stccol EQ 15) OR (stccol EQ 16))
+	  else if ((stccol == 15) || (stccol == 16))
 	    {
 
 	      /* current point and points to the right */
@@ -551,7 +551,7 @@ idx_key ()
 	      delpnts ();
 
 	    }
-	  else if ((stccol GE 33) AND (stccol LE 39))
+	  else if ((stccol >= 33) && (stccol <= 39))
 	    {
 
 	      /* point source */
@@ -562,7 +562,7 @@ idx_key ()
 	    }
 
 	}
-      else if ((stcrow EQ 17) AND ((stccol EQ 31) OR (stccol EQ 32)))
+      else if ((stcrow == 17) && ((stccol == 31) || (stccol == 32)))
 	{
 
 	  /* entire instrument */

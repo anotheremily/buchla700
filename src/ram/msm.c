@@ -59,7 +59,7 @@ extern short msmstv[];		/* MIDI state machine state variables */
 extern short prstab[];		/* pressure */
 extern short src2var[];		/* source to variable number map */
 extern short tuntab[];		/* current tuning table */
-extern short vce2trg[];		/* voice to trigger map (-1 EQ NULL) */
+extern short vce2trg[];		/* voice to trigger map (-1 == NULL) */
 
 extern short grp2prt[][2];	/* group to port/channel map */
 extern short varmode[][16];	/* analog variable record mode */
@@ -152,7 +152,7 @@ msm ()
 
 			case 0:	/* clock */
 
-			  if (midiclk AND midigo)
+			  if (midiclk && midigo)
 			    if ((fc_val += 2) > 0x00FFFFFFL)
 			      fc_val = 0x00FFFFFFL;
 
@@ -160,7 +160,7 @@ msm ()
 
 			case 2:	/* start */
 
-			  if ((clkctl EQ CK_MIDI) AND (NOT midigo))
+			  if ((clkctl == CK_MIDI) && (! midigo))
 			    {
 
 			      midigo = TRUE;
@@ -176,7 +176,7 @@ msm ()
 
 			case 3:	/* continue */
 
-			  if ((clkctl EQ CK_MIDI) AND (NOT midigo))
+			  if ((clkctl == CK_MIDI) && (! midigo))
 			    {
 
 			      midigo = TRUE;
@@ -189,7 +189,7 @@ msm ()
 */
 			case 4:	/* stop */
 
-			  if ((clkctl EQ CK_MIDI) AND midigo)
+			  if ((clkctl == CK_MIDI) && midigo)
 			    {
 
 			      midigo = FALSE;
@@ -253,7 +253,7 @@ msm ()
 
 			case 0:	/* clock */
 
-			  if (midiclk AND midigo)
+			  if (midiclk && midigo)
 			    if ((fc_val += 2) > 0x00FFFFFFL)
 			      fc_val = 0x00FFFFFFL;
 
@@ -261,7 +261,7 @@ msm ()
 
 			case 2:	/* start */
 
-			  if ((clkctl EQ CK_MIDI) AND (NOT midigo))
+			  if ((clkctl == CK_MIDI) && (! midigo))
 			    {
 
 			      midigo = TRUE;
@@ -277,7 +277,7 @@ msm ()
 
 			case 3:	/* continue */
 
-			  if ((clkctl EQ CK_MIDI) AND (NOT midigo))
+			  if ((clkctl == CK_MIDI) && (! midigo))
 			    {
 
 			      midigo = TRUE;
@@ -290,7 +290,7 @@ msm ()
 */
 			case 4:	/* stop */
 
-			  if ((clkctl EQ CK_MIDI) AND midigo)
+			  if ((clkctl == CK_MIDI) && midigo)
 			    {
 
 			      midigo = FALSE;
@@ -327,13 +327,13 @@ msm ()
 		  michan = 0x000F & mrstat[miport];
 		  mistat = 0x000F & (mrstat[miport] >> 4);
 
-		  if (mistat EQ 0x0C)
+		  if (mistat == 0x0C)
 		    {
 
 		      /* program change */
 
-		      if ((miport EQ 0) AND
-			  ((michan + 1) EQ prgchan) AND (midiin LT NASGS))
+		      if ((miport == 0) &&
+			  ((michan + 1) == prgchan) && (midiin < NASGS))
 			{
 
 			  getasg (curasg = midiin);
@@ -342,7 +342,7 @@ msm ()
 /* 
 */
 		    }
-		  else if (mistat EQ 0x0D)
+		  else if (mistat == 0x0D)
 		    {
 
 		      /* channel pressure */
@@ -357,20 +357,20 @@ msm ()
 		      for (i = 0; i < 12; i++)
 			{
 
-			  if ((grp2prt[i][0] EQ (miport + 1)) AND
-			      (grp2prt[i][1] EQ (michan + 1)))
+			  if ((grp2prt[i][0] == (miport + 1)) &&
+			      (grp2prt[i][1] == (michan + 1)))
 			    {
 
 			      if (newsv (i, SM_KPRS, mdb1))
 				{
 
-				  if (recsw AND grpstat[i] AND
+				  if (recsw && grpstat[i] &&
 				      (2
-				       EQ (ancmsw ? varmode[5][i] :
+				       == (ancmsw ? varmode[5][i] :
 					   grpmode[i])))
 				    {
 
-				      if (E_NULL NE (ep = e_alc (E_SIZE2)))
+				      if (E_NULL != (ep = e_alc (E_SIZE2)))
 					{
 
 					  ep->e_time = t_cur;
@@ -389,7 +389,7 @@ msm ()
 					}
 
 				    }
-				  else if ((angroup - 1) EQ i)
+				  else if ((angroup - 1) == i)
 				    {
 
 				      dsanval (5);
@@ -400,8 +400,8 @@ msm ()
 /* 
 */
 		    }
-		  else if ((mistat EQ 0x0F) AND
-			   (michan EQ 3) AND (NOT midigo))
+		  else if ((mistat == 0x0F) &&
+			   (michan == 3) && (! midigo))
 		    {		/* song select */
 
 		      if (midiin < N_SCORES)
@@ -409,7 +409,7 @@ msm ()
 
 			  selscor (midiin);
 
-			  if (ndisp EQ 2)
+			  if (ndisp == 2)
 			    sdwins ();
 			}
 
@@ -456,7 +456,7 @@ msm ()
 
 			case 0:	/* clock */
 
-			  if (midiclk AND midigo)
+			  if (midiclk && midigo)
 			    if ((fc_val += 2) > 0x00FFFFFFL)
 			      fc_val = 0x00FFFFFFL;
 
@@ -464,7 +464,7 @@ msm ()
 
 			case 2:	/* start */
 
-			  if ((clkctl EQ CK_MIDI) AND (NOT midigo))
+			  if ((clkctl == CK_MIDI) && (! midigo))
 			    {
 
 			      midigo = TRUE;
@@ -480,7 +480,7 @@ msm ()
 
 			case 3:	/* continue */
 
-			  if ((clkctl EQ CK_MIDI) AND (NOT midigo))
+			  if ((clkctl == CK_MIDI) && (! midigo))
 			    {
 
 			      midigo = TRUE;
@@ -493,7 +493,7 @@ msm ()
 */
 			case 4:	/* stop */
 
-			  if ((clkctl EQ CK_MIDI) AND midigo)
+			  if ((clkctl == CK_MIDI) && midigo)
 			    {
 
 			      midigo = FALSE;
@@ -564,7 +564,7 @@ msm ()
 
 			case 0:	/* clock */
 
-			  if (midiclk AND midigo)
+			  if (midiclk && midigo)
 			    if ((fc_val += 2) > 0x00FFFFFFL)
 			      fc_val = 0x00FFFFFFL;
 
@@ -572,7 +572,7 @@ msm ()
 
 			case 2:	/* start */
 
-			  if ((clkctl EQ CK_MIDI) AND (NOT midigo))
+			  if ((clkctl == CK_MIDI) && (! midigo))
 			    {
 
 			      midigo = TRUE;
@@ -588,7 +588,7 @@ msm ()
 
 			case 3:	/* continue */
 
-			  if ((clkctl EQ CK_MIDI) AND (NOT midigo))
+			  if ((clkctl == CK_MIDI) && (! midigo))
 			    {
 
 			      midigo = TRUE;
@@ -601,7 +601,7 @@ msm ()
 */
 			case 4:	/* stop */
 
-			  if ((clkctl EQ CK_MIDI) AND midigo)
+			  if ((clkctl == CK_MIDI) && midigo)
 			    {
 
 			      midigo = FALSE;
@@ -668,8 +668,8 @@ msm ()
 			    {	/* port 1 or 2 */
 
 			      for (i = 0; i < 12; i++)
-				if ((grp2prt[i][0] EQ (miport + 1)) AND
-				    (grp2prt[i][1] EQ (michan + 1)))
+				if ((grp2prt[i][0] == (miport + 1)) &&
+				    (grp2prt[i][1] == (michan + 1)))
 				  {
 
 				    asgvce (i, miport, michan, mdb1, nvel);
@@ -680,12 +680,12 @@ msm ()
 			  else
 			    {	/* port 0 */
 
-			      t2 = ((mdb1 < 21) OR (mdb1 > 108)) ?
+			      t2 = ((mdb1 < 21) || (mdb1 > 108)) ?
 				0 : key2grp[mdb1 - 21];
 
 			      for (i = 0; i < 12; i++)
-				if ((t2 & (0x0001 << i)) AND
-				    (grp2prt[i][1] EQ (michan + 1)))
+				if ((t2 & (0x0001 << i)) &&
+				    (grp2prt[i][1] == (michan + 1)))
 				  {
 
 				    asgvce (i, miport, michan, mdb1, nvel);
@@ -702,21 +702,21 @@ msm ()
 		      t1 = (miport << 11) + (michan << 7) + mdb1;
 		      trgtab[t1] &= ~M_KSTATE;
 
-		      if (0 EQ trgtab[t1])
+		      if (0 == trgtab[t1])
 			{
 
 			  for (i = 0; i < 12; i++)
 			    {
 
-			      if (vce2trg[i] EQ t1)
+			      if (vce2trg[i] == t1)
 				{
 
 				  vce2trg[i] = -1;
 				  procpfl (t1);
 				}
 
-			      if ((grp2prt[i][0] EQ (miport + 1)) AND
-				  (grp2prt[i][1] EQ (michan + 1)))
+			      if ((grp2prt[i][0] == (miport + 1)) &&
+				  (grp2prt[i][1] == (michan + 1)))
 				ne_end (t1, i);
 			    }
 
@@ -732,8 +732,8 @@ msm ()
 		      prstab[t1] = t2;
 
 		      for (i = 0; i < 12; i++)
-			if ((grp2prt[i][0] EQ (miport + 1)) AND
-			    (grp2prt[i][1] EQ (michan + 1)))
+			if ((grp2prt[i][0] == (miport + 1)) &&
+			    (grp2prt[i][1] == (michan + 1)))
 			  newpps (t1, i, SM_KPRS, t2);
 
 		      break;
@@ -743,7 +743,7 @@ msm ()
 
 		      mctlval[(miport << 11) + (michan << 7) + mdb1] = mdb2;
 
-		      if (mdb1 EQ MIDISUS)
+		      if (mdb1 == MIDISUS)
 			{
 
 			  /* sustain changed */
@@ -751,7 +751,7 @@ msm ()
 			  t1 = (miport << 11) | (michan << 7);
 			  t2 = t1 + 128;
 
-			  if (mdb2 GT MSW_ON)
+			  if (mdb2 > MSW_ON)
 			    {	/* switch on */
 
 			      mpsust[(miport << 4) + michan] = M_CHNSUS;
@@ -761,7 +761,7 @@ msm ()
 				  trgtab[i] |= M_CHNSUS;
 
 			    }
-			  else if (mdb2 LT MSW_OFF)
+			  else if (mdb2 < MSW_OFF)
 			    {	/* switch off */
 
 			      mpsust[(miport << 4) + michan] = 0;
@@ -774,13 +774,13 @@ msm ()
 
 				      trgtab[i] &= ~M_CHNSUS;
 
-				      if (0 EQ trgtab[i])
+				      if (0 == trgtab[i])
 					{
 
 					  for (t1 = 0; t1 < 12; t1++)
 					    {
 
-					      if (vce2trg[t1] EQ i)
+					      if (vce2trg[t1] == i)
 						{
 
 						  vce2trg[t1] = -1;
@@ -788,9 +788,9 @@ msm ()
 						}
 
 					      if ((grp2prt[t1][0]
-						   EQ (miport +
-						       1)) AND (grp2prt[t1][1]
-								EQ (michan +
+						   == (miport +
+						       1)) && (grp2prt[t1][1]
+								== (michan +
 								    1)))
 						ne_end (i, t1);
 					    }
@@ -801,7 +801,7 @@ msm ()
 /* 
 */
 			}
-		      else if (mdb1 EQ MIDIHLD)
+		      else if (mdb1 == MIDIHLD)
 			{
 
 			  /* hold changed */
@@ -809,7 +809,7 @@ msm ()
 			  t1 = (miport << 11) | (michan << 7);
 			  t2 = t1 + 128;
 
-			  if (mdb2 GT MSW_ON)
+			  if (mdb2 > MSW_ON)
 			    {	/* switch on */
 
 			      for (i = t1; i < t2; i++)
@@ -817,29 +817,29 @@ msm ()
 				  {
 
 				    for (t1 = 0; t1 < 12; t1++)
-				      if ((vce2trg[t1] & ~(MKEYHELD << 8)) EQ
+				      if ((vce2trg[t1] & ~(MKEYHELD << 8)) ==
 					  i)
 					vce2trg[t1] |= (M_CHNHLD << 8);
 				  }
 
 			    }
-			  else if (mdb2 LT MSW_OFF)
+			  else if (mdb2 < MSW_OFF)
 			    {	/* switch off */
 
 			      for (i = 0; i < 12; i++)
 				{
 
-				  if (vce2trg[i] NE - 1)
+				  if (vce2trg[i] != - 1)
 				    {
 
 				      vce2trg[i] &= ~(M_CHNHLD << 8);
 
-				      if (0 EQ (vce2trg[i] & (MKEYHELD << 8)))
+				      if (0 == (vce2trg[i] & (MKEYHELD << 8)))
 					{
 
 					  t1 = vce2trg[i];
 
-					  if (0 EQ trgtab[t1])
+					  if (0 == trgtab[t1])
 					    {
 
 					      vce2trg[i] = -1;
@@ -862,7 +862,7 @@ msm ()
 			  for (j = 0; j < 4; j++)
 			    {
 
-			      if ((mctlnum[j] & 0x00FF) EQ mdb1)
+			      if ((mctlnum[j] & 0x00FF) == mdb1)
 				{
 
 				  i = ctl2src[j];
@@ -870,24 +870,24 @@ msm ()
 				  for (t1 = 0; t1 < 12; t1++)
 				    {
 
-				      if ((mctlnum[j] & CTAG1) OR
-					  ((grp2prt[t1][0] EQ (miport + 1))
-					   AND (grp2prt[t1][1]
-						EQ (michan + 1))))
+				      if ((mctlnum[j] & CTAG1) ||
+					  ((grp2prt[t1][0] == (miport + 1))
+					   && (grp2prt[t1][1]
+						== (michan + 1))))
 					{
 
 					  if (newsv (t1, i, t2))
 					    {
 
-					      if (recsw AND grpstat[t1] AND
+					      if (recsw && grpstat[t1] &&
 						  (2
-						   EQ (ancmsw ?
+						   == (ancmsw ?
 						       varmode[src2var[i]][t1]
 						       : grpmode[t1])))
 						{
 
 						  if (E_NULL
-						      NE (ep =
+						      != (ep =
 							  e_alc (E_SIZE2)))
 						    {
 
@@ -912,7 +912,7 @@ msm ()
 						    }
 
 						}
-					      else if ((angroup - 1) EQ t1)
+					      else if ((angroup - 1) == t1)
 						{
 
 						  dsanval (src2var[i]);
@@ -936,20 +936,20 @@ msm ()
 		      for (i = 0; i < 12; i++)
 			{
 
-			  if ((grp2prt[i][0] EQ (miport + 1)) AND
-			      (grp2prt[i][1] EQ (michan + 1)))
+			  if ((grp2prt[i][0] == (miport + 1)) &&
+			      (grp2prt[i][1] == (michan + 1)))
 			    {
 
 			      if (newsv (i, SM_HTPW, t2))
 				{
 
-				  if (recsw AND grpstat[i] AND
+				  if (recsw && grpstat[i] &&
 				      (2
-				       EQ (ancmsw ? varmode[0][i] :
+				       == (ancmsw ? varmode[0][i] :
 					   grpmode[i])))
 				    {
 
-				      if (E_NULL NE (ep = e_alc (E_SIZE2)))
+				      if (E_NULL != (ep = e_alc (E_SIZE2)))
 					{
 
 					  ep->e_time = t_cur;
@@ -968,7 +968,7 @@ msm ()
 					}
 
 				    }
-				  else if ((angroup - 1) EQ i)
+				  else if ((angroup - 1) == i)
 				    {
 
 				      dsanval (0);
@@ -982,15 +982,15 @@ msm ()
 */
 		    case 15:	/* common */
 
-		      if (michan EQ 2)
+		      if (michan == 2)
 			{	/* song position */
 
-			  if ((clkctl EQ CK_MIDI) AND (NOT midigo))
+			  if ((clkctl == CK_MIDI) && (! midigo))
 			    {
 
 			      where = 12 * ((mdb1 << 7) | mdb2);
 
-			      if (fc_val NE where)
+			      if (fc_val != where)
 				sc_goto (fc_val = where);
 			    }
 

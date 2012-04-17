@@ -54,7 +54,7 @@ lstat (fn)
 
   /* open the file */
 
-  if (NULL EQ (B_file = fopenb (fn, "r")))
+  if (NULL == (B_file = fopenb (fn, "r")))
     {
 
       printf ("sizes:  Unable to open \"%s\"\n", fn);
@@ -63,7 +63,7 @@ lstat (fn)
 
   /* read in the file header */
 
-  if (1 NE fread (&B_fhdr, sizeof B_fhdr, 1, B_file))
+  if (1 != fread (&B_fhdr, sizeof B_fhdr, 1, B_file))
     {
 
       printf ("sizes:  Unable to read header for \"%s\"\n", fn);
@@ -73,7 +73,7 @@ lstat (fn)
 
   /* check the magic */
 
-  if ((B_fhdr.F_Magic NE F_R_C) AND (B_fhdr.F_Magic NE F_R_D))
+  if ((B_fhdr.F_Magic != F_R_C) && (B_fhdr.F_Magic != F_R_D))
     {
 
       printf ("sizes:  Bad magic [$%04x] in file \"%s\"\n",
@@ -88,7 +88,7 @@ lstat (fn)
 
   /* if it's a discontinuous file, read the origins */
 
-  if (B_fhdr.F_Magic EQ F_R_D)
+  if (B_fhdr.F_Magic == F_R_D)
     {
 
       B_dat_o = getl (B_file);
@@ -113,7 +113,7 @@ lstat (fn)
   endbss = bgnbss + B_bss_l - 1L;
 
   printf ("File \"%s\" is a %s loaded file and\n",
-	  fn, (B_fhdr.F_Magic EQ F_R_D) ? "Scatter" : "Contiguously");
+	  fn, (B_fhdr.F_Magic == F_R_D) ? "Scatter" : "Contiguously");
 
   printf ("loads from $%08lx to $%08lx  (%ld bytes)\n",
 	  B_txt_o, B_end, B_lod_l);
@@ -143,7 +143,7 @@ main (argc, argv)
 {
   int rc;
 
-  if (argc NE 2)
+  if (argc != 2)
     {
 
       printf ("sizes:  ERROR - file name required\n");

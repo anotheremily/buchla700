@@ -27,20 +27,20 @@ get_int (str, ap)
 
   s = str;
 
-  while (*str EQ ' ')
+  while (*str == ' ')
     ++str;
 
-  while ('\0' NE (c = 0x00FF & *str++))
+  while ('\0' != (c = 0x00FF & *str++))
     {
 
-      if (c EQ '+')
+      if (c == '+')
 	{
 
 	  if (++sign > 1)
 	    return (FAILURE);
 
 	}
-      else if (c EQ '-')
+      else if (c == '-')
 	{
 
 	  if (++sign > 1)
@@ -50,10 +50,10 @@ get_int (str, ap)
       else
 	{
 
-	  if (NOT isascii (c))
+	  if (! isascii (c))
 	    return (FAILURE);
 
-	  if (NOT isdigit (c))
+	  if (! isdigit (c))
 	    return (FAILURE);
 	}
     }

@@ -22,13 +22,13 @@ getc (ptr)
 
       ptr->_flags &= ~_DIRTY;	/* reset the dirty buffer bit */
 
-      if (ptr->_buff EQ NULL)	/* get a buffer if none exists */
+      if (ptr->_buff == NULL)	/* get a buffer if none exists */
 	getbuff (ptr);
 
-      if ((len = read (ptr->_unit, ptr->_buff, ptr->_buflen)) LE 0)
+      if ((len = read (ptr->_unit, ptr->_buff, ptr->_buflen)) <= 0)
 	{
 
-	  ptr->_flags |= ((len EQ 0) ? _EOF : _IOERR);
+	  ptr->_flags |= ((len == 0) ? _EOF : _IOERR);
 	  return (EOF);
 	}
 

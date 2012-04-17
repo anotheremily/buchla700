@@ -87,7 +87,7 @@ sec_cpy (ns)
 
   newet = t_sect + ((scp->e_bak)->e_bak)->e_time;
 
-  if ((newet < 0) OR (newet GE 0x00FFFFFFL))
+  if ((newet < 0) || (newet >= 0x00FFFFFFL))
     {
 
       DB_EXIT ("sec_cpy - FAILED time check");
@@ -98,7 +98,7 @@ sec_cpy (ns)
 */
   /* make a time adjusted copy of the section */
 
-  if (E_NULL EQ (cp = madjsec (p_sbgn, t_cur)))
+  if (E_NULL == (cp = madjsec (p_sbgn, t_cur)))
     {
 
       DB_EXIT ("sec_cpy - FAILED madjsec");
@@ -175,7 +175,7 @@ sec_mrg (ns)
 
   newet = t_sect + ((scp->e_bak)->e_bak)->e_time;
 
-  if ((newet < 0) OR (newet GE 0x00FFFFFFL))
+  if ((newet < 0) || (newet >= 0x00FFFFFFL))
     {
 
       DB_EXIT ("sec_mrg - FAILED time check");
@@ -186,7 +186,7 @@ sec_mrg (ns)
 */
   /* make a time adjusted copy of the section */
 
-  if (E_NULL EQ (cp = madjsec (p_sbgn, t_cur)))
+  if (E_NULL == (cp = madjsec (p_sbgn, t_cur)))
     {
 
       DB_EXIT ("sec_mrg - FAILED madjsec");
@@ -205,7 +205,7 @@ sec_mrg (ns)
       lp = e_ins (cp, lp);	/* insert the element */
       et = cp->e_type & 0x007F;	/* get event type */
 
-      if (-1 NE ehdlist[et])	/* see if it's a header */
+      if (-1 != ehdlist[et])	/* see if it's a header */
 	eh_ins (cp, ehdlist[et]);	/* update header list */
 
       cp = rp;			/* update copy pointer */
@@ -248,7 +248,7 @@ sec_grp (ns)
 
   cp = p_sbgn;			/* point at start of section */
 
-  while (cp NE p_send)
+  while (cp != p_send)
     {				/* regroup events in section */
 
       rp = cp->e_fwd;		/* point at next event */
@@ -259,7 +259,7 @@ sec_grp (ns)
 
 	  grp = 0x000F & (cmgtype[et] ? cp->e_data2 : cp->e_data1);
 
-	  if ((et EQ EV_NBEG) OR (et EQ EV_NEND))
+	  if ((et == EV_NBEG) || (et == EV_NEND))
 	    {
 
 	      /* regroup */
@@ -278,7 +278,7 @@ sec_grp (ns)
 	      cp->e_data1 = nv;
 
 	    }
-	  else if ((et EQ EV_ANRS) OR (et EQ EV_ANVL))
+	  else if ((et == EV_ANRS) || (et == EV_ANVL))
 	    {
 
 	      /* regroup */
@@ -352,7 +352,7 @@ sec_mov (ns)
 
   /* verify that section isn't being moved into itself */
 
-  if ((t_cur GE t_sbgn) AND (t_cur LE t_send))
+  if ((t_cur >= t_sbgn) && (t_cur <= t_send))
     {
 
       DB_EXIT ("sec_mov -- bad target");
@@ -378,7 +378,7 @@ sec_mov (ns)
 
   /* adjust the times above the clip point to end of score */
 
-  if (t_cur GE t_send)		/* adjust t_cur if above clip point */
+  if (t_cur >= t_send)		/* adjust t_cur if above clip point */
     t_cur -= t_sect;
 
 #if	DEBUGIT
@@ -386,7 +386,7 @@ sec_mov (ns)
     printf ("sec_mov: adjusted t_cur = %ld\n", t_cur);
 #endif
 
-  while (EV_FINI NE (et = 0x007F & cp->e_type))
+  while (EV_FINI != (et = 0x007F & cp->e_type))
     {
 
       cp->e_time -= t_sect;	/* adjust event time */
@@ -403,7 +403,7 @@ sec_mov (ns)
   /* relativize the section to 0 and unlink event headers from hplist */
 
   rp = p_sbgn;			/* start at the beginning */
-  newet = p_sbgn->e_time;	/* relativize to begin time EQ 0 */
+  newet = p_sbgn->e_time;	/* relativize to begin time == 0 */
 
   while (rp)
     {
@@ -416,7 +416,7 @@ sec_mov (ns)
 
 	  grp = 0x000F & (cmgtype[et] ? rp->e_data2 : rp->e_data1);
 
-	  if ((et EQ EV_NBEG) OR (et EQ EV_NEND))
+	  if ((et == EV_NBEG) || (et == EV_NEND))
 	    {
 
 	      /* regroup */
@@ -435,7 +435,7 @@ sec_mov (ns)
 	      rp->e_data1 = nv;
 
 	    }
-	  else if ((et EQ EV_ANRS) OR (et EQ EV_ANVL))
+	  else if ((et == EV_ANRS) || (et == EV_ANVL))
 	    {
 
 	      /* regroup */
@@ -455,7 +455,7 @@ sec_mov (ns)
 	    }
 	}
 
-      if (-1 NE ehdlist[et])	/* if it's a header ... */
+      if (-1 != ehdlist[et])	/* if it's a header ... */
 	eh_rmv (rp, ehdlist[et]);	/* ... remove it from hplist */
 
       rp = rp->e_fwd;		/* point at the next event */
@@ -483,13 +483,13 @@ sec_mov (ns)
 	    lp, cp, rp, newet);
 #endif
 
-  while (cp NE rp)
+  while (cp != rp)
     {
 
       et = 0x007F & cp->e_type;	/* get event type */
       cp->e_time += newet;	/* derelativize the time */
 
-      if (-1 NE ehdlist[et])	/* if event is a header ... */
+      if (-1 != ehdlist[et])	/* if event is a header ... */
 	eh_ins (cp, ehdlist[et]);	/* ... put event on hplist */
 
       cp = cp->e_fwd;		/* point at next event */
@@ -503,7 +503,7 @@ sec_mov (ns)
 
   /* adjust times above move point */
 
-  while (EV_FINI NE (et = 0x007F & cp->e_type))
+  while (EV_FINI != (et = 0x007F & cp->e_type))
     {
 
       cp->e_time += t_sect;	/* adjust the time */
@@ -574,7 +574,7 @@ sec_rmv (ns)
 
   /* adjust the times above the clip point to end of score */
 
-  if (t_cur GE t_send)		/* adjust t_cur if above clip point */
+  if (t_cur >= t_send)		/* adjust t_cur if above clip point */
     t_cur -= t_sect;
 
 #if	DEBUGIT
@@ -582,7 +582,7 @@ sec_rmv (ns)
     printf ("sec_rmv: adjusted t_cur = %ld\n", t_cur);
 #endif
 
-  while (EV_FINI NE (et = 0x007F & cp->e_type))
+  while (EV_FINI != (et = 0x007F & cp->e_type))
     {
 
       cp->e_time -= t_sect;	/* adjust event time */
@@ -604,19 +604,19 @@ sec_rmv (ns)
       lp = rp->e_fwd;		/* get next event pointer */
       et = 0x007F & rp->e_type;	/* get event type */
 
-      if (p_bak EQ rp)		/* fix p_bak */
+      if (p_bak == rp)		/* fix p_bak */
 	p_bak = pp;
 
-      if (p_cur EQ rp)		/* fix p_cur */
+      if (p_cur == rp)		/* fix p_cur */
 	p_cur = pp;
 
-      if (p_ctr EQ rp)		/* fix p_ctr */
+      if (p_ctr == rp)		/* fix p_ctr */
 	p_ctr = pp;
 
-      if (p_fwd EQ rp)		/* fix p_fwd */
+      if (p_fwd == rp)		/* fix p_fwd */
 	p_fwd = pp;
 
-      if (-1 NE ehdlist[et])	/* if it's a header ... */
+      if (-1 != ehdlist[et])	/* if it's a header ... */
 	eh_rmv (rp, ehdlist[et]);	/* ... remove it from hplist */
 
       e_del (e_rmv (rp));	/* delete the event */
@@ -679,7 +679,7 @@ sec_dgr (ns)
 
   rp = p_sbgn->e_fwd;		/* start at the beginning */
 
-  while (rp NE p_send)
+  while (rp != p_send)
     {
 
       lp = rp->e_fwd;		/* get next event pointer */
@@ -687,16 +687,16 @@ sec_dgr (ns)
       if (oktodg (rp))
 	{			/* if it's one we want ... */
 
-	  if (p_bak EQ rp)	/* fix p_bak */
+	  if (p_bak == rp)	/* fix p_bak */
 	    p_bak = lp;
 
-	  if (p_cur EQ rp)	/* fix p_cur */
+	  if (p_cur == rp)	/* fix p_cur */
 	    p_cur = lp;
 
-	  if (p_ctr EQ rp)	/* fix p_ctr */
+	  if (p_ctr == rp)	/* fix p_ctr */
 	    p_ctr = lp;
 
-	  if (p_fwd EQ rp)	/* fix p_fwd */
+	  if (p_fwd == rp)	/* fix p_fwd */
 	    p_fwd = lp;
 
 	  e_del (e_rmv (rp));	/* ... delete it */
@@ -760,7 +760,7 @@ sec_dev (ns)
 
   rp = p_sbgn->e_fwd;		/* start at the beginning */
 
-  while (rp NE p_send)
+  while (rp != p_send)
     {
 
       lp = rp->e_fwd;		/* get next event pointer */
@@ -768,16 +768,16 @@ sec_dev (ns)
       if (oktode (rp))
 	{			/* if it's one we want ... */
 
-	  if (p_bak EQ rp)	/* fix p_bak */
+	  if (p_bak == rp)	/* fix p_bak */
 	    p_bak = lp;
 
-	  if (p_cur EQ rp)	/* fix p_cur */
+	  if (p_cur == rp)	/* fix p_cur */
 	    p_cur = lp;
 
-	  if (p_ctr EQ rp)	/* fix p_ctr */
+	  if (p_ctr == rp)	/* fix p_ctr */
 	    p_ctr = lp;
 
-	  if (p_fwd EQ rp)	/* fix p_fwd */
+	  if (p_fwd == rp)	/* fix p_fwd */
 	    p_fwd = lp;
 
 	  e_del (e_rmv (rp));	/* ... delete it */

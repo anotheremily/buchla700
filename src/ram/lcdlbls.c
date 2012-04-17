@@ -160,7 +160,7 @@ short arpar[] = { 4, 2, 9, 11, 12, 1, 3, 5, 7, 13, 14, 15, 10, 6 };
 /* 
 */
 
-short sl2gain[32] = {		/* slider value to EQ gain conversion table */
+short sl2gain[32] = {		/* slider value to == gain conversion table */
 
   -12, -12, -12, -12, -12, -11, -10, -9, -8, -7, -6, -5, -4, -3, -2, -1,
   0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 12, 12, 12
@@ -209,7 +209,7 @@ char *swtlbls[] = {		/* LCD switch labels -- ROMP ENABLED */
   /* 1 */
     "                                                                        Voice Init ",
   /* 2 */
-    "Quiet ROMP  Lamp  Clock  P/R  Go To Instr Asgmt Load               EQ   Voice Init ",
+    "Quiet ROMP  Lamp  Clock  P/R  Go To Instr Asgmt Load               ==   Voice Init ",
   /* 3 */
     "Quiet ROMP  Lamp  Clock  P/R  Go To Instr Asgmt Load              Prmtr Voice Init ",
   /* 4 */
@@ -229,7 +229,7 @@ char *swtlbls[] = {		/* LCD switch labels -- ROMP DISABLED */
   /* 1 */
     "                                                                        Voice Init ",
   /* 2 */
-    "Quiet       Lamp  Clock  P/R  Go To Instr Asgmt Load               EQ   Voice Init ",
+    "Quiet       Lamp  Clock  P/R  Go To Instr Asgmt Load               ==   Voice Init ",
   /* 3 */
     "Quiet       Lamp  Clock  P/R  Go To Instr Asgmt Load              Prmtr Voice Init ",
   /* 4 */
@@ -319,7 +319,7 @@ PFS t_other[] = {		/* switch assignments for LS_OTHER */
 
   nokey,			/*  9: -unused- */
   nokey,			/* 10: -unused- */
-  l_eq,				/* 11: EQ */
+  l_eq,				/* 11: == */
 
   l_prmtr,			/* 12: Prmtr */
   l_init			/* 13: Init */
@@ -476,10 +476,10 @@ quiet ()
 rpctl (stat)
      short stat;
 {
-  if (NOT stat)
+  if (! stat)
     return;
 
-  recsw = NOT recsw;
+  recsw = ! recsw;
   dsrpmod ();
 }
 
@@ -508,10 +508,10 @@ trapper (stat)
 l_clock (stat)
      short stat;
 {
-  if (NOT stat)
+  if (! stat)
     return;
 
-  clkset (NOT clkrun);
+  clkset (! clkrun);
   dclkmd ();
 }
 
@@ -523,7 +523,7 @@ l_clock (stat)
 
 ulamp ()
 {
-  if ((sliders EQ LS_VOICE) OR (sliders EQ LS_INST))
+  if ((sliders == LS_VOICE) || (sliders == LS_INST))
     return;
 
   point = GLCplot;		/* setup to draw line */
@@ -574,7 +574,7 @@ postio ()
 
   lampsw = lampio;
 
-  if (iotime OR lampsw)
+  if (iotime || lampsw)
     {
 
       lcdtime = lcdontm;
@@ -597,7 +597,7 @@ setlamp (stat)
 {
   register short oldi;
 
-  if (NOT stat)			/* only act on key closures */
+  if (! stat)			/* only act on key closures */
     return;
 
   oldi = setipl (TIM_DI);	/* disable interrupts to keep out the timer */
@@ -653,7 +653,7 @@ lcd_on ()
 loadkey (key)
      short key;
 {
-  if (NOT astat)
+  if (! astat)
     return;
 
   if (loadsw)
@@ -695,7 +695,7 @@ pcancel (pm)
   point = GLCplot;		/* setup to plot on LCD */
   GLCcurs (G_ON);
 
-  if ((pm NE 0) AND asmode)
+  if ((pm != 0) && asmode)
     {
 
       /* cancel assignment mode */
@@ -706,7 +706,7 @@ pcancel (pm)
       lseg (ASGN_XL, ASGN_Y, ASGN_XR, ASGN_Y, 0);
     }
 
-  if ((pm NE 1) AND (gomode NE GO_NULL))
+  if ((pm != 1) && (gomode != GO_NULL))
     {
 
       /* cancel Go To mode */
@@ -716,7 +716,7 @@ pcancel (pm)
       lseg (GOTO_XL, GOTO_Y, GOTO_XR, GOTO_Y, 0);
     }
 
-  if ((pm NE 2) AND (ismode NE IS_NULL))
+  if ((pm != 2) && (ismode != IS_NULL))
     {
 
       /* cancel instrument select mode */
@@ -744,7 +744,7 @@ pcancel (pm)
 l_load (stat)
      short stat;
 {
-  if (NOT stat)
+  if (! stat)
     return;
 
   pcancel (3);			/* cancel panel selections */
@@ -783,10 +783,10 @@ l_load (stat)
 	  ltagged = FALSE;
 	}
 
-      if ((pkctrl EQ PK_PFRM) OR (pkctrl EQ PK_NOTE))
+      if ((pkctrl == PK_PFRM) || (pkctrl == PK_NOTE))
 	oldpk = pkctrl;
 
-      if (sliders NE LS_LOAD)
+      if (sliders != LS_LOAD)
 	oldsl = sliders;
 
       pkctrl = PK_LOAD;
@@ -902,7 +902,7 @@ lcdlbls ()
 	  strcat (dsp, buf);
 	}
 
-      if (ismode EQ IS_HORC)
+      if (ismode == IS_HORC)
 	strcat (dsp, " +20 ");	/* hi orc */
       else
 	strcat (dsp, " +00 ");	/* lo orc */
@@ -1001,13 +1001,13 @@ selasg (n)
   if (recsw)
     {				/* if we're recording ... */
 
-      if (E_NULL NE (ep = findev (p_cur, t_cur, EV_ASGN, -1, -1)))
+      if (E_NULL != (ep = findev (p_cur, t_cur, EV_ASGN, -1, -1)))
 	{
 
 	  ep->e_data1 = n;	/* update old event */
 
 	}
-      else if (E_NULL NE (ep = e_alc (E_SIZE2)))
+      else if (E_NULL != (ep = e_alc (E_SIZE2)))
 	{
 
 	  ep->e_type = EV_ASGN;	/* create new event */
@@ -1016,7 +1016,7 @@ selasg (n)
 	  p_cur = e_ins (ep, ep_adj (p_cur, 0, t_cur))->e_fwd;
 	  eh_ins (ep, EH_ASGN);
 
-	  if (ndisp EQ 2)
+	  if (ndisp == 2)
 	    {			/* if the score is up ... */
 
 	      ctrsw = TRUE;
@@ -1052,7 +1052,7 @@ selasg (n)
 l_adfl (stat)
      short stat;
 {
-  if (NOT stat)
+  if (! stat)
     return;
 
   selasg (0);
@@ -1070,13 +1070,13 @@ l_adfl (stat)
 l_asgn (stat)
      short stat;
 {
-  if (NOT stat)			/* only do this on key closure */
+  if (! stat)			/* only do this on key closure */
     return;
 
   point = GLCplot;		/* set up to plot on the LCD */
   GLCcurs (G_ON);
 
-  if (ismode NE IS_NULL)
+  if (ismode != IS_NULL)
     {				/* cancel instrument select mode */
 
       ismode = IS_NULL;
@@ -1086,7 +1086,7 @@ l_asgn (stat)
       lcdlbls ();
     }
 
-  if (gomode NE GO_NULL)
+  if (gomode != GO_NULL)
     {				/* cancel Go To mode */
 
       gomode = GO_NULL;
@@ -1100,7 +1100,7 @@ l_asgn (stat)
 
     case 0:			/* initial actuation */
 
-      if ((pkctrl EQ PK_PFRM) OR (pkctrl EQ PK_NOTE))
+      if ((pkctrl == PK_PFRM) || (pkctrl == PK_NOTE))
 	oldpk = pkctrl;
 
       asmode = (curasg ? ((curasg - 1) / 20) : 0) + 1;
@@ -1145,7 +1145,7 @@ l_asgn (stat)
 l_inst (stat)
      short stat;
 {
-  if (NOT stat)
+  if (! stat)
     return;
 
   point = GLCplot;		/* set up to plot on the LCD */
@@ -1160,7 +1160,7 @@ l_inst (stat)
       lseg (ASGN_XL, ASGN_Y, ASGN_XR, ASGN_Y, 0);
     }
 
-  if (gomode NE GO_NULL)
+  if (gomode != GO_NULL)
     {				/* cancel Go To mode */
 
       gomode = GO_NULL;
@@ -1176,10 +1176,10 @@ l_inst (stat)
 
     case IS_NULL:		/* select +00 -- low orchestra */
 
-      if ((pkctrl EQ PK_PFRM) OR (pkctrl EQ PK_NOTE))
+      if ((pkctrl == PK_PFRM) || (pkctrl == PK_NOTE))
 	oldpk = pkctrl;
 
-      if (sliders NE LS_INST)
+      if (sliders != LS_INST)
 	oldsl = sliders;
 
       oldsw = swpt;
@@ -1230,22 +1230,22 @@ selins (ival)
   for (n = 0; n < 12; n++)
     {
 
-      if (FALSE EQ grpsel[n])
+      if (FALSE == grpsel[n])
 	continue;
 
       ins2grp[n] = ival | (ins2grp[n] & 0xFF00);
       setv2gi (n);
 
-      if (recsw AND grpstat[n] AND (2 EQ grpmode[n]))
+      if (recsw && grpstat[n] && (2 == grpmode[n]))
 	{
 
-	  if (E_NULL NE (ep = findev (p_cur, t_cur, EV_INST, n, -1)))
+	  if (E_NULL != (ep = findev (p_cur, t_cur, EV_INST, n, -1)))
 	    {
 
 	      ep->e_data2 = ival;
 
 	    }
-	  else if (E_NULL NE (ep = e_alc (E_SIZE2)))
+	  else if (E_NULL != (ep = e_alc (E_SIZE2)))
 	    {
 
 	      ep->e_type = EV_INST;
@@ -1255,7 +1255,7 @@ selins (ival)
 	      p_cur = e_ins (ep, ep_adj (p_cur, 0, t_cur))->e_fwd;
 	      eh_ins (ep, EH_INST);
 
-	      if (ndisp EQ 2)
+	      if (ndisp == 2)
 		{
 
 		  ctrsw = TRUE;
@@ -1291,7 +1291,7 @@ selins (ival)
 l_dflt (stat)
      short stat;
 {
-  if (NOT stat)
+  if (! stat)
     return;
 
   selins (0);
@@ -1309,7 +1309,7 @@ l_dflt (stat)
 l_goto (stat)
      short stat;
 {
-  if (NOT stat)			/* only do this on key closure */
+  if (! stat)			/* only do this on key closure */
     return;
 
   point = GLCplot;		/* set up to plot on the LCD */
@@ -1324,7 +1324,7 @@ l_goto (stat)
       lseg (ASGN_XL, ASGN_Y, ASGN_XR, ASGN_Y, 0);
     }
 
-  if (ismode NE IS_NULL)
+  if (ismode != IS_NULL)
     {				/* cancel instrument select mode */
 
       ismode = IS_NULL;
@@ -1343,7 +1343,7 @@ l_goto (stat)
 
     case GO_NULL:
 
-      if ((pkctrl EQ PK_PFRM) OR (pkctrl EQ PK_NOTE))
+      if ((pkctrl == PK_PFRM) || (pkctrl == PK_NOTE))
 	oldpk = pkctrl;
 
       pkctrl = PK_GOTO;
@@ -1401,12 +1401,12 @@ newpps (trg, grp, src, ival)
 
 /* 
 */
-  while (smf NE (smp = smp->nxt))
+  while (smf != (smp = smp->nxt))
     {				/* for each function ... */
 
       vce = (smp->vp >> 4) & 0x0F;	/* extract voice number */
 
-      if (vce2trg[vce] EQ trg)
+      if (vce2trg[vce] == trg)
 	{			/* for each key that matches ... */
 
 	  switch (smp->vp & 0x000F)
@@ -1475,19 +1475,19 @@ newsv (grp, src, ival)
 
   gs = (grp << 4) | src;	/* calculate grp/src index */
 
-  if (-1 NE (var = src2var[src]))
+  if (-1 != (var = src2var[src]))
     {				/* see if its a variable */
 
       vmask = vmasks[anrs[var][grp]];	/* setup resolution mask */
 
       /* see if we have a change in the selected significant bits */
 
-      if (((val = valents[gs].val) & vmask) EQ (ival & vmask))
+      if (((val = valents[gs].val) & vmask) == (ival & vmask))
 	{
 
 	  /* make sure we always see a change to zero */
 
-	  if (NOT ((ival EQ 0) AND val))	/* if not becoming zero */
+	  if (! ((ival == 0) && val))	/* if not becoming zero */
 	    return (FALSE);	/* ... it didn't change enough */
 	}
     }
@@ -1501,7 +1501,7 @@ newsv (grp, src, ival)
 
 /* 
 */
-  while (smf NE (smp = smp->nxt))
+  while (smf != (smp = smp->nxt))
     {				/* update functions */
 
       switch (smp->vp & 0x000F)
@@ -1577,7 +1577,7 @@ setsv (grp, src, ival)
 
 /* 
 */
-  while (smf NE (smp = smp->nxt))
+  while (smf != (smp = smp->nxt))
     {				/* update functions */
 
       switch (smp->vp & 0x000F)
@@ -1633,7 +1633,7 @@ setsv (grp, src, ival)
 l_prmtr (stat, sig)
      short stat, sig;
 {
-  if (NOT stat)
+  if (! stat)
     return;
 
   switch (sliders)
@@ -1676,10 +1676,10 @@ l_voice (stat, vce)
 
   char buf[8];
 
-  if (NOT stat)
+  if (! stat)
     return;
 
-  articen[vce] = NOT articen[vce];	/* toggle voice enable */
+  articen[vce] = ! articen[vce];	/* toggle voice enable */
 
   sprintf (buf, "%c%2d %c", (articen[vce] ? '\176' : ' '), vce + 1,
 	   (articen[vce] ? '\177' : ' '));
@@ -1723,10 +1723,10 @@ l_group (stat, grp)
 {
   char buf[8];
 
-  if (NOT stat)
+  if (! stat)
     return;
 
-  grpsel[grp] = NOT grpsel[grp];	/* toggle voice enable */
+  grpsel[grp] = ! grpsel[grp];	/* toggle voice enable */
 
   sprintf (buf, "%c%2d %c", (grpsel[grp] ? '\176' : ' '), grp + 1,
 	   (grpsel[grp] ? '\177' : ' '));
@@ -1745,7 +1745,7 @@ l_group (stat, grp)
 l_other (stat, sig)
      short stat, sig;
 {
-  if (NOT stat)
+  if (! stat)
     return;
 
   sliders = LS_OTHER;
@@ -1766,10 +1766,10 @@ l_other (stat, sig)
 l_eq (stat, sig)
      short stat, sig;
 {
-  if (NOT stat)
+  if (! stat)
     return;
 
-  if (sliders EQ LS_EQ)
+  if (sliders == LS_EQ)
     {
 
       sliders = LS_PRMTR;
@@ -1816,7 +1816,7 @@ l_init (stat, sig)
   register short barval, i, j;
   char buf[16];
 
-  if (NOT stat)
+  if (! stat)
     return;
 
   fpu = io_fpu + FPU_OFNC;
@@ -2119,7 +2119,7 @@ settune ()
   for (i = 0; i < 12; i++)
     {
 
-      if (-1 NE (grp = vce2grp[i]))
+      if (-1 != (grp = vce2grp[i]))
 	{
 
 	  trval = (long) tuneval + ((long) s_trns[grp - 1] << 1);

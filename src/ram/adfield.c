@@ -265,9 +265,9 @@ adcyupd ()
 
       cyval += cyrate;
 
-      if (cyval GT (CYMAX - 1))
+      if (cyval > (CYMAX - 1))
 	cyval = CYMAX - 1;
-      else if (cyval LT 1)
+      else if (cyval < 1)
 	cyval = 1;
     }
 }
@@ -296,9 +296,9 @@ adcxupd ()
 
       cxval += cxrate;
 
-      if (cxval GT (CXMAX - 1))
+      if (cxval > (CXMAX - 1))
 	cxval = CXMAX - 1;
-      else if (cxval LT 1)
+      else if (cxval < 1)
 	cxval = 1;
     }
 }
@@ -332,7 +332,7 @@ ad_xkey (nn)
 
 	    case 0:		/* name */
 
-	      if (row EQ 1)
+	      if (row == 1)
 		{
 
 		  memset (asgtab[curasg].a_name, ' ', 16);
@@ -345,7 +345,7 @@ ad_xkey (nn)
 		return (FAILURE);
 	    case 2:		/* MIDI output port */
 
-	      if ((col GE 1) AND (col LE 10))
+	      if ((col >= 1) && (col <= 10))
 		{
 
 		  curmop = 0;
@@ -359,10 +359,10 @@ ad_xkey (nn)
 */
 	    case 4:		/* voice to group */
 
-	      if (row LT 4)
+	      if (row < 4)
 		break;
 
-	      if ((col GE 13) AND (col LE 16))
+	      if ((col >= 13) && (col <= 16))
 		{
 
 		  grp = row - 4;
@@ -372,7 +372,7 @@ ad_xkey (nn)
 		  return (SUCCESS);
 
 		}
-	      else if ((col GE 19) AND (col LE 22))
+	      else if ((col >= 19) && (col <= 22))
 		{
 
 		  grp = row + 2;
@@ -386,10 +386,10 @@ ad_xkey (nn)
 
 	    case 5:		/* controller number */
 
-	      if ((row LT 5) OR (row GT 8))
+	      if ((row < 5) || (row > 8))
 		break;
 
-	      if ((col EQ 35) OR (col EQ 36))
+	      if ((col == 35) || (col == 36))
 		{
 
 		  mctlnum[row - 5] = -1;
@@ -403,10 +403,10 @@ ad_xkey (nn)
 */
 	    case 6:		/* port or channel */
 
-	      if (row LT 4)
+	      if (row < 4)
 		break;
 
-	      if (col EQ 46)
+	      if (col == 46)
 		{
 
 		  /* port */
@@ -423,7 +423,7 @@ ad_xkey (nn)
 		  return (SUCCESS);
 
 		}
-	      else if ((col EQ 48) OR (col EQ 49))
+	      else if ((col == 48) || (col == 49))
 		{
 
 		  /* channel */
@@ -436,7 +436,7 @@ ad_xkey (nn)
 /* 
 */
 		}
-	      else if (col EQ 59)
+	      else if (col == 59)
 		{
 
 		  /* port */
@@ -453,7 +453,7 @@ ad_xkey (nn)
 		  return (SUCCESS);
 
 		}
-	      else if ((col EQ 61) OR (col EQ 62))
+	      else if ((col == 61) || (col == 62))
 		{
 
 		  /* channel */

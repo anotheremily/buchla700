@@ -56,7 +56,7 @@ index (s, c)
      register int c;
 {
   while (*s)
-    if (c EQ * s)
+    if (c == * s)
       return (s);
     else
       s++;
@@ -75,17 +75,17 @@ getopt (nargc, nargv, ostr)
   static char *place = EMSG;	/* private scan pointer */
   register char *oli;
 
-  if (optind EQ 0)		/* make sure optind starts out non-zero */
+  if (optind == 0)		/* make sure optind starts out non-zero */
     ++optind;
 
   if (!*place)
     {				/* update the scan pointer */
 
-      if ((optind GE nargc)
-	  OR (*(place = nargv[optind]) NE '-') OR (!*++place))
+      if ((optind >= nargc)
+	  || (*(place = nargv[optind]) != '-') || (!*++place))
 	return (EOF);
 
-      if (*place EQ '-')
+      if (*place == '-')
 	{			/* found "--" */
 
 	  ++optind;
@@ -93,7 +93,7 @@ getopt (nargc, nargv, ostr)
 	}
     }
 
-  if (((optopt = (int) *place++) EQ ARGCH) OR (!(oli = index (ostr, optopt))))
+  if (((optopt = (int) *place++) == ARGCH) || (!(oli = index (ostr, optopt))))
     {				/* option letter OK ? */
 
       if (!*place)
@@ -111,7 +111,7 @@ getopt (nargc, nargv, ostr)
       return (BADCH);
     }
 
-  if (*++oli NE ARGCH)
+  if (*++oli != ARGCH)
     {				/* check for required argument */
 
       optarg = NULL;		/* no argument needed */

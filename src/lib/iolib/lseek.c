@@ -26,7 +26,7 @@ lseek (fd, pos, how)
 {
   register struct fcb *fp;
 
-  if ((fd < 0) OR (fd > MAXCHAN))
+  if ((fd < 0) || (fd > MAXCHAN))
     {
 
 #if	DEBUGIT
@@ -38,7 +38,7 @@ lseek (fd, pos, how)
       return (-1L);
     }
 
-  if (chantab[fd].c_seek EQ 0)
+  if (chantab[fd].c_seek == 0)
     {
 
 #if	DEBUGIT
@@ -115,7 +115,7 @@ lseek (fd, pos, how)
       return (-1L);
     }
 
-  if (pos EQ fp->curlen)
+  if (pos == fp->curlen)
     fp->modefl |= FC_EOF;
 
 #if	DEBUGIT

@@ -22,7 +22,7 @@
 		Positions the GLC cursor at ('x', 'y') preparatory to
 		writing graphics.  Returns a bit mask for the pixel.
 		Leaves the cursor address in lcdcurs.
-		Limits:  0 LE x LE 511,  0 LE y LE 63.
+		Limits:  0 <= x <= 511,  0 <= y <= 63.
 
 	GLCwrts(s)
 	char *s;
@@ -226,7 +226,7 @@ GLCcrc (row, col)
 	Positions the GLC cursor at ('x', 'y') preparatory to
 	writing graphics.  Returns a bit mask for the pixel.
 	Leaves cursor address in lcdcurs.
-	Limits:  0 LE x LE 511,  0 LE y LE 63.
+	Limits:  0 <= x <= 511,  0 <= y <= 63.
    =============================================================================
 */
 

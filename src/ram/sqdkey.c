@@ -113,16 +113,16 @@ sqactde (key)
       if (inrange (col, 3, 5))
 	{			/* key */
 
-	  if ((col EQ 3) AND (key > 1))
+	  if ((col == 3) && (key > 1))
 	    return;
 
 	  buf[0] = key + '0';
 
 	}
-      else if (col EQ 7)
+      else if (col == 7)
 	{			/* port */
 
-	  if ((key EQ 1) OR (key EQ 2))
+	  if ((key == 1) || (key == 2))
 	    {			/* MIDI */
 
 	      buf[0] = key + '0';
@@ -131,7 +131,7 @@ sqactde (key)
 	      memcpy (&sqdebuf[stccol + 1], " 01", 3);
 
 	    }
-	  else if (key EQ 3)
+	  else if (key == 3)
 	    {			/* local */
 
 	      buf[0] = 'L';
@@ -150,7 +150,7 @@ sqactde (key)
       else if (inrange (col, 9, 10))
 	{			/* channel */
 
-	  if ((col EQ 9) AND (key > 1))
+	  if ((col == 9) && (key > 1))
 	    return;
 
 	  buf[0] = key + '0';
@@ -161,14 +161,14 @@ sqactde (key)
 
       UpdVid (7, stccol, buf, PTDATR);
 
-      if ((col EQ 5) OR (col EQ 7))
+      if ((col == 5) || (col == 7))
 	{			/* skip blanks */
 
 	  ++stccol;
 	  ++col;
 	}
 
-      if (col EQ 10)
+      if (col == 10)
 	ctcon ();
       else
 	movestc (stcrow, ++stccol);
@@ -181,7 +181,7 @@ sqactde (key)
       if (inrange (col, 9, 10))
 	{
 
-	  if ((col EQ 9) AND (key > 1))
+	  if ((col == 9) && (key > 1))
 	    return;
 
 	}
@@ -197,7 +197,7 @@ sqactde (key)
 
       UpdVid (7, stccol, buf, PTDATR);
 
-      if (col EQ 10)
+      if (col == 10)
 	ctcon ();
       else
 	movestc (stcrow, ++stccol);
@@ -207,12 +207,12 @@ sqactde (key)
 */
     case 3:			/* register operations */
 
-      if ((col EQ 7) AND (act EQ SQ_AREG))
+      if ((col == 7) && (act == SQ_AREG))
 	{
 
-	  if (key EQ 8)		/* - */
+	  if (key == 8)		/* - */
 	    buf[0] = '-';
-	  else if (key EQ 9)	/* + */
+	  else if (key == 9)	/* + */
 	    buf[0] = '+';
 	  else
 	    return;
@@ -229,10 +229,10 @@ sqactde (key)
 
 	case SQ_REG:		/* register contents */
 
-	  if (inrange (col, 5, 6) OR inrange (col, 9, 10))
+	  if (inrange (col, 5, 6) || inrange (col, 9, 10))
 	    {
 
-	      if (((col EQ 5) OR (col EQ 9)) AND (key > 1))
+	      if (((col == 5) || (col == 9)) && (key > 1))
 		return;
 
 	    }
@@ -248,14 +248,14 @@ sqactde (key)
 
 	  UpdVid (7, stccol, buf, PTDATR);
 
-	  if (col EQ 6)
+	  if (col == 6)
 	    {
 
 	      col += 2;
 	      stccol += 2;
 	    }
 
-	  if (col EQ 10)
+	  if (col == 10)
 	    ctcon ();
 	  else
 	    movestc (stcrow, ++stccol);
@@ -265,10 +265,10 @@ sqactde (key)
 */
 	case SQ_VAL:		/* constant value */
 
-	  if (inrange (col, 5, 6) OR inrange (col, 8, 9))
+	  if (inrange (col, 5, 6) || inrange (col, 8, 9))
 	    {
 
-	      if ((col EQ 5) AND (key > 1))
+	      if ((col == 5) && (key > 1))
 		return;
 
 	    }
@@ -284,14 +284,14 @@ sqactde (key)
 
 	  UpdVid (7, stccol, buf, PTDATR);
 
-	  if (col EQ 6)
+	  if (col == 6)
 	    {
 
 	      ++col;
 	      ++stccol;
 	    }
 
-	  if (col EQ 9)
+	  if (col == 9)
 	    ctcon ();
 	  else
 	    movestc (stcrow, ++stccol);
@@ -301,12 +301,12 @@ sqactde (key)
 */
 	case SQ_VLT:		/* voltage input */
 
-	  if (inrange (col, 5, 6) OR (col EQ 9))
+	  if (inrange (col, 5, 6) || (col == 9))
 	    {
 
-	      if ((col EQ 5) AND (key > 1))
+	      if ((col == 5) && (key > 1))
 		return;
-	      else if ((col EQ 9) AND ((key < 1) OR (key > 4)))
+	      else if ((col == 9) && ((key < 1) || (key > 4)))
 		return;
 
 	    }
@@ -322,14 +322,14 @@ sqactde (key)
 
 	  UpdVid (7, stccol, buf, PTDATR);
 
-	  if (col EQ 6)
+	  if (col == 6)
 	    {
 
 	      col += 2;
 	      stccol += 2;
 	    }
 
-	  if (col EQ 9)
+	  if (col == 9)
 	    ctcon ();
 	  else
 	    movestc (stcrow, ++stccol);
@@ -339,13 +339,13 @@ sqactde (key)
 */
 	case SQ_RND:		/* random value */
 
-	  if (inrange (col, 5, 6) OR (col EQ 9))
+	  if (inrange (col, 5, 6) || (col == 9))
 	    {
 
-	      if ((col EQ 5) AND (key > 1))
+	      if ((col == 5) && (key > 1))
 		return;
 
-	      if ((col EQ 9) AND (key > 6))
+	      if ((col == 9) && (key > 6))
 		return;
 
 	    }
@@ -361,14 +361,14 @@ sqactde (key)
 
 	  UpdVid (7, stccol, buf, PTDATR);
 
-	  if (col EQ 6)
+	  if (col == 6)
 	    {
 
 	      col += 2;
 	      stccol += 2;
 	    }
 
-	  if (col EQ 9)
+	  if (col == 9)
 	    ctcon ();
 	  else
 	    movestc (stcrow, ++stccol);
@@ -388,7 +388,7 @@ sqactde (key)
 
       UpdVid (7, stccol, buf, PTDATR);
 
-      if (col EQ 10)
+      if (col == 10)
 	ctcon ();
       else
 	movestc (stcrow, ++stccol);
@@ -416,10 +416,10 @@ sqdkey ()
   register short key;
   char buf[8];
 
-  if (NOT astat)		/* only do this on key closures */
+  if (! astat)		/* only do this on key closures */
     return;
 
-  if (NOT sqdeflg)		/* load up the edit buffer */
+  if (! sqdeflg)		/* load up the edit buffer */
     seq2buf ();
 
   key = asig - 60;
@@ -434,7 +434,7 @@ sqdkey ()
 
       UpdVid (7, stccol, buf, PTDATR);
 
-      if (stccol EQ 4)
+      if (stccol == 4)
 	ctcon ();
       else
 	movestc (stcrow, ++stccol);
@@ -446,7 +446,7 @@ sqdkey ()
   else if (inrange (stccol, 6, 10))
     {				/* time */
 
-      if (stccol EQ 8)
+      if (stccol == 8)
 	return;
 
       buf[0] = key + '0';
@@ -456,10 +456,10 @@ sqdkey ()
 
       UpdVid (7, stccol, buf, PTDATR);
 
-      if (stccol EQ 7)
+      if (stccol == 7)
 	++stccol;
 
-      if (stccol EQ 10)
+      if (stccol == 10)
 	ctcon ();
       else
 	movestc (stcrow, ++stccol);

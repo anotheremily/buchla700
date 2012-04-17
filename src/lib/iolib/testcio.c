@@ -51,7 +51,7 @@ getw (stream)
   t = (char *) &temp;
 #endif
 
-  if (EOF EQ (*t++ = getc (stream)))
+  if (EOF == (*t++ = getc (stream)))
     return (EOF);
 
   if (ferror (stream))
@@ -87,7 +87,7 @@ main ()
 
   /* open the file for write update */
 
-  if (NULL EQ (fp1 = fopenb (THEFILE, THEMODE)))
+  if (NULL == (fp1 = fopenb (THEFILE, THEMODE)))
     {
 
       printf ("ERROR:  unable to open [%s] in \042%s\042 mode.\n",
@@ -162,7 +162,7 @@ main ()
 	  exit (1);
 	}
 
-      if (i NE j)
+      if (i != j)
 	{
 
 	  ++errs;
@@ -181,7 +181,7 @@ main ()
   printf ("File written and read back.  File position = %ld ($%08.8lx).\n",
 	  was, was);
   printf ("Read back check complete with %d error%s\n",
-	  errs, ((errs NE 1) ? "s." : "."));
+	  errs, ((errs != 1) ? "s." : "."));
 
   if (feof (fp1))
     {
@@ -197,7 +197,7 @@ main ()
 	}
     }
 
-  if (after EQ was)
+  if (after == was)
     printf ("File positions at end of read and write match.\n");
   else
     {
@@ -300,10 +300,10 @@ main ()
 
   printf ("Random read of MAGIC executed at %ld.\n", where);
 
-  if (j NE MAGIC)
+  if (j != MAGIC)
     {
 
-      printf ("ERROR:  value read (%d) NE MAGIC (%d).\n", j, MAGIC);
+      printf ("ERROR:  value read (%d) != MAGIC (%d).\n", j, MAGIC);
       exit (1);
     }
 
@@ -399,10 +399,10 @@ main ()
 
   printf ("Random access read executed at %ld.\n", where);
 
-  if (j NE MAGIC)
+  if (j != MAGIC)
     {
 
-      printf ("ERROR:  j (%d) NE MAGIC (%d).\n", j, MAGIC);
+      printf ("ERROR:  j (%d) != MAGIC (%d).\n", j, MAGIC);
       exit (1);
     }
 

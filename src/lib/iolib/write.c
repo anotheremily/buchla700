@@ -61,7 +61,7 @@ _putsec (fp, buf, len)
 	    fp, buf, len, fp->curlsn);
 #endif
 
-  if ((errno = ReadRN (fp, Wrkbuf)) EQ 1)
+  if ((errno = ReadRN (fp, Wrkbuf)) == 1)
     {				/* try to read sector */
 
 #if DEBUGIT
@@ -79,7 +79,7 @@ _putsec (fp, buf, len)
 
   memcpy (Wrkbuf + fp->offset, buf, len);	/* move in the new data */
 
-  if ((errno = WriteRN (fp, Wrkbuf)) NE 0)
+  if ((errno = WriteRN (fp, Wrkbuf)) != 0)
     {				/* write the sector */
 
 #if DEBUGIT
@@ -91,7 +91,7 @@ _putsec (fp, buf, len)
       return (FAILURE);
     }
 
-  if ((fp->offset = (fp->offset + len) & (BPSEC - 1)) EQ 0)
+  if ((fp->offset = (fp->offset + len) & (BPSEC - 1)) == 0)
     {
 
       ++fp->curlsn;		/* update file position */
@@ -140,17 +140,17 @@ _filewr (fp, buffer, len)
 
   curpos = fp->offset + (fp->curlsn << FILESHFT);	/* get position */
 
-  if (fp->de.bclust EQ 0)
+  if (fp->de.bclust == 0)
     {				/* see if we need to allocate */
 
 #if DEBUGIT
       if (fsdebug)
 	if (curpos)
-	  printf ("_filewr():  ERROR - bclust EQ 0 and curpos (%ld) NE 0\n",
+	  printf ("_filewr():  ERROR - bclust == 0 and curpos (%ld) != 0\n",
 		  curpos);
 #endif
 
-      if (0 EQ (clustr = _newcls ()))
+      if (0 == (clustr = _newcls ()))
 	{			/* allocate a cluster */
 
 	  errno = EIO;
@@ -196,7 +196,7 @@ _filewr (fp, buffer, len)
   if (k = (len - l) / BPSEC)
     {				/* write out any full sectors */
 
-      if ((j = blkwr (fp, buffer + l, k)) NE 0)
+      if ((j = blkwr (fp, buffer + l, k)) != 0)
 	{
 
 	  l += (k - j) * BPSEC;	/* update amount written */
@@ -268,7 +268,7 @@ write (fd, buff, len)
 {
   register struct channel *chp;
 
-  if ((fd < 0) OR (fd > MAXCHAN))
+  if ((fd < 0) || (fd > MAXCHAN))
     {
 
       errno = EBADF;

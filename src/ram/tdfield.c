@@ -274,9 +274,9 @@ tdcyupd ()
 
       cyval += cyrate;
 
-      if (cyval GT (CYMAX - 1))
+      if (cyval > (CYMAX - 1))
 	cyval = CYMAX - 1;
-      else if (cyval LT 1)
+      else if (cyval < 1)
 	cyval = 1;
     }
 }
@@ -309,9 +309,9 @@ tdcxupd ()
 
       cxval += cxrate;
 
-      if (cxval GT (CXMAX - 1))
+      if (cxval > (CXMAX - 1))
 	cxval = CXMAX - 1;
-      else if (cxval LT 1)
+      else if (cxval < 1)
 	cxval = 1;
     }
 }

@@ -63,7 +63,7 @@ sqread (fp)
 	  return (FAILURE);
 	}
 
-      if (0 EQ cb)		/* zero control byte is end */
+      if (0 == cb)		/* zero control byte is end */
 	return (SUCCESS);
 
       if (rd_ec (fp, &seq, 2L))
